@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.h,v 1.5 2003/11/29 14:43:03 bwalle Exp $
+ * Id: $Id: qpamat.h,v 1.6 2003/12/04 11:58:15 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -29,11 +29,12 @@
 
 
 /*!
- * The main application window.
+ * \brief The main application window.
+ *
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.5 $
- * \date $Date: 2003/11/29 14:43:03 $
+ * \version $Revision: 1.6 $
+ * \date $Date: 2003/12/04 11:58:15 $
  */
 class Qpamat : public QMainWindow
 {

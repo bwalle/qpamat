@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.h,v 1.4 2003/11/29 14:43:03 bwalle Exp $
+ * Id: $Id: treeentry.h,v 1.5 2003/12/04 11:59:27 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -31,11 +31,12 @@ typedef QPtrList<Property> PropertyPtrList;
 
 
 /*!
- * Represents an entry in the tree.
+ * \brief Represents an entry in the tree.
+ *
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.4 $
- * \date $Date: 2003/11/29 14:43:03 $
+ * \version $Revision: 1.5 $
+ * \date $Date: 2003/12/04 11:59:27 $
  */
 class TreeEntry : public QObject, public QListViewItem
 {
