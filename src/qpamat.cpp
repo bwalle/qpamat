@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.6 2003/12/04 11:58:06 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.7 2003/12/04 14:07:23 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -291,7 +291,7 @@ void Qpamat::save()
     {
         QSettings& settings = Settings::getInstance().getSettings();
         m_tree->writeToXML(settings.readEntry("/General/Datafile", Settings::QPAMAT_FILE_NAME), 
-            m_password, settings.readEntry("/General/CipherAlgorithm",
+            m_password, settings.readEntry("/Security/CipherAlgorithm",
                 Encryptor::getSuggestedAlgorithm()));
     }
 }
