@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encryptor.h,v 1.1 2003/09/21 16:01:35 bwalle Exp $
+ * Id: $Id: encryptor.h,v 1.2 2003/09/21 17:14:49 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,6 +15,9 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
+#ifndef ENCRYPTOR_H
+#define ENCRYPTOR_H
+
 #include <qstring.h>
 
 #include <openssl/evp.h>
@@ -25,8 +28,8 @@
 /**
  * A object which encrypts bytes.
  * @author Bernhard Walle
- * @version $Revision: 1.1 $
- * @date $Date: 2003/09/21 16:01:35 $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2003/09/21 17:14:49 $
  */
 class Encryptor
 {
@@ -135,4 +138,4 @@ class Encryptor
         
 };
 
-
+#endif // ENCRYPTOR_H
