@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.45 2004/07/23 13:14:18 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.46 2004/07/23 15:11:22 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -160,6 +160,8 @@ IMAGES =                                        \
     images/stock_add_24.png                     \
     images/stock_remove_16.png                  \
     images/stock_remove_24.png                  \
+    images/stock_help_16.png                    \
+    images/stock_help_24.png                    \
     images/stock_directory_16.png               \
     images/clear_clipboard_16.png               \
     images/general_34.png                       \
