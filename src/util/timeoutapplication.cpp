@@ -1,5 +1,5 @@
 /*
- * Id: $Id: timeoutapplication.cpp,v 1.1 2005/02/12 10:52:21 bwalle Exp $
+ * Id: $Id: timeoutapplication.cpp,v 1.2 2005/03/06 15:44:14 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -20,6 +20,7 @@
 #include <qevent.h>
 
 #include "timeoutapplication.h"
+#include "global.h"
 
 /*!
     \class TimeoutApplication
@@ -31,8 +32,8 @@
     
     \ingroup misc
     \author Bernhard Walle
-    \version $Revision: 1.1 $
-    \date $Date: 2005/02/12 10:52:21 $
+    \version $Revision: 1.2 $
+    \date $Date: 2005/03/06 15:44:14 $
 */
 
 
@@ -64,7 +65,7 @@ TimeoutApplication::TimeoutApplication(int& argc, char** argv)
     \param guiEnabled if it is a GUI application
 */
 TimeoutApplication::TimeoutApplication(int& argc, char** argv, bool guiEnabled)
-    : QApplication(argc, argv, guiEnabled), m_timeout(0), m_timer(0)
+    : QApplication(argc, argv, guiEnabled), m_timeout(0), m_timer(0), m_temporaryDisabled(false)
 {
     init();
 }
@@ -110,6 +111,34 @@ void TimeoutApplication::setTimeout(int timeout)
 
 
 /*!
+    \property TimeoutApplication::temporaryDisabled
+
+    Sometimes, the call of the timedOut() function has to disabled temporary without loosing
+    the timeout value. To do this, set temporaryDisabled to true.
+*/
+
+/*!
+    Checks if the TimeoutApplication is disabled temporary.
+    
+    \return \c true if it is disabled, \c false if not
+*/
+bool TimeoutApplication::isTemporaryDisabled() const
+{
+    return m_temporaryDisabled;
+}
+
+/*!
+    Sets the timeout function to disabled temporary.
+    
+    \param disabled \c true if it should be disabled, \c false if not
+*/
+void TimeoutApplication::setTemporaryDisabled(bool disabled)
+{
+    m_timer->stop();
+    m_temporaryDisabled = disabled;
+}
+
+/*!
     Overwrites QApplication::nofity(QObject*, QEvent*). Restarts the timer if necessary.
     
     \param receiver the receiver
@@ -117,7 +146,7 @@ void TimeoutApplication::setTimeout(int timeout)
 */
 bool TimeoutApplication::notify(QObject* receiver, QEvent* e)
 {
-    if (m_timeout != 0 && 
+    if (!m_temporaryDisabled && m_timeout != 0 && 
             (e->type() == QEvent::MouseButtonPress || e->type() == QEvent::MouseButtonRelease
               || e->type() == QEvent::MouseMove || e->type() == QEvent::KeyPress))
     {

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: timeoutapplication.h,v 1.1 2005/02/12 10:52:21 bwalle Exp $
+ * Id: $Id: timeoutapplication.h,v 1.2 2005/03/06 15:44:14 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -27,6 +27,7 @@ class TimeoutApplication : public QApplication
 {
     Q_OBJECT
     Q_PROPERTY( int timeout READ getTimeout WRITE setTimeout )
+    Q_PROPERTY( bool temporaryDisabled READ isTemporaryDisabled WRITE setTemporaryDisabled )
     
     public:
         TimeoutApplication(int& argc, char** argv);
@@ -35,6 +36,9 @@ class TimeoutApplication : public QApplication
     public:
         void setTimeout(int newTimeout);
         int getTimeout() const;
+        
+        bool isTemporaryDisabled() const;
+        void setTemporaryDisabled(bool disabled);
         
     signals:
         void timedOut();
@@ -48,6 +52,7 @@ class TimeoutApplication : public QApplication
     private:
         int m_timeout;
         QTimer* m_timer;
+        bool m_temporaryDisabled;
 };
             
  
