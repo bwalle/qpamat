@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encryptor.h,v 1.9 2003/12/06 18:25:10 bwalle Exp $
+ * Id: $Id: abstractencryptor.h,v 1.1 2003/12/06 18:25:21 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,61 +15,51 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#ifndef ENCRYPTOR_H
-#define ENCRYPTOR_H
+#ifndef ABSTRACTENCRYPTOR_H
+#define ABSTRACTENCRYPTOR_H
 
 #include <qstring.h>
 #include <qstringlist.h>
 
 #include "nosuchalgorithmexception.h"
 #include "../types.h"
+#include "encryptor.h"
 
 /*!
- * \brief An interface for an object that encrypts bytes.
+ * \brief Abstract base class for Encryptor objects.
+ *
+ * This class implements the Encryptor::encryptString() and Encryptor::decryptString() methods
+ * by passing converting data and passing them to the Encryptor::encrypt() or Encryptor::decrypt()
+ * methods.
  *
  * \ingroup security
  * \author Bernhard Walle
- * \version $Revision: 1.9 $
- * \date $Date: 2003/12/06 18:25:10 $
+ * \version $Revision: 1.1 $
+ * \date $Date: 2003/12/06 18:25:21 $
  */
-class Encryptor
+class AbstractEncryptor : public Encryptor
 {
     public:
         
         /*!
-         * Destroys a Encryptor object.
-         */
-        virtual ~Encryptor() { }
-        
-        /*!
-         * Encrypts the given amount of bytes.
-         * \param vector the bytes to encrypt
-         * \return the encrypted bytes
+         * \copydoc Encryptor::encrypt()
          */
         virtual ByteVector encrypt(const ByteVector& vector) const = 0;
         
         /*!
-         * Encrypts the given string.
-         * \param string string to enctrypt
-         * \return the encrypted bytes
+         * \copydoc Encryptor::encryptString()
          */
-        virtual ByteVector encryptString(const QString& string) const = 0;
+        virtual ByteVector encryptString(const QString& string) const;
         
         /*!
-         * Decrypts the given amount of bytes.
-         * \param vector the bytes to decrypt
-         * \return the decrypted bytes
+         * \copydoc Encryptor::decrypt()
          */
         virtual ByteVector decrypt(const ByteVector& vector) const = 0;
         
         /*!
-         * Decrypts the given amount of bytes. This method returns a String. 
-         * Call this method only if you are sure that vector is the result of
-         * an encryption with encryptString().
-         * \param vector the bytes to decrypt
-         * \return the decrypted string
+         * \copydoc Encryptor::decryptString()
          */
-        virtual QString decryptString(const ByteVector& vector) const = 0;
+        virtual QString decryptString(const ByteVector& vector) const;
 };
 
-#endif // ENCRYPTOR_H
+#endif // ABSTRACTENCRYPTOR_H

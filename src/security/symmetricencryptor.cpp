@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encryptor.cpp,v 1.8 2003/10/05 16:07:12 bwalle Exp $
+ * Id: $Id: symmetricencryptor.cpp,v 1.1 2003/12/06 18:25:21 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -22,7 +22,7 @@
 #include <openssl/evp.h>
 #include <openssl/ssl.h>
 
-#include "encryptor.h"
+#include "symmetricencryptor.h"
 #include "constants.h"
 #include "nosuchalgorithmexception.h"
 #include "encodinghelper.h"
@@ -32,11 +32,11 @@
 #endif
 
 // -------------------------------------------------------------------------------------------------
-StringMap Encryptor::m_algorithms= initAlgorithmsMap();
+StringMap SymmetricEncryptor::m_algorithms = initAlgorithmsMap();
 // -------------------------------------------------------------------------------------------------
 
 // -------------------------------------------------------------------------------------------------
-Encryptor::Encryptor(const QString& algorithm, const QString& password)
+SymmetricEncryptor::SymmetricEncryptor(const QString& algorithm, const QString& password)
             throw (NoSuchAlgorithmException)
 // -------------------------------------------------------------------------------------------------
 {
@@ -57,7 +57,7 @@ Encryptor::Encryptor(const QString& algorithm, const QString& password)
 
 
 // -------------------------------------------------------------------------------------------------
-QStringList Encryptor::getAlgorithms()
+QStringList SymmetricEncryptor::getAlgorithms()
 // -------------------------------------------------------------------------------------------------
 {
     QStringList algorithms;
@@ -73,7 +73,7 @@ QStringList Encryptor::getAlgorithms()
 
 
 // -------------------------------------------------------------------------------------------------
-QString Encryptor::getSuggestedAlgorithm()
+QString SymmetricEncryptor::getSuggestedAlgorithm()
 // -------------------------------------------------------------------------------------------------
 {
     StringVector vec;
@@ -93,7 +93,7 @@ QString Encryptor::getSuggestedAlgorithm()
 
 
 // -------------------------------------------------------------------------------------------------
-StringMap Encryptor::initAlgorithmsMap()
+StringMap SymmetricEncryptor::initAlgorithmsMap()
 // -------------------------------------------------------------------------------------------------
 
 {
@@ -119,7 +119,7 @@ StringMap Encryptor::initAlgorithmsMap()
 }
 
 // -------------------------------------------------------------------------------------------------
-ByteVector Encryptor::encrypt(const ByteVector& vector) const
+ByteVector SymmetricEncryptor::encrypt(const ByteVector& vector) const
 // -------------------------------------------------------------------------------------------------
 {
     return crypt(vector, ENCRYPT);
@@ -127,19 +127,7 @@ ByteVector Encryptor::encrypt(const ByteVector& vector) const
 
 
 // -------------------------------------------------------------------------------------------------
-ByteVector Encryptor::encryptString(const QString& string) const
-// -------------------------------------------------------------------------------------------------
-{
-    QCString utf8CString = string.utf8();
-    uint utf8Length = utf8CString.length();
-    ByteVector vector(utf8Length);
-    const byte* utf8 = (const byte*)utf8CString.data();
-    qCopy(utf8, utf8 + utf8Length, vector.begin());
-    return crypt(vector, ENCRYPT);
-}
-
-// -------------------------------------------------------------------------------------------------
-ByteVector Encryptor::decrypt(const ByteVector& vector) const
+ByteVector SymmetricEncryptor::decrypt(const ByteVector& vector) const
 // -------------------------------------------------------------------------------------------------
 {
     return crypt(vector, DECRYPT);
@@ -147,23 +135,7 @@ ByteVector Encryptor::decrypt(const ByteVector& vector) const
 
 
 // -------------------------------------------------------------------------------------------------
-QString Encryptor::decryptString(const ByteVector& vector) const
-// -------------------------------------------------------------------------------------------------
-{
-    QString result;
-    ByteVector decrypted = crypt(vector, DECRYPT);
-    uint size = decrypted.size();
-    char* decryptedBytes = new char[size + 1];
-    decryptedBytes[size] = 0;
-    qCopy(decrypted.begin(), decrypted.end(), decryptedBytes);
-    
-    QString returnString = QString::fromUtf8(decryptedBytes);
-    delete[] decryptedBytes;
-    return returnString;
-}
-
-// -------------------------------------------------------------------------------------------------
-ByteVector Encryptor::crypt(const ByteVector& vector, OperationType operation) const
+ByteVector SymmetricEncryptor::crypt(const ByteVector& vector, OperationType operation) const
 // -------------------------------------------------------------------------------------------------
 {
     byte buf[BUFLEN];
@@ -201,7 +173,7 @@ ByteVector Encryptor::crypt(const ByteVector& vector, OperationType operation) c
 
 
 // -------------------------------------------------------------------------------------------------
-void Encryptor::setPassword(const QString& password)
+void SymmetricEncryptor::setPassword(const QString& password)
 // -------------------------------------------------------------------------------------------------
 {
     QCString pwUtf8 = password.utf8();
@@ -211,14 +183,10 @@ void Encryptor::setPassword(const QString& password)
 
 
 // -------------------------------------------------------------------------------------------------
-QString Encryptor::getCurrentAlgorithm() const
+QString SymmetricEncryptor::getCurrentAlgorithm() const
 // -------------------------------------------------------------------------------------------------
 {
     return m_currentAlgorithm;
 }
 
 
-// -------------------------------------------------------------------------------------------------
-Encryptor::~Encryptor()
-// -------------------------------------------------------------------------------------------------
-{}

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.9 2003/12/04 20:31:14 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.10 2003/12/06 18:23:20 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -31,7 +31,7 @@
 #include "treeentry.h"
 #include "wrongpassword.h"
 #include "security/passwordhash.h"
-#include "security/encryptor.h"
+#include "security/symmetricencryptor.h"
 
 // -------------------------------------------------------------------------------------------------
 Tree::Tree(QWidget* parent)
@@ -119,7 +119,7 @@ bool Tree::readFromXML(const QString& fileName, const QString& password) throw (
     QString algorithm = root.attribute("crypt-algorithm");
     try
     {
-        enc = new Encryptor(algorithm, password);
+        enc = new SymmetricEncryptor(algorithm, password);
     }
     catch (const NoSuchAlgorithmException& ex)
     {
@@ -168,7 +168,7 @@ void Tree::writeToXML(const QString& fileName, const QString& password, const QS
     Encryptor* enc;
     try
     {
-        enc = new Encryptor(algorithm, password);
+        enc = new SymmetricEncryptor(algorithm, password);
     }
     catch (const NoSuchAlgorithmException& e)
     {

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encryptor.h,v 1.9 2003/12/06 18:25:10 bwalle Exp $
+ * Id: $Id: collectencryptor.h,v 1.1 2003/12/06 18:25:21 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,45 +15,43 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#ifndef ENCRYPTOR_H
-#define ENCRYPTOR_H
+#ifndef COLLECTENCRYPTOR_H
+#define COLLECTENCRYPTOR_H
 
 #include <qstring.h>
 #include <qstringlist.h>
 
 #include "nosuchalgorithmexception.h"
 #include "../types.h"
+#include "encryptor.h"
 
 /*!
- * \brief An interface for an object that encrypts bytes.
+ * \brief This encryptor just collects the encrypted bytes in a ByteArray.
  *
  * \ingroup security
  * \author Bernhard Walle
- * \version $Revision: 1.9 $
- * \date $Date: 2003/12/06 18:25:10 $
+ * \version $Revision: 1.1 $
+ * \date $Date: 2003/12/06 18:25:21 $
  */
-class Encryptor
+class CollectEncryptor : public Encryptor
 {
     public:
         
-        /*!
-         * Destroys a Encryptor object.
-         */
-        virtual ~Encryptor() { }
+        CollectEncryptor(const Encryptor& encryptor);
         
         /*!
          * Encrypts the given amount of bytes.
          * \param vector the bytes to encrypt
          * \return the encrypted bytes
          */
-        virtual ByteVector encrypt(const ByteVector& vector) const = 0;
+        virtual ByteVector encrypt(const ByteVector& vector) const;
         
         /*!
          * Encrypts the given string.
          * \param string string to enctrypt
          * \return the encrypted bytes
          */
-        virtual ByteVector encryptString(const QString& string) const = 0;
+        virtual ByteVector encryptString(const QString& string) const;
         
         /*!
          * Decrypts the given amount of bytes.
@@ -69,7 +67,22 @@ class Encryptor
          * \param vector the bytes to decrypt
          * \return the decrypted string
          */
-        virtual QString decryptString(const ByteVector& vector) const = 0;
+        virtual QString decryptString(const ByteVector& vector) const;
+        
+        /*!
+         * Sets the stored bytes.
+         * \param vector the bytes
+         */
+        void setBytes(const ByteVector& vector);
+        
+        /*!
+         * Gets the stored bytes.
+         */
+        ByteVector getBytes();
+        
+    private:
+        const Encryptor& m_realEncryptor;
+        ByteVector m_bytes;
 };
 
-#endif // ENCRYPTOR_H
+#endif // COLLECTENCRYPTOR_H
