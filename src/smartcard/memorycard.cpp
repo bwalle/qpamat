@@ -1,5 +1,5 @@
 /*
- * Id: $Id: memorycard.cpp,v 1.2 2003/11/10 23:17:54 bwalle Exp $
+ * Id: $Id: memorycard.cpp,v 1.3 2003/11/12 22:17:45 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -65,6 +65,26 @@ MemoryCard::MemoryCard(QString library) throw (NoSuchLibraryException)
 
 
 // -------------------------------------------------------------------------------------------------
+MemoryCard::~MemoryCard()
+// -------------------------------------------------------------------------------------------------
+{
+    if (m_initialized)
+    {
+        try
+        {
+            close();
+        }
+        catch (const std::exception& ex)
+        {
+            qDebug(ex.what());
+        }
+        catch (...)
+        {}
+    }
+}
+
+
+// -------------------------------------------------------------------------------------------------
 void MemoryCard::init(int portNumber) throw (CardException)
 // -------------------------------------------------------------------------------------------------
 {
@@ -116,41 +136,6 @@ void MemoryCard::setWaitTime(uchar newTime)
 }
 
 
-
-// -------------------------------------------------------------------------------------------------
-MemoryCard::~MemoryCard()
-// -------------------------------------------------------------------------------------------------
-{
-    if (m_initialized)
-    {
-        qDebug("Closing in desctructor. Avoid this ...");
-        try
-        {
-            close();
-        }
-        catch (const std::exception& ex)
-        {
-            qDebug(ex.what());
-        }
-        catch (...)
-        {}
-    }
-}
-
-
-// -------------------------------------------------------------------------------------------------
-void MemoryCard::checkInitialzed(const QString& functionName) const
-// -------------------------------------------------------------------------------------------------
-        throw (NotInitializedException)
-{
-    if (!m_initialized)
-    {
-        throw NotInitializedException("The function " + functionName + " was called even though "
-            "the class was not initalized.");
-    }
-}
-
-
 // -------------------------------------------------------------------------------------------------
 MemoryCard::CardType MemoryCard::getType() const
 // -------------------------------------------------------------------------------------------------
@@ -189,6 +174,7 @@ MemoryCard::CardType MemoryCard::getType() const
 // -------------------------------------------------------------------------------------------------
 void MemoryCard::resetCard(int* capacity, ProtocolType* protocolType) const
 // -------------------------------------------------------------------------------------------------
+        throw (CardException, NotInitializedException)
 {
     checkInitialzed();
     
@@ -321,6 +307,7 @@ void MemoryCard::getStatusInformation(QString* manufacturer, QString* terminalTy
 // -------------------------------------------------------------------------------------------------
 bool MemoryCard::selectFile() const
 // -------------------------------------------------------------------------------------------------
+        throw (CardException, NotInitializedException)
 {
     checkInitialzed();
     
@@ -351,48 +338,73 @@ bool MemoryCard::selectFile() const
 // -------------------------------------------------------------------------------------------------
 ByteVector MemoryCard::read(ushort offset, ushort length) const
 // -------------------------------------------------------------------------------------------------
+        throw (CardException, NotInitializedException)
 {
     checkInitialzed();
     
-    //                     CLA   INS   ---- P1 ----  ---- P2 -----  LEN
-    byte READ_BINARY[] = { 0x00, 0xB0, offset >> 16, offset & 0xFF, length };
-                             
-    byte sad = HOST;      // source
-    byte dad = ICC1;         // destination
+    byte read_binary[5];
+    read_binary[0] = 0x00; // CLA
+    read_binary[1] = 0xB0; // INS
     
-    byte* response = new byte[length+2];
-    ushort lenr = length+2;
+    ByteVector vec(length);
+    int readBytes = 0;
     
-    char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(READ_BINARY), 
-        READ_BINARY, &lenr, response);
+    int dataOffset = 0;
+    int stillToRead = length;
+    const int max = 255;
     
-    if (ret != OK)
+    while (stillToRead > 0)
     {
-        qDebug("MemoryCard::read: errorcode = %d\n", ret);
-        delete[] response;
-        throw CardException(CardException::ErrorCode(ret));
+        int dataToRead = std::min(stillToRead, max);
+        
+        read_binary[2] = (offset + dataOffset) >> 8;
+        read_binary[3] = (offset + dataOffset) & 0xFF;
+        read_binary[4] = dataToRead;
+        
+        byte sad = HOST;      // source
+        byte dad = ICC1;      // destination
+        
+        byte response[max+2];
+        ushort lenr = dataToRead + 2;
+        
+        char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(read_binary), 
+            read_binary, &lenr, response);
+        
+        if (ret != OK)
+        {
+            throw CardException(CardException::ErrorCode(ret));
+        }
+        
+        ushort sw1sw2 = (response[lenr-2] << 8) + response[lenr-1];
+        
+        if (sw1sw2 != 0x9000)
+        {
+            throw CardException(CardException::ErrorCode(sw1sw2));
+        }
+        
+        readBytes += lenr - 2;
+        qCopy(response, response + lenr - 2, vec.begin() + dataOffset);
+        
+        stillToRead -= max;
+        dataOffset += max;
     }
     
-    ushort sw1sw2 = (response[lenr-2] << 8) + response[lenr-1];
-    
-    if (sw1sw2 != 0x9000)
+    // truncate if not all could be read
+    vec.resize(readBytes);
+    if (readBytes != length)
     {
-        qDebug("MemoryCard::read: sw1sw2 = %X\n", sw1sw2);
-        delete[] response;
-        return ByteVector();
+        qDebug("Could not read all requested data. Maybe problem?"); // TODO: remove this
+        throw CardException(CardException::EndReached);
     }
-    
-    ByteVector vec(lenr-2);
-    qCopy(response, response + lenr - 2, vec.begin());
-    delete[] response;
     
     return vec;
 }
 
 
 // -------------------------------------------------------------------------------------------------
-bool MemoryCard::write(ushort offset, const ByteVector& data) const
+void MemoryCard::write(ushort offset, const ByteVector& data) const
 // -------------------------------------------------------------------------------------------------
+        throw (CardException, NotInitializedException)
 {
     checkInitialzed();
     
@@ -408,7 +420,7 @@ bool MemoryCard::write(ushort offset, const ByteVector& data) const
     {
         int written_bytes = std::min(len, max);
         
-        update_binary[2] = (offset + dataOffset) >> 16; // P1
+        update_binary[2] = (offset + dataOffset) >> 8; // P1
         update_binary[3] = (offset + dataOffset) & 0xFF; // P2
         update_binary[4] = written_bytes; // LEN
         
@@ -428,7 +440,6 @@ bool MemoryCard::write(ushort offset, const ByteVector& data) const
         
         if (ret != OK)
         {
-            qDebug("MemoryCard::write: errorcode = %d\n", ret);
             throw CardException(CardException::ErrorCode(ret));
         }
         
@@ -436,14 +447,23 @@ bool MemoryCard::write(ushort offset, const ByteVector& data) const
         
         if (sw1sw2 != 0x9000)
         {
-            qDebug("MemoryCard::write: sw1sw2 = %X\n", sw1sw2);
-            return false;
+            throw CardException(CardException::ErrorCode(sw1sw2));
         }
         
         len -= max;
         dataOffset += max;
     }
-    
-    return true;
 }
 
+
+// -------------------------------------------------------------------------------------------------
+void MemoryCard::checkInitialzed(const QString& functionName) const
+// -------------------------------------------------------------------------------------------------
+        throw (NotInitializedException)
+{
+    if (!m_initialized)
+    {
+        throw NotInitializedException("The function " + functionName + " was called even though "
+            "the class was not initalized.");
+    }
+}

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: memorycard.h,v 1.2 2003/11/10 23:17:54 bwalle Exp $
+ * Id: $Id: memorycard.h,v 1.3 2003/11/12 22:17:45 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -68,8 +68,8 @@ typedef char (*CT_close_ptr) (ushort ctn);
  * 
  * @ingroup smartcard
  * @author Bernhard Walle
- * @version $Revision: 1.2 $
- * @date $Date: 2003/11/10 23:17:54 $
+ * @version $Revision: 1.3 $
+ * @date $Date: 2003/11/12 22:17:45 $
  */
 class MemoryCard
 {
@@ -179,31 +179,41 @@ class MemoryCard
          *                 0, then no value is stored
          * @param protocolType a pointer to a ProtocolType enumeration value where the protocol
          *                     type is stored. If it's 0, then no value is stored
+         * @exception CardException if an exception occured while resetting the card
+         * @exception NotInitializedException if the object was not initialized*
          */
-        void resetCard(int* capacity = 0, ProtocolType* protocolType = 0) const;
+        void resetCard(int* capacity = 0, ProtocolType* protocolType = 0) const
+            throw (NotInitializedException, CardException);;
         
         /**
          * This selects a file on the chipcard. It is implemented in a way that selects the whole
          * data area on the chipcard. The return value of this function indicates the success.
          * @return \c true if the command was successfull, \c false otherwise.
+         * @exception CardException if an exception occured while selecting the file
+         * @exception NotInitializedException if the object was not initialized
          */
-        bool selectFile() const;
+        bool selectFile() const throw (NotInitializedException, CardException);
         
         /**
          * Reads the specified number of bytes from the chipcard.
          * @param offset the offset
          * @param length the number of bytes that should be read
          * @return the read bytes
+         * @exception CardException if an exception occured while reading
+         * @exception NotInitializedException if the object was not initialized
          */
-        ByteVector read(ushort offset, ushort length) const;
+        ByteVector read(ushort offset, ushort length) const
+            throw (CardException, NotInitializedException);
         
         /**
          * Writes the specified data to the smartcard. The data must fit on the card.
          * @param offset the offset where the data should be written
          * @param data the data that should be written
-         * @return \c true on success, \c false otherwise
+         * @exception CardException if an exception occured while writing
+         * @exception NotInitializedException if the object was not initialized
          */
-        bool write(ushort offset, const ByteVector& data) const;
+        void write(ushort offset, const ByteVector& data) const 
+            throw (CardException, NotInitializedException);
         
         
     protected:
