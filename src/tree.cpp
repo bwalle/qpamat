@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.13 2003/12/13 22:33:40 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.14 2003/12/15 16:43:28 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -403,6 +403,7 @@ void Tree::insertItem(TreeEntry* item, bool category)
     {
         newItem = new TreeEntry( this, name, category);
     }
+    setSelected(newItem, true);
     newItem->startRename(0);
     emit stateModified();
 }
