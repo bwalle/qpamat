@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.18 2003/12/17 21:57:12 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.19 2003/12/18 21:59:22 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -67,7 +67,6 @@
 #include "dialogs/passworddialog.h"
 #include "dialogs/newpassworddialog.h"
 #include "dialogs/configurationdialog.h"
-#include "security/externalpasswordchecker.h"
 #include "security/symmetricencryptor.h"
 #include "qpamat.h"
 #include "settings.h"
@@ -312,9 +311,9 @@ void Qpamat::login()
         // try to read the data
         try
         {
-            m_tree->setEnabled(true);
             ok = m_tree->readFromXML( Settings::getInstance().getSettings().readEntry(
                 "/General/Datafile", Settings::QPAMAT_FILE_NAME ), m_password);
+            m_tree->setEnabled(true);
         }
         catch (const WrongPassword& ex)
         {
@@ -460,8 +459,8 @@ void Qpamat::print()
         
         QFont serifFont;
         QFont sansSerifFont;
-        serifFont.fromString(set.readEntry( "Printing/NormalFont", Settings::DEFAULT_NORMAL_FONT));
-        sansSerifFont.fromString(set.readEntry("Printing/FooterFont",Settings::DEFAULT_FOOTER_FONT));
+        serifFont.fromString(set.readEntry( "Presentation/NormalFont", Settings::DEFAULT_NORMAL_FONT));
+        sansSerifFont.fromString(set.readEntry("Presentation/FooterFont",Settings::DEFAULT_FOOTER_FONT));
         
         p.setFont(sansSerifFont);
         
