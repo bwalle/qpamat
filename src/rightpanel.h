@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightpanel.h,v 1.1 2003/10/20 20:55:13 bwalle Exp $
+ * Id: $Id: rightpanel.h,v 1.2 2003/11/04 22:49:41 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -29,8 +29,8 @@
  * Represents the panel on the right which contains the entry list.
  * @ingroup gui
  * @author Bernhard Walle
- * @version $Revision: 1.1 $
- * @date $Date: 2003/10/20 20:55:13 $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2003/11/04 22:49:41 $
  */
 class RightPanel : public QFrame
 {
@@ -52,7 +52,7 @@ class RightPanel : public QFrame
         /**
          * Sets the current item. The item must be a TreeEntry, this type is only for
          * the signal and slots mechanism.
-         * @param the current item
+         * @param item the current item
          */
         void setItem(QListViewItem* item);
         
@@ -61,6 +61,10 @@ class RightPanel : public QFrame
          */
         void clear();
         
+        /**
+         * Enables or diables the panel.
+         * @param enabled \c true if the panel should be enabled, \c false otherwise
+         */
         void setEnabled(bool enabled);
         
     private slots:

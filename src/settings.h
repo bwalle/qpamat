@@ -1,5 +1,5 @@
 /*
- * Id: $Id: settings.h,v 1.1 2003/10/20 20:55:13 bwalle Exp $
+ * Id: $Id: settings.h,v 1.2 2003/11/04 22:49:38 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,17 +24,17 @@
  * Singleton for storing settings in registry (MS Windows) or ini-file (Unix).
  * @ingroup gui
  * @author Bernhard Walle
- * @version $Revision: 1.1 $
- * @date $Date: 2003/10/20 20:55:13 $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2003/11/04 22:49:38 $
  */
 class Settings
 {
     public:
         
-        /**
-         * some constants
-         */
+        /** the default web browser */
         static QString DEFAULT_WEBBROWSER;
+        
+        /** the default file name */
         static QString QPAMAT_FILE_NAME;
         
         /**

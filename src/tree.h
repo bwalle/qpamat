@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.h,v 1.3 2003/10/20 20:54:22 bwalle Exp $
+ * Id: $Id: tree.h,v 1.4 2003/11/04 22:49:27 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -31,8 +31,8 @@
  * Represents the tree that holds the password entries.
  * @ingroup gui
  * @author Bernhard Walle
- * @version $Revision: 1.3 $
- * @date $Date: 2003/10/20 20:54:22 $
+ * @version $Revision: 1.4 $
+ * @date $Date: 2003/11/04 22:49:27 $
  */
 class Tree : public QListView
 {
@@ -40,6 +40,7 @@ class Tree : public QListView
     
     public:
         
+        /** Holds the menu ids */
         enum MenuID
         {
             INSERT_ITEM,

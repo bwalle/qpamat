@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.h,v 1.2 2003/10/20 20:56:30 bwalle Exp $
+ * Id: $Id: qpamat.h,v 1.3 2003/11/04 22:49:45 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -31,8 +31,8 @@
  * The main application window.
  * @ingroup gui
  * @author Bernhard Walle
- * @version $Revision: 1.2 $
- * @date $Date: 2003/10/20 20:56:30 $
+ * @version $Revision: 1.3 $
+ * @date $Date: 2003/11/04 22:49:45 $
  */
 class Qpamat : public QMainWindow
 {
@@ -46,12 +46,32 @@ class Qpamat : public QMainWindow
         Qpamat();
         
     protected slots:
+        
+        /**
+         * Performs the login process.
+         */
         void login();
+        
+        /**
+         * Performs the logout process.
+         */
         void logout();
+        
+        /**
+         * Performs the newFile process.
+         */
         void newFile();
+        
+        /**
+         * Performs the save process.
+         */
         void save();
     
     protected:
+        
+        /**
+         * Handles a closeEvent.
+         */
         void closeEvent(QCloseEvent* evt);
 
     private:

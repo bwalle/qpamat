@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightlistview.h,v 1.1 2003/10/20 20:55:13 bwalle Exp $
+ * Id: $Id: rightlistview.h,v 1.2 2003/11/04 22:49:45 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -30,8 +30,8 @@
  * Represents the list view on the right where the key-value pairs are displayed.
  * @ingroup gui
  * @author Bernhard Walle
- * @version $Revision: 1.1 $
- * @date $Date: 2003/10/20 20:55:13 $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2003/11/04 22:49:45 $
  */
 class RightListView : public QListView
 {
@@ -63,7 +63,7 @@ class RightListView : public QListView
         /**
          * Sets the current item. The item must be a TreeEntry, this type is only for
          * the signal and slots mechanism.
-         * @param the current item
+         * @param item the current item
          */
         void setItem(QListViewItem* item);
     
@@ -75,7 +75,15 @@ class RightListView : public QListView
         void doubleClickHandler(QListViewItem* item);
     
     signals:
+        
+        /**
+         * This signal is emitted if an item was appended.
+         */
         void itemAppended();
+        
+        /**
+         * This signal is emitted if an item was deleted.
+         */
         void itemDeleted();
         
     private:

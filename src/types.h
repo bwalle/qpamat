@@ -1,5 +1,5 @@
 /*
- * Id: $Id: types.h,v 1.3 2003/10/05 16:08:07 bwalle Exp $
+ * Id: $Id: types.h,v 1.4 2003/11/04 22:49:32 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,11 +18,13 @@
 #include <qvaluevector.h>
 #include <qmap.h>
 
+
 /**
  * @file types.h
  * @ingroup gui
  * Defines some types used in the whole application.
  */
+
 
 /**
  * We use unsigned char in meaning of a byte.
