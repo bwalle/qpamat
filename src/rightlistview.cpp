@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightlistview.cpp,v 1.11 2004/01/03 23:41:09 bwalle Exp $
+ * Id: $Id: rightlistview.cpp,v 1.12 2004/02/09 19:32:23 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -41,8 +41,8 @@
     \brief Represents the list view on the right where the key-value pairs are displayed.
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.11 $
-    \date $Date: 2004/01/03 23:41:09 $
+    \version $Revision: 1.12 $
+    \date $Date: 2004/02/09 19:32:23 $
 */
 
 /*!
@@ -86,8 +86,8 @@
 RightListView::RightListView(QWidget* parent)
     : QListView(parent)
 {
-    addColumn(tr("Key"), int(width() / 7.0 * 4.0));
-    addColumn(tr("Value"), width() - columnWidth(0));
+    addColumn(tr("Key"), 250);
+    addColumn(tr("Value"), 250);
     
     setResizeMode(LastColumn);
     header()->setMovingEnabled(false);
