@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.45 2004/07/25 14:51:48 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.46 2004/09/03 14:51:09 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -37,7 +37,6 @@
 #include <qeventloop.h>
 #include <qpaintdevicemetrics.h>
 #include <qcursor.h>
-#include <qerrormessage.h>
 #include <qfiledialog.h>
 #include <qsimplerichtext.h> 
 
@@ -70,8 +69,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.45 $
-    \date $Date: 2004/07/25 14:51:48 $
+    \version $Revision: 1.46 $
+    \date $Date: 2004/09/03 14:51:09 $
  */
 
 /*! 
@@ -93,7 +92,7 @@
  */
 Qpamat::Qpamat()
     : QMainWindow(0, "qpamat main window"), m_tree(0), m_treeContextMenu(0), m_message(0), m_rightPanel(0), m_searchCombo(0), 
-      m_errorMessage(0), m_searchToolbar(0), m_randomPassword(0)
+      m_searchToolbar(0), m_randomPassword(0)
 {
     // Title and Icon
     setIcon(QPixmap::fromMimeSource("stock_dialog_authentication_48.png"));
@@ -102,10 +101,6 @@ Qpamat::Qpamat()
     setUsesBigPixmaps(true);
     QIconSet::setIconSize(QIconSet::Small, QSize(16, 16));
     QIconSet::setIconSize(QIconSet::Large, QSize(22, 22));
-    
-    // message
-    m_errorMessage = new QErrorMessage(this, "Error Message");
-    m_errorMessage->resize(400, 200);
     
     // Random password, we need this for the tree
     m_randomPassword = new RandomPassword(this, "Random Password");
@@ -207,18 +202,6 @@ Settings& Qpamat::set()
 void Qpamat::message(const QString& message, bool)
 {
     m_message->message(message, /*warning ? 3000 : */ 1500);
-}
-
-
-/*!
-    Displays a message dialog. If the message was displayed previously and the user choosed not
-    to display the message again, this does nothing.
-    \param message the message
-    \sa QErrorMessage
-*/
-void Qpamat::messageOnceDialog(const QString& message)
-{
-    m_errorMessage->message(message);
 }
 
 

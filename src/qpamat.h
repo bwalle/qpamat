@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.h,v 1.20 2004/07/23 22:05:28 bwalle Exp $
+ * Id: $Id: qpamat.h,v 1.21 2004/09/03 14:51:12 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -21,7 +21,6 @@
 #include <qmainwindow.h>
 #include <qcombobox.h>
 #include <qevent.h>
-#include <qerrormessage.h>
 #include <qtoolbutton.h>
 #include <qaction.h>
 
@@ -65,7 +64,6 @@ class Qpamat : public QMainWindow
         
     public slots:
         void message(const QString& message, bool warning = TRUE);
-        void messageOnceDialog(const QString& message);
         
     protected:
         void closeEvent(QCloseEvent* evt);
@@ -115,7 +113,6 @@ class Qpamat : public QMainWindow
         TimerStatusmessage* m_message;
         RightPanel*         m_rightPanel;
         QComboBox*          m_searchCombo;
-        QErrorMessage*      m_errorMessage;
         QToolBar*           m_searchToolbar;
         RandomPassword*     m_randomPassword;
         bool                m_loggedIn;
