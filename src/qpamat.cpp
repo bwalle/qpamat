@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.14 2003/12/14 16:55:28 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.15 2003/12/15 18:38:26 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -63,6 +63,7 @@
 #include "../images/edit_remove_16x16.xpm"
 #include "../images/edit_remove_22x22.xpm"
 
+#include "util/timerstatusmessage.h"
 #include "dialogs/passworddialog.h"
 #include "dialogs/newpassworddialog.h"
 #include "dialogs/configurationdialog.h"
@@ -139,10 +140,10 @@ Qpamat::Qpamat()
 
 
 // -------------------------------------------------------------------------------------------------
-void Qpamat::message(const QString& message, bool warning)
+void Qpamat::message(const QString& message, bool)
 // -------------------------------------------------------------------------------------------------
 {
-    statusBar()->message(message, warning ? 3000 : 2000);
+    new TimerStatusmessage(message, /*warning ? 3000 : */ 1500, statusBar());
 }
 
 
@@ -178,7 +179,7 @@ void Qpamat::initToolbar()
     // ----- Search --------------------------------------------------------------------------------
     m_searchToolbar = new QToolBar(this);
     m_searchToolbar->setLabel(tr("Search"));
-    new QLabel(tr("Search:"), m_searchToolbar);
+    new QLabel(tr("Search:")+" ", m_searchToolbar);
     
     m_searchCombo = new QComboBox(true, m_searchToolbar);
     m_searchCombo->setMinimumWidth(120);
