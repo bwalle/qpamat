@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.6 2003/10/05 16:08:36 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.7 2003/10/11 19:52:34 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -8,19 +8,22 @@
 ################################################################################
 
 SOURCES     =                                   \
-    src/main.cpp                                \
+    src/dialogs/passworddialog.cpp              \
     src/cipher/encodinghelper.cpp               \
     src/cipher/passwordhash.cpp                 \
     src/cipher/encryptor.cpp                    \
     src/cipher/randompasswordgenerator.cpp      \
     src/treeentry.cpp                           \
     src/property.cpp                            \
-    src/tree.cpp
+    src/tree.cpp                                \
+    src/qpamat.cpp                              \
+    src/help.cpp                                \
+    src/main.cpp                                
 
 # -----------------------------------------------------------------------------
 
 HEADERS     =                                   \
-    src/io_exception.h                          \
+    src/dialogs/passworddialog.h                \
     src/types.h                                 \
     src/cipher/encodinghelper.h                 \
     src/cipher/passwordhash.h                   \
@@ -30,7 +33,9 @@ HEADERS     =                                   \
     src/cipher/randompasswordgenerator.h        \
     src/treeentry.h                             \
     src/property.h                              \
-    src/tree.h
+    src/tree.h                                  \
+    src/qpamat.h                                \
+    src/help.h
 
 # -----------------------------------------------------------------------------
 
@@ -38,7 +43,7 @@ CONFIG     += warn_on qt exceptions
 
 # -----------------------------------------------------------------------------
 
-DEFINES    += VERSION="0.1"
+DEFINES    += VERSION=\"0.1\"
 
 isEmpty (debug) {
   DEFINES  += QT_NO_CHECK
