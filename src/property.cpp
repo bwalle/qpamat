@@ -1,5 +1,5 @@
 /*
- * Id: $Id: property.cpp,v 1.5 2003/12/10 21:50:21 bwalle Exp $
+ * Id: $Id: property.cpp,v 1.6 2003/12/14 18:49:58 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -137,7 +137,7 @@ void Property::setEncrypted(bool encrypted)
 QString Property::toRichTextForPrint() const
 // -------------------------------------------------------------------------------------------------
 {
-    return QString("<tr><td width=\"30%\">%1</td><td width=\"70%\">%2</td></tr>")
+    return QString("<tr><td width=\"25%\">%1</td><td width=\"75%\">%2</td></tr>")
         .arg(m_key, m_value);
 }
 
