@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.cpp,v 1.13 2004/01/06 23:38:20 bwalle Exp $
+ * Id: $Id: treeentry.cpp,v 1.14 2005/02/27 18:12:56 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -31,8 +31,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.13 $
-    \date $Date: 2004/01/06 23:38:20 $
+    \version $Revision: 1.14 $
+    \date $Date: 2005/02/27 18:12:56 $
 */
 
 /*!
@@ -264,6 +264,43 @@ QString TreeEntry::toRichTextForPrint() const
     }
     ret += "</table></td></tr></table><br>";
     return ret;
+}
+
+
+/*!
+    Appends the tree entry as text representation to the given stream. The text is formatted for
+    export.
+    
+    \param stream the stream where the text is appended
+*/
+void TreeEntry::appendTextForExport(QTextStream& stream)
+{
+    if (m_isCategory)
+    {
+        return;
+    }
+    
+    QString catString;
+    const QListViewItem* item = this;
+    while ((item = item->parent()))
+    {
+        catString = catString.prepend( dynamic_cast<const TreeEntry*>(item)->getName() + ": ");
+    }
+    
+    stream << "--------------------------------------------------------------------------------\n";
+    stream << catString + m_name << "\n";
+    stream << "--------------------------------------------------------------------------------\n";
+    stream << "\n";
+    
+    PropertyIterator it = propertyIterator();
+    Property* current;
+    while ( (current = it.current()) != 0 ) 
+    {
+        ++it;
+        current->appendTextForExport(stream);
+    }
+    
+    stream << "\n\n";
 }
 
 

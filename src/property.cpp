@@ -1,5 +1,5 @@
 /*
- * Id: $Id: property.cpp,v 1.11 2004/01/20 21:45:20 bwalle Exp $
+ * Id: $Id: property.cpp,v 1.12 2005/02/27 18:12:56 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -33,8 +33,8 @@
 
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.11 $
-    \date $Date: 2004/01/20 21:45:20 $
+    \version $Revision: 1.12 $
+    \date $Date: 2005/02/27 18:12:56 $
 */
 
 /*!
@@ -275,6 +275,18 @@ QString Property::toRichTextForPrint() const
 {
     return QString("<tr><td width=\"25%\">%1</td><td width=\"75%\">%2</td></tr>")
         .arg(m_key, m_value);
+}
+
+
+/*!
+    Appends the tree entry as text representation to the given stream. The text is formatted for
+    export.
+    
+    \param stream the stream where the text is appended
+*/
+void Property::appendTextForExport(QTextStream& stream)
+{
+    stream << qSetW(20) << m_key + ": " << m_value << "\n";
 }
 
 

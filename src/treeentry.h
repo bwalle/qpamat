@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.h,v 1.12 2004/01/06 23:38:45 bwalle Exp $
+ * Id: $Id: treeentry.h,v 1.13 2005/02/27 18:12:56 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -57,6 +57,7 @@ class TreeEntry : public QObject, public QListViewItem
         void setText(int column, const QString& text);
         
         QString toRichTextForPrint() const;
+        void appendTextForExport(QTextStream& stream);
         QString toXML() const;
         
         bool acceptDrop(const QMimeSource* mime) const;

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.30 2004/07/23 13:13:44 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.31 2005/02/27 18:12:56 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -60,8 +60,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.30 $
-    \date $Date: 2004/07/23 13:13:44 $
+    \version $Revision: 1.31 $
+    \date $Date: 2005/02/27 18:12:56 $
 */
 
 /*!
@@ -396,6 +396,31 @@ QString Tree::toRichTextForPrint()
     }
     ret += "</qt>";
     return ret;
+}
+
+
+/*!
+    Appends the tree as text representation to the given stream. The text is formatted for
+    export.
+    
+    \param stream the stream where the text is appended
+*/
+void Tree::appendTextForExport(QTextStream& stream)
+{
+    QListViewItemIterator it(this);
+    QListViewItem* current;
+    
+    stream.setf(QTextStream::left);
+    stream << qSetW(20) << tr("QPaMaT") 
+           << tr("password managing tool for Unix, Windows and MacOS X")  << "\n";
+    stream << qSetW(20) << tr("Export date:") << QDate::currentDate().toString(Qt::ISODate) << "\n";
+    stream << "================================================================================\n";
+    
+    while ( (current = it.current()) ) 
+    {
+        dynamic_cast<TreeEntry*>(current)->appendTextForExport(stream);
+        ++it;
+    }
 }
 
 

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.50 2005/02/15 13:01:16 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.51 2005/02/27 18:12:56 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -71,8 +71,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.50 $
-    \date $Date: 2005/02/15 13:01:16 $
+    \version $Revision: 1.51 $
+    \date $Date: 2005/02/27 18:12:56 $
  */
 
 /*! 
@@ -568,22 +568,62 @@ bool Qpamat::exportOrSave()
 void Qpamat::exportData()
 {
     QString oldFilename = set().readEntry("General/Datafile");
-    QString file = QFileDialog::getSaveFileName(
-        QDir::homeDirPath(), tr("QPaMaT XML files (*.xml)"), this, "file dialog", tr("QPaMaT") );
+    QString fileName;
+    
+    QFileDialog* fd = new QFileDialog(QDir::homeDirPath(), 
+        tr("QPaMaT XML files (*.xml);;Text files with cleartext password (*.txt)"),
+        this, "file dialog", true);
+    fd->setMode(QFileDialog::AnyFile);
     bool oldCard = set().readBoolEntry("Smartcard/UseCard");
-    if (!file)
+    
+    if (fd->exec() == QDialog::Accepted)
+    {
+        fileName = fd->selectedFile();
+    }
+    else
     {
         return;
     }
     
-    set().writeEntry("General/Datafile", file);
-    set().writeEntry("Smartcard/UseCard", false);
-    if (m_loggedIn && exportOrSave())
+    if (QFile::exists(fileName))
     {
-        message("Wrote data successfully.");
+        if (QMessageBox::question(this, tr("QPaMaT"), 
+            tr("The file you've choosen exists. Do you overwrite it?"),
+            tr("&Overwrite"), tr("&Don't export"), QString::null, 1, 1) == 1)
+        {
+            return;
+        }
     }
-    set().writeEntry("General/Datafile", oldFilename);
-    set().writeEntry("Smartcard/UseCard", oldCard);
+    
+    // XML or text?
+    if (fd->selectedFilter().endsWith("(*.xml)"))
+    {
+        set().writeEntry("General/Datafile", fileName);
+        set().writeEntry("Smartcard/UseCard", false);
+        if (m_loggedIn && exportOrSave())
+        {
+            message("Wrote data successfully.");
+        }
+        set().writeEntry("General/Datafile", oldFilename);
+        set().writeEntry("Smartcard/UseCard", oldCard);
+    }
+    else
+    {
+        QFile file(fileName);
+        if (file.open(IO_WriteOnly)) 
+        {
+            QTextStream stream(&file);
+            m_tree->appendTextForExport(stream);
+            file.close();
+            message("Wrote data successfully.");
+        }
+        else
+        {
+            QMessageBox::warning(this, tr("QPaMaT"),
+               tr("An error occured while saving the file."),
+               QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
+        }
+    }
 }
 
 

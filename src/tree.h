@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.h,v 1.15 2004/01/06 23:38:32 bwalle Exp $
+ * Id: $Id: tree.h,v 1.16 2005/02/27 18:12:56 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -45,7 +45,8 @@ class Tree : public QListView
         void appendXML(QDomDocument& doc) const 
             throw (std::invalid_argument);
         
-        QString toRichTextForPrint(); 
+        QString toRichTextForPrint();
+        void appendTextForExport(QTextStream& stream);
         
     public slots:
         void searchFor(const QString& word);

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: property.h,v 1.11 2004/01/06 23:36:57 bwalle Exp $
+ * Id: $Id: property.h,v 1.12 2005/02/27 18:12:56 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -68,6 +68,8 @@ class Property : public QObject
         void setEncrypted(bool encrypted);
         
         QString toRichTextForPrint() const;
+        void appendTextForExport(QTextStream& stream);
+        
         
         void appendXML(QDomDocument& document, QDomNode& parent) const;
         
