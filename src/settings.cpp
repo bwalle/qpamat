@@ -1,5 +1,5 @@
 /*
- * Id: $Id: settings.cpp,v 1.14 2004/02/09 19:32:40 bwalle Exp $
+ * Id: $Id: settings.cpp,v 1.15 2005/02/12 10:50:19 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -32,8 +32,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.14 $
-    \date $Date: 2004/02/09 19:32:40 $
+    \version $Revision: 1.15 $
+    \date $Date: 2005/02/12 10:50:19 $
 */
 
 /*!
@@ -68,6 +68,7 @@ Settings::Settings()
                                                  "qpamat/dicts").canonicalPath() + "/default.txt");
     DEF_STRING("Security/PasswordGenerator",     PasswordGeneratorFactory::DEFAULT_GENERATOR_STRING);
     DEF_STRING("Security/PasswordGenAdditional", "");
+    DEF_INTEGE("Security/AutoLogout",            0);
     DEF_BOOLEA("Smartcard/Library",              false);
     DEF_INTEGE("Smartcard/Port",                 1);
     DEF_STRING("Smartcard/Library",              "");
