@@ -1,5 +1,5 @@
 /*
- * Id: $Id: main.cpp,v 1.12 2003/12/16 22:53:42 bwalle Exp $
+ * Id: $Id: main.cpp,v 1.13 2003/12/18 14:08:36 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -36,7 +36,10 @@
 #include <unistd.h>
 #include <sys/utsname.h>
 #include <sys/types.h>
-#include <X11/Xlib.h>
+namespace X11 
+{
+    #include <X11/Xlib.h>
+};
 #endif
 
 
@@ -116,13 +119,14 @@ void qpamatNS::getX11Version(QString& protocolVersion, QString& vendorVersion)
 // -------------------------------------------------------------------------------------------------
 {
 #ifdef Q_WS_X11
-    Display* dpy = XOpenDisplay(0);
+    using X11::_XPrivDisplay;
+    X11::Display* dpy = X11::XOpenDisplay(0);
     if (dpy)
     {
         protocolVersion = QString("%1.%2").arg(QString::number(ProtocolVersion (dpy))).
             arg(ProtocolRevision (dpy));
         vendorVersion = QString::number(VendorRelease (dpy));
-        XCloseDisplay(dpy);
+        X11::XCloseDisplay(dpy);
     }
 #endif
 }
