@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.16 2003/12/16 12:30:24 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.17 2003/12/16 22:52:20 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -137,6 +137,7 @@ bool Tree::readFromXML(const QString& fileName, const QString& password) throw (
             QMessageBox::NoButton);
         return false;
     }
+    smartcard = !root.attribute("card-id").isNull();
     
     try
     {
