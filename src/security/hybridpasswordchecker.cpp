@@ -1,5 +1,5 @@
 /*
- * Id: $Id: hybridpasswordchecker.cpp,v 1.2 2003/12/29 19:57:18 bwalle Exp $
+ * Id: $Id: hybridpasswordchecker.cpp,v 1.3 2003/12/30 22:58:32 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -23,7 +23,6 @@
 #include <qvaluevector.h>
 #include <qfile.h>
 #include <qfileinfo.h>
-#include <qdatetime.h>
 
 #include "global.h"
 #include "hybridpasswordchecker.h"
@@ -37,7 +36,6 @@ StringVector    HybridPasswordChecker::m_words;
 QFile::Offset   HybridPasswordChecker::m_fileSize = 0;
 QString         HybridPasswordChecker::m_fileName;
 QMap<int, int>  HybridPasswordChecker::m_lengthBeginMap;
-QDateTime       HybridPasswordChecker::m_lastModifed;
 
 
 
@@ -55,8 +53,8 @@ QDateTime       HybridPasswordChecker::m_lastModifed;
     
     \ingroup security
     \author Bernhard Walle
-    \version $Revision: 1.2 $
-    \date $Date: 2003/12/29 19:57:18 $
+    \version $Revision: 1.3 $
+    \date $Date: 2003/12/30 22:58:32 $
 */
 
 
@@ -67,13 +65,9 @@ QDateTime       HybridPasswordChecker::m_lastModifed;
     is used. This increases performance dramatically but needs more memory. Since modern
     computers have much memory this is better than having a slow program.
     \param dictFileName the name of the dictionary.
-    \param checkModtime if checkModtime is \c true the constructor checks the modification
-                        time of the file and re-reads the dictionary if necessary. On slow
-                        filesystems (NFS), this can be set to \c false to increase
-                        performance.
     \exception PasswordCheckException if the file does not exist or if the file cannot be opened
 */
-HybridPasswordChecker::HybridPasswordChecker(const QString& dictFileName, bool checkModtime)
+HybridPasswordChecker::HybridPasswordChecker(const QString& dictFileName)
             throw (PasswordCheckException)
 {
     if (!QFile::exists(dictFileName))
@@ -83,11 +77,11 @@ HybridPasswordChecker::HybridPasswordChecker(const QString& dictFileName, bool c
     }
     
     // do we need to re-read
-    if (m_words.isEmpty() || (m_fileName != dictFileName) || 
-             (checkModtime && (QFileInfo(dictFileName).lastModified() != m_lastModifed)) )
+    if (m_words.isEmpty() || (m_fileName != dictFileName))
     {
-        
+#ifdef DEBUG
         qDebug("!!!! Re-reading the file !!!!!");
+#endif
         
         QFile file(dictFileName);
         if (!file.open(IO_ReadOnly))
@@ -99,7 +93,6 @@ HybridPasswordChecker::HybridPasswordChecker(const QString& dictFileName, bool c
         // read in memory
         QByteArray bytes = file.readAll();
         file.close();
-        m_lastModifed = QFileInfo(file).lastModified();
         m_fileName = dictFileName;
         
         // check the number of lines to increase speed
@@ -157,9 +150,11 @@ double HybridPasswordChecker::passwordQuality(const QString& password) throw ()
     }
     uint P = longest ? (password.length() - longest.length() + 1 ) : password.length();
     
+#ifdef DEBUG
     qDebug("-----------------------------------------------------");
     qDebug("Password = %s", password.latin1());
     qDebug("Z = %d, L = %d, W = %d, P = %d", Z, L, W, P);
+#endif
     return double( (powl( double(Z), double(L)) * W * P) / CRACKS_PER_SECOND / 86400);
 }
 
@@ -292,7 +287,9 @@ int HybridPasswordChecker::findNumerOfCharsInClass(const QString& chars) const
     {
         ret += 118;
     }
+#ifdef DEBUG
     qDebug("Ret is %d", ret);
+#endif
     return ret;
 }
 

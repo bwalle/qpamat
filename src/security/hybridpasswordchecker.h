@@ -1,5 +1,5 @@
 /*
- * Id: $Id: hybridpasswordchecker.h,v 1.2 2003/12/29 19:57:18 bwalle Exp $
+ * Id: $Id: hybridpasswordchecker.h,v 1.3 2003/12/30 22:58:32 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -26,7 +26,6 @@
 #include <qvaluevector.h>
 #include <qfile.h>
 #include <qmap.h>
-#include <qdatetime.h>
 
 #include "global.h"
 #include "passwordchecker.h"
@@ -34,7 +33,7 @@
 class HybridPasswordChecker : public PasswordChecker
 {
     public:
-        HybridPasswordChecker(const QString& dictFileName, bool checkModtime = true) 
+        HybridPasswordChecker(const QString& dictFileName) 
             throw (PasswordCheckException);
         
         double passwordQuality(const QString& password) throw ();
@@ -49,7 +48,6 @@ class HybridPasswordChecker : public PasswordChecker
         static QFile::Offset        m_fileSize;
         static QString              m_fileName;
         static QMap<int, int>       m_lengthBeginMap;
-        static QDateTime            m_lastModifed;
 };
 
 bool string_length_less(const QString& a, const QString& b);
