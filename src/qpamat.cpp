@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.16 2003/12/15 21:20:16 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.17 2003/12/16 22:53:23 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -85,6 +85,9 @@ Qpamat::Qpamat()
     setUsesBigPixmaps(true);
     QIconSet::setIconSize(QIconSet::Small, QSize(16, 16));
     QIconSet::setIconSize(QIconSet::Large, QSize(22, 22));
+    
+    // Random password, we need this for the tree
+    m_randomPassword = new RandomPassword(this, "Random Password");
     
     // Tree on the left
     QDockWindow* dock = new QDockWindow(this);
@@ -233,6 +236,12 @@ void Qpamat::initMenubar()
      m_actions.changePasswordAction->addTo(optionsMenu);
      m_actions.settingsAction->addTo(optionsMenu);
      
+     // ----- Extras -------------------------------------------------------------------------------
+     QPopupMenu* extrasMenu = new QPopupMenu(this);
+     menuBar()->insertItem(tr("&Extras"), extrasMenu);
+     
+     m_actions.randomPasswordAction->addTo(extrasMenu);
+     
      // ----- Help ---------------------------------------------------------------------------------
      menuBar()->insertSeparator();
      QPopupMenu* helpMenu = new QPopupMenu(this);
@@ -276,7 +285,6 @@ void Qpamat::closeEvent(QCloseEvent* e)
 void Qpamat::setModified(bool modified)
 // -------------------------------------------------------------------------------------------------
 {
-    qDebug("Qpamat::setModified");
     m_modified = modified;
     m_actions.saveAction->setEnabled(modified);
 }
@@ -529,6 +537,9 @@ void Qpamat::connectSignalsAndSlots()
     connect(m_actions.aboutAction, SIGNAL(activated()) , &m_help, SLOT(showAbout()));
     connect(m_actions.aboutQtAction, SIGNAL(activated()), qApp, SLOT(aboutQt()));
     
+    connect(m_actions.randomPasswordAction, SIGNAL(activated()),
+        m_randomPassword, SLOT(requestPassword()));
+    
     // edit toolbar
     connect(m_actions.addItemAction, SIGNAL(activated()), m_tree, SLOT(insertAtCurrentPos()));
     connect(m_actions.addItemAction, SIGNAL(activated()), m_rightPanel, SLOT(insertAtCurrentPos()));
@@ -542,6 +553,12 @@ void Qpamat::connectSignalsAndSlots()
     // modified
     connect(m_tree, SIGNAL(stateModified()), SLOT(setModified()));
     connect(m_rightPanel, SIGNAL(stateModified()), SLOT(setModified()));
+    
+    // random password
+    connect(m_rightPanel, SIGNAL(passwordLineEditGotFocus(bool)), m_randomPassword,
+        SLOT(setInsertEnabled(bool)));
+    connect(m_randomPassword, SIGNAL(insertPassword(const QString&)), 
+        SIGNAL(insertPassword(const QString&)));
 }
 
 
@@ -565,6 +582,10 @@ void Qpamat::initActions()
     m_actions.changePasswordAction = new QAction(tr("&Change Password..."), QKeySequence(), this);
     m_actions.settingsAction = new QAction(QIconSet(configure_16x16_xpm, configure_22x22_xpm), 
         tr("&Settings..."), QKeySequence(CTRL|Key_C), this);
+        
+    // ----- Extras --------------------------------------------------------------------------------
+    m_actions.randomPasswordAction = new QAction(tr("&Random Password..."), 
+        QKeySequence(CTRL|Key_R), this);
     
     // ----- Help ----------------------------------------------------------------------------------
     m_actions.whatsThisAction = new QAction(QPixmap(whats_this_xpm), tr("&What's this"), 

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightpanel.cpp,v 1.3 2003/12/11 22:02:03 bwalle Exp $
+ * Id: $Id: rightpanel.cpp,v 1.4 2003/12/16 22:52:47 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -21,6 +21,7 @@
 #include <qlabel.h>
 #include <qframe.h>
 
+#include "qpamat.h"
 #include "rightpanel.h"
 #include "rightlistview.h"
 #include "property.h"
@@ -28,7 +29,7 @@
 #include "southpanel.h"
 
 // -------------------------------------------------------------------------------------------------
-RightPanel::RightPanel(QWidget* parent) : QFrame(parent, "RightPanel")
+RightPanel::RightPanel(Qpamat* parent) : QFrame(parent, "RightPanel")
 // -------------------------------------------------------------------------------------------------
 {
     QVBoxLayout* layout = new QVBoxLayout(this);
@@ -48,6 +49,11 @@ RightPanel::RightPanel(QWidget* parent) : QFrame(parent, "RightPanel")
     connect(m_southPanel, SIGNAL(moveDown()), m_listView, SLOT(moveDown()));
     connect(m_listView, SIGNAL(enableMoving(bool, bool)), 
         m_southPanel, SLOT(setMovingEnabled(bool, bool)));
+    connect(m_southPanel, SIGNAL(passwordLineEditGotFocus(bool)), 
+        SIGNAL(passwordLineEditGotFocus(bool)));
+    connect(parent, SIGNAL(insertPassword(const QString&)), 
+        m_southPanel, SLOT(insertPassword(const QString&)));
+    connect(m_southPanel, SIGNAL(stateModified()), SIGNAL(stateModified()));
 }
 
 

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: southpanel.h,v 1.7 2003/12/11 22:02:09 bwalle Exp $
+ * Id: $Id: southpanel.h,v 1.8 2003/12/16 22:52:40 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,14 +24,15 @@
 #include <qevent.h>
 #include <qtoolbutton.h>
 
+#include "widgets/focuslineedit.h"
 #include "property.h"
 
 /*!
  * \brief Represents the south panel.
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.7 $
- * \date $Date: 2003/12/11 22:02:09 $
+ * \version $Revision: 1.8 $
+ * \date $Date: 2003/12/16 22:52:40 $
  */
 class SouthPanel : public QFrame
 {
@@ -84,6 +85,12 @@ class SouthPanel : public QFrame
          */
         void setMovingEnabled(bool up, bool down);
         
+        /*!
+         * Inserts the password.
+         * \param password the password
+         */
+        void insertPassword(const QString& password);
+        
     signals:
         
         /*!
@@ -97,6 +104,17 @@ class SouthPanel : public QFrame
          * step down.
          */
         void moveDown();
+        
+        /*!
+         * This signal is emitted if the password field got this focus.
+         * \param focus \c true if it got the focus, \c false if the focus is lost
+         */
+        void passwordLineEditGotFocus(bool focus);
+        
+        /*!
+         * If something was modified, need to determine if saving is necessary.
+         */
+        void stateModified();
    
     protected:
         
@@ -105,10 +123,14 @@ class SouthPanel : public QFrame
          */
         void insertAutoText();
         
+    private slots:
+        void focusInValueHandler();
+        void focusOutValueHandler();
+        
     private:
         Property* m_currentProperty;
         QLineEdit* m_keyLineEdit;
-        QLineEdit* m_valueLineEdit;
+        FocusLineEdit* m_valueLineEdit;
         QComboBox* m_typeCombo;
         QToolButton* m_upButton;
         QToolButton* m_downButton;

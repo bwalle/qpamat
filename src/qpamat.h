@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.h,v 1.12 2003/12/15 21:20:16 bwalle Exp $
+ * Id: $Id: qpamat.h,v 1.13 2003/12/16 22:53:23 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,6 +24,7 @@
 #include <qevent.h>
 #include <qtoolbutton.h>
 
+#include "randompassword.h"
 #include "util/timerstatusmessage.h"
 #include "help.h"
 #include "tree.h"
@@ -35,8 +36,8 @@
  *
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.12 $
- * \date $Date: 2003/12/15 21:20:16 $
+ * \version $Revision: 1.13 $
+ * \date $Date: 2003/12/16 22:53:23 $
  */
 class Qpamat : public QMainWindow
 {
@@ -106,6 +107,13 @@ class Qpamat : public QMainWindow
          */
         void setModified(bool modified = true);
     
+    signals:
+        
+        /*!
+         * This signal is emitted every time the user wants to insert the password at current
+         * position.
+         */
+        void insertPassword(const QString& password);
         
     public slots:
         
@@ -124,7 +132,6 @@ class Qpamat : public QMainWindow
          */
         void closeEvent(QCloseEvent* evt);
         
-
     private:
         void initToolbar();
         void initMenubar();
@@ -141,6 +148,7 @@ class Qpamat : public QMainWindow
         RightPanel* m_rightPanel;
         QComboBox* m_searchCombo;
         QToolBar* m_searchToolbar;
+        RandomPassword* m_randomPassword;
         bool m_loggedIn;
         bool m_first;
         bool m_modified;
@@ -166,6 +174,7 @@ class Qpamat : public QMainWindow
             QAction* settingsAction;
             QAction* addItemAction;
             QAction* removeItemAction;
+            QAction* randomPasswordAction;
         };
         Actions m_actions;
 };

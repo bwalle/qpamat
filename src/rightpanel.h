@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightpanel.h,v 1.5 2003/12/11 22:02:03 bwalle Exp $
+ * Id: $Id: rightpanel.h,v 1.6 2003/12/16 22:52:47 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -25,12 +25,14 @@
 #include "southpanel.h"
 #include "rightlistview.h"
 
+class Qpamat;
+
 /*!
  * \brief Represents the panel on the right which contains the entry list.
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.5 $
- * \date $Date: 2003/12/11 22:02:03 $
+ * \version $Revision: 1.6 $
+ * \date $Date: 2003/12/16 22:52:47 $
  */
 class RightPanel : public QFrame
 {
@@ -41,7 +43,7 @@ class RightPanel : public QFrame
          * Creates a new instance of the right panel.
          * \param parent the parent widget as usual for QObject
          */
-        RightPanel(QWidget* parent);
+        RightPanel(Qpamat* parent);
         
         /*!
          * Deletes the object
@@ -90,6 +92,12 @@ class RightPanel : public QFrame
          * If something was modified, need to determine if saving is necessary.
          */
         void stateModified();
+        
+        /*!
+         * This signal is emitted if the password field got this focus.
+         * \param focus \c true if it got the focus, \c false if the focus is lost
+         */
+        void passwordLineEditGotFocus(bool focus);
         
     private slots:
         void selectionChangeHandler(QListViewItem* item);

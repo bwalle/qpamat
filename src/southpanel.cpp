@@ -1,5 +1,5 @@
 /*
- * Id: $Id: southpanel.cpp,v 1.5 2003/12/11 22:02:09 bwalle Exp $
+ * Id: $Id: southpanel.cpp,v 1.6 2003/12/16 22:52:40 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,6 +24,7 @@
 #include <qbuttongroup.h>
 #include <qtoolbutton.h>
 
+#include "qpamat.h"
 #include "southpanel.h"
 #include "settings.h"
 #include "../images/down_16x16.xpm"
@@ -57,7 +58,7 @@ SouthPanel::SouthPanel(QWidget* parent)
     
     // Value
     QLabel* valueLabel = new QLabel(tr("&Value"), group);
-    m_valueLineEdit = new QLineEdit(group);
+    m_valueLineEdit = new FocusLineEdit(group);
     valueLabel->setBuddy(m_valueLineEdit);
     
     hLayout->addWidget(group);
@@ -96,6 +97,11 @@ SouthPanel::SouthPanel(QWidget* parent)
     connect(m_valueLineEdit, SIGNAL(textChanged(const QString&)), SLOT(updateData()));
     connect(m_upButton, SIGNAL(pressed()), SIGNAL(moveUp()));
     connect(m_downButton, SIGNAL(pressed()), SIGNAL(moveDown()));
+    connect(m_valueLineEdit, SIGNAL(gotFocus()), SLOT(focusInValueHandler()));
+    connect(m_valueLineEdit, SIGNAL(lostFocus()), SLOT(focusOutValueHandler()));
+    connect(m_typeCombo, SIGNAL(activated(int)), SIGNAL(stateModified()));
+    connect(m_keyLineEdit, SIGNAL(textChanged(const QString&)), SIGNAL(stateModified()));
+    connect(m_valueLineEdit, SIGNAL(textChanged(const QString&)), SIGNAL(stateModified()));
 }
 
 
@@ -222,4 +228,34 @@ void SouthPanel::setMovingEnabled(bool up, bool down)
 {
     m_upButton->setEnabled(up);
     m_downButton->setEnabled(down);
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void SouthPanel::focusInValueHandler()
+// -------------------------------------------------------------------------------------------------
+{
+    if (m_currentProperty->getType() == Property::PASSWORD)
+    {
+        passwordLineEditGotFocus(true);
+    }
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void SouthPanel::focusOutValueHandler()
+// -------------------------------------------------------------------------------------------------
+{
+    if (m_currentProperty->getType() == Property::PASSWORD)
+    {
+        emit passwordLineEditGotFocus(false);
+    }
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void SouthPanel::insertPassword(const QString& password)
+// -------------------------------------------------------------------------------------------------
+{
+    m_valueLineEdit->insert(password);
 }
