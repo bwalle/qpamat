@@ -1,5 +1,5 @@
 /*
- * Id: $Id: randompasswordgenerator.cpp,v 1.5 2003/12/10 21:48:26 bwalle Exp $
+ * Id: $Id: randompasswordgenerator.cpp,v 1.6 2003/12/16 22:54:25 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -48,14 +48,5 @@ QString RandomPasswordGenerator::getPassword(int length) throw (NotSeededExcepti
     delete[] buffer;
     base64.truncate(length);
     return base64;
-}
-
-
-// -------------------------------------------------------------------------------------------------
-RandomPasswordGenerator& RandomPasswordGenerator::getInstance()
-// -------------------------------------------------------------------------------------------------
-{
-    static RandomPasswordGenerator theInstance;
-    return theInstance;
 }
 

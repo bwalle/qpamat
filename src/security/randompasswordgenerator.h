@@ -1,5 +1,5 @@
 /*
- * Id: $Id: randompasswordgenerator.h,v 1.5 2003/11/29 14:43:03 bwalle Exp $
+ * Id: $Id: randompasswordgenerator.h,v 1.6 2003/12/16 22:54:25 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -20,6 +20,7 @@
 
 #include <qstring.h>
 
+#include "passwordgenerator.h"
 #include "notseededexception.h"
 
 /*!
@@ -29,10 +30,10 @@
  *
  * \ingroup security
  * \author Bernhard Walle
- * \version $Revision: 1.5 $
- * \date $Date: 2003/11/29 14:43:03 $
+ * \version $Revision: 1.6 $
+ * \date $Date: 2003/12/16 22:54:25 $
  */
-class RandomPasswordGenerator
+class RandomPasswordGenerator : public PasswordGenerator
 {
     public:
         
@@ -57,16 +58,6 @@ class RandomPasswordGenerator
          * enouth.)
          */
         virtual bool isSeeded();
-        
-        /*!
-         * Returns the instance of RandomPasswordGenerator since this is a singleton
-         * object.
-         * \return the instance
-         */
-        static RandomPasswordGenerator& getInstance();
-        
-    protected:
-        RandomPasswordGenerator() { }
 };
 
 #endif // RANDOMPASSWORDGENERATOR_H
