@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.cpp,v 1.4 2003/12/04 20:31:31 bwalle Exp $
+ * Id: $Id: treeentry.cpp,v 1.5 2003/12/06 18:23:40 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -163,9 +163,8 @@ QString TreeEntry::toRichTextForPrint() const
         catString = catString.prepend( dynamic_cast<const TreeEntry*>(item)->getName() + ": ");
     }
     QString ret;
-    ret += QString("<table width=\"100%\"><tr><td bgcolor=grey cellpadding=\"3\"><font face=\""+ 
-            set.readEntry("Printing/SansSerifFont", Settings::DEFAULT_SANSSERIF_FONT)+ "\">"
-            "&nbsp;<b>%1</b></font></td></tr><tr><td>"
+    ret += QString("<table width=\"100%\"><tr><td bgcolor=grey cellpadding=\"3\">"
+            "&nbsp;<b>%1</b></td></tr><tr><td>"
             "<table border=\"0\">").arg(catString + m_name);
     
     PropertyIterator it = propertyIterator();
