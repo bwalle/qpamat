@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.27 2004/01/06 23:42:31 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.28 2004/01/07 00:14:16 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -33,7 +33,6 @@ SOURCES     =                                   \
     src/security/passwordhash.cpp               \
     src/security/abstractencryptor.cpp          \
     src/security/symmetricencryptor.cpp         \
-    src/security/notencryptor.cpp               \
     src/security/collectencryptor.cpp           \
     src/security/randompasswordgenerator.cpp    \
     src/security/externalpasswordgenerator.cpp  \
@@ -80,7 +79,6 @@ HEADERS     =                                   \
     src/security/encodinghelper.h               \
     src/security/passwordhash.h                 \
     src/security/encryptor.h                    \
-    src/security/notencryptor.h                 \
     src/security/abstractencryptor.h            \
     src/security/symmetricencryptor.h           \
     src/security/collectencryptor.h             \

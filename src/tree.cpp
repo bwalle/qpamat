@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.26 2004/01/06 23:38:11 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.27 2004/01/07 00:13:55 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -48,7 +48,6 @@
 #include "security/stringencryptor.h"
 #include "security/symmetricencryptor.h"
 #include "security/collectencryptor.h"
-#include "security/notencryptor.h"
 #include "dialogs/waitdialog.h"
 #include "smartcard/memorycard.h"
 #include "settings.h"
@@ -69,8 +68,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.26 $
-    \date $Date: 2004/01/06 23:38:11 $
+    \version $Revision: 1.27 $
+    \date $Date: 2004/01/07 00:13:55 $
 */
 
 /*!
@@ -492,7 +491,6 @@ void Tree::droppedHandler(QDropEvent* evt)
         doc.setContent(xml);
         QDomElement elem = doc.documentElement();
         QListViewItem* src = reinterpret_cast<TreeEntry*>(elem.attribute("memoryAddress").toLong());
-        NotEncryptor enc;
         QListViewItem* appended = TreeEntry::appendFromXML(this, elem);
         setSelected(appended, true);
         delete src;
