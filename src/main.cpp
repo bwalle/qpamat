@@ -1,5 +1,5 @@
 /*
- * Id: $Id: main.cpp,v 1.2 2003/10/20 20:55:43 bwalle Exp $
+ * Id: $Id: main.cpp,v 1.3 2003/11/04 22:50:07 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -28,6 +28,7 @@
 
 #include "qpamat.h"
 #include "settings.h"
+#include "smartcard/memorycard.h"
 
 int main(int argc, char** argv)
 {
@@ -36,7 +37,22 @@ int main(int argc, char** argv)
 #endif
     int returncode = 0;
     
-    QApplication app(argc, argv);
+    try
+    {
+        // TEST begin
+        MemoryCard card("/usr/lib/readers/libtowitoko.so");
+        card.init(0);
+        card.close();
+        
+        
+        // TEST end
+    }
+    catch (const std::exception& exc)
+    {
+        std::cerr << exc.what() << std::endl;
+    }
+    
+    /* QApplication app(argc, argv);
     try
     {
         Qpamat qpamat;
@@ -60,7 +76,7 @@ int main(int argc, char** argv)
             QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
     }
     
-    return returncode;
+    return returncode; */
 }
 
 
