@@ -1,0 +1,713 @@
+<!DOCTYPE ARTICLE PUBLIC "-//OASIS//DTD DocBook V4.1//EN">
+
+<article lang="en" id="index">
+	
+<articleinfo>
+	<title>QPaMaT-Manual</title>
+	
+	<author>
+		<firstname>Bernhard</firstname>
+		<surname>Walle</surname>
+		<affiliation>
+			<address><email>bernhard@bwalle.de</email></address>
+		</affiliation>
+	</author>
+
+	<pubdate>2004-08-01</pubdate>
+	
+	<releaseinfo>Version 0.3.0</releaseinfo>   
+	
+	<copyright>
+		<year>2003-2004</year>
+		<holder role="mailto:bernhard@bwalle.de">Bernhard Walle</holder>
+	</copyright>
+
+</articleinfo>
+
+
+
+<sect1>
+	<title>Introduction</title>
+  
+  <sect2>
+    <title>The name</title>
+    
+    <para>First of all: What does this stupid name 
+      <application>QPaMaT</application>
+      mean? Well, it's an abbreviation -- the "Q" stands for Qt, the toolkit
+      I used to build the application, "PaMaT" stands for "password managing
+      tool". I liked this name because it rhymes to "Automat".</para>
+      
+  </sect2>
+  
+  <sect2>
+    <title>History and Future</title>
+    
+    <sect3>
+      <title>History</title>
+      
+      <para>Because QPaMaT is an open-source application, I want to write
+        a bit about this history. A few years ago, I looked for a tool to
+        store my passwords which is free and runs on Linux. I found many tools
+        but they all didn't fit my requiremends, so I wrote my own one. I used
+        Perl/Tk for that and it was done in a few days. Of course, the code was 
+        not very good to maintain. But it worked
+        for about two years (and, of course, it still works) without loosing
+        any data. For encryption, I used <command>gpg</command>.</para>
+        
+      <para>The program had some small bugs and I liked a tree instead of a
+        simple list for the sites. Perl/Tk has no tree widget, Tk is not what
+        I expect from a modern user interface and Perl is no language for bigger
+        programs (esp. GUIs). So I decided to re-implement my password tool from
+        scratch. I wanted to learn Qt and improve my C++ programming skills.</para>
+    </sect3>
+    
+    <sect3>
+      <title>Future</title>
+      
+      <para>Since QPaMaT does what I expect I don't plan to add lots of
+        features in future. Of course, bugs will be fixed, translations
+        and ports to other operating systems are welcome. And I plan to
+        maintain QPaMaT in future.</para>
+    </sect3>
+  </sect2>
+  
+  <sect2>
+    <title>Description</title>
+    
+    <sect3>
+      <title>Basic usage</title>
+      
+      <para>QPaMaT is a tool to manage your passwords and other data such as
+        customer numbers, corresponding URLs and so on. It has a simple 
+        structure: On the left you see a tree which represents all your
+        data. Each tree entry represends a sites (or a category with children
+        that represents sites). So a category could be "Onlineshops", and a
+        site could be "Amazon" or "Bookzilla", for example. On the right
+        you find a list with key-value-pairs. Keys could be "password",
+        "login", "URL", "account number". And the value is the corresponding
+        value, of course. Each pair has a category: If it is a password, 
+        it needs to be encrypted, a URL can be double-clicked to open a
+        web browser and so on.</para>
+      
+      <para>Because QPaMaT is a tool to store passwords, it cannot store the
+        data in a simple text file. The passwords have to be encrypted.
+        QPaMaT uses the OpenSSL library for that task. This is a C library
+        which is used by many programs (including the Konqueror web browser), 
+        so it has proven to be mature, stable and secure.</para>
+        
+      <para>You can store the password file on the disk (well, on any path,
+        so this includes network files, floppys, etc.) and you can additionally
+        store the passwords (and only the passwords) on a memory card. The
+        card must be a simple memory card which can be bought by electronic
+        sellers such as Reichelt <ulink url="http://www.reichelt.de"></ulink>
+        in Germany.</para>
+      
+    </sect3>
+    <sect3>
+      <title>Features</title>
+      
+      <ItemizedList spacing="compact">
+        <ListItem>
+          <para>Simple, fast and free program to store your passwords.</para>
+        </ListItem>
+        <ListItem>
+          <para>Generation of random passwords</para>
+        </ListItem>
+        <ListItem>
+          <para>Checking of password quality, customizable dictionary.</para>
+        </ListItem>
+        <ListItem>
+          <para>Stores the passwords encrypted on the disk or on a smartcard.</para>
+        </ListItem>
+      </ItemizedList>
+    </sect3>
+  </sect2>
+</sect1>
+
+<sect1>
+  <title>Getting started</title>
+  
+  <sect2>
+    <title>Installation</title>
+      
+    <para>QPaMaT is very protable. It is written in C++ programming language
+      using the Qt toolkit from Trolltech. This toolkit is avaiable for all
+      major operating systems: Unix (including Linux, Solaris, HP-UX and
+      many others) using X11, MacOS X and Microsoft Windows. For X11 and
+      MacOS X there exits GPL'd version which basically means that every application
+      that is open source could be linked against Qt without purchasing
+      any money.</para>
+      
+    <para>On Microsoft Windows, you need the free edtion which is
+      included in a Qt book and <emphasis>not</emphasis> available for download
+      or a commercial edition. Because I don't have such a license (and
+      I don't use Microsoft Windows very often), there's currently no
+      version for Windows available. This may change in future if 
+      <emphasis>you</emphasis>
+      have a license (or the free edition) and contribute a binary.
+      It is also possible to run QPaMaT with the Cygwin environment and a 
+      X11 implementation. If you don't know what this means -- forget it.
+      It is a bit complicated, but the result is not bad!</para>
+      
+    <para>QPaMaT also uses the OpenSSL crypto library which is available
+      for much platforms, too.</para>
+    
+    
+    <sect3>
+      <title>Unix</title>
+      
+      <para>First try to find a binary package for your Unix. If you run
+        Linux, the chances are good. I create RPMs of every releases.
+        So, just install the packages using the following command:</para>
+        
+      <para>
+        <prompt>$ </prompt><userInput>rpm -Uvh qpamat-version-i586.rpm</userinput>
+      </para>
+        
+      <para>If not, you need to compile it from source. Make sure that
+        Qt is installed properly, including developer packages which
+        contains the headers and the build tools like <command>qmake</command>.
+        Also make sure that the environment variable <envar>QTDIR</envar>
+        points to the right place, usually something like
+        <FileName>/usr/lib/qt3</FileName>. You also need to have OpenSSL
+        installed, including header files.</para>
+        
+      <para>You may edit <FileName>qpamat.pro</FileName> to change install
+        location if you don't like <FileName>/usr/local</FileName>.
+        To compile and install QPaMaT, run
+      </para>
+      
+      <para>
+        <prompt>$ </prompt><userInput>qmake qpamat.pro</userinput>
+      </para>
+      <para>
+        <prompt>$ </prompt><userInput>make</userinput>
+      </para>
+      <para>
+        <prompt># </prompt><userInput>make install</userinput>
+      </para>
+    </sect3>
+  </sect2>
+  <sect2>
+    <title>First startup</title>
+    
+    <para>QPaMaT is multi-user aware. On operating systems with different
+      users (such as Unix or Windows NT), each user has different settings.
+      QPaMaT stores its settings in the home directory or in the
+      Windows registry. On first startup with that account, QPaMaT asks
+      you to enter the master password. This master password is used
+      to encrypt all your other passwords. So be careful and choose a
+      good password. If the password is too simple, QPaMaT declines it.
+      If the password is accepted, you find a empty windows.</para>
+  
+  </sect2>
+  <sect2>
+    <title>Normal usage</title>
+    
+    <para>You can now create your entries. On the left you see the
+      "Sites" tree. Because you've not created any entries, there's no
+      tree but a white area. If you right-click somewhere in this are,
+      a menu opens. Choose <GUIMenuItem>Insert category</GUIMenuItem> and
+      enter a name, e.g. "Onlineshops" and press the
+      <KeySym>Return</KeySym> key. Now right-click on that item
+      and choose <GUIMenuItem>Insert Item</GUIMenuItem>. Enter a name
+      such as "Amazon".</para>
+      
+    <para>Of course, you can now enter some data. On Amazon, you usually
+      have a e-mail address for login, a password and the URL. On the
+      right, you see the list of key-valuie pairs. The list is empty but
+      you fill it now. Click somewhere in the list with the right mouse
+      button and choose <GUIMenuItem>New</GUIMenuItem>. On the bottom,
+      you can now edit the entry. Click on the combo box and choose
+      "Username". The cursor is set in the <GUILabel>Value</GUILabel> text
+      field. Enter your mail address. If you would like, you can change
+      "Username" to "e-mail address" in the <GUILabel>Key</GUILabel> field.
+    </para>
+    
+    <para>
+      Now enter a new item and choose "Password". Enter the password now
+      in the <GUILabel>Value</GUILabel> field. You'll see that the password
+      is not displayed. To get it, double-click the password in the list
+      above. You can also copy it to clipboard by clicking on it with
+      the middle mouse button or, if you have a two-button mouse, right click
+      and choose <GUIMenuItem>Copy</GUIMenuItem>. After that, you can
+      enter the URL as third entry. If you double-click the URL in the
+      list, a browser will be opened to show the URL. You can change the
+      browser in the preferences.</para>
+    
+    <para>After that, you want to save the data. Just choose 
+      <menuchoice><guimenu>File</guimenu> <guimenuitem>Save</guimenuitem>
+      </menuchoice> and the
+      data will be saved in a XML file in your home directory. You can
+      change the location in the preferences.</para>
+      
+    <para>If you exit the application and start it again, just enter
+      your password and you'll see that same screen as you saw it before
+      you closed the application.</para>
+  </sect2>
+</sect1>
+
+<sect1 id="config">
+  <title>Configuration</title>
+  
+  <para>All configuration settings can be done by
+    <menuchoice><guimenu>Options</guimenu><guimenuitem>Settings</guimenuitem>
+    </menuchoice></para>
+  
+  <sect2>
+    <title>General</title>
+    
+    <variablelist>
+      <varlistentry>
+        <term>Enable AutoLogin on startup</term>
+        <listitem>
+          <para>If this setting is active, the login dialog is shown
+            on startup automatically. Otherwise, you have to
+            choose <menuchoice><guimenu>File</guimenu>
+            <guimenuitem>Login</guimenuitem></menuchoice> manually.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Web browser location</term>
+        <listitem>
+          <para>Choose the location of the web browser which is opened
+            if you double-click a URL in the list and which will be used
+            to display the help. If the browser is in <envar>PATH</envar>,
+            you may only specify the executable name such as
+            <filename>firefox</filename>. On Microsoft Windows, you
+            always have to specify the full path, e.g. 
+            <filename>c:\program files\mozilla\mozilla.exe</filename>.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Data file location</term>
+        <listitem>
+          <para>Location of the data file which is the XML file used
+            to store the data (i.e. passwords, user names, etc.). Default
+            ist <filename>.qpamat</filename> in your home directory.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Auto Text</term>
+        <listitem>
+          <para>Text which is inserted automatically if you edit a key-value
+            pair of the list and you choose a <GUILabel>Type</GUILabel>.</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+  
+  <sect2>
+    <title>Passwords</title>
+    
+    <variablelist>
+      <varlistentry>
+        <term>Generated passwords</term>
+        <listitem>
+          <para>Choose the length and the list of allowed characters for
+            generated random passwords. You may also specify an external
+            application (e.g. for pronouncable passwords) for generation.
+            Externally generated passwords will be checked by the
+            password checker, too.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Limits for password checker</term>
+        <listitem>
+          <para>Set the limits when a password is treated as "weak" or
+            "strong". The unit is the estimated number of days to crack 
+            for a brute-force attack.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Dictionary file</term>
+        <listitem>
+          <para>The algorithm which calculates the password strength
+            uses a dictionary file because it assumes that the hacker
+            plans a dictionary-attack. Some files are distributed
+            with QPaMaT. The format is simple: Each line contains a word
+            and the dictionary is sorted according to the length. That
+            increases the speed of the algorithm.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Sort dictionary</term>
+        <listitem>
+          <para>Use this function to sort the dictionary according to
+            the length. The files supplied with QPaMaT are already sorted.
+            Use this function for sorting your own dictionary files.</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+  
+  
+  <sect2>
+    <title>Security</title>
+    
+    <variablelist>
+      <varlistentry>
+        <term>Cipher algorithm</term>
+        <listitem>
+          <para>Only change this if you know what you do. The 
+            algorithms are provided by the OpenSSL library and the availability 
+            is determined at runtime. You can read a file encrypted with 
+            <emphasis>X</emphasis> only if the computer on which 
+            you read it is able to handle algorithm <emphasis>X</emphasis>.
+            </para>
+          
+          <para>Blowfish is a good choise because 
+            it's free and available everywhere. IDEA is patended (but secure, 
+            PGP uses it!) and AES (the successor of DES) is only available at 
+            new versions of OpenSSL. Read a book about cryptography if 
+            you're interested in this algorithms.</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+    
+    <sect2>
+    <title>Smart Card</title>
+    
+    <variablelist>
+      <varlistentry>
+        <term>Use a smartcard</term>
+        <listitem>
+          <para>Determines whether a smartcard is used to store passwords.
+            The passwords will be stored encrypted on the card and the
+            location where they are stored is referenced in the XML files.
+            QPaMaT uses normal memory cards.
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Card has write protection</term>
+        <listitem>
+          <para>Use this if the card has a hardware write-protection. You
+            have to enter the PIN before some data is stored. This feature
+            is experimental since it doesn't work here, but I'm quite
+            sure that this is a bug of the smartcard driver. However, I 
+            recommend to buy normal memory cards without write protection
+            since it does not give more security (reading cannot be protected
+            this way).
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>CT-API chipcard driver </term>
+        <listitem>
+          <para>Enter the path to the chipcard driver. This is a dynamically
+            loaded shared object file <filename>*.so</filename> on Linux,
+            <filename>*.dll</filename> on Windows. The CT-API interface
+            was created for the German health card, so it should be available
+            for most hardware. For the wide spread Towitoko reader, check
+            <ulink url="http://www.geocities.com/cprados/"></ulink> for
+            Linux drivers.
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Chipcard terminal port</term>
+        <listitem>
+          <para>Choose the port where your card reader is connected. Make
+            sure that you have the right permission to access this port.
+            Consult the manual of the driver for the correct port number.
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Test</term>
+        <listitem>
+          <para>Test your smartcard settings. Insert a card in the reader
+            and click on this button. A dialog informs you about the result
+            of the test.
+          </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+  
+  <sect2>
+    <title>Presentation</title>
+    
+    <variablelist>
+      <varlistentry>
+        <term>Hide passwords in the random password dialog</term>
+        <listitem>
+          <para>Determines whether the password should be displayed as
+            cleartext or hidden in the random password dialog. Choose
+            "hidden" if you are in an unsave environment such at work
+            or university.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Don't grab keyboard focus in the password dialog</term>
+        <listitem>
+          <para>Normally, QPaMaT gabs the keyboard if a dialog is displayed 
+            where the user should enter a password. This is fore security 
+            reasons since it is more difficult for another applications to 
+            read what you type in this text field. However, if you don't like
+            this for usability issues, you can disable it here.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Printing fonts</term>
+        <listitem>
+          <para>Choose the fonts (including size) that are used for printing.
+          </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+</sect1>
+  
+<sect1>
+  <title>Command reference</title>
+  
+  <variablelist>
+    <varlistentry>
+      <term>
+        <menuchoice>
+          <guimenu>File</guimenu>
+          <guimenuitem>Save</guimenuitem>
+        </menuchoice>
+      </term>
+      <listitem>
+        <para>Creates a new document to store passwords. It will be stored
+          in the location you've set in the configuration. This function
+          is useful if you want to delete all the passwords or you didn't
+          create a document in the past.</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+        <menuchoice>
+          <guimenu>File</guimenu>
+          <guimenuitem>Login</guimenuitem>
+        </menuchoice>
+      </term>
+      <listitem>
+        <para>Asks you for the password and opens the current set of
+          stored passwords. The data file which will be opened is set in the
+          configuration dialog.</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+        <menuchoice>
+          <guimenu>File</guimenu>
+          <guimenuitem>Logout</guimenuitem>
+        </menuchoice>
+      </term>
+      <listitem>
+        <para>Closes the current set of stored passwords. If you didn't save
+          it and you made changes, QPaMaT will ask you to do so. After that,
+          all passwords are delected from memory (not form disk where they
+          are encrypted, of course), so you need to Login again if you
+          want access to your passwords.</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+        <menuchoice>
+          <guimenu>File</guimenu>
+          <guimenuitem>Save</guimenuitem>
+        </menuchoice>
+      </term>
+      <listitem>
+        <para>Saves the current set of passwords on the hard disk. If you
+          configured QPaMaT to use a chipcard, the passwords will be written
+          to the card, too. </para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+        <menuchoice>
+          <guimenu>File</guimenu>
+          <guimenuitem>Export</guimenuitem>
+        </menuchoice>
+      </term>
+      <listitem>
+        <para>Exports the data. This is mainly the same as "Save",
+          but there are two differences: You can choose the file name directly
+          in a file chooser, and if you configured QPaMaT to use a smart card, 
+          this function stores the password in the XML file nevertheless. This
+          function is useful for backup. </para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+        <menuchoice>
+          <guimenu>File</guimenu>
+          <guimenuitem>Print</guimenuitem>
+        </menuchoice>
+      </term>
+      <listitem>
+        <para>Prints our all entries as clear text. This is useful for
+          "backup". Store this paper on a save place. Please recognize also
+          if you use this function not at home but at work or university,
+          the system administrator may have access to old print queue entries.
+          So only use this function where you have a "secure environment" (whatever
+          this means. </para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+        <menuchoice>
+          <guimenu>File</guimenu>
+          <guimenuitem>Edit</guimenuitem>
+        </menuchoice>
+      </term>
+      <listitem>
+        <para>Exit the application. If some data was modified, you will be
+          asked to save it before quitting.</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+        <menuchoice>
+          <guimenu>View</guimenu>
+        </menuchoice>
+      </term>
+      <listitem>
+        <para>Here you can enable or disable some toolbars and the tree view.
+          </para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+        <menuchoice>
+          <guimenu>Options</guimenu>
+          <guimenuitem>Change password</guimenuitem>
+        </menuchoice>
+      </term>
+      <listitem>
+        <para>Changes the password for the current data. You have to enter
+          the old password once and the new password twice. If you
+          save the data, the change is applied.</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+        <menuchoice>
+          <guimenu>Option</guimenu>
+          <guimenuitem>Settings</guimenuitem>
+        </menuchoice>
+      </term>
+      <listitem>
+        <para>
+          Opens the settings dialog where you can configure
+            the behaviour of OPaMaT, see <xref linkend="config">.
+        </para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+        <menuchoice>
+          <guimenu>Extras</guimenu>
+          <guimenuitem>Random password</guimenuitem>
+        </menuchoice>
+      </term>
+      <listitem>
+        <para>Generates a random password. Of course, a computer cannot
+          generate a <emphasis>really true</emphasis> random password,
+          i.e. it's a pseudo-random password. So for really high security,
+          don't use this function. But there is not a simple algorithm
+          used such as the <function>rand()</function>-function in C.
+          QPaMaT uses the random function of the OpenSSL library which
+          is implemented by random functions of the operating system if
+          it's available. This function was written for security applications
+          (the encryption of your web browser may depend on the same
+          function), so you can trust. On some systems, this function may
+          not be available because the operating system lacks support.</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+        <menuchoice>
+          <guimenu>Extras</guimenu>
+          <guimenuitem>Show password strength</guimenuitem>
+        </menuchoice>
+      </term>
+      <listitem>
+        <para>Checks all passwords for its quality and shows the strength
+          in the tree by four different indicators: <emphasis>red</emphasis>
+          (insecury), <emphasis>yellow</emphasis> (quite secure),
+          <emphasis>green</emphasis> (good security) and <emphasis>gray</emphasis>
+          (no password stored in this item). Categorys show the weakest
+          colour, so you can quickly check for weak passwords and change it.
+          It's the same information as presented in the bottom right
+          when you select a password in the list.</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+        <menuchoice>
+          <guimenu>Extras</guimenu>
+          <guimenuitem>Clear clipboard</guimenuitem>
+        </menuchoice>
+      </term>
+      <listitem>
+        <para>Convenience function to clear the content of the clipboard. This
+          is useful if you copied a password and want to delete it in the
+          clipboard for security reasons.</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+        <menuchoice>
+          <guimenu>Help</guimenu>
+          <guimenuitem>Help</guimenuitem>
+        </menuchoice>
+      </term>
+      <listitem>
+        <para>Opens this help document in a web browser (HTML format).</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+        <menuchoice>
+          <guimenu>Help</guimenu>
+          <guimenuitem>What's this</guimenuitem>
+        </menuchoice>
+      </term>
+      <listitem>
+        <para>Opens context help. The mouse cursor changes and lets you
+          select a GUI element. A yellow window may appear and show some
+          help on the item you've selected. But there's not for every item
+          help available, this may change in future.</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+        <menuchoice>
+          <guimenu>Help</guimenu>
+          <guimenuitem>About Qt</guimenuitem>
+        </menuchoice>
+      </term>
+      <listitem>
+        <para>Shows some information about Qt, the toolkit which was used
+          to create this application. It's useful to get the version number
+          of Qt.</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+        <menuchoice>
+          <guimenu>Help</guimenu>
+          <guimenuitem>About</guimenuitem>
+        </menuchoice>
+      </term>
+      <listitem>
+        <para>Shows some information about the application, including the
+          license and the version number.</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  
+</sect1>
+    
+
+</article>
+
+
