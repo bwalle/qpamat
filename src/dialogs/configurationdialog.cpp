@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.cpp,v 1.18 2004/01/02 12:20:42 bwalle Exp $
+ * Id: $Id: configurationdialog.cpp,v 1.19 2004/01/03 23:39:43 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -46,10 +46,17 @@
 #include "configurationdialogprivate.h"
 #include "qpamat.h"
 #include "widgets/filelineedit.h"
+#include "widgets/listboxlabeledpict.h"
 #include "security/passwordgeneratorfactory.h"
 #include "security/symmetricencryptor.h"
 #include "security/hybridpasswordchecker.h"
 #include "smartcard/memorycard.h"
+
+#include "images/general_34x34.xpm"
+#include "images/password_34x34.xpm"
+#include "images/smartcard_34x34.xpm"
+#include "images/lock_big.xpm"
+#include "images/presentation_34x34.xpm"
 
 /*!
     \class ConfigurationDialog
@@ -79,8 +86,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.18 $
-    \date $Date: 2004/01/02 12:20:42 $
+    \version $Revision: 1.19 $
+    \date $Date: 2004/01/03 23:39:43 $
  */
 
 /*!
@@ -96,12 +103,16 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     QHBox* buttonHBox = new QHBox(this, "ConfDlg-ButtonHBox");
     
     m_listBox = new QListBox(mainHBox, "ConfDlg-Listbox");
+    QFont f = m_listBox->font();
+    f.setBold(true);
+    m_listBox->setFont(f);
+    m_listBox->setCursor(PointingHandCursor);
     m_widgetStack = new QWidgetStack(mainHBox, "ConfDlg-Widget");
     
     // buttons
     QWidget* filler = new QWidget(buttonHBox);
     buttonHBox->setSpacing(7);
-    QPushButton* okButton = new QPushButton(tr("Ok"), buttonHBox, "OkButton");
+    QPushButton* okButton = new QPushButton(tr("OK"), buttonHBox, "OkButton");
     QPushButton* cancelButton = new QPushButton(tr("Cancel"), buttonHBox, "CancelButton");
     okButton->setDefault(true);
     buttonHBox->setStretchFactor(filler, 2);
@@ -115,7 +126,7 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     // layout
     mainHBox->setStretchFactor(m_listBox, 0);
     mainHBox->setStretchFactor(m_widgetStack, 2);
-    mainHBox->setSpacing(7);
+    mainHBox->setSpacing(12);
     vboxLayout->addWidget(mainHBox);
     vboxLayout->addWidget(horizontalLine);
     vboxLayout->addWidget(buttonHBox);
@@ -125,27 +136,27 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     // Add the general tab
     ConfDlgGeneralTab* generalTab = new ConfDlgGeneralTab(this);
     m_widgetStack->addWidget(generalTab, 0);
-    m_listBox->insertItem(tr("General"));
+    new ListBoxLabeledPict(m_listBox, general_34x34_xpm, tr("General"));
     
     // Add the password tab
     ConfDlgPasswordTab* passwordTab = new ConfDlgPasswordTab(this);
     m_widgetStack->addWidget(passwordTab, 1);
-    m_listBox->insertItem(tr("Password"));
+    new ListBoxLabeledPict(m_listBox, password_34x34_xpm, tr("Password"));
     
     // Add the security tab
     ConfDlgSecurityTab* securityTab = new ConfDlgSecurityTab(this);
     m_widgetStack->addWidget(securityTab, 2);
-    m_listBox->insertItem(tr("Security"));
+    new ListBoxLabeledPict(m_listBox, lock_big_xpm, tr("Security"));
     
     // Add the smartcard tab
     ConfDlgSmartcardTab* smartCardTab = new ConfDlgSmartcardTab(this);
     m_widgetStack->addWidget(smartCardTab, 3);
-    m_listBox->insertItem(tr("Smart Card"));
+    new ListBoxLabeledPict(m_listBox, smartcard_34x34_xpm, tr("Smart Card"));
     
     // Add the presentation tab
     ConfDlgPresentationTab* presentationTab = new ConfDlgPresentationTab(this);
     m_widgetStack->addWidget(presentationTab, 4);
-    m_listBox->insertItem(tr("Presenstation"));
+    new ListBoxLabeledPict(m_listBox, presentation_34x34_xpm, tr("Presenstation"));
     
     // signals & slots
     connect(okButton, SIGNAL(clicked()), SLOT(accept()));
@@ -184,8 +195,11 @@ void ConfigurationDialog::aboutToShowHandler(QWidget* w)
 {
     if (ConfDlgTab* t = dynamic_cast<ConfDlgTab*>(w))
     {
-        t->fillSettings();
-        m_filledTabs.insert(t);
+        if ( m_filledTabs.find(t) == m_filledTabs.end() )
+        {
+            t->fillSettings();
+            m_filledTabs.insert(t);
+        }
     }
 }
 
@@ -204,8 +218,8 @@ void ConfigurationDialog::aboutToShowHandler(QWidget* w)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.18 $
-    \date $Date: 2004/01/02 12:20:42 $
+    \version $Revision: 1.19 $
+    \date $Date: 2004/01/03 23:39:43 $
 */
 
 /*!
@@ -246,8 +260,8 @@ void ConfigurationDialog::aboutToShowHandler(QWidget* w)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.18 $
-    \date $Date: 2004/01/02 12:20:42 $
+    \version $Revision: 1.19 $
+    \date $Date: 2004/01/03 23:39:43 $
 */
 
 
@@ -367,8 +381,8 @@ void ConfDlgGeneralTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.18 $
-    \date $Date: 2004/01/02 12:20:42 $
+    \version $Revision: 1.19 $
+    \date $Date: 2004/01/03 23:39:43 $
 */
 
 
@@ -573,7 +587,7 @@ void ConfDlgPasswordTab::sortDictionary()
     }
     file.close();
     
-    std::sort(words.begin(), words.end(), std::ptr_fun(string_length_greater));
+    std::sort(words.begin(), words.end(), string_length_greater);
     
     // save the old file
     if (!QDir::root().rename(file.name(), file.name() + ".bak"))
@@ -623,8 +637,8 @@ void ConfDlgPasswordTab::sortDictionary()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.18 $
-    \date $Date: 2004/01/02 12:20:42 $
+    \version $Revision: 1.19 $
+    \date $Date: 2004/01/03 23:39:43 $
 */
 
 
@@ -678,6 +692,7 @@ void ConfDlgSecurityTab::createAndLayout()
 */
 void ConfDlgSecurityTab::fillSettings()
 {
+    PRINT_TRACE("Insert algorithm");
     m_algorithmCombo->insertStringList(SymmetricEncryptor::getAlgorithms());
     m_algorithmCombo->setCurrentText( qpamat->set().readEntry( "Security/CipherAlgorithm" ));
 }
@@ -708,8 +723,8 @@ void ConfDlgSecurityTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.18 $
-    \date $Date: 2004/01/02 12:20:42 $
+    \version $Revision: 1.19 $
+    \date $Date: 2004/01/03 23:39:43 $
 */
 
 
@@ -808,8 +823,8 @@ void ConfDlgPresentationTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.18 $
-    \date $Date: 2004/01/02 12:20:42 $
+    \version $Revision: 1.19 $
+    \date $Date: 2004/01/03 23:39:43 $
 */
 
 /*!
