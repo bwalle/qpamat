@@ -1,5 +1,5 @@
 /*
- * Id: $Id: memorycard.cpp,v 1.3 2003/11/12 22:17:45 bwalle Exp $
+ * Id: $Id: memorycard.cpp,v 1.4 2003/12/10 21:47:01 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -21,11 +21,12 @@
 
 #include <qstring.h>
 #include <qlibrary.h>
+#include <qapplication.h>
 
 #include "nosuchlibraryexception.h"
 #include "memorycard.h"
 #include "cardexception.h"
-#include "../types.h"
+#include "../global.h"
 
 // -------------------------------------------------------------------------------------------------
 int MemoryCard::m_lastNumber = 1;
@@ -336,7 +337,7 @@ bool MemoryCard::selectFile() const
 
 
 // -------------------------------------------------------------------------------------------------
-ByteVector MemoryCard::read(ushort offset, ushort length) const
+ByteVector MemoryCard::read(ushort offset, ushort length)
 // -------------------------------------------------------------------------------------------------
         throw (CardException, NotInitializedException)
 {
@@ -402,7 +403,7 @@ ByteVector MemoryCard::read(ushort offset, ushort length) const
 
 
 // -------------------------------------------------------------------------------------------------
-void MemoryCard::write(ushort offset, const ByteVector& data) const
+void MemoryCard::write(ushort offset, const ByteVector& data)
 // -------------------------------------------------------------------------------------------------
         throw (CardException, NotInitializedException)
 {
@@ -411,6 +412,8 @@ void MemoryCard::write(ushort offset, const ByteVector& data) const
     int dataOffset = 0;
     int len = data.size();
     const int max = 255;
+    int total = len / max + 1;
+    int stepNumber = 0;
     
     byte update_binary[max+5];
     update_binary[0] = 0x00; // CLA
@@ -418,6 +421,10 @@ void MemoryCard::write(ushort offset, const ByteVector& data) const
         
     while (len > 0)
     {
+        emit progressed(stepNumber++, total);
+
+        qApp->processEvents();
+        
         int written_bytes = std::min(len, max);
         
         update_binary[2] = (offset + dataOffset) >> 8; // P1
@@ -453,6 +460,9 @@ void MemoryCard::write(ushort offset, const ByteVector& data) const
         len -= max;
         dataOffset += max;
     }
+    
+    // finishing
+    emit progressed(total, total);
 }
 
 

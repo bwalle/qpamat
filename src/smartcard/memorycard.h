@@ -1,5 +1,5 @@
 /*
- * Id: $Id: memorycard.h,v 1.5 2003/12/04 11:54:51 bwalle Exp $
+ * Id: $Id: memorycard.h,v 1.6 2003/12/10 21:46:58 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -20,11 +20,12 @@
 
 #include <qstring.h>
 #include <qlibrary.h>
+#include <qobject.h>
 
 #include "nosuchlibraryexception.h"
 #include "notinitializedexception.h"
 #include "cardexception.h"
-#include "../types.h"
+#include "../global.h"
 
 /*!
  * The init function of the CT-API
@@ -65,14 +66,24 @@ typedef char (*CT_close_ptr) (ushort ctn);
  *
  * There's no need to start a server on machine and the user only has to specify one library.
  * You don't need root permissions if you have access to the serial port, of course.
+ *
+ * \par Normal Usage: 
+ *
+ * - At first you have to create a new object,
+ * - then you have to call the init() method with the right port. 
+ * - After that you have to request the type of the card.
+ * - Now you can call the read() or write() method.
+ * - After this you have to call the close() method or simply let the destructor do the work!
  * 
  * \ingroup smartcard
  * \author Bernhard Walle
- * \version $Revision: 1.5 $
- * \date $Date: 2003/12/04 11:54:51 $
+ * \version $Revision: 1.6 $
+ * \date $Date: 2003/12/10 21:46:58 $
  */
-class MemoryCard
+class MemoryCard : public QObject
 {
+    Q_OBJECT
+    
     public:
         
         /*!
@@ -202,7 +213,7 @@ class MemoryCard
          * @exception CardException if an exception occurred while reading
          * @exception NotInitializedException if the object was not initialized
          */
-        ByteVector read(ushort offset, ushort length) const
+        ByteVector read(ushort offset, ushort length)
             throw (CardException, NotInitializedException);
         
         /*!
@@ -212,9 +223,17 @@ class MemoryCard
          * @exception CardException if an exception occurred while writing
          * @exception NotInitializedException if the object was not initialized
          */
-        void write(ushort offset, const ByteVector& data) const 
+        void write(ushort offset, const ByteVector& data) 
             throw (CardException, NotInitializedException);
+    
+    signals:
         
+        /*!
+         * This signal is emited as progress indicator while wrinting to the smartcard.
+         * \param progress the number of the step, i.e. 1 for the first progress emission
+         * \param total the prognosticated number of steps
+         */
+        void progressed(int progress, int total);
         
     protected:
         
