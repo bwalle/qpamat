@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.51 2005/02/12 10:51:48 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.52 2005/02/15 02:03:55 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -17,10 +17,10 @@ BINDIR             = $${PREFIX}/bin
 
 ################################################################################
 
-VERSION_STRING     = 0.3.4
+VERSION_STRING     = 0.4.0
 MAJOR_VERSION      = 0
-MINOR_VERSION      = 3
-PATCH_VERSION      = 4
+MINOR_VERSION      = 4
+PATCH_VERSION      = 0
 
 ################################################################################
 
@@ -60,6 +60,8 @@ SOURCES     =                                   \
     src/util/stringdisplay.cpp                  \
     src/util/singleapplication.cpp              \
     src/util/timeoutapplication.cpp             \
+    src/util/windowfunctions.cpp                \
+    src/ext/trayicon.cpp                        \
     src/datareadwriter.cpp                      \
     src/timerstatusmessage.cpp                  \
     src/randompassword.cpp                      \
@@ -73,6 +75,17 @@ SOURCES     =                                   \
     src/rightlistview.cpp                       \
     src/southpanel.cpp                          \
     src/main.cpp                                
+
+unix:!mac {
+    SOURCES += src/ext/trayicon_x11.cpp
+}
+win32: {
+    SOURCES += src/ext/trayicon_win.cpp
+}
+mac: {
+    SOURCES += src/ext/trayicon_mac.cpp
+}
+
 
 # -----------------------------------------------------------------------------
 
@@ -117,6 +130,8 @@ HEADERS     =                                   \
     src/util/stringdisplay.h                    \
     src/util/singleapplication.h                \
     src/util/timeoutapplication.h               \
+    src/util/windowfunctions.h                  \
+    src/ext/trayicon.h                          \
     src/datareadwriter.h                        \
     src/timerstatusmessage.h                    \
     src/treeentry.h                             \
@@ -193,7 +208,8 @@ IMAGES =                                        \
     images/smartcard_48.png                     \
     images/whats_this.png                       \
     images/qt_16.png                            \
-    images/eye_16.png
+    images/eye_16.png                           \
+    images/trayicon_22.png
 
 # -----------------------------------------------------------------------------
 

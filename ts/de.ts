@@ -136,6 +136,14 @@ Sie ohne Backup fortfahren?</translation>
         <source>Don&apos;t &amp;grab keyboard focus in the password dialog</source>
         <translation>Tastatur&amp;fokus nicht behalten im Passwortdialog</translation>
     </message>
+    <message>
+        <source>System tray</source>
+        <translation>Systemabschnitt</translation>
+    </message>
+    <message>
+        <source>Show icon in system tray (needs restart!)</source>
+        <translation>Icon im Systemabschnitt anzeigen (Neustart!)</translation>
+    </message>
 </context>
 <context>
     <name>ConfDlgSecurityTab</name>
