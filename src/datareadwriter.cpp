@@ -1,5 +1,5 @@
 /*
- * Id: $Id: datareadwriter.cpp,v 1.7 2004/07/23 13:13:09 bwalle Exp $
+ * Id: $Id: datareadwriter.cpp,v 1.8 2004/07/24 13:45:42 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -56,8 +56,8 @@
 
     \ingroup gui
     \author $Author: bwalle $
-    \version $Revision: 1.7 $
-    \date $Date: 2004/07/23 13:13:09 $
+    \version $Revision: 1.8 $
+    \date $Date: 2004/07/24 13:45:42 $
     
 */
 
@@ -193,8 +193,8 @@
 
     \ingroup gui
     \author $Author: bwalle $
-    \version $Revision: 1.7 $
-    \date $Date: 2004/07/23 13:13:09 $
+    \version $Revision: 1.8 $
+    \date $Date: 2004/07/24 13:45:42 $
 */
 
 /*!
@@ -214,7 +214,7 @@ DataReadWriter::DataReadWriter(QWidget* parent)
 */
 QDomDocument DataReadWriter::createSkeletonDocument() throw ()
 {
-    const char url[] = "http://www.bwalle.de/qpamat/qpamat.dtd";
+    const char url[] = "http://qpamat.berlios.de/qpamat.dtd";
     QDomDocument doc(QDomImplementation().createDocumentType( "qpamat", 0, url));
     
     // add application-specific data
