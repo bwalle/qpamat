@@ -1,5 +1,5 @@
 /*
- * Id: $Id: settings.h,v 1.4 2003/11/29 14:43:03 bwalle Exp $
+ * Id: $Id: settings.h,v 1.5 2003/12/04 14:08:15 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,8 +24,8 @@
  * \brief Singleton for storing settings in registry (MS Windows) or ini-file (Unix).
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.4 $
- * \date $Date: 2003/11/29 14:43:03 $
+ * \version $Revision: 1.5 $
+ * \date $Date: 2003/12/04 14:08:15 $
  */
 class Settings
 {
@@ -42,6 +42,18 @@ class Settings
         
         /*! if the card should be used */
         static const bool DEFAULT_USE_CARD;
+        
+        /*! default for auto text: Misc */
+        static const QString DEFAULT_AUTOTEXT_MISC;
+        
+        /*! default for auto text: Username */
+        static const QString DEFAULT_AUTOTEXT_USERNAME;
+        
+        /*! default for auto text: Password */
+        static const QString DEFAULT_AUTOTEXT_PASSWORD;
+        
+        /*! default for auto text: URL */
+        static const QString DEFAULT_AUTOTEXT_URL;
         
         /*!
          * Destructor

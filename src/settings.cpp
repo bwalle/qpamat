@@ -1,5 +1,5 @@
 /*
- * Id: $Id: settings.cpp,v 1.3 2003/11/28 18:42:37 bwalle Exp $
+ * Id: $Id: settings.cpp,v 1.4 2003/12/04 14:08:08 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,10 +24,14 @@
 // -------------------------------------------------------------------------------------------------
 // Defaults
 // -------------------------------------------------------------------------------------------------
-const QString Settings::DEFAULT_WEBBROWSER = "mozilla";
-const QString Settings::QPAMAT_FILE_NAME   = QDir::home().absPath()+"/.qpamat";
-const int     Settings::DEFAULT_PORT       = 1;
-const bool    Settings::DEFAULT_USE_CARD   = false;
+const QString Settings::DEFAULT_WEBBROWSER          = "mozilla";
+const QString Settings::QPAMAT_FILE_NAME            = QDir::home().absPath()+"/.qpamat";
+const int     Settings::DEFAULT_PORT                = 1;
+const bool    Settings::DEFAULT_USE_CARD            = false;
+const QString Settings::DEFAULT_AUTOTEXT_MISC       = "";
+const QString Settings::DEFAULT_AUTOTEXT_USERNAME   = "Username";
+const QString Settings::DEFAULT_AUTOTEXT_PASSWORD   = "Password";
+const QString Settings::DEFAULT_AUTOTEXT_URL        = "URL";
 
 // -------------------------------------------------------------------------------------------------
 Settings::Settings()

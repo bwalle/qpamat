@@ -1,5 +1,5 @@
 /*
- * Id: $Id: southpanel.h,v 1.4 2003/12/04 11:59:06 bwalle Exp $
+ * Id: $Id: southpanel.h,v 1.5 2003/12/04 14:08:53 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -29,8 +29,8 @@
  * \brief Represents the south panel.
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.4 $
- * \date $Date: 2003/12/04 11:59:06 $
+ * \version $Revision: 1.5 $
+ * \date $Date: 2003/12/04 14:08:53 $
  */
 class SouthPanel : public QFrame
 {
@@ -71,7 +71,11 @@ class SouthPanel : public QFrame
         void clear();
    
     protected:
-        //void focusInEvent(QFocusEvent* evt);
+        
+        /*!
+         * Inserts the appropriate AutoText.
+         */
+        void insertAutoText();
         
     private:
         Property* m_currentProperty;
