@@ -149,7 +149,35 @@ Sie ohne Backup fortfahren?</translation>
     </message>
     <message>
         <source>&lt;qt&gt;Only change this if you know what you do. The algorithms are provided by the OpenSSL library and the availability is determined at runtime. You can read a file encrypted with &lt;i&gt;X&lt;/i&gt; only if the computer on which you read it is able to handle algorithm &lt;i&gt;X&lt;/i&gt;. &lt;p&gt;Blowfish is a good choise because it&apos;s free and available everywhere. IDEA is patended (but secure, PGP uses it!) and AES (the successor of DES) is only available at new versions of OpenSSL. Read a book about cryptography if you&apos;re interested in this algorithms.&lt;/qt&gt;</source>
-        <translation>&lt;qt&gt;Ändern Sie diese Einstellung nur, wenn Sie wissen, was Sie tun. Die Algorithmen werden von der OpenSSL-Bibliothek zur Verfügung gestellt und werden zur Laufzeit ermittelt. Sie können jede Datei, die mit &lt;i&gt;X&lt;/i&gt; verschlüsselt wurden, nur auf Computern lesen, dessen OpenSSL-Bibliothek mit dem Algorithmus &lt;i&gt;X&lt;/i&gt; zurecht kommt. &lt;p&gt;Blowfish ist eine gute Wahl weil es sich um einen freien, überall verfügbaren Algorithmus handelt. IDEA ist patentiert (aber sicher, PGP verwendet ihn!) und AES (der Nachfolger von DES) ist nur bei neuen Versionen von OpenSSL verfügbar. Lesen Sie ein Buch über Kryptographie wenn Sie sich für die Algorithmen interessieren.&lt;/qt&gt;</translation>
+        <translation type="obsolete">&lt;qt&gt;Ändern Sie diese Einstellung nur, wenn Sie wissen, was Sie tun. Die Algorithmen werden von der OpenSSL-Bibliothek zur Verfügung gestellt und werden zur Laufzeit ermittelt. Sie können jede Datei, die mit &lt;i&gt;X&lt;/i&gt; verschlüsselt wurden, nur auf Computern lesen, dessen OpenSSL-Bibliothek mit dem Algorithmus &lt;i&gt;X&lt;/i&gt; zurecht kommt. &lt;p&gt;Blowfish ist eine gute Wahl weil es sich um einen freien, überall verfügbaren Algorithmus handelt. IDEA ist patentiert (aber sicher, PGP verwendet ihn!) und AES (der Nachfolger von DES) ist nur bei neuen Versionen von OpenSSL verfügbar. Lesen Sie ein Buch über Kryptographie wenn Sie sich für die Algorithmen interessieren.&lt;/qt&gt;</translation>
+    </message>
+    <message>
+        <source>Logout</source>
+        <translation>Ausloggen</translation>
+    </message>
+    <message>
+        <source>Auto &amp;logout after inactivity:</source>
+        <translation>Automatisches Aus&amp;loggen nach Inaktivität:</translation>
+    </message>
+    <message>
+        <source>Disabled</source>
+        <translation>Deaktiviert</translation>
+    </message>
+    <message>
+        <source>15 minutes</source>
+        <translation>15 Minuten</translation>
+    </message>
+    <message>
+        <source>30 minutes</source>
+        <translation>30 Minuten</translation>
+    </message>
+    <message>
+        <source>1 hour</source>
+        <translation>1 Stunde</translation>
+    </message>
+    <message>
+        <source>2 hours</source>
+        <translation>2 Stunden</translation>
     </message>
 </context>
 <context>
