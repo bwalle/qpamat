@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightlistview.cpp,v 1.5 2003/12/15 18:39:10 bwalle Exp $
+ * Id: $Id: rightlistview.cpp,v 1.6 2003/12/15 21:19:54 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -229,7 +229,6 @@ void RightListView::setItem(QListViewItem* item)
 void RightListView::deleteCurrent()
 // -------------------------------------------------------------------------------------------------
 {
-    qDebug("RightListView::deleteCurrent");
     QListViewItem* selected = selectedItem();
     if (selected)
     {
