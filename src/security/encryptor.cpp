@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encryptor.cpp,v 1.3 2003/10/03 13:04:51 bwalle Exp $
+ * Id: $Id: encryptor.cpp,v 1.4 2003/10/03 14:17:24 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -109,7 +109,7 @@ StringMap Encryptor::initAlgorithmsMap()
     
     for (StringMap::iterator it = map.begin(); it != map.end(); ++it)
     {
-        if (EVP_get_cipherbyname(*it) != NULL)
+        if (EVP_get_cipherbyname(*it))
         {
             returned[it.key()] = *it;
         }
@@ -204,7 +204,7 @@ void Encryptor::setPassword(const QString& password)
 // -------------------------------------------------------------------------------------------------
 {
     QCString pwUtf8 = password.utf8();
-    EVP_BytesToKey(m_cipher_algorithm, HASH_ALGORITHM, NULL, 
+    EVP_BytesToKey(m_cipher_algorithm, HASH_ALGORITHM, 0, 
         (byte*)pwUtf8.operator const char*(), pwUtf8.length(), 1, m_key, m_iv);
 }
 
