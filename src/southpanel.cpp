@@ -1,5 +1,5 @@
 /*
- * Id: $Id: southpanel.cpp,v 1.2 2003/12/04 11:58:58 bwalle Exp $
+ * Id: $Id: southpanel.cpp,v 1.3 2003/12/04 14:08:40 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -22,6 +22,7 @@
 #include <qvgroupbox.h>
 
 #include "southpanel.h"
+#include "settings.h"
 /* #include "../images/down_16x16.xpm"
 #include "../images/down_22x22.xpm"
 #include "../images/up_16x16.xpm"
@@ -38,7 +39,7 @@ SouthPanel::SouthPanel(QWidget* parent)
     // Type
     QLabel* typeLabel = new QLabel(tr("&Type"), group);
     m_typeCombo = new QComboBox(false, group);
-    m_typeCombo->setMaximumWidth(100);
+    m_typeCombo->setMaximumWidth(150);
     m_typeCombo->insertItem(tr("Misc"));            // the order must match the enumeration in
     m_typeCombo->insertItem(tr("Username"));        // property.h!!
     m_typeCombo->insertItem(tr("Password"));
@@ -98,6 +99,7 @@ void SouthPanel::setItem (Property* property)
         {
             m_valueLineEdit->setEchoMode(QLineEdit::Password);
         }
+        insertAutoText();
     }
     m_currentProperty = property;
     
@@ -128,11 +130,50 @@ void SouthPanel::updateData()
 void SouthPanel::comboBoxChanged(int newChoice)
 // -------------------------------------------------------------------------------------------------
 {
-    if (m_oldComboValue == Property::PASSWORD && m_oldComboValue != newChoice)
+    
+    if (m_oldComboValue != newChoice)
     {
-        m_currentProperty->setValue("");
-        m_valueLineEdit->setText("");
+        insertAutoText();
+        
+        if (m_oldComboValue == Property::PASSWORD)
+        {
+            m_currentProperty->setValue("");
+            m_valueLineEdit->setText("");
+        }
     }
     m_oldComboValue = newChoice;
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void SouthPanel::insertAutoText()
+// -------------------------------------------------------------------------------------------------
+{
+    QSettings& set = Settings::getInstance().getSettings();
+    
+    if (m_keyLineEdit->text().isEmpty())
+    {
+        QString newTxt;
+        switch ( Property::Type(m_typeCombo->currentItem()) )
+        {
+            case Property::MISC:
+                newTxt = set.readEntry("AutoText/Misc", Settings::DEFAULT_AUTOTEXT_MISC);
+                break;
+            case Property::USERNAME:
+                newTxt = set.readEntry("AutoText/Username",Settings::DEFAULT_AUTOTEXT_USERNAME);
+                break;
+            case Property::PASSWORD:
+                newTxt = set.readEntry("AutoText/Password",Settings::DEFAULT_AUTOTEXT_PASSWORD);
+                break;
+            case Property::URL:
+                newTxt = set.readEntry("AutoText/URL", Settings::DEFAULT_AUTOTEXT_URL);
+                break;
+            default:
+                qDebug("SouthPanel::comboBoxChanged: newChoice is out of range\n");
+                break;
+        }
+        m_keyLineEdit->setText(newTxt);
+        m_valueLineEdit->setFocus();
+    }
 }
 
