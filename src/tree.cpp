@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.28 2004/01/13 23:20:46 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.29 2004/02/12 21:46:28 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -68,8 +68,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.28 $
-    \date $Date: 2004/01/13 23:20:46 $
+    \version $Revision: 1.29 $
+    \date $Date: 2004/02/12 21:46:28 $
 */
 
 /*!
@@ -257,8 +257,7 @@ void Tree::showContextMenu(QListViewItem* item, const QPoint& point)
     switch (id)
     {
         case DELETE_ITEM:
-            delete item;
-            emit stateModified();
+            deleteCurrent();
             break;
         case INSERT_ITEM:
             insertItem(dynamic_cast<TreeEntry*>(item), false);
