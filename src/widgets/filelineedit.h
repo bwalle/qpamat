@@ -1,5 +1,5 @@
 /*
- * Id: $Id: filelineedit.h,v 1.3 2003/11/29 14:43:03 bwalle Exp $
+ * Id: $Id: filelineedit.h,v 1.4 2003/12/06 18:24:11 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -29,14 +29,16 @@
  * The additional button lets the user choose a file on the hard disk with the file 
  * chooser dialog of Qt.
  *
- * \ingroup gui
+ * \ingroup widgets
  * \author Bernhard Walle
- * \version $Revision: 1.3 $
- * \date $Date: 2003/11/29 14:43:03 $
+ * \version $Revision: 1.4 $
+ * \date $Date: 2003/12/06 18:24:11 $
  */
 class FileLineEdit : public QWidget
 {
     Q_OBJECT
+    Q_PROPERTY( QString filter READ getFilter WRITE setFilter )
+    Q_PROPERTY( QString content READ getContent WRITE setContent )
     
     public:
         
@@ -57,13 +59,19 @@ class FileLineEdit : public QWidget
          * This returns the current content. It is not guarenteed that it is a valid file.
          * \return the content of the FileLineEdit widget
          */
-        QString getContent();
+        QString getContent() const;
         
         /*!
          * Sets a filter for the dialog.
          * \param filter the filter string
          */
         void setFilter(const QString& filter);
+        
+        /*!
+         * Returns the filter.
+         * \return the filter that was set or QString::null if no filter was set.
+         */
+        QString getFilter() const;
         
     protected slots:
         

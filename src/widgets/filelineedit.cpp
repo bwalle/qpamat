@@ -1,5 +1,5 @@
 /*
- * Id: $Id: filelineedit.cpp,v 1.2 2003/11/16 20:22:40 bwalle Exp $
+ * Id: $Id: filelineedit.cpp,v 1.3 2003/12/06 18:24:08 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -56,7 +56,7 @@ void FileLineEdit::setContent(const QString& content)
 
 
 // -------------------------------------------------------------------------------------------------
-QString FileLineEdit::getContent()
+QString FileLineEdit::getContent() const
 // -------------------------------------------------------------------------------------------------
 {
     return m_lineEdit->text();
@@ -68,6 +68,14 @@ void FileLineEdit::setFilter(const QString& filter)
 // -------------------------------------------------------------------------------------------------
 {
     m_filter = filter;
+}
+
+
+// -------------------------------------------------------------------------------------------------
+QString FileLineEdit::getFilter() const
+// -------------------------------------------------------------------------------------------------
+{
+    return m_filter;
 }
 
 
