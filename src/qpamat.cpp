@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.12 2003/12/11 22:01:59 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.13 2003/12/13 22:33:23 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -353,6 +353,7 @@ void Qpamat::save()
             m_password, settings.readEntry("/Security/CipherAlgorithm",
                 SymmetricEncryptor::getSuggestedAlgorithm())))
         {
+            message(tr("Wrote data successfully."), false);
             setModified(false);
         }
     }
