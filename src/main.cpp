@@ -1,5 +1,5 @@
 /*
- * Id: $Id: main.cpp,v 1.14 2003/12/29 15:12:26 bwalle Exp $
+ * Id: $Id: main.cpp,v 1.15 2003/12/30 23:06:20 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -154,7 +154,6 @@ void getX11Version(QString& protocolVersion, QString& vendorVersion)
 #endif
 }
 
-#include "security/hybridpasswordchecker.h"
 // -------------------------------------------------------------------------------------------------
 int main(int argc, char** argv)
 // -------------------------------------------------------------------------------------------------
