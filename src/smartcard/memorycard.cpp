@@ -1,5 +1,5 @@
 /*
- * Id: $Id: memorycard.cpp,v 1.5 2003/12/21 20:29:29 bwalle Exp $
+ * Id: $Id: memorycard.cpp,v 1.6 2003/12/28 23:49:49 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -23,27 +23,115 @@
 #include <qlibrary.h>
 #include <qapplication.h>
 
-#include "nosuchlibraryexception.h"
 #include "memorycard.h"
+#include "global.h"
+#include "nosuchlibraryexception.h"
 #include "cardexception.h"
-#include "../global.h"
 
 // -------------------------------------------------------------------------------------------------
+//                                     Static variables
+// -------------------------------------------------------------------------------------------------
+
 int MemoryCard::m_lastNumber = 1;
-// -------------------------------------------------------------------------------------------------
 
 
-// -------------------------------------------------------------------------------------------------
-void MemoryCard::setCallback(progress_callback callback)
-// -------------------------------------------------------------------------------------------------
-{
-    m_progressCallback = callback;
-}
+/*!
+    \class MemoryCard
+    
+    \brief Class for handling memory cards.
+    
+    Here's some background information about programming with smartcards etc.
+    The information which was used to program this class is from following sources:
+    
+     - Manual pages ctapi(3) and ctbcs(3) from the Towitoko CT-API driver at 
+       http://www.geocities.com/cprados/ .
+     - Official CT-API specification at http://www.panstruga.de/ct-api/spec/spec_v09.html .
+     - c't (very good German computer magazine) article "Kartenspiele", "Grundlagen der
+       Chipkartenprogrammierung", Kai-Uwe Mrkor, c't 8/2000, page 208.
+    
+    A very good overview about the different APIs for programming with chipcards was in the
+    article "Karten-Spiele", "Smartcard-Programmierung unter Linux", Frank Haubenschild in
+    the German magazine "Linux-Magazin" 06/2002 which is also available online at
+    http://www.linux-magazin.de/Artikel/ausgabe/2002/06/smartcards/smartcards.html. I choosed
+    the CT-API because there was a driver available for my reader, this API is wide-spread in
+    Germany, it's available on both *nix and Windows and my homebanking programme Moneyplex
+    from Matrica also uses this API and chipcard communication works well.
+    
+    There's no need to start a server on machine and the user only has to specify one library.
+    You don't need root permissions if you have access to the serial port, of course.
+    
+    \par Normal Usage:
+    
+     - At first you have to create a new object,
+     - then you have to call the init() method with the right port. 
+     - After that you have to request the type of the card.
+     - Now you can call the read() or write() method.
+     - After this you have to call the close() method or simply let the destructor do the work!
+    
+    \ingroup smartcard
+    \author Bernhard Walle
+    \version $Revision: 1.6 $
+    \date $Date: 2003/12/28 23:49:49 $
+*/
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    \typedef char (*MemoryCard::CT_init_ptr) (ushort ctn, ushort pn);
+    
+    Typedef for the init function of the CT-API.
+*/
+
+/*!
+    \typedef typedef char (*MemoryCard::CT_data_ptr) (ushort ctn, uchar* dad, uchar* sad, ushort lenc, 
+                                          uchar* command, ushort* lenr, uchar* response);
+    
+    Typedef for the data function of the CT-API.
+*/
+
+/*!
+    \typedef char (*MemoryCard::CT_close_ptr) (ushort ctn);
+    
+    Typedef for the close function of the CT-API.
+*/
+
+/*!
+    \enum MemoryCard::CardSlot
+    
+    The cards in slot 1 to slot 14, used for destination adresses. If the destination is
+    the terminal, use CT from ctapi.h.
+*/
+
+/*!
+    \enum MemoryCard::CardType
+    
+    The card type.
+*/
+/*!
+    \var MemoryCard::TMemoryCard
+    Memory card
+*/
+/*!
+    \var MemoryCard::TProcessorCard
+    Processor card
+*/
+/*!
+    \var MemoryCard::OtherResponse
+    Shows that the program detected no memory card or processor card.
+*/
+
+/*!
+    \enum MemoryCard::ProtocolType
+    
+    The protocol type.
+*/
+
+
+/*!
+     Creates a new instance of MemoryCard.
+     \param library path to the CT-API library
+     \exception NoSuchLibraryException if the loading of the library failed
+*/
 MemoryCard::MemoryCard(QString library) throw (NoSuchLibraryException)
-// -------------------------------------------------------------------------------------------------
-        : m_library(library), m_initialized(false), m_waitTime(0), m_progressCallback(0)
+    : m_library(library), m_initialized(false), m_waitTime(0)
 {
     if (! m_library.load())
     {
@@ -73,9 +161,11 @@ MemoryCard::MemoryCard(QString library) throw (NoSuchLibraryException)
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Deletes a MemoryCard object. Calls the close() method if this was not done before. This is very
+    important for exception handling!
+*/
 MemoryCard::~MemoryCard()
-// -------------------------------------------------------------------------------------------------
 {
     if (m_initialized)
     {
@@ -93,9 +183,18 @@ MemoryCard::~MemoryCard()
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Initializes the MemoryCard object for reading from or writing to a smart card
+    reader. You \b must call this function before accessing any other operations.
+    \param portNumber the port number. According to CT-API the mapping between
+                      port number and real hardware port is manufactor specific.
+                      There are some defines in ctapi.h like COM_1 which may work or
+                      may not work. On Unix often 1 is mapped to COM1 (/dev/ttyS0), on 
+                      Windows it is COM2. For USB or PS/2 there's no rule at all. Just
+                      let the user test all possibilities. :-)
+    \exception CardException if an exception occurred
+*/
 void MemoryCard::init(int portNumber) throw (CardException)
-// -------------------------------------------------------------------------------------------------
 {
     if (m_initialized)
     {
@@ -114,9 +213,12 @@ void MemoryCard::init(int portNumber) throw (CardException)
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Closes the MemoryCard communtion. This method must be called after the communction.
+    \exception CardException if an exception occurred
+    \exception NotInitializedException if the object was not initialized
+*/
 void MemoryCard::close() throw (CardException, NotInitializedException)
-// -------------------------------------------------------------------------------------------------
 {
     checkInitialzed("close");
     
@@ -129,26 +231,32 @@ void MemoryCard::close() throw (CardException, NotInitializedException)
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Returns the time that the program wiats for the user to insert the card in the terminal.
+    \return the time in seconds.
+*/
 uchar MemoryCard::getWaitTime() const
-// -------------------------------------------------------------------------------------------------
 {
     return m_waitTime;
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Sets the time that the program waits for the user to insert the card in the terminal.
+    \param newTime the time in seconds
+*/
 void MemoryCard::setWaitTime(uchar newTime)
-// -------------------------------------------------------------------------------------------------
 {
     m_waitTime = newTime;
 }
 
 
-// -------------------------------------------------------------------------------------------------
-MemoryCard::CardType MemoryCard::getType() const
-// -------------------------------------------------------------------------------------------------
-        throw (CardException, NotInitializedException)
+/*!
+    Returns the type of the smartcard in the reader. Even though the name of the class is
+    "MemoryCard", this method can also return another type. It was programmed for checking
+    the type before doing anything other.
+*/
+MemoryCard::CardType MemoryCard::getType() const throw (CardException, NotInitializedException)
 {
     checkInitialzed();
     
@@ -161,8 +269,6 @@ MemoryCard::CardType MemoryCard::getType() const
     byte response[100];
     ushort lenr = sizeof(response);
     
-    callCallback(0, 1);
-    
     char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(REQUEST_ICC), 
         REQUEST_ICC, &lenr, response);
     
@@ -170,8 +276,6 @@ MemoryCard::CardType MemoryCard::getType() const
     {
         throw CardException(CardException::ErrorCode(ret));
     }
-    
-    callCallback(1, 1);
     
     ushort sw1sw2 = (response[0] << 8) + response[1];
     
@@ -184,10 +288,18 @@ MemoryCard::CardType MemoryCard::getType() const
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Resets the card in slot 1 and returns some information that is returned by the CT-API
+    as response to this action (so-called ATR).
+    \param capacity a pointer to a integer variable where the capacity is stored. If it's
+                    0, then no value is stored
+    \param protocolType a pointer to a ProtocolType enumeration value where the protocol
+                        type is stored. If it's 0, then no value is stored
+    \exception CardException if an exception occurred while resetting the card
+    \exception NotInitializedException if the object was not initialized
+*/
 void MemoryCard::resetCard(int* capacity, ProtocolType* protocolType) const
-// -------------------------------------------------------------------------------------------------
-        throw (CardException, NotInitializedException)
+    throw (CardException, NotInitializedException)
 {
     checkInitialzed();
     
@@ -199,8 +311,6 @@ void MemoryCard::resetCard(int* capacity, ProtocolType* protocolType) const
     
     byte response[100];
     ushort lenr = sizeof(response);
-    
-    callCallback(0, 1);
     
     char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(RESET_CT), 
         RESET_CT, &lenr, response);
@@ -254,8 +364,6 @@ void MemoryCard::resetCard(int* capacity, ProtocolType* protocolType) const
         };
     }
     
-    callCallback(1, 1);
-    
     if (capacity != 0)
     {
         byte h2 = response[1]; // size
@@ -271,11 +379,18 @@ void MemoryCard::resetCard(int* capacity, ProtocolType* protocolType) const
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Reads some status information from the chipcard terminal. This information is not
+    card dependand but depends on the terminal. The information is returned by setting 
+    the paramters to a sensible value.
+    \param manufacturer 5 characters, the first two are the country code and the following
+                        3 are the manufacturer acronym
+    \param terminalType the terminal type which is manufacturer dependant
+    \param software     the software version which is manufacturer dependant, too.
+    \param discrData    additional, optional information
+*/
 void MemoryCard::getStatusInformation(QString* manufacturer, QString* terminalType, 
-        QString* software, QString* discrData)
-// -------------------------------------------------------------------------------------------------
-        throw (CardException, NotInitializedException)
+        QString* software, QString* discrData) throw (CardException, NotInitializedException)
 {
     checkInitialzed();
     
@@ -289,8 +404,6 @@ void MemoryCard::getStatusInformation(QString* manufacturer, QString* terminalTy
     byte response[100];
     ushort lenr = sizeof(response);
     
-    callCallback(0, 1);
-    
     char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(REQUEST_STATUS), 
         REQUEST_STATUS, &lenr, response);
     
@@ -298,8 +411,6 @@ void MemoryCard::getStatusInformation(QString* manufacturer, QString* terminalTy
     {
         throw CardException(CardException::ErrorCode(ret));
     }
-    
-    callCallback(1, 1);
     
     QString resp = QString::fromLatin1(reinterpret_cast<char*>(response), lenr);
     
@@ -325,10 +436,14 @@ void MemoryCard::getStatusInformation(QString* manufacturer, QString* terminalTy
 }
 
 
-// -------------------------------------------------------------------------------------------------
-bool MemoryCard::selectFile() const
-// -------------------------------------------------------------------------------------------------
-        throw (CardException, NotInitializedException)
+/*!
+    This selects a file on the chipcard. It is implemented in a way that selects the whole
+    data area on the chipcard. The return value of this function indicates the success. 
+    \return \c true if the command was successfull, \c false otherwise.
+    \exception CardException if an exception occurred while selecting the file
+    \exception NotInitializedException if the object was not initialized
+*/
+bool MemoryCard::selectFile() const throw (CardException, NotInitializedException)
 {
     checkInitialzed();
     
@@ -342,8 +457,6 @@ bool MemoryCard::selectFile() const
     byte response[2];
     ushort lenr = sizeof(response);
     
-    callCallback(0, 1);
-    
     char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(SELECT_FILE), 
         SELECT_FILE, &lenr, response);
     
@@ -352,18 +465,22 @@ bool MemoryCard::selectFile() const
         throw CardException(CardException::ErrorCode(ret));
     }
     
-    callCallback(1, 1);
-    
     ushort sw1sw2 = (response[0] << 8) + response[1];
     
     return sw1sw2 == 0x9000;
 }
 
 
-// -------------------------------------------------------------------------------------------------
-ByteVector MemoryCard::read(ushort offset, ushort length)
-// -------------------------------------------------------------------------------------------------
-        throw (CardException, NotInitializedException)
+/*!
+    Reads the specified number of bytes from the chipcard.
+    \param offset the offset
+    \param length the number of bytes that should be read
+    \return the read bytes
+    \exception CardException if an exception occurred while reading
+    \exception NotInitializedException if the object was not initialized
+*/
+ByteVector MemoryCard::read(ushort offset, ushort length) 
+    throw (CardException, NotInitializedException)
 {
     checkInitialzed();
     
@@ -378,13 +495,8 @@ ByteVector MemoryCard::read(ushort offset, ushort length)
     int stillToRead = length;
     const int max = 255;
     
-    int total = length / max + 1;
-    int stepNumber = 0;
-    
     while (stillToRead > 0)
     {
-        callCallback(stepNumber++, total);
-        
         int dataToRead = std::min(stillToRead, max);
         
         read_binary[2] = (offset + dataOffset) >> 8;
@@ -426,23 +538,25 @@ ByteVector MemoryCard::read(ushort offset, ushort length)
         throw CardException(CardException::EndReached);
     }
     
-    callCallback(total, total);
-    
     return vec;
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Writes the specified data to the smartcard. The data must fit on the card.
+    \param offset the offset where the data should be written
+    \param data the data that should be written
+    \exception CardException if an exception occurred while writing
+    \exception NotInitializedException if the object was not initialized
+*/
 void MemoryCard::write(ushort offset, const ByteVector& data)
-// -------------------------------------------------------------------------------------------------
-        throw (CardException, NotInitializedException)
+    throw (CardException, NotInitializedException)
 {
     checkInitialzed();
     
     int dataOffset = 0;
     int len = data.size();
     const int max = 255;
-    int total = len / max + 1;
     int stepNumber = 0;
     
     byte update_binary[max+5];
@@ -451,8 +565,6 @@ void MemoryCard::write(ushort offset, const ByteVector& data)
         
     while (len > 0)
     {
-        callCallback(stepNumber++, total);
-        
         int written_bytes = std::min(len, max);
         
         update_binary[2] = (offset + dataOffset) >> 8; // P1
@@ -488,15 +600,15 @@ void MemoryCard::write(ushort offset, const ByteVector& data)
         len -= max;
         dataOffset += max;
     }
-    
-    callCallback(total, total);
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Checks if the class was initilized. If not a NotInitializedException is thrown.
+    \exception NotInitializedException if the class was not initialized
+*/
 void MemoryCard::checkInitialzed(const QString& functionName) const
-// -------------------------------------------------------------------------------------------------
-        throw (NotInitializedException)
+    throw (NotInitializedException)
 {
     if (!m_initialized)
     {
@@ -505,13 +617,3 @@ void MemoryCard::checkInitialzed(const QString& functionName) const
     }
 }
 
-
-// -------------------------------------------------------------------------------------------------
-void MemoryCard::callCallback(int step, int total) const
-// -------------------------------------------------------------------------------------------------
-{
-    if (m_progressCallback)
-    {
-        m_progressCallback(step, total);
-    }
-}
