@@ -1,5 +1,5 @@
 /*
- * Id: $Id: settings.cpp,v 1.7 2003/12/20 15:58:02 bwalle Exp $
+ * Id: $Id: settings.cpp,v 1.8 2003/12/21 20:30:26 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -36,6 +36,7 @@ Settings::Settings()
 #define DEF_BOOLEA(a, b) ( m_boolMap.insert( (a), (b) ) )
     
     DEF_BOOLEA("Main Window/maximized",          false);
+    DEF_BOOLEA("General/ShowWeakPasswords",      false);
     DEF_STRING("Main Window/SearchHistory",      "");
     DEF_STRING("Main Window/Layout",             "");
     DEF_STRING("General/Webbrowser",             "mozilla");
@@ -48,6 +49,7 @@ Settings::Settings()
     DEF_STRING("Security/CipherAlgorithm",       SymmetricEncryptor::getSuggestedAlgorithm());
     DEF_STRING("Security/EnsuredCharacters",     "ULDs");
     DEF_INTEGE("Security/Length",                8);
+    DEF_INTEGE("Security/MinLength",             6);
     DEF_STRING("Security/AllowedCharacters",     "a-zA-Z0-9@$#");
     DEF_STRING("Security/PasswordGenerator",     PasswordGeneratorFactory::DEFAULT_GENERATOR_STRING);
     DEF_STRING("Security/PasswordGenAdditional", "");
@@ -69,7 +71,7 @@ Settings::Settings()
 
 
 // -------------------------------------------------------------------------------------------------
-bool Settings::writeEntry(const QString & key, bool value)
+bool Settings::writeEntry(const QString & key, const QString & value)
 // -------------------------------------------------------------------------------------------------
 {
     return m_qSettings.writeEntry(key, value);
@@ -93,7 +95,7 @@ bool Settings::writeEntry(const QString & key, int value)
 
 
 // -------------------------------------------------------------------------------------------------
-bool Settings::writeEntry(const QString & key, const QString & value)
+bool Settings::writeEntry(const QString & key, bool value)
 // -------------------------------------------------------------------------------------------------
 {
     return m_qSettings.writeEntry(key, value);
