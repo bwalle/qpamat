@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encodinghelper.cpp,v 1.1 2003/09/17 21:28:01 bwalle Exp $
+ * Id: $Id: encodinghelper.cpp,v 1.2 2003/09/21 15:59:45 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -47,7 +47,7 @@ const char EncodingHelper::reverseBase64Alphabet[] = {
      41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51                       };
 
 // -------------------------------------------------------------------------------------------------
-QString EncodingHelper::toBase64(const QValueVector<unsigned char>& array)
+QString EncodingHelper::toBase64(const ByteVector& array)
 {
     QString result;
     unsigned char a, b, c;
@@ -56,7 +56,7 @@ QString EncodingHelper::toBase64(const QValueVector<unsigned char>& array)
     for (unsigned int i = 0; i < array.size(); i += 3)
     {
         lenMod3 = ((i+3) > array.size()) ? (array.size() % 3) : 3;
-        a = array[i+0];
+        a = array[i];
         b = lenMod3 > 1 ? array[i+1] : 0;
         c = lenMod3 > 2 ? array[i+2] : 0;
         result += base64Alphabet[a >> 2];
@@ -64,28 +64,27 @@ QString EncodingHelper::toBase64(const QValueVector<unsigned char>& array)
         result += (lenMod3 > 1) ? base64Alphabet[((b << 2) & 0x3C) | ((c >> 6) & 0x03)] : '=';
         result += (lenMod3 > 2) ? base64Alphabet[c & 0x3F] : '=';
     }
-    
     return result;
 }
 
 
 // -------------------------------------------------------------------------------------------------
-QValueVector<unsigned char> EncodingHelper::fromBase64(const QString& string)
+ByteVector EncodingHelper::fromBase64(const QString& string)
 {
     int stringLength = string.length();
     if (stringLength % 4 != 0)
     {
-        throw invalid_argument("In EncodingHelper::fromBase64: string % 4 != 0");
+        throw std::invalid_argument("In EncodingHelper::fromBase64: string % 4 != 0");
     }
     const char* stringAscii = string.ascii();
     QValueVector<unsigned char> vector;
     char a, b, c, d;
     for (int i = 0; i < stringLength; i += 4)
     {
-        a = reverseBase64Alphabet[ stringAscii[i] ];
-        b = reverseBase64Alphabet[ stringAscii[i+1] ];
-        c = reverseBase64Alphabet[ stringAscii[i+2] ];
-        d = reverseBase64Alphabet[ stringAscii[i+3] ];
+        a = reverseBase64Alphabet[ (int)stringAscii[i] ];
+        b = reverseBase64Alphabet[ (int)stringAscii[i+1] ];
+        c = reverseBase64Alphabet[ (int)stringAscii[i+2] ];
+        d = reverseBase64Alphabet[ (int)stringAscii[i+3] ];
         
         vector.push_back(((a << 2) | (b >> 4)));
         vector.push_back(((b & 0x0F) << 4) | (c >> 2));

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encodinghelper.h,v 1.2 2003/09/20 13:38:41 bwalle Exp $
+ * Id: $Id: encodinghelper.h,v 1.3 2003/09/21 15:59:45 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -31,8 +31,8 @@
 /**
  * Helper class for dealing with encodings.
  * @author Bernhard Walle
- * @version $Revision: 1.2 $
- * @date $Date: 2003/09/20 13:38:41 $
+ * @version $Revision: 1.3 $
+ * @date $Date: 2003/09/21 15:59:45 $
  */
 class EncodingHelper
 {
@@ -87,7 +87,7 @@ class EncodingHelper
 template<class T>
 std::ostream& operator<<(std::ostream& ostream, const QValueVector<T> vector)
 {
-    for (QValueVector<T>::ConstIterator it = vector.begin(); it != vector.end(); ++it)
+    for (typename QValueVector<T>::ConstIterator it = vector.begin(); it != vector.end(); ++it)
     {
         ostream << *it;
     }
