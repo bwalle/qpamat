@@ -1,5 +1,5 @@
 /*
- * Id: $Id: passworddialog.cpp,v 1.6 2004/01/02 12:20:57 bwalle Exp $
+ * Id: $Id: passworddialog.cpp,v 1.7 2004/01/08 23:40:23 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -36,10 +36,10 @@
     It grabs the keyboard unless the user turned it off with the global setting 
     <tt>Password/NoGrabbing</tt>.
     
-    \ingroup gui
+    \ingroup dialogs
     \author Bernhard Walle
-    \version $Revision: 1.6 $
-    \date $Date: 2004/01/02 12:20:57 $
+    \version $Revision: 1.7 $
+    \date $Date: 2004/01/08 23:40:23 $
 */
 
 /*!

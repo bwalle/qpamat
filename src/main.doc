@@ -1,5 +1,5 @@
 /*
- * Id: $Id: main.doc,v 1.7 2003/12/29 15:12:26 bwalle Exp $
+ * Id: $Id: main.doc,v 1.8 2004/01/08 23:40:33 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -37,16 +37,28 @@
 */
 
 /*!
+    \defgroup smartcard SmartCard
+    
+    Classes for accessing memory cards
+*/
+
+/*!
     \defgroup gui GUI
     
     Classes for GUI
 */
 
+/*@{*/
+
 /*!
-    \defgroup smartcard SmartCard
+    \defgroup dialogs Dialogs
     
-    Classes for accessing memory cards
+    \brief Dialogs
+    
+    That are the dialogs used in this application.
 */
+
+/*@}*/
 
 /*!
     \defgroup widgets Widgets

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.cpp,v 1.20 2004/01/07 23:54:55 bwalle Exp $
+ * Id: $Id: configurationdialog.cpp,v 1.21 2004/01/08 23:40:23 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -84,10 +84,10 @@
     
     Using std::auto_ptr here is a good idea but not neccessary.
     
-    \ingroup gui
+    \ingroup dialogs
     \author Bernhard Walle
-    \version $Revision: 1.20 $
-    \date $Date: 2004/01/07 23:54:55 $
+    \version $Revision: 1.21 $
+    \date $Date: 2004/01/08 23:40:23 $
  */
 
 /*!
@@ -139,8 +139,8 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.20 $
-    \date $Date: 2004/01/07 23:54:55 $
+    \version $Revision: 1.21 $
+    \date $Date: 2004/01/08 23:40:23 $
 */
 
 /*!
@@ -181,8 +181,8 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.20 $
-    \date $Date: 2004/01/07 23:54:55 $
+    \version $Revision: 1.21 $
+    \date $Date: 2004/01/08 23:40:23 $
 */
 
 
@@ -302,8 +302,8 @@ void ConfDlgGeneralTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.20 $
-    \date $Date: 2004/01/07 23:54:55 $
+    \version $Revision: 1.21 $
+    \date $Date: 2004/01/08 23:40:23 $
 */
 
 
@@ -558,8 +558,8 @@ void ConfDlgPasswordTab::sortDictionary()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.20 $
-    \date $Date: 2004/01/07 23:54:55 $
+    \version $Revision: 1.21 $
+    \date $Date: 2004/01/08 23:40:23 $
 */
 
 
@@ -644,8 +644,8 @@ void ConfDlgSecurityTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.20 $
-    \date $Date: 2004/01/07 23:54:55 $
+    \version $Revision: 1.21 $
+    \date $Date: 2004/01/08 23:40:23 $
 */
 
 
@@ -744,8 +744,8 @@ void ConfDlgPresentationTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.20 $
-    \date $Date: 2004/01/07 23:54:55 $
+    \version $Revision: 1.21 $
+    \date $Date: 2004/01/08 23:40:23 $
 */
 
 /*!

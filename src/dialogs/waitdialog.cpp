@@ -1,5 +1,5 @@
 /*
- * Id: $Id: waitdialog.cpp,v 1.1 2003/12/28 22:08:15 bwalle Exp $
+ * Id: $Id: waitdialog.cpp,v 1.2 2004/01/08 23:40:24 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -40,10 +40,10 @@
   delete dlg;
     \endcode
     
-    \ingroup gui
+    \ingroup dialogs
     \author Bernhard Walle
-    \version $Revision: 1.1 $
-    \date $Date: 2003/12/28 22:08:15 $
+    \version $Revision: 1.2 $
+    \date $Date: 2004/01/08 23:40:24 $
 */
 
 /*!

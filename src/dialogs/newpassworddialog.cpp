@@ -1,5 +1,5 @@
 /*
- * Id: $Id: newpassworddialog.cpp,v 1.10 2004/01/06 23:30:43 bwalle Exp $
+ * Id: $Id: newpassworddialog.cpp,v 1.11 2004/01/08 23:40:23 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -42,10 +42,10 @@
     because maybe the user has not setup a dictionary at this time and because here the
     user cannot use a random password but must memorize the password.
     
-    \ingroup gui
+    \ingroup dialogs
     \author Bernhard Walle
-    \version $Revision: 1.10 $
-    \date $Date: 2004/01/06 23:30:43 $
+    \version $Revision: 1.11 $
+    \date $Date: 2004/01/08 23:40:23 $
 */
 
 
@@ -313,8 +313,8 @@ void NewPasswordDialog::checkOkEnabled() const
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.10 $
-    \date $Date: 2004/01/06 23:30:43 $
+    \version $Revision: 1.11 $
+    \date $Date: 2004/01/08 23:40:23 $
 */
 
 /*!

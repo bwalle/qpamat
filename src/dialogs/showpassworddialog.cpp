@@ -1,5 +1,5 @@
 /*
- * Id: $Id: showpassworddialog.cpp,v 1.3 2003/12/29 11:00:05 bwalle Exp $
+ * Id: $Id: showpassworddialog.cpp,v 1.4 2004/01/08 23:40:23 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -41,10 +41,10 @@
     It depends on the global property <tt>Presentation/HideRandomPass</tt> and on the constructor
     parameter if the dialog shows the insert button or not. 
     
-    \ingroup gui
+    \ingroup dialogs
     \author Bernhard Walle
-    \version $Revision: 1.3 $
-    \date $Date: 2003/12/29 11:00:05 $
+    \version $Revision: 1.4 $
+    \date $Date: 2004/01/08 23:40:23 $
 */
 
 /*!
