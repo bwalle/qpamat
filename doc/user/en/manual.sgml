@@ -13,9 +13,9 @@
 		</affiliation>
 	</author>
 
-	<pubdate>2005-02-14</pubdate>
+	<pubdate>2005-02-27</pubdate>
 	
-	<releaseinfo>Version 0.4.0</releaseinfo>   
+	<releaseinfo>Version 0.4.1</releaseinfo>   
 	
 	<copyright>
 		<year>2003-2005</year>
@@ -555,11 +555,17 @@
         </menuchoice>
       </term>
       <listitem>
-        <para>Exports the data. This is mainly the same as "Save",
+        <para>Exports the data. There are two export methods: XML and text.
+        </para>
+        
+        <para>Exporting as text is mainly the same as "Save",
           but there are two differences: You can choose the file name directly
           in a file chooser, and if you configured QPaMaT to use a smart card, 
           this function stores the password in the XML file nevertheless. This
           function is useful for backup. </para>
+        
+        <para>Exporting as text exports the data in a clear text files, with
+          readable passwords.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
