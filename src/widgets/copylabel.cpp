@@ -1,5 +1,5 @@
 /*
- * Id: $Id: copylabel.cpp,v 1.2 2003/12/29 00:37:11 bwalle Exp $
+ * Id: $Id: copylabel.cpp,v 1.3 2004/03/26 20:41:43 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -36,8 +36,8 @@
     
     \ingroup widgets
     \author Bernhard Walle
-    \version $Revision: 1.2 $
-    \date $Date: 2003/12/29 00:37:11 $
+    \version $Revision: 1.3 $
+    \date $Date: 2004/03/26 20:41:43 $
 */
 
 /*!
@@ -139,6 +139,5 @@ void CopyLabel::copyText()
 {
     QClipboard* cb = QApplication::clipboard();
     cb->setText(m_label->text(), QClipboard::Clipboard);
-    cb->setText(m_label->text(), QClipboard::Selection);
 }
 

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.37 2004/03/14 12:03:27 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.38 2004/03/26 20:41:34 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -91,8 +91,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.37 $
-    \date $Date: 2004/03/14 12:03:27 $
+    \version $Revision: 1.38 $
+    \date $Date: 2004/03/26 20:41:34 $
  */
 
 /*! 
@@ -733,7 +733,6 @@ void Qpamat::print()
 void Qpamat::clearClipboard()
 {
     QClipboard *cb = QApplication::clipboard();
-    cb->setText(QString::null, QClipboard::Selection);
     cb->setText(QString::null, QClipboard::Clipboard);
 }
 
