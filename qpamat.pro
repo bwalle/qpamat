@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.17 2003/12/15 18:39:20 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.18 2003/12/16 22:50:20 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -15,8 +15,11 @@ SOURCES     =                                   \
     src/dialogs/passworddialog.cpp              \
     src/dialogs/newpassworddialog.cpp           \
     src/dialogs/configurationdialog.cpp         \
+    src/dialogs/randompassworddialog.cpp        \
     src/widgets/filelineedit.cpp                \
     src/widgets/fontchoosebox.cpp               \
+    src/widgets/copylineedit.cpp                \
+    src/widgets/focuslineedit.cpp               \
     src/security/encodinghelper.cpp             \
     src/security/passwordhash.cpp               \
     src/security/abstractencryptor.cpp          \
@@ -24,6 +27,7 @@ SOURCES     =                                   \
     src/security/notencryptor.cpp               \
     src/security/collectencryptor.cpp           \
     src/security/randompasswordgenerator.cpp    \
+    src/security/passwordgeneratorfactory.cpp   \
     src/security/simplepasswordchecker.cpp      \
     src/security/extendedpasswordchecker.cpp    \
     src/security/extendeddictpasswordchecker.cpp\
@@ -32,6 +36,7 @@ SOURCES     =                                   \
     src/smartcard/cardexception.cpp             \
     src/smartcard/memorycard.cpp                \
     src/util/timerstatusmessage.cpp             \
+    src/randompassword.cpp                      \
     src/singleapplication.cpp                   \
     src/treeentry.cpp                           \
     src/property.cpp                            \
@@ -50,8 +55,11 @@ HEADERS     =                                   \
     src/dialogs/passworddialog.h                \
     src/dialogs/newpassworddialog.h             \
     src/dialogs/configurationdialog.h           \
+    src/dialogs/randompassworddialog.h          \
     src/widgets/filelineedit.h                  \
     src/widgets/fontchoosebox.h                 \
+    src/widgets/copylineedit.h                  \
+    src/widgets/focuslineedit.h                 \
     src/global.h                                \
     src/security/passwordcheckexception.h       \
     src/security/encodinghelper.h               \
@@ -63,13 +71,16 @@ HEADERS     =                                   \
     src/security/abstractencryptor.h            \
     src/security/symmetricencryptor.h           \
     src/security/collectencryptor.h             \
+    src/security/passwordgenerator.h            \
     src/security/randompasswordgenerator.h      \
+    src/security/passwordgeneratorfactory.h     \
     src/security/passwordchecker.h              \
     src/security/simplepasswordchecker.h        \
     src/security/extendedpasswordchecker.h      \
     src/security/extendeddictpasswordchecker.h  \
     src/security/externalpasswordchecker.h      \
     src/security/passwordcheckerfactory.h       \
+    src/randompassword.h                        \
     src/smartcard/cardexception.h               \
     src/smartcard/memorycard.h                  \
     src/util/timerstatusmessage.h               \
