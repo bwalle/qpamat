@@ -1,5 +1,5 @@
 /*
- * Id: $Id: datareadwriter.h,v 1.3 2004/01/20 21:43:35 bwalle Exp $
+ * Id: $Id: datareadwriter.h,v 1.4 2004/03/25 16:47:11 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -43,8 +43,9 @@ class ReadWriteException : public std::runtime_error
         
     public:
         ReadWriteException(const QString& error, Category category = COtherError, 
-            Severity severity = WARNING) : std::runtime_error(error.latin1()), 
-            m_message(error), m_severity(severity), m_category(category) {}
+            Severity severity = WARNING) : std::runtime_error(!error ? "" : error.latin1()), 
+            m_message(error), m_severity(severity), m_category(category) 
+            { PRINT_TRACE("EXception generated"); }
 
         ~ReadWriteException() throw () {};
 
