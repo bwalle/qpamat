@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.cpp,v 1.6 2003/12/06 18:24:50 bwalle Exp $
+ * Id: $Id: configurationdialog.cpp,v 1.7 2003/12/10 21:43:47 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -111,10 +111,10 @@ void GeneralTab::createAndLayout()
     // auto text
     QLabel* miscLabel = new QLabel(tr("&Misc"), autoTextGroup);
     m_miscEdit = new QLineEdit(autoTextGroup);
-    QLabel* usernameLabel = new QLabel(tr("&Username"), autoTextGroup);
-    m_usernameEdit = new QLineEdit(autoTextGroup);
     QLabel* passwordLabel = new QLabel(tr("&Password"), autoTextGroup);
     m_passwordEdit = new QLineEdit(autoTextGroup);
+    QLabel* usernameLabel = new QLabel(tr("&Username"), autoTextGroup);
+    m_usernameEdit = new QLineEdit(autoTextGroup);
     QLabel* urlLabel = new QLabel(tr("&URL"), autoTextGroup);
     m_urlEdit = new QLineEdit(autoTextGroup);
     
@@ -130,6 +130,10 @@ void GeneralTab::createAndLayout()
     mainLayout->addWidget(locationsGroup);
     mainLayout->addWidget(autoTextGroup);
     mainLayout->addStretch(5);
+    
+    QWidget::setTabOrder(m_miscEdit, m_usernameEdit);
+    QWidget::setTabOrder(m_usernameEdit, m_passwordEdit);
+    QWidget::setTabOrder(m_passwordEdit, m_urlEdit);
 }
 
 
@@ -520,8 +524,4 @@ void SmartcardTab::testSmartCard()
                QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
     }
 }
-
-
-
-
 
