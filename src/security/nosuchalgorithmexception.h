@@ -1,5 +1,5 @@
 /*
- * Id: $Id: nosuchalgorithmexception.h,v 1.1 2003/09/20 13:38:41 bwalle Exp $
+ * Id: $Id: nosuchalgorithmexception.h,v 1.2 2003/09/21 16:01:11 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,6 +15,8 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
+#ifndef NOSUCHALGORITHMEXCEPTION_H
+#define NOSUCHALGORITHMEXCEPTION_H
 #include <stdexcept>
 #include <string>
 
@@ -22,7 +24,7 @@
  * Exception that is thrown if QPaMaT has not included the necessary algorithm for
  * encryption.
  */
-class NoSuchAlgorithmException : public std::logic_error
+class NoSuchAlgorithmException : public std::runtime_error
 {
     public:
         
@@ -31,11 +33,12 @@ class NoSuchAlgorithmException : public std::logic_error
          * message is returned by the what() method.
          * @param error the error message
          */
-        NoSuchAlgorithmException(const std::string& error);
+        NoSuchAlgorithmException(const std::string& error) : std::runtime_error(error) { }
         
         /**
          * Deletes the object.
          */
-        virtual ~NoSuchAlgorithmException();
+        virtual ~NoSuchAlgorithmException() throw () { }
 };
 
+#endif // NOSUCHALGORITHMEXCEPTION_H
