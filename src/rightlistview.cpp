@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightlistview.cpp,v 1.13 2004/03/26 20:41:34 bwalle Exp $
+ * Id: $Id: rightlistview.cpp,v 1.14 2004/03/30 15:42:43 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -41,8 +41,8 @@
     \brief Represents the list view on the right where the key-value pairs are displayed.
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.13 $
-    \date $Date: 2004/03/26 20:41:34 $
+    \version $Revision: 1.14 $
+    \date $Date: 2004/03/30 15:42:43 $
 */
 
 /*!
@@ -223,6 +223,10 @@ void RightListView::copyItem(QListViewItem* item)
         Property* property = m_currentItem->getProperty(item->text(2).toInt(0));
         QClipboard* clip = QApplication::clipboard();
         clip->setText(property->getValue(), QClipboard::Clipboard);
+        if (clip->supportsSelection())
+        {
+            clip->setText(property->getValue(), QClipboard::Selection);
+        }
     }
 }
 
