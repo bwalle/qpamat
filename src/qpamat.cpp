@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.3 2003/11/02 20:01:16 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.4 2003/11/16 20:23:08 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -30,6 +30,7 @@
 #include <qdialog.h>
 #include <qstatusbar.h>
 #include <qmessagebox.h>
+#include <qlabel.h>
 #include <qsettings.h>
 #include <qscrollview.h>
 
@@ -41,9 +42,14 @@
 #include "../images/save_22x22.xpm"
 #include "../images/whats_this.xpm"
 #include "../images/lock_big.xpm"
+#include "../images/configure_16x16.xpm"
+#include "../images/configure_22x22.xpm"
+#include "../images/find_16x16.xpm"
+#include "../images/find_22x22.xpm"
 
 #include "dialogs/passworddialog.h"
 #include "dialogs/newpassworddialog.h"
+#include "dialogs/configurationdialog.h"
 #include "qpamat.h"
 #include "settings.h"
 #include "rightpanel.h"
@@ -60,22 +66,22 @@ Qpamat::Qpamat()
     QIconSet::setIconSize(QIconSet::Small, QSize(16, 16));
     QIconSet::setIconSize(QIconSet::Large, QSize(22, 22));
     
-    // Initialization of menu
-    initActions();
-    initMenubar();
-    initToolbar();
-    
     // Tree on the left
     QDockWindow* dock = new QDockWindow(this);
     dock->setVerticallyStretchable(true);
     dock->setResizeEnabled(true);
-    dock->setCloseMode(QDockWindow::Never);
-    dock->setCaption(tr("Tree"));
+    dock->setCloseMode(QDockWindow::Always);
+    dock->setCaption(tr("Sites"));
     dock->setFixedExtentWidth(int(qApp->desktop()->width() * 0.15));
     addDockWindow(dock, Qt::DockLeft);
     
     m_tree = new Tree(dock);
     dock->setWidget(m_tree);
+    
+    // Initialization of menu
+    initActions();
+    initMenubar();
+    initToolbar();
     
     // main widget in the center
     m_rightPanel = new RightPanel(this);
@@ -119,6 +125,20 @@ void Qpamat::initToolbar()
     
     m_actions.newAction->addTo(applicationToolbar);
     m_actions.saveAction->addTo(applicationToolbar);
+    m_actions.settingsAction->addTo(applicationToolbar);
+    
+    // ----- Search --------------------------------------------------------------------------------
+    m_searchToolbar = new QToolBar(this);
+    m_searchToolbar->setLabel(tr("Search"));
+    
+    new QLabel(tr("Search:"), m_searchToolbar);
+    m_searchCombo = new QComboBox(true, m_searchToolbar);
+    m_searchCombo->setMinimumWidth(120);
+    
+    m_actions.searchAction->addTo(m_searchToolbar);
+    
+    connect(m_searchCombo, SIGNAL(activated(int)), this, SLOT(search()));
+    
 }
 
 
@@ -136,6 +156,16 @@ void Qpamat::initMenubar()
      m_actions.saveAction->addTo(fileMenu);
      fileMenu->insertSeparator();
      m_actions.quitAction->addTo(fileMenu);
+     
+     // ----- View ---------------------------------------------------------------------------------
+     menuBar()->insertItem(tr("&View"), createDockWindowMenu(QMainWindow::NoToolBars));
+     
+     // ----- Options ------------------------------------------------------------------------------
+     QPopupMenu* optionsMenu = new QPopupMenu(this);
+     menuBar()->insertItem(tr("&Options"), optionsMenu);
+     
+     m_actions.changePasswordAction->addTo(optionsMenu);
+     m_actions.settingsAction->addTo(optionsMenu);
      
      // ----- Help ---------------------------------------------------------------------------------
      menuBar()->insertSeparator();
@@ -195,8 +225,8 @@ void Qpamat::login()
         try
         {
             m_tree->setEnabled(true);
-            ok = m_tree->readFromXML( Settings::getInstance().getSettings().readEntry("/Data File",
-                Settings::QPAMAT_FILE_NAME ), m_password);
+            ok = m_tree->readFromXML( Settings::getInstance().getSettings().readEntry(
+                "/General/Datafile", Settings::QPAMAT_FILE_NAME ), m_password);
         }
         catch (const WrongPassword& ex)
         {
@@ -219,9 +249,13 @@ void Qpamat::setLogin(bool loggedIn)
     m_actions.loginAction->setEnabled(!loggedIn);
     m_actions.logoutAction->setEnabled(loggedIn);
     m_actions.saveAction->setEnabled(loggedIn);
+    m_actions.changePasswordAction->setEnabled(loggedIn);
+    m_searchToolbar->setEnabled(loggedIn);
+    
     if (!loggedIn)
     {
         m_tree->clear();
+        m_rightPanel->clear();
     }
     m_tree->setEnabled(loggedIn);
     
@@ -235,8 +269,9 @@ void Qpamat::save()
     if (m_loggedIn)
     {
         QSettings& settings = Settings::getInstance().getSettings();
-        m_tree->writeToXML(settings.readEntry("/Data File", Settings::QPAMAT_FILE_NAME), m_password,
-            settings.readEntry("/Cipher algorithm", Encryptor::getSuggestedAlgorithm()));
+        m_tree->writeToXML(settings.readEntry("/General/Datafile", Settings::QPAMAT_FILE_NAME), 
+            m_password, settings.readEntry("/General/CipherAlgorithm",
+                Encryptor::getSuggestedAlgorithm()));
     }
 }
 
@@ -270,6 +305,49 @@ void Qpamat::newFile()
     delete dialog;
 }
 
+
+// -------------------------------------------------------------------------------------------------
+void Qpamat::changePassword()
+// -------------------------------------------------------------------------------------------------
+{
+    NewPasswordDialog* dlg = new NewPasswordDialog(this, m_password);
+    if (dlg->exec() == QDialog::Accepted)
+    {
+        m_password = dlg->getPassword();
+    }
+    delete dlg;
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void Qpamat::configure()
+// -------------------------------------------------------------------------------------------------
+{
+    ConfigurationDialog* dlg = new ConfigurationDialog(this);
+    dlg->exec();
+    delete dlg;
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void Qpamat::search()
+// -------------------------------------------------------------------------------------------------
+{
+    const QString text = m_searchCombo->currentText();
+    
+    if (text.length() == 0)
+    {
+         QMessageBox::warning(this, QObject::tr("QPaMaT"),
+               tr("Please enter a search criterion in the text field!"),
+               QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
+    }
+    else
+    {
+        m_tree->searchFor(text);
+    }
+}
+
+
 // -------------------------------------------------------------------------------------------------
 void Qpamat::initActions()
 // -------------------------------------------------------------------------------------------------
@@ -293,6 +371,14 @@ void Qpamat::initActions()
         QKeySequence(CTRL|Key_S), this);
     connect(m_actions.saveAction, SIGNAL(activated()), this, SLOT(save()));
     
+    // ----- Options -------------------------------------------------------------------------------
+    m_actions.changePasswordAction = new QAction(tr("&Change Password..."), QKeySequence(), this);
+    connect(m_actions.changePasswordAction, SIGNAL(activated()), this, SLOT(changePassword()));
+    
+    m_actions.settingsAction = new QAction(QIconSet(configure_16x16_xpm, configure_22x22_xpm), 
+        tr("&Settings..."), QKeySequence(CTRL|Key_C), this);
+    connect(m_actions.settingsAction, SIGNAL(activated()), this, SLOT(configure()));
+    
     // ----- Help ----------------------------------------------------------------------------------
     m_actions.whatsThisAction = new QAction(QPixmap(whats_this_xpm), tr("&What's this"), 
         QKeySequence(SHIFT|Key_F1), this);
@@ -303,6 +389,11 @@ void Qpamat::initActions()
     
     m_actions.aboutQtAction = new QAction(tr("About &Qt..."), QKeySequence(), this);
     connect(m_actions.aboutQtAction, SIGNAL(activated()), qApp, SLOT(aboutQt()));
+    
+    // ----- Toolbar -------------------------------------------------------------------------------
+    m_actions.searchAction = new QAction(QIconSet(find_16x16_xpm, find_22x22_xpm), 
+        tr("&Search"), QKeySequence(), this);
+    connect(m_actions.searchAction, SIGNAL(activated()), this, SLOT(search()));
     
 }
     

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.h,v 1.4 2003/11/04 22:49:27 bwalle Exp $
+ * Id: $Id: tree.h,v 1.5 2003/11/16 20:23:41 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -31,8 +31,8 @@
  * Represents the tree that holds the password entries.
  * @ingroup gui
  * @author Bernhard Walle
- * @version $Revision: 1.4 $
- * @date $Date: 2003/11/04 22:49:27 $
+ * @version $Revision: 1.5 $
+ * @date $Date: 2003/11/16 20:23:41 $
  */
 class Tree : public QListView
 {
@@ -78,7 +78,14 @@ class Tree : public QListView
          * @param evt the key event
          */
         void keyPressEvent(QKeyEvent* evt);
+    
+    public slots:
         
+        /**
+         * Searches in the tree for the specified word.
+         * @param word the word which should be found
+         */
+        void searchFor(const QString& word);
         
     private slots:
         void showContextMenu(QListViewItem* item, const QPoint& point);

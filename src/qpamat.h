@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.h,v 1.3 2003/11/04 22:49:45 bwalle Exp $
+ * Id: $Id: qpamat.h,v 1.4 2003/11/16 20:23:10 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -20,6 +20,7 @@
 
 #include <qmainwindow.h>
 #include <qaction.h>
+#include <qcombobox.h>
 #include <qevent.h>
 
 #include "help.h"
@@ -31,8 +32,8 @@
  * The main application window.
  * @ingroup gui
  * @author Bernhard Walle
- * @version $Revision: 1.3 $
- * @date $Date: 2003/11/04 22:49:45 $
+ * @version $Revision: 1.4 $
+ * @date $Date: 2003/11/16 20:23:10 $
  */
 class Qpamat : public QMainWindow
 {
@@ -66,6 +67,22 @@ class Qpamat : public QMainWindow
          * Performs the save process.
          */
         void save();
+        
+        /**
+         * Displayes the change password dialog.
+         */
+        void changePassword();
+        
+        /** 
+         * Displays the configuration dialog.
+         */
+        void configure();
+        
+        /**
+         * Searches in the tree for the specified word.
+         */
+        void search();
+        
     
     protected:
         
@@ -87,6 +104,8 @@ class Qpamat : public QMainWindow
         Help m_help;
         QPopupMenu* m_treeContextMenu;
         RightPanel* m_rightPanel;
+        QComboBox* m_searchCombo;
+        QToolBar* m_searchToolbar;
         bool m_loggedIn;
         
         struct Actions
@@ -95,10 +114,14 @@ class Qpamat : public QMainWindow
             QAction* loginAction;
             QAction* logoutAction;
             QAction* saveAction;
+            QAction* viewTreeAction;
             QAction* quitAction;
             QAction* aboutAction;
             QAction* aboutQtAction;
             QAction* whatsThisAction;
+            QAction* changePasswordAction;
+            QAction* settingsAction;
+            QAction* searchAction;
         };
         Actions m_actions;
 };

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.4 2003/10/20 20:55:03 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.5 2003/11/16 20:23:34 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -44,7 +44,7 @@ Tree::Tree(QWidget* parent)
     setRootIsDecorated(true);
     setShowSortIndicator(true);
     
-    setFocusPolicy(QWidget::StrongFocus );
+    setFocusPolicy(QWidget::StrongFocus);
     
     initTreeContextMenu();
     QObject::connect(this, SIGNAL(contextMenuRequested(QListViewItem*, const QPoint&, int)),
@@ -282,3 +282,43 @@ void Tree::initTreeContextMenu()
         tr("Delete &Item") + "\t" + QString(QKeySequence(Key_Delete)), DELETE_ITEM);
     
 }
+
+
+// -------------------------------------------------------------------------------------------------
+void Tree::searchFor(const QString& word)
+// -------------------------------------------------------------------------------------------------
+{
+    QListViewItem* selected = selectedItem();
+    QListViewItem* current;
+   
+    QListViewItemIterator* it;
+    if (selected)
+    {
+        it = new QListViewItemIterator(selected);
+        ++(*it);
+    }
+    else
+    {
+        it = new QListViewItemIterator(this);
+    }
+    
+    while ( (current = it->current()) ) 
+    {
+        if (current->text(0).contains(word, false))
+        {
+            setSelected(current, true);
+            break;
+        }
+        ++(*it);
+    }
+    
+    delete it;
+    
+    if (selectedItem() == selected)
+    {
+        QMessageBox::warning(this, QObject::tr("QPaMaT"),
+               tr("No items found."),
+               QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
+    }
+}
+
