@@ -1,5 +1,5 @@
 /*
- * Id: $Id: passworddialog.cpp,v 1.1 2003/10/11 19:49:25 bwalle Exp $
+ * Id: $Id: passworddialog.cpp,v 1.2 2003/10/12 15:10:33 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -51,7 +51,6 @@ PasswordDialog::PasswordDialog(QWidget* parent)
     
     
     // layout elements
-    buttonLayout->addSpacing(5);
     buttonLayout->addStretch(10);
     buttonLayout->addWidget(okButton);
     buttonLayout->addWidget(cancelButton);
@@ -59,6 +58,7 @@ PasswordDialog::PasswordDialog(QWidget* parent)
     layout->addWidget(label);
     layout->addWidget(m_passwordEdit);
     layout->addStretch(10);
+    layout->addSpacing(7);
     layout->addLayout(buttonLayout);
     
     

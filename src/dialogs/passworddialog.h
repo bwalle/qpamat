@@ -1,5 +1,5 @@
 /*
- * Id: $Id: passworddialog.h,v 1.1 2003/10/11 19:49:25 bwalle Exp $
+ * Id: $Id: passworddialog.h,v 1.2 2003/10/12 15:10:33 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -26,8 +26,8 @@
  * Dialog which is used to enter the password
  * @ingroup gui
  * @author Bernhard Walle
- * @version $Revision: 1.1 $
- * @date $Date: 2003/10/11 19:49:25 $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2003/10/12 15:10:33 $
  */
 class PasswordDialog : public QDialog 
 {
@@ -37,7 +37,7 @@ class PasswordDialog : public QDialog
         
         /**
          * Creates a new instance of the password dialog.
-         * @param the parent widget
+         * @param parent the parent widget
          */
         PasswordDialog(QWidget* parent);
         

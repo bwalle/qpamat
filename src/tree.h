@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.h,v 1.1 2003/10/05 16:08:21 bwalle Exp $
+ * Id: $Id: tree.h,v 1.2 2003/10/12 15:11:36 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -31,8 +31,8 @@
  * Represents the tree that holds the password entries.
  * @ingroup gui
  * @author Bernhard Walle
- * @version $Revision: 1.1 $
- * @date $Date: 2003/10/05 16:08:21 $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2003/10/12 15:11:36 $
  */
 class Tree : public QListView
 {
@@ -50,9 +50,10 @@ class Tree : public QListView
          * Reads and updates the tree from the given XML file.
          * @param fileName the XML file from which the information should be read
          * @param password the password
+         * @return \c true on success, \c false  otherwise
          * @exception WrongPassword if the given password was wrong according to the XML file
          */
-        void readFromXML(const QString& fileName, const QString& password) throw (WrongPassword);
+        bool readFromXML(const QString& fileName, const QString& password) throw (WrongPassword);
         
     public slots:
         
