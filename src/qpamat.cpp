@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.9 2003/12/04 20:30:45 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.10 2003/12/06 18:22:49 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -63,6 +63,7 @@
 #include "dialogs/newpassworddialog.h"
 #include "dialogs/configurationdialog.h"
 #include "security/externalpasswordchecker.h"
+#include "security/symmetricencryptor.h"
 #include "qpamat.h"
 #include "settings.h"
 #include "rightpanel.h"
@@ -322,7 +323,7 @@ void Qpamat::save()
         QSettings& settings = Settings::getInstance().getSettings();
         m_tree->writeToXML(settings.readEntry("/General/Datafile", Settings::QPAMAT_FILE_NAME), 
             m_password, settings.readEntry("/Security/CipherAlgorithm",
-                Encryptor::getSuggestedAlgorithm()));
+                SymmetricEncryptor::getSuggestedAlgorithm()));
     }
 }
 
@@ -413,10 +414,11 @@ void Qpamat::print()
             return;
         }
         
-        QString ssfName = set.readEntry("Printing/SansSerifFont", Settings::DEFAULT_SANSSERIF_FONT);
-        QString sfName  = set.readEntry("Printing/SerifFont", Settings::DEFAULT_SERIF_FONT);
-        QFont serifFont(sfName, 10, QFont::Normal);
-        QFont sansSerifFont(ssfName, 9, QFont::Normal);
+        QFont serifFont;
+        QFont sansSerifFont;
+        serifFont.fromString(set.readEntry( "Printing/NormalFont", Settings::DEFAULT_NORMAL_FONT));
+        sansSerifFont.fromString(set.readEntry("Printing/FooterFont",Settings::DEFAULT_FOOTER_FONT));
+        
         p.setFont(sansSerifFont);
         
         qApp->setOverrideCursor( QCursor( Qt::WaitCursor ) );
