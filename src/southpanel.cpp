@@ -1,5 +1,5 @@
 /*
- * Id: $Id: southpanel.cpp,v 1.7 2003/12/17 23:17:42 bwalle Exp $
+ * Id: $Id: southpanel.cpp,v 1.8 2003/12/18 14:08:14 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -64,8 +64,8 @@ SouthPanel::SouthPanel(QWidget* parent)
     hLayout->addWidget(group);
     
     // button group box
-    QWidget* vbox = new QWidget(this, "SouthPanel vertical box");
-    QVBoxLayout* vboxLayout = new QVBoxLayout(vbox, 0, 6, "Layout of vbox");
+    QVBox* vbox = new QVBox(this, "SouthPanel vertical box");
+    vbox->setSpacing(6);
     
     // up button
     m_upButton = new QToolButton(vbox, "SouthPanel up button");
@@ -77,11 +77,9 @@ SouthPanel::SouthPanel(QWidget* parent)
     m_downButton->setIconSet(QIconSet(down_16x16_xpm, down_22x22_xpm));
     m_downButton->setUsesBigPixmap(true);
     
-    // layout for the button group box
-    vboxLayout->addWidget(m_upButton);
-    vboxLayout->addWidget(m_downButton);
-    vboxLayout->addStretch(5);
-        
+    // filler widget
+    new QWidget(vbox);
+    
     hLayout->addWidget(vbox);
     
     setEnabled(false);
@@ -95,8 +93,8 @@ SouthPanel::SouthPanel(QWidget* parent)
     connect(m_typeCombo, SIGNAL(activated(int)), SLOT(comboBoxChanged(int)));
     connect(m_keyLineEdit, SIGNAL(textChanged(const QString&)), SLOT(updateData()));
     connect(m_valueLineEdit, SIGNAL(textChanged(const QString&)), SLOT(updateData()));
-    connect(m_upButton, SIGNAL(pressed()), SIGNAL(moveUp()));
-    connect(m_downButton, SIGNAL(pressed()), SIGNAL(moveDown()));
+    connect(m_upButton, SIGNAL(clicked()), SIGNAL(moveUp()));
+    connect(m_downButton, SIGNAL(clicked()), SIGNAL(moveDown()));
     connect(m_valueLineEdit, SIGNAL(gotFocus()), SLOT(focusInValueHandler()));
     connect(m_valueLineEdit, SIGNAL(lostFocus()), SLOT(focusOutValueHandler()));
     connect(m_typeCombo, SIGNAL(activated(int)), SIGNAL(stateModified()));
