@@ -1,5 +1,5 @@
 /*
- * Id: $Id: property.cpp,v 1.10 2004/01/06 23:36:50 bwalle Exp $
+ * Id: $Id: property.cpp,v 1.11 2004/01/20 21:45:20 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,7 +24,6 @@
 #include "security/hybridpasswordchecker.h"
 #include "property.h"
 #include "security/encodinghelper.h"
-#include "security/stringencryptor.h"
 #include "treeentry.h"
 
 /*!
@@ -34,8 +33,8 @@
 
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.10 $
-    \date $Date: 2004/01/06 23:36:50 $
+    \version $Revision: 1.11 $
+    \date $Date: 2004/01/20 21:45:20 $
 */
 
 /*!
