@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.cpp,v 1.8 2003/12/13 22:33:44 bwalle Exp $
+ * Id: $Id: treeentry.cpp,v 1.9 2003/12/17 23:24:18 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -43,9 +43,7 @@ bool TreeEntry::isCategory() const
 Property* TreeEntry::getProperty(uint index)
 // -------------------------------------------------------------------------------------------------
 {
-#ifdef DEBUG
     Q_ASSERT( index < m_properties.count() );
-#endif
     return m_properties.at(index);
 }
 
@@ -54,9 +52,7 @@ Property* TreeEntry::getProperty(uint index)
 QString TreeEntry::text(int column) const
 // -------------------------------------------------------------------------------------------------
 {
-#ifdef DEBUG 
     Q_ASSERT( column == 0 );
-#endif
     column++; // no warnings
     return m_name;
 }
@@ -66,9 +62,7 @@ QString TreeEntry::text(int column) const
 void TreeEntry::setText(int column, const QString& text)
 // -------------------------------------------------------------------------------------------------
 {
-#ifdef DEBUG
     Q_ASSERT(column == 0);
-#endif
     m_name = text;
     listView()->sort();
     listView()->triggerUpdate();
@@ -95,15 +89,11 @@ void TreeEntry::movePropertyOneDown(uint index)
 {
     Q_ASSERT( index > 0 && index < m_properties.count() );
     
-    qDebug("Size before is %d\n", m_properties.count());
-    
     m_properties.setAutoDelete(false);
     Property* h = m_properties.at(index);
     m_properties.insert(index-1, h);
     m_properties.remove(index+1);
     m_properties.setAutoDelete(true);
-    
-    qDebug("Size after is %d\n", m_properties.count());
 }
 
 
@@ -111,9 +101,7 @@ void TreeEntry::movePropertyOneDown(uint index)
 void TreeEntry::deleteProperty(uint index)
 // -------------------------------------------------------------------------------------------------
 {
-#ifdef DEBUG
     Q_ASSERT( index < m_properties.count() );
-#endif
     m_properties.remove(index);
 }
 
