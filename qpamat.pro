@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.30 2004/01/08 23:41:11 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.31 2004/01/20 21:43:57 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -24,6 +24,8 @@ SOURCES     =                                   \
     src/dialogs/configurationdialog.cpp         \
     src/dialogs/showpassworddialog.cpp          \
 	src/dialogs/waitdialog.cpp					\
+    src/dialogs/insertcarddialog.cpp            \
+    src/dialogs/cardpinvalidator.cpp            \
     src/widgets/filelineedit.cpp                \
     src/widgets/fontchoosebox.cpp               \
     src/widgets/copylabel.cpp                   \
@@ -72,6 +74,8 @@ HEADERS     =                                   \
     src/dialogs/configurationdialogprivate.h    \
     src/dialogs/showpassworddialog.h            \
 	src/dialogs/waitdialog.h  					\
+    src/dialogs/insertcarddialog.h              \
+    src/dialogs/cardpinvalidator.h              \
     src/widgets/filelineedit.h                  \
     src/widgets/fontchoosebox.h                 \
     src/widgets/copylabel.h                     \
@@ -161,11 +165,11 @@ QMAKE_EXTRA_UNIX_TARGETS   += documentation
 # make a tarball on Unix with "make release"
 maketarball.target 		    = tarball
 maketarball.commands        = cd .. &&
-maketarball.commands       += cp -r qpamat qpamat-$$VERSION &&
-maketarball.commands       += tar cvfz qpamat-$${VERSION}.tar.gz qpamat-$$VERSION &&
+maketarball.commands       += cp -r qpamat qpamat-$$VERSION_STRING &&
+maketarball.commands       += tar cvfz qpamat-$${VERSION_STRING}.tar.gz qpamat-$$VERSION_STRING &&
 maketarball.commands       += cd - &&
-maketarball.commands       += mv ../qpamat-$${VERSION}.tar.gz . &&
-maketarball.commands       += rm -r ../qpamat-$$VERSION
+maketarball.commands       += mv ../qpamat-$${VERSION_STRING}.tar.gz . &&
+maketarball.commands       += rm -r ../qpamat-$$VERSION_STRING
 QMAKE_EXTRA_UNIX_TARGETS   += maketarball
 
 #
