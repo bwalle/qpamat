@@ -1,5 +1,5 @@
 /*
- * Id: $Id: singleapplication.h,v 1.2 2004/01/06 23:32:26 bwalle Exp $
+ * Id: $Id: singleapplication.h,v 1.3 2004/01/11 23:19:52 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -27,19 +27,22 @@ class SingleApplication : public QObject
     Q_OBJECT
     
     public:
-        SingleApplication(const QString& lockfileDir, const QString& appName) 
+        static void init(const QString& lockfileDir, const QString& appName) 
             throw (std::invalid_argument);
         
-    public slots:
-        void startup();
-        void shutdown();
+        static void registerStandardExitHandlers();
+        
+        static void startup();
+        
+        static void shutdown();
+        static void shutdown(int signal);
+        
         
     private:
-        QString         m_lockfile;
-        const QString   m_appName;
-        bool            m_shutdown;
+        static QString         lockfile;
+        static QString         appName;
+        static bool            didShutdownAlready;
+        static bool            initialized;
 };
-
-extern SingleApplication* single;
 
 #endif // SINGLEAPPLICATION_H
