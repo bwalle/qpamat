@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.25 2004/01/02 12:21:36 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.26 2004/01/03 23:41:37 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -25,6 +25,7 @@ SOURCES     =                                   \
     src/widgets/fontchoosebox.cpp               \
     src/widgets/copylabel.cpp                   \
     src/widgets/focuslineedit.cpp               \
+    src/widgets/listboxlabeledpict.cpp          \
     src/security/encodinghelper.cpp             \
     src/security/passwordhash.cpp               \
     src/security/abstractencryptor.cpp          \
@@ -70,6 +71,7 @@ HEADERS     =                                   \
     src/widgets/fontchoosebox.h                 \
     src/widgets/copylabel.h                     \
     src/widgets/focuslineedit.h                 \
+    src/widgets/listboxlabeledpict.h            \
     src/global.h                                \
     src/security/encodinghelper.h               \
     src/security/passwordhash.h                 \
@@ -155,4 +157,11 @@ maketarball.commands       += mv ../qpamat-$${VERSION}.tar.gz . &&
 maketarball.commands       += rm -r ../qpamat-$$VERSION
 QMAKE_EXTRA_UNIX_TARGETS   += maketarball
 
-# vim: ft=text
+#
+# Tags
+tags.target                 = tagfile
+tags.commands               = ctags -R src/ &&
+tags.commands              += echo "Tag created"
+QMAKE_EXTRA_UNIX_TARGETS   += tags
+
+# vim: ft=text et
