@@ -1,5 +1,5 @@
 /*
- * Id: $Id: southpanel.cpp,v 1.6 2003/12/16 22:52:40 bwalle Exp $
+ * Id: $Id: southpanel.cpp,v 1.7 2003/12/17 23:17:42 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -235,7 +235,7 @@ void SouthPanel::setMovingEnabled(bool up, bool down)
 void SouthPanel::focusInValueHandler()
 // -------------------------------------------------------------------------------------------------
 {
-    if (m_currentProperty->getType() == Property::PASSWORD)
+    if (m_currentProperty && m_currentProperty->getType() == Property::PASSWORD)
     {
         passwordLineEditGotFocus(true);
     }
@@ -246,7 +246,7 @@ void SouthPanel::focusInValueHandler()
 void SouthPanel::focusOutValueHandler()
 // -------------------------------------------------------------------------------------------------
 {
-    if (m_currentProperty->getType() == Property::PASSWORD)
+    if (m_currentProperty && m_currentProperty->getType() == Property::PASSWORD)
     {
         emit passwordLineEditGotFocus(false);
     }
