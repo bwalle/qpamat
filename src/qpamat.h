@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.h,v 1.11 2003/12/14 16:55:38 bwalle Exp $
+ * Id: $Id: qpamat.h,v 1.12 2003/12/15 21:20:16 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,6 +24,7 @@
 #include <qevent.h>
 #include <qtoolbutton.h>
 
+#include "util/timerstatusmessage.h"
 #include "help.h"
 #include "tree.h"
 #include "rightpanel.h"
@@ -34,8 +35,8 @@
  *
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.11 $
- * \date $Date: 2003/12/14 16:55:38 $
+ * \version $Revision: 1.12 $
+ * \date $Date: 2003/12/15 21:20:16 $
  */
 class Qpamat : public QMainWindow
 {
@@ -47,6 +48,11 @@ class Qpamat : public QMainWindow
          * Creates a new instance of the application.
          */
         Qpamat();
+        
+        /*!
+         * Deletes the application.
+         */
+        ~Qpamat();
         
         /*!
          * Reimplemented to implement AutoLogin 
@@ -127,11 +133,11 @@ class Qpamat : public QMainWindow
         void setLogin(bool login);
         
     private:
-        // the tree
         Tree* m_tree;
         QString m_password;
         Help m_help;
         QPopupMenu* m_treeContextMenu;
+        TimerStatusmessage* m_message;
         RightPanel* m_rightPanel;
         QComboBox* m_searchCombo;
         QToolBar* m_searchToolbar;

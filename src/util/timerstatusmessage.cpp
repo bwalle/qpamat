@@ -1,5 +1,5 @@
 /*
- * Id: $Id: timerstatusmessage.cpp,v 1.1 2003/12/15 18:37:28 bwalle Exp $
+ * Id: $Id: timerstatusmessage.cpp,v 1.2 2003/12/15 21:20:32 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -23,16 +23,28 @@
 #include "timerstatusmessage.h"
 
 // -------------------------------------------------------------------------------------------------
-TimerStatusmessage::TimerStatusmessage(const QString& message, int time, QStatusBar* sb)
+TimerStatusmessage::TimerStatusmessage(QStatusBar* sb)
 // -------------------------------------------------------------------------------------------------
-            : m_statusBar(sb), m_time(time), m_message(message)
+            : m_statusBar(sb), m_connected(false)
+{}
+
+
+// -------------------------------------------------------------------------------------------------
+void TimerStatusmessage::message(const QString& message, int time)
+// -------------------------------------------------------------------------------------------------
 {
+    m_message = message;
     m_begin = QTime::currentTime();
+    m_time = time;
+    m_statusBar->blockSignals(true);
     m_statusBar->message(m_message, time);
-    connect(m_statusBar, SIGNAL(messageChanged(const QString&)), SLOT(displayAgain()));
-    connect(m_statusBar, SIGNAL(destroyed()), SLOT(deleteMyself()));
-    // delete myself one second
-    QTimer::singleShot(time + 1000, this, SLOT(deleteMyself()));
+    m_statusBar->blockSignals(false);
+    if (!m_connected)
+    {
+        connect(m_statusBar, SIGNAL(messageChanged(const QString&)), SLOT(displayAgain()));
+        m_connected = true;
+        QTimer::singleShot(time+1000, this, SLOT(disconnectSignalsAndSlots()));
+    }
 }
 
 
@@ -41,9 +53,11 @@ void TimerStatusmessage::displayAgain()
 // -------------------------------------------------------------------------------------------------
 {
     int diff = m_begin.msecsTo(QTime::currentTime());
+    qDebug("TimerStatusmessage::displayAgain, diff = %d", diff);
     if (diff < m_time)
     {
         m_statusBar->blockSignals(true);
+        qDebug("Displaying again with %d\n", m_time - diff);
         m_statusBar->message(m_message, m_time - diff);
         m_statusBar->blockSignals(false);
     }
@@ -51,10 +65,11 @@ void TimerStatusmessage::displayAgain()
 
 
 // -------------------------------------------------------------------------------------------------
-void TimerStatusmessage::deleteMyself()
+void TimerStatusmessage::disconnectSignalsAndSlots()
 // -------------------------------------------------------------------------------------------------
 {
-    qDebug("Deleted myself");
-    delete this;
+    qDebug("Disconnected");
+    disconnect(m_statusBar, SIGNAL(messageChanged(const QString&)), this, SLOT(displayAgain()));
+    m_connected = false;
 }
 

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.15 2003/12/15 18:38:26 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.16 2003/12/15 21:20:16 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -109,6 +109,7 @@ Qpamat::Qpamat()
     
     // display statusbar
     statusBar();
+    m_message = new TimerStatusmessage(statusBar());
     setLogin(false);
     
     // restore settings
@@ -140,10 +141,18 @@ Qpamat::Qpamat()
 
 
 // -------------------------------------------------------------------------------------------------
+Qpamat::~Qpamat()
+// -------------------------------------------------------------------------------------------------
+{
+    delete m_message;
+}
+
+
+// -------------------------------------------------------------------------------------------------
 void Qpamat::message(const QString& message, bool)
 // -------------------------------------------------------------------------------------------------
 {
-    new TimerStatusmessage(message, /*warning ? 3000 : */ 1500, statusBar());
+    m_message->message(message, /*warning ? 3000 : */ 1500);
 }
 
 

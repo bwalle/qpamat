@@ -1,5 +1,5 @@
 /*
- * Id: $Id: timerstatusmessage.h,v 1.1 2003/12/15 18:37:28 bwalle Exp $
+ * Id: $Id: timerstatusmessage.h,v 1.2 2003/12/15 21:20:32 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -29,13 +29,13 @@
  * If another class changes the status text, this class re-changes it to the old value.
  * Of course this is a hack, but it works.
  *
- * This class auto-deletes itself. Don't delete it and create it only with new, not on
- * the stack! All other doesn't make sense.
+ * Create a new instance and set the statusbar. Then call the message() method each time
+ * you want to display the message.
  *
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.1 $
- * \date $Date: 2003/12/15 18:37:28 $
+ * \version $Revision: 1.2 $
+ * \date $Date: 2003/12/15 21:20:32 $
  */
 class TimerStatusmessage : public QObject
 {
@@ -45,21 +45,29 @@ class TimerStatusmessage : public QObject
         
         /*!
          * Creates a new TimerStatusmessage object. 
-         * \param message the message that should be displayed on the statusbar
-         * \param time the time while the message is displayed
          * \param statusbar the statusbar on which the message should be displayed
          */
-        TimerStatusmessage(const QString& message, int time, QStatusBar* statusbar);
+        TimerStatusmessage(QStatusBar* statusbar);
+        
+    public slots:
+        
+        /*!
+         * Displays a message immediately.
+         * \param message the message that should be displayed on the statusbar
+         * \param time the time while the message is displayed
+         */
+        void message(const QString& message, int time);
         
     private slots:
         void displayAgain();
-        void deleteMyself();
+        void disconnectSignalsAndSlots();
         
     private:
         QStatusBar* m_statusBar;
         int m_time;
-        const QString m_message;
+        QString m_message;
         QTime m_begin;
+        bool m_connected;
 };
 
 #endif // TIMERSTATUSMESSAGE_H
