@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.cpp,v 1.24 2004/02/07 00:10:53 bwalle Exp $
+ * Id: $Id: configurationdialog.cpp,v 1.25 2004/05/15 16:55:33 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -89,8 +89,8 @@
     
     \ingroup dialogs
     \author Bernhard Walle
-    \version $Revision: 1.24 $
-    \date $Date: 2004/02/07 00:10:53 $
+    \version $Revision: 1.25 $
+    \date $Date: 2004/05/15 16:55:33 $
  */
 
 /*!
@@ -142,8 +142,8 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.24 $
-    \date $Date: 2004/02/07 00:10:53 $
+    \version $Revision: 1.25 $
+    \date $Date: 2004/05/15 16:55:33 $
 */
 
 /*!
@@ -184,8 +184,8 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.24 $
-    \date $Date: 2004/02/07 00:10:53 $
+    \version $Revision: 1.25 $
+    \date $Date: 2004/05/15 16:55:33 $
 */
 
 
@@ -305,8 +305,8 @@ void ConfDlgGeneralTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.24 $
-    \date $Date: 2004/02/07 00:10:53 $
+    \version $Revision: 1.25 $
+    \date $Date: 2004/05/15 16:55:33 $
 */
 
 
@@ -517,9 +517,9 @@ void ConfDlgPasswordTab::sortDictionary()
     if (!QDir::root().rename(file.name(), file.name() + ".bak"))
     {
         QApplication::restoreOverrideCursor();
-        if (!QMessageBox::question(this, "QPaMaT", tr("Failed to create a backup file. Do you want\n"
+        if (QMessageBox::question(this, "QPaMaT", tr("Failed to create a backup file. Do you want\n"
             "to continue without a backup?"), QMessageBox::Yes, 
-            QMessageBox::No | QMessageBox::Default))
+            QMessageBox::No | QMessageBox::Default) != QMessageBox::Yes)
         {
             return;
         }
@@ -528,6 +528,7 @@ void ConfDlgPasswordTab::sortDictionary()
     
     if (!file.open(IO_WriteOnly))
     {
+        QApplication::restoreOverrideCursor();
         QMessageBox::warning(this, "QPaMaT", tr("Could not open the file for writing!"),
             QMessageBox::Ok, QMessageBox::NoButton);
         return;
@@ -561,8 +562,8 @@ void ConfDlgPasswordTab::sortDictionary()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.24 $
-    \date $Date: 2004/02/07 00:10:53 $
+    \version $Revision: 1.25 $
+    \date $Date: 2004/05/15 16:55:33 $
 */
 
 
@@ -647,8 +648,8 @@ void ConfDlgSecurityTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.24 $
-    \date $Date: 2004/02/07 00:10:53 $
+    \version $Revision: 1.25 $
+    \date $Date: 2004/05/15 16:55:33 $
 */
 
 
@@ -747,8 +748,8 @@ void ConfDlgPresentationTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.24 $
-    \date $Date: 2004/02/07 00:10:53 $
+    \version $Revision: 1.25 $
+    \date $Date: 2004/05/15 16:55:33 $
 */
 
 /*!
