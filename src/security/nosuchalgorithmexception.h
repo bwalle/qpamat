@@ -1,5 +1,5 @@
 /*
- * Id: $Id: nosuchalgorithmexception.h,v 1.3 2003/10/05 16:07:27 bwalle Exp $
+ * Id: $Id: nosuchalgorithmexception.h,v 1.4 2003/11/02 16:31:31 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,9 +24,9 @@
  * Exception that is thrown if QPaMaT has not included the necessary algorithm for
  * encryption.
  * @ingroup cipher
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * @author Bernhard Walle
- * @date $Date: 2003/10/05 16:07:27 $
+ * @date $Date: 2003/11/02 16:31:31 $
  */
 class NoSuchAlgorithmException : public std::runtime_error
 {
@@ -42,7 +42,7 @@ class NoSuchAlgorithmException : public std::runtime_error
         /**
          * Deletes the object.
          */
-        virtual ~NoSuchAlgorithmException() throw () { }
+        virtual ~NoSuchAlgorithmException() { }
 };
 
 #endif // NOSUCHALGORITHMEXCEPTION_H

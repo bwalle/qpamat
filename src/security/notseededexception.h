@@ -1,5 +1,5 @@
 /*
- * Id: $Id: notseededexception.h,v 1.2 2003/10/05 16:07:36 bwalle Exp $
+ * Id: $Id: notseededexception.h,v 1.3 2003/11/02 16:31:47 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -25,9 +25,9 @@
  * generate bytes. Not that on each system which has no /dev/urandom device the
  * programmer must seed the algorithm manually.
  * @ingroup cipher
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * @author Bernhard Walle
- * @date $Date: 2003/10/05 16:07:36 $
+ * @date $Date: 2003/11/02 16:31:47 $
  */
 class NotSeededException : public std::runtime_error
 {
@@ -43,7 +43,7 @@ class NotSeededException : public std::runtime_error
         /**
          * Deletes the object.
          */
-        virtual ~NotSeededException() throw () { }
+        virtual ~NotSeededException() { }
 };
 
 #endif // NOTSEEDEDEXCEPTION_H
