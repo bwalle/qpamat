@@ -1,5 +1,5 @@
 /*
- * Id: $Id: property.h,v 1.1 2003/10/05 16:08:21 bwalle Exp $
+ * Id: $Id: property.h,v 1.2 2003/10/20 20:56:20 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -20,6 +20,7 @@
 
 #include <qstring.h>
 #include <qdom.h>
+#include <qobject.h>
 
 #include "cipher/encryptor.h"
 
@@ -29,18 +30,20 @@ class TreeEntry;
  * Represents one property
  * @ingroup gui
  * @author Bernhard Walle
- * @version $Revision: 1.1 $
- * @date $Date: 2003/10/05 16:08:21 $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2003/10/20 20:56:20 $
  */
-class Property
+class Property : public QObject
 {
+    Q_OBJECT
+    
     public:
     
         /**
          * Type of the property that can be stored. QPaMaT has special features for
          * special types.
          */
-        enum Type { NORMAL, PASSWORD, USERNAME };
+        enum Type { MISC, USERNAME, PASSWORD, URL };
 
         /**
          * Creates a new Property.
@@ -51,7 +54,7 @@ class Property
          * @param hidden whether the propertyp should be displayed as password on the screen
          */
         Property(const QString& key = QString::null, const QString& value = QString::null, 
-            Type type = NORMAL, bool encrypted = false, bool hidden = false);
+            Type type = MISC, bool encrypted = false, bool hidden = false);
         
         /**
          * Returns the key of the property
@@ -70,6 +73,12 @@ class Property
          * @return the value
          */
         QString getValue() const;
+        
+        /**
+         * Returns the value that is visible to the user.
+         * @return the value string
+         */
+        QString getVisibleValue() const;
         
         /**
          * Sets the value of the property.
@@ -102,6 +111,19 @@ class Property
         void setHidden(bool hidden);
         
         /**
+         * Returns whether this string should be stored encrypted. It's not stored encrypted
+         * in the memory, only after saving to XML.
+         * @return \c true if the code should be stored encrypted, \c false otherwise
+         */
+        bool isEncrypted();
+        
+        /**
+         * Controls whether this string should be stored encrypted in XML.
+         * @param encrypted \c true if the code should be stored encrypted, \c false otherwise
+         */
+        void setEncrypted(bool encrypted);
+        
+        /**
          * Appends the property as \c property tag in the XML structure.
          * @param document the document needed to create new elements
          * @param parent the parent to which the new created element should be attached
@@ -116,6 +138,13 @@ class Property
          * @param enc the encryptor to use for decrypting passwords
          */
         static void appendFromXML(TreeEntry* parent, QDomElement& element, const Encryptor& enc);
+    
+    signals:
+        /**
+         * This signal is emited if some property is changed.
+         * @param current the this pointer
+         */
+        void propertyChanged(Property* current);
         
     private:
         QString         m_key;

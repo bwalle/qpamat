@@ -1,5 +1,5 @@
 /*
- * Id: $Id: property.cpp,v 1.1 2003/10/05 16:08:21 bwalle Exp $
+ * Id: $Id: property.cpp,v 1.2 2003/10/20 20:56:20 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -17,6 +17,7 @@
  */
 #include <qstring.h>
 #include <qdom.h>
+#include <qlistview.h>
 
 #include "property.h"
 #include "cipher/encodinghelper.h"
@@ -26,7 +27,7 @@
 // -------------------------------------------------------------------------------------------------
 Property::Property(const QString& key, const QString& value, Type type, bool encrypted, bool hidden)
 // -------------------------------------------------------------------------------------------------
-        : m_key(key), m_value(value), m_type(type), m_encrypted(encrypted), m_hidden(hidden)
+         : m_key(key), m_value(value), m_type(type), m_encrypted(encrypted), m_hidden(hidden)
 { }
 
 
@@ -43,6 +44,7 @@ void Property::setKey(const QString& key)
 // -------------------------------------------------------------------------------------------------
 {
     m_key = key;
+    emit propertyChanged(this);
 }
 
 
@@ -55,10 +57,28 @@ QString Property::getValue() const
 
 
 // -------------------------------------------------------------------------------------------------
+QString Property::getVisibleValue() const
+// -------------------------------------------------------------------------------------------------
+{
+    if (m_hidden)
+    {
+        QString s;
+        s.fill('*', m_value.length());
+        return s;
+    }
+    else
+    {
+        return m_value;
+    }
+}
+
+
+// -------------------------------------------------------------------------------------------------
 void Property::setValue(const QString& value) 
 // -------------------------------------------------------------------------------------------------
 {
     m_value = value;
+    emit propertyChanged(this);
 }
 
 
@@ -75,14 +95,7 @@ void Property::setType(Property::Type type)
 // -------------------------------------------------------------------------------------------------
 {
     m_type = type;
-}
-
-
-// -------------------------------------------------------------------------------------------------
-void Property::setHidden(bool hidden)
-// -------------------------------------------------------------------------------------------------
-{
-    m_hidden = hidden;
+    emit propertyChanged(this);
 }
 
 
@@ -92,6 +105,33 @@ bool Property::isHidden() const
 {
     return m_hidden;
 }
+
+
+// -------------------------------------------------------------------------------------------------
+void Property::setHidden(bool hidden)
+// -------------------------------------------------------------------------------------------------
+{
+    m_hidden = hidden;
+    emit propertyChanged(this);
+}
+
+
+// -------------------------------------------------------------------------------------------------
+bool Property::isEncrypted()
+// -------------------------------------------------------------------------------------------------
+{
+    return m_encrypted;
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void Property::setEncrypted(bool encrypted)
+// -------------------------------------------------------------------------------------------------
+{
+    m_encrypted = encrypted;
+    emit propertyChanged(this);
+}
+
 
 // -------------------------------------------------------------------------------------------------
 void Property::appendXML(QDomDocument& document, QDomNode& parent, const Encryptor& enc) const
@@ -113,9 +153,10 @@ void Property::appendXML(QDomDocument& document, QDomNode& parent, const Encrypt
     QString type;
     switch (m_type)
     {
-        case NORMAL  :  type = "NORMAL"  ;      break;
+        case MISC    :  type = "MISC"    ;      break;
         case PASSWORD:  type = "PASSWORD";      break;
         case USERNAME:  type = "USERNAME";      break;
+        case URL     :  type = "URL"     ;      break;
     }
     property.setAttribute("type", type);
     
@@ -146,9 +187,13 @@ void Property::appendFromXML(TreeEntry* parent, QDomElement& element, const Encr
     {
         type = PASSWORD;
     }
+    else if (typeString == "URL")
+    {
+        type = URL;
+    }
     else
     {
-        type = NORMAL;
+        type = MISC;
     }
     
     if (encrypted)
