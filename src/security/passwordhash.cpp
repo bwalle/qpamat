@@ -1,5 +1,5 @@
 /*
- * Id: $Id: passwordhash.cpp,v 1.2 2003/12/29 10:59:16 bwalle Exp $
+ * Id: $Id: passwordhash.cpp,v 1.3 2004/01/06 23:31:39 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -16,21 +16,39 @@
  * ------------------------------------------------------------------------------------------------- 
  */
 #include <cstdlib>
+#include <algorithm>
+#include <limits>
+#include <iterator>
+#include <iostream>
 
 #include <openssl/evp.h>
 
 #include <qstring.h>
 #include <qcstring.h>
 
+#include "global.h"
 #include "constants.h"
 #include "passwordhash.h"
 #include "encodinghelper.h"
+#include "util/stdrandomnumbergenerator.h"
 
 // -------------------------------------------------------------------------------------------------
 //                                     Static data
 // -------------------------------------------------------------------------------------------------
 
-const int PasswordHash::numberOfRandomBits = 8;
+const uint PasswordHash::numberOfRandomBytes = 8;
+
+/*!
+    This constant describes the maximal length of the hash. The current implementation uses
+    8 byte of salt and 20 bytes (160 bit) of hash data, that makes 28 bytes. Since SHA1 has the
+    same length, a change from RIPE-MD160 to SHA1 doesn't affect the length.
+    
+    This value is used for the alignment on the chipcard. We need fixed alignments, so a
+    change of this constant makes old chipcards unusable. That is the reason why I don't use
+    the constant \c EVP_MAX_MD_SIZE here. I use an assertion to check that the actual value
+    has a length smaller or equal to this constant.
+*/
+const uint PasswordHash::MAX_HASH_LENGTH = 40;
 
 /*!
     \class PasswordHash
@@ -38,9 +56,31 @@ const int PasswordHash::numberOfRandomBits = 8;
     \brief Helping functions for dealing with passwords and hashes.
     \ingroup security
     \author Bernhard Walle
-    \version $Revision: 1.2 $
-    \date $Date: 2003/12/29 10:59:16 $
+    \version $Revision: 1.3 $
+    \date $Date: 2004/01/06 23:31:39 $
 */
+
+/*!
+    Checks the given password. Calls the PasswordHash::isCorrect(QString, const ByteVector&)
+    method but decodes the string with base64 previously.
+    \param password the password
+    \param hash the hash object
+    \return \c true if the password is correct, \c false otherwise
+*/
+bool PasswordHash::isCorrect(QString password, const QString& hash)
+{
+    bool correct = false;
+    try
+    {
+        correct = isCorrect(password, EncodingHelper::fromBase64(hash));
+    }
+    catch (const std::invalid_argument& e)
+    {
+        PRINT_DBG("Caught invalid_argument: %s", e.what());
+    }
+    return correct;
+}
+
 
 /*!
     Checks the given password if it is the same as the one stored in the hash.
@@ -51,20 +91,23 @@ const int PasswordHash::numberOfRandomBits = 8;
     \param hash the hash object
     \return \c true if the password is correct, \c false otherwise
 */
-bool PasswordHash::isCorrect(QString password, QString hash)
+bool PasswordHash::isCorrect(QString password, const ByteVector& hash)
 {
-    ByteVector output(numberOfRandomBits);
-    ByteVector input = EncodingHelper::fromBase64(hash);
+    ByteVector output;
     
-    Q_ASSERT(input.size() > uint(numberOfRandomBits));
+    Q_ASSERT(hash.size() > uint(numberOfRandomBytes));
     
-    for (int i = 0; i < numberOfRandomBits; ++i)
-    {
-        password.prepend(input[i]);
-        output[i] = input[i];
-    }
-    attachHashWithoutSalt(output, password);
-    return output == input;
+    // attach the random bytes
+    ByteVector passwordBytes(numberOfRandomBytes);
+    std::copy(hash.begin(), hash.begin() + numberOfRandomBytes, passwordBytes.begin());
+    
+    // convert the password to a byte vector
+    QCString passwordCString = password.utf8();
+    std::copy(passwordCString.begin(), passwordCString.end()-1, std::back_inserter(passwordBytes));
+    
+    attachHashWithoutSalt(output, passwordBytes);
+    
+    return std::equal(output.begin(), output.end(), hash.begin() + numberOfRandomBytes);
 }
 
 
@@ -74,42 +117,61 @@ bool PasswordHash::isCorrect(QString password, QString hash)
     so-called dictinoary attack is prepended which this method because the
     dictionary would be very large.
 */
-QString PasswordHash::generateHash(QString password)
+ByteVector PasswordHash::generateHash(QString password)
 {
-    ByteVector output(numberOfRandomBits);
+    StdRandomNumberGenerator<byte> rand;
+    ByteVector output(numberOfRandomBytes);
     
-    srand( (uint)time(0) );
+    // generate the random bytes and copy them to the output, too
+    ByteVector passwordBytes(numberOfRandomBytes);
+    std::generate(output.begin(), output.end(), rand); 
+    std::copy(output.begin(), output.end(), passwordBytes.begin());
     
-    for (int i = 0; i < numberOfRandomBits; ++i)
-    {
-        output[i] = byte( ( double(rand())/RAND_MAX)*256 );
-        password.prepend(output[i]);
-    }
-    attachHashWithoutSalt(output, password);
+    // attach the password
+    QCString passwordCString = password.utf8();
+    std::copy(passwordCString.begin(), passwordCString.end()-1, std::back_inserter(passwordBytes));
     
-    return EncodingHelper::toBase64(output);
+    attachHashWithoutSalt(output, passwordBytes);
+    
+    Q_ASSERT(output.size() <= MAX_HASH_LENGTH);
+    
+    return output;
+}
+
+
+/*!
+    Generates a hash from the password. Calls the PasswordHash::generateHash() method
+    and encodes the bytes with base 64.
+    \param password the password to hash
+*/
+QString PasswordHash::generateHashString(const QString& password)
+{
+    return EncodingHelper::toBase64(generateHash(password));
 }
 
 
 /*!
     Attaches hash without salt
     \param output the output
-    \param password the password
+    \param passwordBytes the password including the "salt" attached
     \todo Find out what the function really does
 */
-void PasswordHash::attachHashWithoutSalt(ByteVector& output, const QString& password)
+void PasswordHash::attachHashWithoutSalt(ByteVector& output, const ByteVector& passwordBytes)
 {
     EVP_MD_CTX mdctx;
     unsigned char md_value[EVP_MAX_MD_SIZE];
     uint md_len;
-    uint oldLen = output.size();
-    QCString pwUtf8 = password.utf8();
+    
+    int len = passwordBytes.size();
+    byte* password = new byte[len];
+    std::copy(passwordBytes.begin(), passwordBytes.end(), password);
     
     EVP_DigestInit(&mdctx, HASH_ALGORITHM);
-    EVP_DigestUpdate(&mdctx, (byte*)((const char*)(pwUtf8)), pwUtf8.length());
+    EVP_DigestUpdate(&mdctx, password, len);
     EVP_DigestFinal(&mdctx, md_value, &md_len);
+    delete[] password;
     
-    output.resize(oldLen + md_len);
-    qCopy(md_value, md_value + md_len, output.begin() + oldLen);
+    std::copy(md_value, md_value + md_len, std::back_inserter(output));
 }
+
 

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: passwordhash.h,v 1.4 2003/12/29 10:59:16 bwalle Exp $
+ * Id: $Id: passwordhash.h,v 1.5 2004/01/06 23:31:39 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -25,14 +25,20 @@
 class PasswordHash
 {
     public:
-        static bool isCorrect(QString password, QString hash);
-        static QString generateHash(QString password);
+        static const uint MAX_HASH_LENGTH;
+        
+    public:
+        static bool isCorrect(QString password, const QString& hash);
+        static bool isCorrect(QString password, const ByteVector& hash);
+        
+        static ByteVector generateHash(QString password);
+        static QString generateHashString(const QString& password);
     
     private:
-        static void attachHashWithoutSalt(ByteVector& output, const QString& password);
+        static void attachHashWithoutSalt(ByteVector& output, const ByteVector& passwordBytes);
     
     private:
-        static const int numberOfRandomBits;
+        static const uint numberOfRandomBytes;
 };
 
 #endif // PASSWORDHASH_H
