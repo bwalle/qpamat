@@ -1,5 +1,5 @@
 /*
- * Id: $Id: aboutdialog.cpp,v 1.1 2004/07/23 08:47:25 bwalle Exp $
+ * Id: $Id: aboutdialog.cpp,v 1.2 2004/07/23 13:12:54 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -26,8 +26,6 @@
 #include <qdir.h>
 #include <qpushbutton.h>
 
-#include "images/lock_big.xpm"
-
 /*!
     \class AboutDialog
     
@@ -35,8 +33,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.1 $
-    \date $Date: 2004/07/23 08:47:25 $
+    \version $Revision: 1.2 $
+    \date $Date: 2004/07/23 13:12:54 $
 */
 
 /*!
@@ -54,7 +52,7 @@ AboutDialog::AboutDialog(QWidget* parent, const char* name = 0)
     // the top of the dialog
     QHBox* titleBox = new QHBox(this);
     QLabel* titleIcon = new QLabel(titleBox);
-    titleIcon->setPixmap(lock_big_xpm);
+    titleIcon->setPixmap(QPixmap::fromMimeSource("stock_dialog_authentication_48.png"));
     QLabel* titleText = new QLabel(tr("<p><b>QPaMaT "VERSION_STRING"</b></p>"), titleBox);
     titleBox->setStretchFactor(titleIcon, 0);
     titleBox->setStretchFactor(titleText, 5);
@@ -99,6 +97,7 @@ void AboutDialog::setupAboutTab()
             "<p><b>Thanks to:</b>"
             "<ul><li>Trolltech for the Qt library</li>"
             "<li>OpenSSL team for the OpenSSL library</li>"
+            "<li>Gtk+ artists for the nice stock icons</li>"
             "</ul></p>"
             "<p><b>Homepage:</b> <tt>http://qpamat.berlios.de</tt></p>"), aboutTab);
             
@@ -112,30 +111,15 @@ void AboutDialog::setupAboutTab()
 void AboutDialog::setupLicenseTab()
 {
     QVBox* licenseTab = new QVBox(this);
-    QStringList search_paths;
-    QString appDir = qApp->applicationDirPath();
-    
-    search_paths += QDir(appDir + "/../share/doc/packages/qpamat").canonicalPath();
-    search_paths += QDir(appDir + "/../share/doc/qpamat").canonicalPath();
-    search_paths += "/usr/share/doc/packages/qpamat";
-    search_paths += "/usr/share/doc/qpamat";
-    search_paths += "/usr/local/share/doc/qpamat";
-    search_paths += "/usr/local/share/doc/packages/qpamat";
     
     QTextEdit* textEdit = new QTextEdit(licenseTab);
     textEdit->setReadOnly(true);
     textEdit->setWordWrap(QTextEdit::FixedColumnWidth);
     textEdit->setWrapColumnOrWidth(100);
     
-    for (QStringList::iterator it = search_paths.begin(); it != search_paths.end(); it++)
+    QString fileName = qApp->applicationDirPath() + "/../share/qpamat/COPYING";
+    if (QFile::exists(fileName))
     {
-        QString fileName = QString(*it) + "/COPYING";
-        qDebug("File = %s", fileName.latin1());
-        if (!QFile::exists(fileName))
-        {
-            continue;
-        }
-        
         QFile file(fileName);
         if (file.open( IO_ReadOnly )) 
         {

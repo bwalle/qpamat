@@ -1,5 +1,5 @@
 /*
- * Id: $Id: main.cpp,v 1.22 2004/07/23 08:47:44 bwalle Exp $
+ * Id: $Id: main.cpp,v 1.23 2004/07/23 13:13:17 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -152,7 +152,7 @@ int main(int argc, char** argv)
     // translation
     QTranslator translator(0), ttranslator(0);
     QString loc = QTextCodec::locale();
-    translator.load(loc, "ts");
+    translator.load(loc, qApp->applicationDirPath() + "../share/qpamat/translations/");
     ttranslator.load(QString("qt_") + loc, QString(getenv("QTDIR")) + "/translations/");
     app.installTranslator(&translator);
     app.installTranslator(&ttranslator);
