@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encodinghelper.h,v 1.1 2003/09/17 21:28:01 bwalle Exp $
+ * Id: $Id: encodinghelper.h,v 1.2 2003/09/20 13:38:41 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -19,6 +19,8 @@
 #include <qstring.h>
 #include <qvaluevector.h>
 
+#include "types.h"
+
 /**
  * @file encodinghelper.h
  * This file contains helping functions for Encoding and Decoding of binary data.
@@ -29,8 +31,8 @@
 /**
  * Helper class for dealing with encodings.
  * @author Bernhard Walle
- * @version $Revision: 1.1 $
- * @date $Date: 2003/09/17 21:28:01 $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2003/09/20 13:38:41 $
  */
 class EncodingHelper
 {
@@ -41,7 +43,7 @@ class EncodingHelper
          * @param vector the vector with the bytes
          * @return the string
          */
-        static QString toBase64(const QValueVector<unsigned char>& vector);
+        static QString toBase64(const ByteVector& vector);
         
         /**
          * Converts the base64 encoded string to the original bytes. The length of
@@ -50,7 +52,7 @@ class EncodingHelper
          * @return the decoded bytes
          * @exception std::invalid_argument if the length is incorrect
          */
-        static QValueVector<unsigned char> fromBase64(const QString& string);
+        static ByteVector fromBase64(const QString& string);
         
         /**
          * The Base 64 alphabet from 0 to 63 described in RFC 2045 
