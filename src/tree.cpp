@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.1 2003/10/05 16:08:21 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.2 2003/10/11 19:50:34 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -35,7 +35,7 @@ Tree::Tree(QWidget* parent)
 {
     addColumn("first");
     header()->setStretchEnabled(true);
-    //header()->hide();
+    header()->hide();
     setRootIsDecorated(true);
     setShowSortIndicator(true);
 }
