@@ -1,5 +1,5 @@
 /*
- * Id: $Id: help.cpp,v 1.5 2003/12/29 15:12:26 bwalle Exp $
+ * Id: $Id: help.cpp,v 1.6 2004/01/06 23:32:40 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -33,8 +33,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.5 $
-    \date $Date: 2003/12/29 15:12:26 $
+    \version $Revision: 1.6 $
+    \date $Date: 2004/01/06 23:32:40 $
 */
 
 /*!
@@ -43,9 +43,9 @@
 void Help::showAbout()
 {
     QMessageBox::about(qApp->mainWidget(), "QPaMaT",
-        tr("<p><b>QPaMaT "VERSION"</b></p><p>Password managing tool for Unix, Windows and MacOS X. "
-            "It uses the OpenSSL library for encryption and is distributed under the terms "
-            "of the GNU General Public License.</p>"
+        tr("<p><b>QPaMaT "VERSION_STRING"</b></p><p>Password managing tool for Unix, Windows and "
+            "MacOS X. It uses the OpenSSL library for encryption and is distributed under the "
+            "terms of the GNU General Public License.</p>"
             "<p>© Bernhard Walle &lt;bernhard.walle@gmx.de&gt;"));
 }
 
