@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.h,v 1.6 2003/12/06 18:24:55 bwalle Exp $
+ * Id: $Id: configurationdialog.h,v 1.7 2003/12/17 21:53:11 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -23,6 +23,7 @@
 #include <qgroupbox.h>
 #include <qcheckbox.h>
 #include <qpushbutton.h>
+#include <qspinbox.h>
 
 #include "../widgets/filelineedit.h"
 #include "../widgets/fontchoosebox.h"
@@ -31,6 +32,7 @@ namespace ConfigurationDialogLocal
 {
     class GeneralTab;
     class SecurityTab;
+    class SecurityTab2;
     class SmartcardTab;
     class PrintingTab;
 }
@@ -40,8 +42,8 @@ namespace ConfigurationDialogLocal
  * 
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.6 $
- * \date $Date: 2003/12/06 18:24:55 $
+ * \version $Revision: 1.7 $
+ * \date $Date: 2003/12/17 21:53:11 $
  */
 class ConfigurationDialog : public QTabDialog
 {
@@ -58,6 +60,7 @@ class ConfigurationDialog : public QTabDialog
     private:
         ConfigurationDialogLocal::GeneralTab* m_generalTab;
         ConfigurationDialogLocal::SecurityTab* m_securityTab;
+        ConfigurationDialogLocal::SecurityTab2* m_securityTab2;
         ConfigurationDialogLocal::SmartcardTab* m_smartCardTab;
         ConfigurationDialogLocal::PrintingTab* m_printingTab;
 };
@@ -74,8 +77,8 @@ namespace ConfigurationDialogLocal
      *
      * \ingroup gui
      * \author Bernhard Walle
-     * \version $Revision: 1.6 $
-     * \date $Date: 2003/12/06 18:24:55 $
+     * \version $Revision: 1.7 $
+     * \date $Date: 2003/12/17 21:53:11 $
      */
     class GeneralTab : public QWidget
     {
@@ -116,8 +119,8 @@ namespace ConfigurationDialogLocal
      *
      * \ingroup gui
      * \author Bernhard Walle
-     * \version $Revision: 1.6 $
-     * \date $Date: 2003/12/06 18:24:55 $
+     * \version $Revision: 1.7 $
+     * \date $Date: 2003/12/17 21:53:11 $
      */
     class SecurityTab : public QWidget
     {
@@ -151,10 +154,58 @@ namespace ConfigurationDialogLocal
             
         private:
             QButtonGroup* m_radioGroup;
-            QGroupBox* m_passwordCheckerGroup;
             FileLineEdit* m_dictionaryEdit;
             FileLineEdit* m_externalEdit;
             QComboBox* m_algorithmCombo;
+    };
+    
+    /*! 
+     * \brief This class represents the Smartcard tab of the configuration dialog.
+     *
+     * \ingroup gui
+     * \author Bernhard Walle
+     * \version $Revision: 1.7 $
+     * \date $Date: 2003/12/17 21:53:11 $
+     */
+    class SecurityTab2 : public QWidget
+    {
+        Q_OBJECT
+        
+        public:
+            
+            /*!
+             * Creates a new instance of the widget.
+             * \param parent the parent widget
+             */
+            SecurityTab2(QWidget* parent);
+            
+            /*!
+             * Deletes a SecurityTab2 object.
+             */
+            ~SecurityTab2();
+        
+        public slots:
+            
+            /*!
+             * Stores the settings.
+             */
+            void applySettings();
+            
+            /*!
+             * Handles changes of the radio button.
+             * \param buttonId the buttonId as returned by the event. In reality this is of type
+             *        PasswordCheckerType.
+             */
+            void radioButtonHandler(int buttonId);
+            
+        private:
+            void createAndLayout();
+            void fillSettings();
+            
+        private:
+            QButtonGroup* m_radioGroup;
+            FileLineEdit* m_externalEdit;
+            QSpinBox* m_lengthSpinner;
     };
     
     
@@ -163,8 +214,8 @@ namespace ConfigurationDialogLocal
      *
      * \ingroup gui
      * \author Bernhard Walle
-     * \version $Revision: 1.6 $
-     * \date $Date: 2003/12/06 18:24:55 $
+     * \version $Revision: 1.7 $
+     * \date $Date: 2003/12/17 21:53:11 $
      */
     class SmartcardTab : public QWidget
     {
@@ -219,8 +270,8 @@ namespace ConfigurationDialogLocal
      *
      * \ingroup gui
      * \author Bernhard Walle
-     * \version $Revision: 1.6 $
-     * \date $Date: 2003/12/06 18:24:55 $
+     * \version $Revision: 1.7 $
+     * \date $Date: 2003/12/17 21:53:11 $
      */
     class PrintingTab : public QWidget
     {

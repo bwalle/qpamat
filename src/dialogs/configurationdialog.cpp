@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.cpp,v 1.7 2003/12/10 21:43:47 bwalle Exp $
+ * Id: $Id: configurationdialog.cpp,v 1.8 2003/12/17 21:53:11 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -21,18 +21,22 @@
 #include <qcombobox.h>
 #include <qlabel.h>
 #include <qgroupbox.h>
+#include <qwhatsthis.h>
 #include <qlayout.h>
 #include <qradiobutton.h>
 #include <qbuttongroup.h>
 #include <qhbox.h>
 #include <qvbox.h>
 #include <qmessagebox.h>
+#include <qaction.h>
 #include <qapplication.h>
 #include <qcursor.h>
 
+#include "../qpamat.h"
 #include "configurationdialog.h"
 #include "../settings.h"
 #include "../security/passwordcheckerfactory.h"
+#include "../security/passwordgeneratorfactory.h"
 #include "../security/symmetricencryptor.h"
 #include "../smartcard/memorycard.h"
 
@@ -40,6 +44,7 @@
 using ConfigurationDialogLocal::GeneralTab;
 using ConfigurationDialogLocal::SmartcardTab;
 using ConfigurationDialogLocal::SecurityTab;
+using ConfigurationDialogLocal::SecurityTab2;
 using ConfigurationDialogLocal::PrintingTab;
 
 // -------------------------------------------------------------------------------------------------
@@ -52,18 +57,25 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     m_generalTab = new GeneralTab(this);
     m_smartCardTab = new SmartcardTab(this);
     m_securityTab = new SecurityTab(this);
+    m_securityTab2 = new SecurityTab2(this);
     m_printingTab = new PrintingTab(this);
     
     addTab(m_generalTab, "&General");
-    addTab(m_securityTab, "&Security");
+    addTab(m_securityTab, "&Security 1");
+    addTab(m_securityTab2, "&Security 2");
     addTab(m_smartCardTab, "Smart &Card");
     addTab(m_printingTab, "&Printing");
+    
     
     setCancelButton(tr("Cancel"));
     connect(this, SIGNAL(applyButtonPressed()), m_generalTab, SLOT(applySettings()));
     connect(this, SIGNAL(applyButtonPressed()), m_securityTab, SLOT(applySettings()));
+    connect(this, SIGNAL(applyButtonPressed()), m_securityTab2, SLOT(applySettings()));
     connect(this, SIGNAL(applyButtonPressed()), m_smartCardTab, SLOT(applySettings()));
     connect(this, SIGNAL(applyButtonPressed()), m_printingTab, SLOT(applySettings()));
+    
+    QAction* whatsThis = new QAction("What's this", QKeySequence(Key_F1), this);
+    connect(whatsThis, SIGNAL(activated()), qpamat, SLOT(whatsThis()));
 }
 
 
@@ -188,7 +200,7 @@ void SecurityTab::createAndLayout()
 {
     // create layouts
     QVBoxLayout* mainLayout = new QVBoxLayout(this, 6, 6);
-    m_radioGroup = new QButtonGroup(6, Vertical,tr("Password Checker"), this);
+    m_radioGroup = new QButtonGroup(7, Vertical,tr("Password Checker"), this);
     QGroupBox* encryptionGroup = new QGroupBox(2, Vertical, tr("Encryption"), this);
     
     // some settings
@@ -214,8 +226,7 @@ void SecurityTab::createAndLayout()
     hlayout2->addWidget(m_externalEdit);
     
     // algorithm stuff
-    QLabel* algorithmLabel = new QLabel(tr("&Algorithm (don't change this if the names don't "
-        "tell you anything):"), encryptionGroup);
+    QLabel* algorithmLabel = new QLabel(tr("Cipher &algorithm:"), encryptionGroup);
     m_algorithmCombo = new QComboBox(false, encryptionGroup);
     
     // buddys
@@ -225,6 +236,18 @@ void SecurityTab::createAndLayout()
     mainLayout->addWidget(encryptionGroup);
     mainLayout->addStretch(5);
     
+    // help
+    QWhatsThis::add(m_radioGroup, tr("<qt>Password checkers are used to check the initial password "
+        "and the random password. That means that a random password has always the security of the "
+        "password checker.<p>Using an external password checker may be slow.</qt>"));
+    QWhatsThis::add(m_algorithmCombo, tr("<qt>Only change this if you know what you do. The "
+        "algorithms are provided by the OpenSSL library and the availability is determined "
+        "at runtime. You can read a file encrypted with <i>X</i> only if the computer on which "
+        "you read it is able to handle algorithm <i>X</i>. <p>Blowfish is a good choise because "
+        "it's free and available everywhere. IDEA is patended (but secure, PGP uses it!) "
+        "and AES (the successor of DES) is only available at new versions of OpenSSL."
+        "Read a book about cryptography if you're interested in this algorithms.</qt>"));
+    
 }
 
 
@@ -232,10 +255,23 @@ void SecurityTab::createAndLayout()
 void SecurityTab::radioButtonHandler(int buttonId)
 // -------------------------------------------------------------------------------------------------
 {
+    // dictionary edit
     m_dictionaryEdit->setEnabled( PasswordCheckerFactory::PasswordCheckerType(buttonId) == 
         PasswordCheckerFactory::TExtendedDictPasswordChecker );
+    if (PasswordCheckerFactory::PasswordCheckerType(buttonId) != 
+            PasswordCheckerFactory::TExtendedDictPasswordChecker)
+    {
+        m_dictionaryEdit->clearFocus();
+    }
+    
+    // external program edit
     m_externalEdit->setEnabled( PasswordCheckerFactory::PasswordCheckerType(buttonId) == 
         PasswordCheckerFactory::TExternalPasswordChecker );
+    if (PasswordCheckerFactory::PasswordCheckerType(buttonId) != 
+            PasswordCheckerFactory::TExternalPasswordChecker)
+    {
+        m_externalEdit->clearFocus();
+    }
 }
 
 
@@ -284,6 +320,131 @@ void SecurityTab::applySettings()
     set.writeEntry("Security/DictionaryFile", m_dictionaryEdit->getContent() );
     set.writeEntry("Security/ExternalProgram", m_externalEdit->getContent() );
     set.writeEntry("Security/CipherAlgorithm", m_algorithmCombo->currentText() );
+}
+
+
+// -------------------------------------------------------------------------------------------------
+SecurityTab2::SecurityTab2(QWidget* parent)
+// -------------------------------------------------------------------------------------------------
+        : QWidget(parent)
+{
+    createAndLayout();
+    
+    // init contents
+    fillSettings();
+    
+    connect(m_radioGroup, SIGNAL(clicked(int)), this, SLOT(radioButtonHandler(int)));
+}
+
+
+// -------------------------------------------------------------------------------------------------
+SecurityTab2::~SecurityTab2()
+// -------------------------------------------------------------------------------------------------
+{
+    delete m_radioGroup;
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void SecurityTab2::createAndLayout()
+// -------------------------------------------------------------------------------------------------
+{
+    // create layouts
+    QVBoxLayout* mainLayout = new QVBoxLayout(this, 6, 6);
+    QGroupBox* passwordGeneratorGroup = new QGroupBox(7, Vertical,tr("Password Generator"), this);
+    m_radioGroup = new QButtonGroup(0, "SecurityTab2 Radio Group");
+    
+    // some settings
+    ///passwordGeneratorGroup->setInsideSpacing(6);
+    passwordGeneratorGroup->setFlat(true);
+    
+    QHBox* hbox = new QHBox(passwordGeneratorGroup, "SecurityTab2 hbox");
+    QLabel* lengthLabel = new QLabel(tr("Length of the generated password:"), 
+        hbox, "Length label");
+    QWidget* filler = new QWidget(hbox, "Filler widget");
+    filler->setFixedWidth(15);
+    m_lengthSpinner = new QSpinBox(6, 20, 1, hbox, "Length spinner");
+    QWidget* filler2 = new QWidget(hbox, "Filler widget");
+    hbox->setStretchFactor(lengthLabel, 0);
+    hbox->setStretchFactor(m_lengthSpinner, 0);
+    hbox->setStretchFactor(filler2, 10);
+    
+    QRadioButton* internalRadioButton = new QRadioButton(
+        tr("&Internal Random Password Generator"), passwordGeneratorGroup);
+    QRadioButton* externalRadioButton = new QRadioButton(
+        tr("&External Password Generator:"), passwordGeneratorGroup);
+    QHBox* box1 = new QHBox(passwordGeneratorGroup);
+    QWidget* filler3 = new QWidget(box1);
+    filler3->setFixedWidth(20);
+    m_externalEdit = new FileLineEdit(box1);
+    
+    // insert in the invisible ButtonGroup
+    m_radioGroup->insert(internalRadioButton);
+    m_radioGroup->insert(externalRadioButton);
+    
+    // buddys
+    //algorithmLabel->setBuddy(m_algorithmCombo);
+    
+    mainLayout->addWidget(passwordGeneratorGroup);
+    mainLayout->addStretch(5);
+    
+    
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void SecurityTab2::radioButtonHandler(int buttonId)
+// -------------------------------------------------------------------------------------------------
+{
+    m_externalEdit->setEnabled( PasswordGeneratorFactory::PasswordGeneratorType(buttonId) == 
+        PasswordGeneratorFactory::TExternalPasswordGenerator );
+    if (PasswordGeneratorFactory::PasswordGeneratorType(buttonId) != 
+            PasswordGeneratorFactory::TExternalPasswordGenerator)
+    {
+        m_externalEdit->clearFocus();
+    }
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void SecurityTab2::fillSettings()
+// -------------------------------------------------------------------------------------------------
+{
+    QSettings& set = Settings::getInstance().getSettings();
+    
+    m_lengthSpinner->setValue( set.readNumEntry("Security/GeneratedPasswordLength", 
+        PasswordGeneratorFactory::DEFAULT_LENGTH ) );
+    m_radioGroup->setButton( PasswordGeneratorFactory::fromString( 
+        set.readEntry( "Security/PasswordGenerator", 
+        PasswordGeneratorFactory::DEFAULT_GENERATOR_STRING)) );
+    m_externalEdit->setContent(set.readEntry( "Security/ExternalGeneratorProgram"));
+    radioButtonHandler(m_radioGroup->selectedId());
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void SecurityTab2::applySettings()
+// -------------------------------------------------------------------------------------------------
+{
+    QSettings& set = Settings::getInstance().getSettings();
+    PasswordGeneratorFactory::PasswordGeneratorType type = 
+        PasswordGeneratorFactory::PasswordGeneratorType(m_radioGroup->selectedId());
+    
+    QString additional;
+    switch (type)
+    {
+        case PasswordGeneratorFactory::TExternalPasswordGenerator:
+            additional = m_externalEdit->getContent();
+            break;
+        default:
+            additional = "";
+            break;
+    }
+    
+    set.writeEntry("Security/PasswordGenerator", PasswordGeneratorFactory::toString(type));
+    set.writeEntry("Security/PasswordGeneratorAdditional", additional);
+    set.writeEntry("Security/ExternalGeneratorProgram", m_externalEdit->getContent() );
+    set.writeEntry("Security/GeneratedPasswordLength", m_lengthSpinner->value() );
 }
 
 
