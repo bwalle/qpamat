@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.51 2005/02/27 18:12:56 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.52 2005/03/06 15:45:09 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -71,8 +71,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.51 $
-    \date $Date: 2005/02/27 18:12:56 $
+    \version $Revision: 1.52 $
+    \date $Date: 2005/03/06 15:45:09 $
  */
 
 /*! 
@@ -232,8 +232,7 @@ void Qpamat::initToolbar()
     
     m_actions.newAction->addTo(applicationToolbar);
     m_actions.saveAction->addTo(applicationToolbar);
-    m_actions.loginAction->addTo(applicationToolbar);
-    m_actions.logoutAction->addTo(applicationToolbar);
+    m_actions.loginLogoutAction->addTo(applicationToolbar);
     m_actions.printAction->addTo(applicationToolbar);
     m_actions.settingsAction->addTo(applicationToolbar);
     
@@ -272,8 +271,7 @@ void Qpamat::initMenubar()
      menuBar()->insertItem(tr("&File"), fileMenu);
      
      m_actions.newAction->addTo(fileMenu);
-     m_actions.loginAction->addTo(fileMenu);
-     m_actions.logoutAction->addTo(fileMenu);
+     m_actions.loginLogoutAction->addTo(fileMenu);
      m_actions.saveAction->addTo(fileMenu);
      m_actions.exportAction->addTo(fileMenu);
      m_actions.printAction->addTo(fileMenu);
@@ -403,6 +401,8 @@ void Qpamat::handleTrayiconClick()
  */
 void Qpamat::login()
 {
+    PRINT_TRACE("Calling login()");
+    
     std::auto_ptr<PasswordDialog> dlg(new PasswordDialog(this));
     QDomDocument doc;
     bool ok = false;
@@ -477,10 +477,30 @@ void Qpamat::login()
  */
 void Qpamat::setLogin(bool loggedIn)
 {
+    PRINT_TRACE("Caling setLogin = %d", loggedIn);
     m_loggedIn = loggedIn;
     
-    m_actions.loginAction->setEnabled(!loggedIn);
-    m_actions.logoutAction->setEnabled(loggedIn);
+    // toggle action
+    disconnect(m_actions.loginLogoutAction, SIGNAL(activated()), 0, 0 );
+    if (loggedIn)
+    {
+        m_actions.loginLogoutAction->setIconSet( QIconSet(
+                QPixmap::fromMimeSource("logout_16.png"),  QPixmap::fromMimeSource("logout_24.png"))
+        );
+        m_actions.loginLogoutAction->setMenuText(tr("&Logout"));
+        m_actions.loginLogoutAction->setToolTip(tr("Logout"));
+        connect(m_actions.loginLogoutAction, SIGNAL(activated()), SLOT(logout()));
+    }
+    else
+    {
+        m_actions.loginLogoutAction->setIconSet( QIconSet(
+                QPixmap::fromMimeSource("login_16.png"),  QPixmap::fromMimeSource("login_24.png"))
+        );
+        m_actions.loginLogoutAction->setMenuText(tr("&Login"));
+        m_actions.loginLogoutAction->setToolTip(tr("Login"));
+        connect(m_actions.loginLogoutAction, SIGNAL(activated()), SLOT(login()));
+    }
+    
     m_actions.saveAction->setEnabled(loggedIn);
     m_actions.changePasswordAction->setEnabled(loggedIn);
     m_actions.printAction->setEnabled(loggedIn);
@@ -637,6 +657,9 @@ bool Qpamat::logout()
     // save the data
     if (m_modified)
     {
+        PRINT_TRACE("Disable timeout action temporary");
+        dynamic_cast<TimeoutApplication*>(qApp)->setTemporaryDisabled(true);
+        
         int ret = QMessageBox::question(this, "QPaMaT", tr("There is modified data that was not saved."
             "\nDo you want to save it now?"), QMessageBox::Yes | QMessageBox::Default,
                     QMessageBox::No, QMessageBox::Cancel) ;
@@ -653,6 +676,9 @@ bool Qpamat::logout()
             default:
                 break;
         }
+        
+        PRINT_TRACE("Enable timeout action again");
+        dynamic_cast<TimeoutApplication*>(qApp)->setTemporaryDisabled(false);
     }
     
     setLogin(false);
@@ -847,8 +873,6 @@ void Qpamat::connectSignalsAndSlots()
     // Actions
     connect(m_actions.newAction, SIGNAL(activated()), this, SLOT(newFile()));
     connect(m_actions.quitAction, SIGNAL(activated()), this, SLOT(exitHandler()));
-    connect(m_actions.loginAction, SIGNAL(activated()), this, SLOT(login()));
-    connect(m_actions.logoutAction, SIGNAL(activated()), this, SLOT(logout()));
     connect(m_actions.printAction, SIGNAL(activated()), this, SLOT(print()));
     connect(m_actions.saveAction, SIGNAL(activated()), this, SLOT(save()));
     connect(m_actions.exportAction, SIGNAL(activated()), this, SLOT(exportData()));
@@ -914,11 +938,8 @@ void Qpamat::initActions()
     m_actions.quitAction = new QAction(QIconSet( QPixmap::fromMimeSource("stock_exit_16.png"),
         QPixmap::fromMimeSource("stock_exit_24.png") ), tr("E&xit"),
         QKeySequence(CTRL|Key_Q), this);
-    m_actions.loginAction = new QAction(QIconSet(QPixmap::fromMimeSource("login_16.png"),
+    m_actions.loginLogoutAction = new QAction(QIconSet(QPixmap::fromMimeSource("login_16.png"),
         QPixmap::fromMimeSource("login_24.png")), tr("&Login"), 
-        QKeySequence(CTRL|Key_L), this);
-    m_actions.logoutAction = new QAction(QIconSet(QPixmap::fromMimeSource("logout_16.png"),
-        QPixmap::fromMimeSource("logout_24.png")), tr("&Logout"), 
         QKeySequence(CTRL|Key_L), this);
     m_actions.saveAction = new QAction(QIconSet(QPixmap::fromMimeSource("stock_save_16.png"),
         QPixmap::fromMimeSource("stock_save_24.png")), tr("&Save"), 

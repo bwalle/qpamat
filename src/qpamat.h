@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.h,v 1.24 2005/02/15 13:01:16 bwalle Exp $
+ * Id: $Id: qpamat.h,v 1.25 2005/03/06 15:45:09 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -71,8 +71,6 @@ class Qpamat : public QMainWindow
         
     protected:
         void closeEvent(QCloseEvent* evt);
-        
-    private:
         void initToolbar();
         void initMenubar();
         void initActions();
@@ -83,8 +81,7 @@ class Qpamat : public QMainWindow
         struct Actions
         {
             QAction* newAction;
-            QAction* loginAction;
-            QAction* logoutAction;
+            QAction* loginLogoutAction;
             QAction* saveAction;
             QAction* exportAction;
             QAction* viewTreeAction;
