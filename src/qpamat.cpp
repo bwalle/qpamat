@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.44 2004/07/23 22:05:28 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.45 2004/07/25 14:51:48 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -70,8 +70,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.44 $
-    \date $Date: 2004/07/23 22:05:28 $
+    \version $Revision: 1.45 $
+    \date $Date: 2004/07/25 14:51:48 $
  */
 
 /*! 
@@ -575,6 +575,7 @@ void Qpamat::newFile()
         
         m_password = dialog->getPassword();
         setLogin(true);
+        setModified();
     }
 }
 
