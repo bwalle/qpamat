@@ -1,5 +1,5 @@
 /*
- * Id: $Id: randompassworddialog.cpp,v 1.2 2003/12/17 23:05:13 bwalle Exp $
+ * Id: $Id: randompassworddialog.cpp,v 1.3 2003/12/17 23:17:31 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -101,7 +101,6 @@ void RandomPasswordDialog::setPassword(const QString& newPassword)
 void RandomPasswordDialog::insertButtonHandler()
 // -------------------------------------------------------------------------------------------------
 {
-    qDebug("INsert %s", m_passwordEdit->getContent().latin1());
     emit insertPassword(m_passwordEdit->getContent());
 }
 
