@@ -1,5 +1,5 @@
 /*
- * Id: $Id: settings.cpp,v 1.13 2004/01/15 22:30:53 bwalle Exp $
+ * Id: $Id: settings.cpp,v 1.14 2004/02/09 19:32:40 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -17,6 +17,7 @@
  */
 #include <qsettings.h>
 #include <qdir.h>
+#include <qapplication.h>
 
 #include "security/symmetricencryptor.h"
 #include "security/passwordgeneratorfactory.h"
@@ -31,8 +32,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.13 $
-    \date $Date: 2004/01/15 22:30:53 $
+    \version $Revision: 1.14 $
+    \date $Date: 2004/02/09 19:32:40 $
 */
 
 /*!
@@ -52,7 +53,7 @@ Settings::Settings()
     DEF_STRING("Main Window/SearchHistory",      "");
     DEF_STRING("Main Window/Layout",             "");
     DEF_STRING("General/Webbrowser",             "mozilla");
-    DEF_STRING("General/Datafile",               QDir::home().absPath() + "/.qpamat");
+    DEF_STRING("General/Datafile",               QDir::homeDirPath() + "/.qpamat");
     DEF_BOOLEA("General/AutoLogin",              true);
     DEF_STRING("AutoText/Misc",                  "");
     DEF_STRING("AutoText/Username",              "Username");
@@ -63,7 +64,8 @@ Settings::Settings()
     DEF_STRING("Security/AllowedCharacters",     "a-zA-Z0-9@$#");
     DEF_DOUBLE("Security/WeakPasswordLimit",     3.0);
     DEF_DOUBLE("Security/StrongPasswordLimit",   15.0);
-    DEF_STRING("Security/DictionaryFile",        "");
+    DEF_STRING("Security/DictionaryFile",        QDir(qApp->applicationDirPath() + "/../share/"
+                                                 "qpamat/dicts").canonicalPath() + "/default.txt");
     DEF_STRING("Security/PasswordGenerator",     PasswordGeneratorFactory::DEFAULT_GENERATOR_STRING);
     DEF_STRING("Security/PasswordGenAdditional", "");
     DEF_BOOLEA("Smartcard/Library",              false);
