@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encodinghelper.h,v 1.6 2003/11/28 18:41:41 bwalle Exp $
+ * Id: $Id: encodinghelper.h,v 1.7 2003/11/29 14:43:03 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,55 +15,59 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
+#ifndef ENCODINGHELPER_H
+#define ENCODINGHELPER_H
+
 #include <qmemarray.h>
 #include <qstring.h>
 #include <qvaluevector.h>
 
 #include "../types.h"
 
-/**
- * @file encodinghelper.h
- * @ingroup security
+/*!
+ * \file encodinghelper.h
+ * \ingroup security
  * This file contains helping functions for Encoding and Decoding of binary data.
  */
 
 // =================================================================================================
 
-/**
- * Helper class for dealing with encodings.
- * @ingroup security
- * @author Bernhard Walle
- * @version $Revision: 1.6 $
- * @date $Date: 2003/11/28 18:41:41 $
+/*!
+ * \brief Helper class for dealing with encodings.
+ *
+ * \ingroup security
+ * \author Bernhard Walle
+ * \version $Revision: 1.7 $
+ * \date $Date: 2003/11/29 14:43:03 $
  */
 class EncodingHelper
 {
     public:
         
-        /**
+        /*!
          * Converts the bytes that are in the given vector.
-         * @param vector the vector with the bytes
-         * @return the string
+         * \param vector the vector with the bytes
+         * \return the string
          */
         static QString toBase64(const ByteVector& vector);
         
-        /**
+        /*!
          * Converts the base64 encoded string to the original bytes. The length of
          * the string must be correct, i.e. dividable by 4.
-         * @param string the encoded string
-         * @return the decoded bytes
-         * @exception std::invalid_argument if the length is incorrect
+         * \param string the encoded string
+         * \return the decoded bytes
+         * \@exception std::invalid_argument if the length is incorrect
          */
         static ByteVector fromBase64(const QString& string);
         
-        /**
+        /*!
          * The Base 64 alphabet from 0 to 63 described in RFC 2045 
          * (http://www.faqs.org/rfcs/rfc2045.html). The index is the number and
          * the result is the corresponding character.
          */
         static const char base64Alphabet[];
         
-        /**
+        /*!
          * The reverse Base 64 alphabet, i.e. the index is the character and the result is
          * the corresponding number.
          */
@@ -71,7 +75,7 @@ class EncodingHelper
     
     protected:
         
-        /**
+        /*!
          * Allow no instantiation of the object.
          */
         EncodingHelper() {}
@@ -80,11 +84,11 @@ class EncodingHelper
 
 // =================================================================================================
 
-/**
+/*!
  * Overloads the shift operator << for a  QValueVector of any type.
- * @param ostream the output stream
- * @param vector the vector that should be "shifted"
- * @return the given output stream
+ * \param ostream the output stream
+ * \param vector the vector that should be "shifted"
+ * \return the given output stream
  */
 template<class T>
 std::ostream& operator<<(std::ostream& ostream, const QValueVector<T> vector)
@@ -96,3 +100,5 @@ std::ostream& operator<<(std::ostream& ostream, const QValueVector<T> vector)
     return ostream;
 }
 
+
+#endif // ENCODINGHELPER_H

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.h,v 1.1 2003/11/16 20:22:18 bwalle Exp $
+ * Id: $Id: configurationdialog.h,v 1.2 2003/11/29 14:43:03 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -31,12 +31,13 @@ namespace ConfigurationDialogLocal
     class SmartcardTab;
 }
 
-/**
- * This dialog lets the user change the configuration.
- * @ingroup gui
- * @author Bernhard Walle
- * @version $Revision: 1.1 $
- * @date $Date: 2003/11/16 20:22:18 $
+/*!
+ * \brief This dialog lets the user change the configuration.
+ * 
+ * \ingroup gui
+ * \author Bernhard Walle
+ * \version $Revision: 1.2 $
+ * \date $Date: 2003/11/29 14:43:03 $
  */
 class ConfigurationDialog : public QTabDialog
 {
@@ -44,9 +45,9 @@ class ConfigurationDialog : public QTabDialog
     
     public:
         
-        /**
+        /*!
          * Creates a new instance of the ConfigurationDialog.
-         * @param parent the parent widget
+         * \param parent the parent widget
          */
         ConfigurationDialog(QWidget* parent);
         
@@ -56,18 +57,19 @@ class ConfigurationDialog : public QTabDialog
         
 };
 
-/**
+/*!
  * This namespace contains implementation details of the ConfigurationDialog. I didn't want to
  * waste the global namespace with this.
  */
 namespace ConfigurationDialogLocal
 {
-    /** 
-     * This class represents the GeneralTab of the configuration dialog.
-     * @ingroup gui
-     * @author Bernhard Walle
-     * @version $Revision: 1.1 $
-     * @date $Date: 2003/11/16 20:22:18 $
+    /*! 
+     * \brief This class represents the GeneralTab of the configuration dialog.
+     *
+     * \ingroup gui
+     * \author Bernhard Walle
+     * \version $Revision: 1.2 $
+     * \date $Date: 2003/11/29 14:43:03 $
      */
     class GeneralTab : public QWidget
     {
@@ -75,15 +77,15 @@ namespace ConfigurationDialogLocal
         
         public:
             
-            /**
+            /*!
              * Creates a new instance of the widget.
-             * @param parent the parent widget
+             * \param parent the parent widget
              */
             GeneralTab (QWidget* parent);
             
         public slots:
             
-            /**
+            /*!
              * Stores the settings.
              */
             void applySettings();
@@ -98,43 +100,44 @@ namespace ConfigurationDialogLocal
             QComboBox* m_algorithmCombo;
     };
     
-    /** 
+    /*! 
      * This class represents the Smartcard tab of the configuration dialog.
-     * @ingroup gui
-     * @author Bernhard Walle
-     * @version $Revision: 1.1 $
-     * @date $Date: 2003/11/16 20:22:18 $
+     *
+     * \ingroup gui
+     * \author Bernhard Walle
+     * \version $Revision: 1.2 $
+     * \date $Date: 2003/11/29 14:43:03 $
      */
     class SmartcardTab : public QWidget
     {
         Q_OBJECT
         
-        /** SmartcardEnabled type. */
+        /*! SmartcardEnabled type. */
         enum SmartcardEnabled { NotEnabled = 0, Enabled = 1 };
         
         public:
             
-            /**
+            /*!
              * Creates a new instance of the widget.
-             * @param parent the parent widget
+             * \param parent the parent widget
              */
             SmartcardTab(QWidget* parent);
         
         public slots:
             
-            /**
+            /*!
              * Stores the settings.
              */
             void applySettings();
             
-            /**
+            /*!
              * Handles changes of the radio button.
-             * @param buttonId the buttonId as returned by the event. In reality this is of type
+             * \param buttonId the buttonId as returned by the event. In reality this is of type
              *        SmartcardEnabled.
              */
             void radioButtonHandler(int buttonId);
             
-            /**
+            /*!
              * Performs a test if the smart card settings are Ok.
              */
             void testSmartCard();

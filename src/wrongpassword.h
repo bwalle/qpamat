@@ -1,5 +1,5 @@
 /*
- * Id: $Id: wrongpassword.h,v 1.1 2003/10/05 16:08:21 bwalle Exp $
+ * Id: $Id: wrongpassword.h,v 1.2 2003/11/29 14:43:03 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -20,25 +20,25 @@
 #include <stdexcept>
 #include <string>
 
-/**
- * Exception that is thrown if the password is wrong.
- * @ingroup gui
- * @author Bernhard Walle
- * @version $Revision: 1.1 $
- * @date $Date: 2003/10/05 16:08:21 $
+/*!
+ * \brief Exception that is thrown if the password is wrong.
+ * \ingroup gui
+ * \author Bernhard Walle
+ * \version $Revision: 1.2 $
+ * \date $Date: 2003/11/29 14:43:03 $
  */
 class WrongPassword : public std::runtime_error
 {
     public:
         
-        /**
+        /*!
          * Creates a new instance of the exception and includes the error message. This
          * message is returned by the what() method.
-         * @param error the error message
+         * \param error the error message
          */
         WrongPassword(const std::string& error) : std::runtime_error(error) { }
         
-        /**
+        /*!
          * Deletes the object.
          */
         virtual ~WrongPassword() throw () { }

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightlistview.h,v 1.2 2003/11/04 22:49:45 bwalle Exp $
+ * Id: $Id: rightlistview.h,v 1.3 2003/11/29 14:43:03 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -26,12 +26,12 @@
 #include "property.h"
 #include "treeentry.h"
 
-/**
- * Represents the list view on the right where the key-value pairs are displayed.
- * @ingroup gui
- * @author Bernhard Walle
- * @version $Revision: 1.2 $
- * @date $Date: 2003/11/04 22:49:45 $
+/*!
+ * \brief Represents the list view on the right where the key-value pairs are displayed.
+ * \ingroup gui
+ * \author Bernhard Walle
+ * \version $Revision: 1.3 $
+ * \date $Date: 2003/11/29 14:43:03 $
  */
 class RightListView : public QListView
 {
@@ -39,31 +39,31 @@ class RightListView : public QListView
     
     public:
         
-        /**
+        /*!
          * Enumeration for menu.
          */
         enum MenuID { NEW, DELETE, COPY };
     
-        /**
+        /*!
          * Creates a new object of the list view.
-         * @param parent the parent widget
+         * \param parent the parent widget
          */
         RightListView(QWidget* parent);
         
-        /**
+        /*!
          * Deletes the object.
          */
         virtual ~RightListView() { }
         
-        /**
+        /*!
          * Key press.
          */
         void keyPressEvent(QKeyEvent* evt);
         
-        /**
+        /*!
          * Sets the current item. The item must be a TreeEntry, this type is only for
          * the signal and slots mechanism.
-         * @param item the current item
+         * \param item the current item
          */
         void setItem(QListViewItem* item);
     
@@ -76,12 +76,12 @@ class RightListView : public QListView
     
     signals:
         
-        /**
+        /*!
          * This signal is emitted if an item was appended.
          */
         void itemAppended();
         
-        /**
+        /*!
          * This signal is emitted if an item was deleted.
          */
         void itemDeleted();

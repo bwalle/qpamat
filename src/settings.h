@@ -1,5 +1,5 @@
 /*
- * Id: $Id: settings.h,v 1.3 2003/11/16 20:23:23 bwalle Exp $
+ * Id: $Id: settings.h,v 1.4 2003/11/29 14:43:03 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -20,43 +20,43 @@
 
 #include <qsettings.h>
 
-/**
- * Singleton for storing settings in registry (MS Windows) or ini-file (Unix).
- * @ingroup gui
- * @author Bernhard Walle
- * @version $Revision: 1.3 $
- * @date $Date: 2003/11/16 20:23:23 $
+/*!
+ * \brief Singleton for storing settings in registry (MS Windows) or ini-file (Unix).
+ * \ingroup gui
+ * \author Bernhard Walle
+ * \version $Revision: 1.4 $
+ * \date $Date: 2003/11/29 14:43:03 $
  */
 class Settings
 {
     public:
         
-        /** the default web browser */
+        /*! the default web browser */
         static const QString DEFAULT_WEBBROWSER;
         
-        /** the default file name */
+        /*! the default file name */
         static const QString QPAMAT_FILE_NAME;
         
-        /** the default port number */
+        /*! the default port number */
         static const int DEFAULT_PORT;
         
-        /** if the card should be used */
+        /*! if the card should be used */
         static const bool DEFAULT_USE_CARD;
         
-        /**
+        /*!
          * Destructor
          */
         virtual ~Settings() { }
         
-        /**
+        /*!
          * Retuns the only one instance of the Settings object
-         * @return the instance
+         * \return the instance
          */
         static Settings& getInstance();
         
-        /**
+        /*!
          * Returns the QSettings object, used for writing and reading simple keys
-         * @return the object
+         * \return the object
          */
         QSettings& getSettings();
         

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: types.h,v 1.4 2003/11/04 22:49:32 bwalle Exp $
+ * Id: $Id: types.h,v 1.5 2003/11/29 14:43:03 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -19,39 +19,39 @@
 #include <qmap.h>
 
 
-/**
- * @file types.h
- * @ingroup gui
+/*!
+ * \file types.h
+ * \ingroup gui
  * Defines some types used in the whole application.
  */
 
 
-/**
+/*!
  * We use unsigned char in meaning of a byte.
  */
 typedef unsigned char byte;
 
-/**
+/*!
  * This is a byte vector.
  */
 typedef QValueVector<byte> ByteVector;
 
-/**
+/*!
  * This is a vector of QString objects.
  */
 typedef QValueVector<QString> StringVector;
 
-/**
+/*!
  * This is a Map which has keys and values of the type QString.
  */
 typedef QMap<QString, QString> StringMap;
 
-/**
+/*!
  * Vector for unsigned integer.
  */
 typedef QValueVector<uint> UIntVector;
 
-/**
+/*!
  * Vector for integer.
  */
 typedef QValueVector<int> IntVector;

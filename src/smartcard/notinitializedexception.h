@@ -1,5 +1,5 @@
 /*
- * Id: $Id: notinitializedexception.h,v 1.2 2003/11/10 23:17:40 bwalle Exp $
+ * Id: $Id: notinitializedexception.h,v 1.3 2003/11/29 14:43:03 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -23,34 +23,34 @@
 
 #include <qstring.h>
 
-/**
- * Exception that is thrown if the object was not initalized using the init() method.
- * @ingroup smartcard
- * @version $Revision: 1.2 $
- * @author Bernhard Walle
- * @date $Date: 2003/11/10 23:17:40 $
+/*!
+ *\brief Exception that is thrown if the object was not initalized using the init() method.
+ * \ingroup smartcard
+ * \version $Revision: 1.3 $
+ * \author Bernhard Walle
+ * \date $Date: 2003/11/29 14:43:03 $
  */
 class NotInitializedException : public std::runtime_error
 {
     public:
         
-        /**
+        /*!
          * Creates a new instance of the exception and includes the error message. This
          * message is returned by the what() method.
-         * @param error the error message
+         * \param error the error message
          */
         NotInitializedException(const std::string& error) : std::runtime_error(error) { }
         
         
-        /**
+        /*!
          * Creates a new instance of the exception and includes the error message. This
          * message is returned by the what() method. It behaves exactly like the above
          * constructor and is provided only for convenience.
-         * @param error the error message
+         * \param error the error message
          */
         NotInitializedException(const QString& error) : std::runtime_error(error.latin1()) { }
         
-        /**
+        /*!
          * Deletes the object.
          */
         virtual ~NotInitializedException() throw () { }

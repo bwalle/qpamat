@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.h,v 1.4 2003/11/16 20:23:10 bwalle Exp $
+ * Id: $Id: qpamat.h,v 1.5 2003/11/29 14:43:03 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -28,12 +28,12 @@
 #include "rightpanel.h"
 
 
-/**
+/*!
  * The main application window.
- * @ingroup gui
- * @author Bernhard Walle
- * @version $Revision: 1.4 $
- * @date $Date: 2003/11/16 20:23:10 $
+ * \ingroup gui
+ * \author Bernhard Walle
+ * \version $Revision: 1.5 $
+ * \date $Date: 2003/11/29 14:43:03 $
  */
 class Qpamat : public QMainWindow
 {
@@ -41,44 +41,44 @@ class Qpamat : public QMainWindow
     
     public:
         
-        /**
+        /*!
          * Creates a new instance of the application.
          */
         Qpamat();
         
     protected slots:
         
-        /**
+        /*!
          * Performs the login process.
          */
         void login();
         
-        /**
+        /*!
          * Performs the logout process.
          */
         void logout();
         
-        /**
+        /*!
          * Performs the newFile process.
          */
         void newFile();
         
-        /**
+        /*!
          * Performs the save process.
          */
         void save();
         
-        /**
+        /*!
          * Displayes the change password dialog.
          */
         void changePassword();
         
-        /** 
+        /*! 
          * Displays the configuration dialog.
          */
         void configure();
         
-        /**
+        /*!
          * Searches in the tree for the specified word.
          */
         void search();
@@ -86,7 +86,7 @@ class Qpamat : public QMainWindow
     
     protected:
         
-        /**
+        /*!
          * Handles a closeEvent.
          */
         void closeEvent(QCloseEvent* evt);

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: cardexception.h,v 1.2 2003/11/12 22:17:57 bwalle Exp $
+ * Id: $Id: cardexception.h,v 1.3 2003/11/29 14:43:03 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -23,20 +23,22 @@
 
 #include "ctapi.h"
 
-/**
- * This exception is thrown if an error occured while communicating with the smartcard
- * terminal. It just encapsulates the error codes of CT-API in a programmer-friendly
- * way.
- * @ingroup smartcard
- * @author Bernhard Walle
- * @version $Revision: 1.2 $
- * @date $Date: 2003/11/12 22:17:57 $
+/*!
+ * \brief  This exception is thrown if an error occured while communicating with the smartcard
+ * terminal. 
+ 
+ * It just encapsulates the error codes of CT-API in a programmer-friendly way.
+ *
+ * \ingroup smartcard
+ * \author Bernhard Walle
+ * \version $Revision: 1.3 $
+ * \date $Date: 2003/11/29 14:43:03 $
  */
 class CardException : public std::runtime_error
 {
     public:
         
-        /** 
+        /*! 
          * Enumeration for CT-API errorcodes.
          */
         enum ErrorCode 
@@ -61,29 +63,29 @@ class CardException : public std::runtime_error
             Error         = 0x6200       /*!< General error. */
         };
             
-        /**
+        /*!
          * Creates a new instance of the exception and includes the error message. This
          * message is returned by the what() method. Consider using the other constructor
          * which takes a 
-         * @param error the error message
+         * \param error the error message
          */
         CardException(const std::string& error);
         
-        /**
+        /*!
          * Creates a new instance of the exception and sets the error code. The error message
          * is generated on the fly if requested.
          */
         CardException(ErrorCode errorcode);
         
-        /**
+        /*!
          * Returns the error message.
-         * @return the error message (in English)
+         * \return the error message (in English)
          */
         virtual const char* what() const throw ();
         
-        /**
+        /*!
          * Returns the error code.
-         * @return the error code
+         * \return the error code
          */
         ErrorCode getErrorCode() const;
     

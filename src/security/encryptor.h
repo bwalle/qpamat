@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encryptor.h,v 1.7 2003/11/28 18:41:41 bwalle Exp $
+ * Id: $Id: encryptor.h,v 1.8 2003/11/29 14:43:03 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -26,17 +26,19 @@
 #include "nosuchalgorithmexception.h"
 #include "../types.h"
 
-/**
- * A object which encrypts bytes.
- * @ingroup security
- * @author Bernhard Walle
- * @version $Revision: 1.7 $
- * @date $Date: 2003/11/28 18:41:41 $
+/*!
+ * \brief A object which encrypts bytes.
+ *
+ * \ingroup security
+ * \author Bernhard Walle
+ * \version $Revision: 1.8 $
+ * \date $Date: 2003/11/29 14:43:03 $
  */
 class Encryptor
 {
     public:
-        /**              
+        
+        /*!              
          * Creates an instance of a new Encryptor for the given algorithm.
          * Following algorithms may be supported:
          * 
@@ -50,90 +52,91 @@ class Encryptor
          * checked at runtime. You cat a list of available algorithms using the
          * getAlgorithms() function in this class.
          *
-         * @param algorithm the algorithm as string
-         * @param password The password for encryption and decryption.
-         * @exception NoSuchAlgorithmException if the algorithm is not supported
+         * \param algorithm the algorithm as string
+         * \param password The password for encryption and decryption.
+         * \exception NoSuchAlgorithmException if the algorithm is not supported
          */
         Encryptor(const QString& algorithm, const QString& password)
             throw (NoSuchAlgorithmException);
         
         
-        /**
+        /*!
          * Destroys a Encryptor object.
          */
         virtual ~Encryptor();
         
-        /**
+        /*!
          * Returns the cipher algorithm of this encryptor.
-         * @return the algorithm as string as used by the constructor
+         * \return the algorithm as string as used by the constructor
          */
         virtual QString getCurrentAlgorithm() const;
         
-        /**
+        /*!
          * Encrypts the given amount of bytes.
-         * @param vector the bytes to encrypt
-         * @return the encrypted bytes
+         * \param vector the bytes to encrypt
+         * \return the encrypted bytes
          */
         virtual ByteVector encrypt(const ByteVector& vector) const;
         
-        /**
+        /*!
          * Encrypts the given string.
-         * @param string string to enctrypt
-         * @return the encrypted bytes
+         * \param string string to enctrypt
+         * \return the encrypted bytes
          */
         virtual ByteVector encryptString(const QString& string) const;
         
-        /**
+        /*!
          * Decrypts the given amount of bytes.
-         * @param vector the bytes to decrypt
-         * @return the decrypted bytes
+         * \param vector the bytes to decrypt
+         * \return the decrypted bytes
          */
         virtual ByteVector decrypt(const ByteVector& vector) const;
         
-        /**
+        /*!
          * Decrypts the given amount of bytes. This method returns a String. 
          * Call this method only if you are sure that vector is the result of
          * an encryption with encryptString().
-         * @param vector the bytes to decrypt
-         * @return the decrypted string
+         * \param vector the bytes to decrypt
+         * \return the decrypted string
          */
         virtual QString decryptString(const ByteVector& vector) const;
         
-        /**
+        /*!
          * Sets a new a new password.
-         * @param password the password
+         * \param password the password
          */
         virtual void setPassword(const QString& password);
         
-        /**
+        /*!
          * Returns a list of all available cipher algorithms. It depends on the
          * OpenSSL configuration.
-         * @return the list
-         * @see Encryptor()
+         * \return the list
+         * \see Encryptor()
          */
         static QStringList getAlgorithms();
         
-        /**
+        /*!
          * Returns the default algorithm used for new files QPaMaT. As my personal
          * preference I suggest Blowfish as default algorithm if available. It's fast,
          * not protected by patents and is held for secure. AES is the same but it's not
          * included in older versions of OpenSSL.
-         * @return the name of the algorithm
+         * \return the name of the algorithm
          */
         static QString getSuggestedAlgorithm();
         
         
     protected:
-        /**
+        
+        /*!
          * Represents the operation to perform. Needed for the crypt() function.
          */
-        enum OperationType { DECRYPT /**< decryption */, ENCRYPT /**< encryption */};
+        enum OperationType { DECRYPT /*!< decryption */, ENCRYPT /*!< encryption */};
         
-        /**
+        /*!
          * Encrypts or decrypts a message.
-         * @param vector the vector to encrypt/decrypt
-         * @param operation the operation (encrypt or decrypt)
-         * @return the crypted bytes
+         * \param vector the vector to encrypt/decrypt
+         * \param operation the operation (encrypt or decrypt)
+         * \return the crypted bytes
          */
         virtual ByteVector crypt(const ByteVector& vector, OperationType operation) const;
         
@@ -145,8 +148,6 @@ class Encryptor
         
         static StringMap initAlgorithmsMap();
         static StringMap m_algorithms;
-        
-        
 };
 
 #endif // ENCRYPTOR_H

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: randompasswordgenerator.h,v 1.4 2003/11/28 18:41:41 bwalle Exp $
+ * Id: $Id: randompasswordgenerator.h,v 1.5 2003/11/29 14:43:03 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,23 +15,28 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
+#ifndef RANDOMPASSWORDGENERATOR_H
+#define RANDOMPASSWORDGENERATOR_H
+
 #include <qstring.h>
 
 #include "notseededexception.h"
 
-/**
- * Object to generate random passwords. The passwords are \b really random since it
- * is used the OpenSSL library for randomness.
- * @ingroup security
- * @author Bernhard Walle
- * @version $Revision: 1.4 $
- * @date $Date: 2003/11/28 18:41:41 $
+/*!
+ * \brief Object to generate random passwords. 
+ *
+ * The passwords are \b really random since it is used the OpenSSL library for randomness.
+ *
+ * \ingroup security
+ * \author Bernhard Walle
+ * \version $Revision: 1.5 $
+ * \date $Date: 2003/11/29 14:43:03 $
  */
 class RandomPasswordGenerator
 {
     public:
         
-        /**
+        /*!
          * Generates a random password. There's a random password generated using a
          * function of the OpenSSL library. This password consists of bytes. The
          * bytes are transformed to a string using the base64 algorithm, which
@@ -39,13 +44,13 @@ class RandomPasswordGenerator
          * The passwords are not easy to memorize but you have QPaMaT and your clipboard.
          * However, if you need a good password to memorize, just use your brain. A
          * computer cannot output what is easy to memorize for <b>you</b>!
-         * @param length the length of the password
-         * @return the password
-         * @exception NotSeededException if the object was not seeded
+         * \param length the length of the password
+         * \return the password
+         * \exception NotSeededException if the object was not seeded
          */
         virtual QString getPassword(int length) throw (NotSeededException);
         
-        /**
+        /*!
          * Returns if the object was seeded. On Linux or other operating systems with
          * a /dev/urandom device this is done automatically, on other system this
          * must be done with user input. (System time or something else is not
@@ -53,15 +58,15 @@ class RandomPasswordGenerator
          */
         virtual bool isSeeded();
         
-        /**
+        /*!
          * Returns the instance of RandomPasswordGenerator since this is a singleton
          * object.
-         * @return the instance
+         * \return the instance
          */
         static RandomPasswordGenerator& getInstance();
         
     protected:
         RandomPasswordGenerator() { }
-        
-        
 };
+
+#endif // RANDOMPASSWORDGENERATOR_H

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: filelineedit.h,v 1.2 2003/11/16 20:22:40 bwalle Exp $
+ * Id: $Id: filelineedit.h,v 1.3 2003/11/29 14:43:03 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -23,13 +23,16 @@
 #include <qtoolbutton.h>
 #include <qevent.h>
 
-/**
- * This class provides a QLineEdit combined with a "..." button which lets the user choose
- * a file on the hard disk with the file chooser dialog of Qt.
- * @ingroup gui
- * @author Bernhard Walle
- * @version $Revision: 1.2 $
- * @date $Date: 2003/11/16 20:22:40 $
+/*!
+ * \brief This class provides a QLineEdit combined with a "..." button.
+ *
+ * The additional button lets the user choose a file on the hard disk with the file 
+ * chooser dialog of Qt.
+ *
+ * \ingroup gui
+ * \author Bernhard Walle
+ * \version $Revision: 1.3 $
+ * \date $Date: 2003/11/29 14:43:03 $
  */
 class FileLineEdit : public QWidget
 {
@@ -37,34 +40,34 @@ class FileLineEdit : public QWidget
     
     public:
         
-        /**
+        /*!
          * Creates a new instance of a FileLineEdit widget.
-         * @param parent the parent widget
-         * @param name the name of the widget which can be NULL.
+         * \param parent the parent widget
+         * \param name the name of the widget which can be NULL.
          */
         FileLineEdit(QWidget* parent, const char* name = 0);
         
-        /**
+        /*!
          * Sets the content. This must be no valid file but it makes sense.
-         * @param content the content string
+         * \param content the content string
          */
         void setContent(const QString& content);
         
-        /**
+        /*!
          * This returns the current content. It is not guarenteed that it is a valid file.
-         * @return the content of the FileLineEdit widget
+         * \return the content of the FileLineEdit widget
          */
         QString getContent();
         
-        /**
+        /*!
          * Sets a filter for the dialog.
-         * @param filter the filter string
+         * \param filter the filter string
          */
         void setFilter(const QString& filter);
         
     protected slots:
         
-        /**
+        /*!
          * Slot that is called if the user pressed the "..." button. It displays a file dialog
          * and lets the user choose the file.
          */

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: constants.h,v 1.3 2003/11/28 18:41:41 bwalle Exp $
+ * Id: $Id: constants.h,v 1.4 2003/11/29 14:43:03 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -17,15 +17,16 @@
  */
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
+
 #include <openssl/evp.h>
 
-/**
- * @file constants.h
- * @ingroup security
+/*!
+ * \file constants.h
+ * \ingroup security
  * This file contains some constants for the cryptographic algorithms used in this program.
  */
 
- /**
+/*!
  * The hash algorithm used in this program. See also "Abenteuer Kryptologie", page 292
  * for a detailed description of the security of such algorithms. According to
  * this book and according to my interpretion this is the best one. If you change
@@ -33,7 +34,7 @@
  */
 #define HASH_ALGORITHM EVP_ripemd160()
 
-/**
+/*!
  * A higher count makes the algorithm more secure but is slower.
  * See http://www.openssl.org/docs/crypto/EVP_BytesToKey.html.
  */

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightpanel.h,v 1.2 2003/11/04 22:49:41 bwalle Exp $
+ * Id: $Id: rightpanel.h,v 1.3 2003/11/29 14:43:03 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -25,45 +25,45 @@
 #include "southpanel.h"
 #include "rightlistview.h"
 
-/**
- * Represents the panel on the right which contains the entry list.
- * @ingroup gui
- * @author Bernhard Walle
- * @version $Revision: 1.2 $
- * @date $Date: 2003/11/04 22:49:41 $
+/*!
+ * \brief Represents the panel on the right which contains the entry list.
+ * \ingroup gui
+ * \author Bernhard Walle
+ * \version $Revision: 1.3 $
+ * \date $Date: 2003/11/29 14:43:03 $
  */
 class RightPanel : public QFrame
 {
     Q_OBJECT
     
     public:
-        /**
+        /*!
          * Creates a new instance of the right panel.
-         * @param parent the parent widget as usual for QObject
+         * \param parent the parent widget as usual for QObject
          */
         RightPanel(QWidget* parent);
         
-        /**
+        /*!
          * Deletes the object
          */
         virtual ~RightPanel() { }
         
     public slots:
-        /**
+        /*!
          * Sets the current item. The item must be a TreeEntry, this type is only for
          * the signal and slots mechanism.
-         * @param item the current item
+         * \param item the current item
          */
         void setItem(QListViewItem* item);
         
-        /**
+        /*!
          * Clears the widget
          */
         void clear();
         
-        /**
+        /*!
          * Enables or diables the panel.
-         * @param enabled \c true if the panel should be enabled, \c false otherwise
+         * \param enabled \c true if the panel should be enabled, \c false otherwise
          */
         void setEnabled(bool enabled);
         

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: southpanel.h,v 1.2 2003/11/04 22:49:35 bwalle Exp $
+ * Id: $Id: southpanel.h,v 1.3 2003/11/29 14:43:03 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -25,42 +25,42 @@
 
 #include "property.h"
 
-/**
- * Description
- * @ingroup gui
- * @author Bernhard Walle
- * @version $Revision: 1.2 $
- * @date $Date: 2003/11/04 22:49:35 $
+/*!
+ * \brief Represents the south panel.
+ * \ingroup gui
+ * \author Bernhard Walle
+ * \version $Revision: 1.3 $
+ * \date $Date: 2003/11/29 14:43:03 $
  */
 class SouthPanel : public QFrame
 {
     Q_OBJECT
     
     public:
-        /**
+        /*!
          * Creates a new instance of the south panel.
-         * @param parent the parent
+         * \param parent the parent
          */
         SouthPanel(QWidget* parent);
         
-        /**
+        /*!
          * Deletes the South Panel.
          */
         virtual ~SouthPanel() { }
         
     public slots:
         
-        /**
+        /*!
          * Sets item with the property.
          */
         void setItem (Property* property);
         
-        /**
+        /*!
          * Updates the data.
          */
         void updateData();
         
-        /**
+        /*!
          * Clears the south panel.
          */
         void clear();
