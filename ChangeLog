@@ -1,3 +1,13 @@
+Sun Mar 06 18:00:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
+
+	* Make login action and logout action one combined action
+	* Released 0.4.2.
+
+Fri Mar 04 23:00:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
+
+	* Bugfix: If the timeout exceeded multiple times, the save question
+	  was displayed multiple times, too.
+
 Sun Feb 27 19:00:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* implemented text export function

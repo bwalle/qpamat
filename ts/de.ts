@@ -763,11 +763,11 @@ Wollen Sie jetzt speichern?</translation>
     </message>
     <message>
         <source>Logout</source>
-        <translation type="unfinished">Ausloggen</translation>
+        <translation>Ausloggen</translation>
     </message>
     <message>
         <source>Login</source>
-        <translation type="unfinished"></translation>
+        <translation>Einloggen</translation>
     </message>
 </context>
 <context>
