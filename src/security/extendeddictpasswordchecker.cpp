@@ -1,5 +1,5 @@
 /*
- * Id: $Id: extendeddictpasswordchecker.cpp,v 1.1 2003/12/04 11:56:05 bwalle Exp $
+ * Id: $Id: extendeddictpasswordchecker.cpp,v 1.2 2003/12/17 21:53:41 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -79,3 +79,10 @@ bool ExtendedDictPasswordChecker::isPasswordOk(const QString& password)
     return true;
 }
 
+
+// -------------------------------------------------------------------------------------------------
+bool ExtendedDictPasswordChecker::isSlow() const
+// -------------------------------------------------------------------------------------------------
+{
+    return true;
+}

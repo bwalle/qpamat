@@ -1,5 +1,5 @@
 /*
- * Id: $Id: extendedpasswordchecker.h,v 1.1 2003/12/04 11:56:05 bwalle Exp $
+ * Id: $Id: extendedpasswordchecker.h,v 1.2 2003/12/17 21:53:52 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -35,8 +35,8 @@
  *
  * \ingroup security
  * \author Bernhard Walle
- * \version $Revision: 1.1 $
- * \date $Date: 2003/12/04 11:56:05 $
+ * \version $Revision: 1.2 $
+ * \date $Date: 2003/12/17 21:53:52 $
  */
 class ExtendedPasswordChecker : public PasswordChecker
 {
@@ -50,7 +50,13 @@ class ExtendedPasswordChecker : public PasswordChecker
         /*!
          * \copydoc PasswordChecker::minimalLength()
          */
-        uint minimalLength();
+        uint minimalLength() const;
+        
+        /*!
+         * Returns false.
+         * \return \c false
+         */
+        virtual bool isSlow() const;
 };
 
 #endif // EXTENDEDPASSWORDCHECKER_H

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: simplepasswordchecker.h,v 1.1 2003/12/04 11:56:05 bwalle Exp $
+ * Id: $Id: simplepasswordchecker.h,v 1.2 2003/12/17 21:54:52 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -34,8 +34,8 @@
  *
  * \ingroup security
  * \author Bernhard Walle
- * \version $Revision: 1.1 $
- * \date $Date: 2003/12/04 11:56:05 $
+ * \version $Revision: 1.2 $
+ * \date $Date: 2003/12/17 21:54:52 $
  */
 class SimplePasswordChecker : public PasswordChecker
 {
@@ -49,7 +49,13 @@ class SimplePasswordChecker : public PasswordChecker
         /*!
          * \copydoc PasswordChecker::minimalLength()
          */
-        uint minimalLength();
+        uint minimalLength() const;
+        
+        /*!
+         * Returns false.
+         * \return false
+         */
+        virtual bool isSlow() const;
 };
 
 #endif // SIMPLEPASSWORDCHECKER_H

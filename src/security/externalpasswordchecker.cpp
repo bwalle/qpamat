@@ -1,5 +1,5 @@
 /*
- * Id: $Id: externalpasswordchecker.cpp,v 1.1 2003/12/04 11:56:05 bwalle Exp $
+ * Id: $Id: externalpasswordchecker.cpp,v 1.2 2003/12/17 21:55:53 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,7 +18,6 @@
 #include <qstring.h>
 #include <cstdlib>
 
-#include <qcursor.h>
 #include <qprocess.h>
 #include <qapplication.h>
 #include <qeventloop.h>
@@ -33,26 +32,24 @@ const int ExternalPasswordChecker::TIMEOUT = 5*1000;
 // -------------------------------------------------------------------------------------------------
 ExternalPasswordChecker::ExternalPasswordChecker(const QString& applicationName) 
 // -------------------------------------------------------------------------------------------------
-        throw (std::invalid_argument)
-{
-    m_programName = applicationName;
-}
+        : m_programName(applicationName)
+{}
 
 
 // -------------------------------------------------------------------------------------------------
 bool ExternalPasswordChecker::isPasswordOk(const QString& password) throw (PasswordCheckException)
 // -------------------------------------------------------------------------------------------------
 {
-    QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
-    
     if (m_programName.isNull())
     {
-        throw PasswordCheckException( "In ExternalPasswordChecker::isPasswordOk: No password set."); 
+        throw PasswordCheckException( "In ExternalPasswordChecker::isPasswordOk: No program set."); 
     }
     
-    QProcess* proc = new QProcess(m_programName);
+    QProcess* proc = new QProcess(0);
+    proc->setArguments(QStringList::split(" ", m_programName));
     if (!proc->launch(password))
     {
+        delete proc;
         throw PasswordCheckException( QString("Error while launching the external program \"%1\"")
             .arg(m_programName).latin1() );
     }
@@ -61,17 +58,25 @@ bool ExternalPasswordChecker::isPasswordOk(const QString& password) throw (Passw
     {
         qApp->eventLoop()->processEvents(QEventLoop::ExcludeUserInput | QEventLoop::WaitForMore);
     }
+    bool normalExit = proc->normalExit();
+    int exitStatus = proc->exitStatus();
+    delete proc;
     
-    QApplication::restoreOverrideCursor();
-    
-    return proc->normalExit() && proc->exitStatus() == EXIT_SUCCESS;
+    return normalExit && exitStatus == EXIT_SUCCESS;
 }
 
 
 // -------------------------------------------------------------------------------------------------
-uint ExternalPasswordChecker::minimalLength()
+uint ExternalPasswordChecker::minimalLength() const
 // -------------------------------------------------------------------------------------------------
 {
     return 0;
 }
 
+
+// -------------------------------------------------------------------------------------------------
+bool ExternalPasswordChecker::isSlow() const
+// -------------------------------------------------------------------------------------------------
+{
+    return true;
+}

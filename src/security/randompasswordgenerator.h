@@ -1,5 +1,5 @@
 /*
- * Id: $Id: randompasswordgenerator.h,v 1.6 2003/12/16 22:54:25 bwalle Exp $
+ * Id: $Id: randompasswordgenerator.h,v 1.7 2003/12/17 21:55:00 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -21,7 +21,6 @@
 #include <qstring.h>
 
 #include "passwordgenerator.h"
-#include "notseededexception.h"
 
 /*!
  * \brief Object to generate random passwords. 
@@ -30,8 +29,8 @@
  *
  * \ingroup security
  * \author Bernhard Walle
- * \version $Revision: 1.6 $
- * \date $Date: 2003/12/16 22:54:25 $
+ * \version $Revision: 1.7 $
+ * \date $Date: 2003/12/17 21:55:00 $
  */
 class RandomPasswordGenerator : public PasswordGenerator
 {
@@ -47,9 +46,9 @@ class RandomPasswordGenerator : public PasswordGenerator
          * computer cannot output what is easy to memorize for <b>you</b>!
          * \param length the length of the password
          * \return the password
-         * \exception NotSeededException if the object was not seeded
+         * \exception PasswordGenerateException if the object was not seeded
          */
-        virtual QString getPassword(int length) throw (NotSeededException);
+        virtual QString getPassword(int length) throw (PasswordGenerateException);
         
         /*!
          * Returns if the object was seeded. On Linux or other operating systems with
@@ -58,6 +57,12 @@ class RandomPasswordGenerator : public PasswordGenerator
          * enouth.)
          */
         virtual bool isSeeded();
+        
+        /*!
+         * Returns \c false
+         * \return \c false
+         */
+        bool isSlow() const;
 };
 
 #endif // RANDOMPASSWORDGENERATOR_H

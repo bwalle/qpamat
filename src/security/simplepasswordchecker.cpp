@@ -1,5 +1,5 @@
 /*
- * Id: $Id: simplepasswordchecker.cpp,v 1.1 2003/12/04 11:56:05 bwalle Exp $
+ * Id: $Id: simplepasswordchecker.cpp,v 1.2 2003/12/17 21:54:52 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -54,9 +54,17 @@ bool SimplePasswordChecker::isPasswordOk(const QString& password) throw (Passwor
 
 
 // -------------------------------------------------------------------------------------------------
-uint SimplePasswordChecker::minimalLength()
+uint SimplePasswordChecker::minimalLength() const
 // -------------------------------------------------------------------------------------------------
 {
     return 6;
+}
+
+
+// -------------------------------------------------------------------------------------------------
+bool SimplePasswordChecker::isSlow() const
+// -------------------------------------------------------------------------------------------------
+{
+    return false;
 }
 

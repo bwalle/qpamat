@@ -1,5 +1,5 @@
 /*
- * Id: $Id: passwordchecker.h,v 1.1 2003/12/04 11:56:05 bwalle Exp $
+ * Id: $Id: passwordchecker.h,v 1.2 2003/12/17 21:54:04 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -29,8 +29,8 @@
  *
  * \ingroup security
  * \author Bernhard Walle
- * \version $Revision: 1.1 $
- * \date $Date: 2003/12/04 11:56:05 $
+ * \version $Revision: 1.2 $
+ * \date $Date: 2003/12/17 21:54:04 $
  */
 class PasswordChecker
 {
@@ -55,7 +55,15 @@ class PasswordChecker
          * there's no limitation for the length.
          * \return the number of characters 
          */
-        virtual uint minimalLength() = 0;
+        virtual uint minimalLength() const = 0;
+        
+        /*!
+         * Returns if the password checker is slow. Of course, the word slow is relative. Calling
+         * an external program is always slow, checking only the length and a few characters
+         * is fast.
+         * \return \c true if it is slow, \c false otherwise
+         */
+        virtual bool isSlow() const = 0;
 };
 
 #endif // PASSWORDCHECKER_H

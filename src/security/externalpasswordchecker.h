@@ -1,5 +1,5 @@
 /*
- * Id: $Id: externalpasswordchecker.h,v 1.1 2003/12/04 11:56:05 bwalle Exp $
+ * Id: $Id: externalpasswordchecker.h,v 1.2 2003/12/17 21:55:53 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -35,8 +35,8 @@
  *
  * \ingroup security
  * \author Bernhard Walle
- * \version $Revision: 1.1 $
- * \date $Date: 2003/12/04 11:56:05 $
+ * \version $Revision: 1.2 $
+ * \date $Date: 2003/12/17 21:55:53 $
  */
 class ExternalPasswordChecker : public PasswordChecker
 {
@@ -49,9 +49,8 @@ class ExternalPasswordChecker : public PasswordChecker
          * Creates a new instance of ExternalPasswordChecker. 
          * \param applicationName the name of the application which should be called to determine
          *        if the password is Ok
-         * \exception std::invalid_argument if the application does not exist
          */
-        ExternalPasswordChecker(const QString& applicationName) throw (std::invalid_argument);
+        ExternalPasswordChecker(const QString& applicationName);
         
         /*!
          * \copydoc PasswordChecker::isPasswordOk(const QString&)
@@ -61,7 +60,13 @@ class ExternalPasswordChecker : public PasswordChecker
         /*!
          * \copydoc PasswordChecker::minimalLength()
          */
-        uint minimalLength();
+        uint minimalLength() const;
+        
+        /*!
+         * Returns true.
+         * \return true
+         */
+        virtual bool isSlow() const;
         
     private:
         QString m_programName;

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: extendedpasswordchecker.cpp,v 1.2 2003/12/16 22:54:04 bwalle Exp $
+ * Id: $Id: extendedpasswordchecker.cpp,v 1.3 2003/12/17 21:53:50 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -54,7 +54,7 @@ bool ExtendedPasswordChecker::isPasswordOk(const QString& password) throw (Passw
             special = true;
         }
         
-        if (password.contains(character) > 1)
+        if (password.contains(character) > 3)
         {
             ++numOfPairs;
         }
@@ -65,9 +65,17 @@ bool ExtendedPasswordChecker::isPasswordOk(const QString& password) throw (Passw
 
 
 // -------------------------------------------------------------------------------------------------
-uint ExtendedPasswordChecker::minimalLength()
+uint ExtendedPasswordChecker::minimalLength() const
 // -------------------------------------------------------------------------------------------------
 {
     return 8;
+}
+
+
+// -------------------------------------------------------------------------------------------------
+bool ExtendedPasswordChecker::isSlow() const
+// -------------------------------------------------------------------------------------------------
+{
+    return false;
 }
 
