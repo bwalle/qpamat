@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.32 2004/02/09 19:30:47 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.33 2004/02/12 21:48:50 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -17,10 +17,10 @@ BINDIR             = $${PREFIX}/bin
 
 ################################################################################
 
-VERSION_STRING     = 0.2.1
+VERSION_STRING     = 0.2.2
 MAJOR_VERSION      = 0
 MINOR_VERSION      = 2
-PATCH_VERSION      = 1
+PATCH_VERSION      = 2
 
 ################################################################################
 
@@ -31,7 +31,7 @@ SOURCES     =                                   \
     src/dialogs/newpassworddialog.cpp           \
     src/dialogs/configurationdialog.cpp         \
     src/dialogs/showpassworddialog.cpp          \
-	src/dialogs/waitdialog.cpp					\
+    src/dialogs/waitdialog.cpp                  \
     src/dialogs/insertcarddialog.cpp            \
     src/dialogs/cardpinvalidator.cpp            \
     src/widgets/filelineedit.cpp                \
@@ -54,12 +54,12 @@ SOURCES     =                                   \
     src/security/masterpasswordchecker.cpp      \
     src/smartcard/cardexception.cpp             \
     src/smartcard/memorycard.cpp                \
-	src/smartcard/nosuchlibraryexception.cpp	\
-	src/smartcard/notinitializedexception.cpp	\
+    src/smartcard/nosuchlibraryexception.cpp    \
+    src/smartcard/notinitializedexception.cpp   \
     src/util/stringdisplay.cpp                  \
     src/util/singleapplication.cpp              \
     src/datareadwriter.cpp                      \
-    src/timerstatusmessage.cpp            	 	\
+    src/timerstatusmessage.cpp                  \
     src/randompassword.cpp                      \
     src/treeentry.cpp                           \
     src/property.cpp                            \
@@ -81,7 +81,7 @@ HEADERS     =                                   \
     src/dialogs/configurationdialog.h           \
     src/dialogs/configurationdialogprivate.h    \
     src/dialogs/showpassworddialog.h            \
-	src/dialogs/waitdialog.h  					\
+    src/dialogs/waitdialog.h                    \
     src/dialogs/insertcarddialog.h              \
     src/dialogs/cardpinvalidator.h              \
     src/widgets/filelineedit.h                  \
@@ -108,13 +108,13 @@ HEADERS     =                                   \
     src/randompassword.h                        \
     src/smartcard/cardexception.h               \
     src/smartcard/memorycard.h                  \
-	src/smartcard/nosuchlibraryexception.h		\
-	src/smartcard/notinitializedexception.h		\
+    src/smartcard/nosuchlibraryexception.h      \
+    src/smartcard/notinitializedexception.h     \
     src/util/stdrandomnumbergenerator.h         \
     src/util/stringdisplay.h                    \
     src/util/singleapplication.h                \
     src/datareadwriter.h                        \
-    src/timerstatusmessage.h               		\
+    src/timerstatusmessage.h                    \
     src/treeentry.h                             \
     src/property.h                              \
     src/settings.h                              \
@@ -172,7 +172,7 @@ QMAKE_EXTRA_UNIX_TARGETS   += documentation
 
 #
 # make a tarball on Unix with "make release"
-maketarball.target 		    = tarball
+maketarball.target          = tarball
 maketarball.commands        = cd .. &&
 maketarball.commands       += cp -r qpamat qpamat-$$VERSION_STRING &&
 maketarball.commands       += tar cvfz qpamat-$${VERSION_STRING}.tar.gz qpamat-$$VERSION_STRING &&
