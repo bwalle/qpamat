@@ -13,12 +13,12 @@
 		</affiliation>
 	</author>
 
-	<pubdate>2004-08-01</pubdate>
+	<pubdate>2005-02-14</pubdate>
 	
-	<releaseinfo>Version 0.3.0</releaseinfo>   
+	<releaseinfo>Version 0.4.0</releaseinfo>   
 	
 	<copyright>
-		<year>2003-2004</year>
+		<year>2003-2005</year>
 		<holder role="mailto:bernhard@bwalle.de">Bernhard Walle</holder>
 	</copyright>
 
@@ -364,6 +364,15 @@
             you're interested in this algorithms.</para>
         </listitem>
       </varlistentry>
+      <varlistentry>
+        <term>Auto logout after inactivity</term>
+        <listitem>
+          <para>If the application receives no mouse or keyboard events
+            for the given amount of time, a logout if performed. If the data
+            have been changed and needs saving, only a logout dialog is displayed.
+            </para>
+        </listitem>
+      </varlistentry>
     </variablelist>
     
     <sect2>
@@ -455,6 +464,24 @@
         <listitem>
           <para>Choose the fonts (including size) that are used for printing.
           </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>System tray</term>
+        <listitem>
+          <para>If this item is activated, a icon is shown in the system tray
+            which allows the application to be hidden from task bar and
+            desktop without being closed. To take effect, the application
+            has to be restarted.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Start hidden</term>
+        <listitem>
+          <para>Starts the application hidden. This option is only available if the
+		    system tray is activated. If you start the application, it minimizes
+			into the system tray.
+	      </para>
         </listitem>
       </varlistentry>
     </variablelist>
