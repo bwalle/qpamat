@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.20 2003/12/17 22:21:35 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.21 2003/12/18 21:58:40 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -19,7 +19,7 @@ SOURCES     =                                   \
     src/dialogs/randompassworddialog.cpp        \
     src/widgets/filelineedit.cpp                \
     src/widgets/fontchoosebox.cpp               \
-    src/widgets/copylineedit.cpp                \
+    src/widgets/copylabel.cpp                   \
     src/widgets/focuslineedit.cpp               \
     src/security/encodinghelper.cpp             \
     src/security/passwordhash.cpp               \
@@ -30,11 +30,8 @@ SOURCES     =                                   \
     src/security/randompasswordgenerator.cpp    \
     src/security/externalpasswordgenerator.cpp  \
     src/security/passwordgeneratorfactory.cpp   \
-    src/security/simplepasswordchecker.cpp      \
-    src/security/extendedpasswordchecker.cpp    \
-    src/security/extendeddictpasswordchecker.cpp\
-    src/security/externalpasswordchecker.cpp    \
-    src/security/passwordcheckerfactory.cpp     \
+    src/security/masterpasswordchecker.cpp      \
+    src/security/configpasswordchecker.cpp      \
     src/smartcard/cardexception.cpp             \
     src/smartcard/memorycard.cpp                \
     src/util/timerstatusmessage.cpp             \
@@ -60,7 +57,7 @@ HEADERS     =                                   \
     src/dialogs/randompassworddialog.h          \
     src/widgets/filelineedit.h                  \
     src/widgets/fontchoosebox.h                 \
-    src/widgets/copylineedit.h                  \
+    src/widgets/copylabel.h                     \
     src/widgets/focuslineedit.h                 \
     src/global.h                                \
     src/security/passwordcheckexception.h       \
@@ -78,11 +75,8 @@ HEADERS     =                                   \
     src/security/externalpasswordgenerator.h    \
     src/security/passwordgeneratorfactory.h     \
     src/security/passwordchecker.h              \
-    src/security/simplepasswordchecker.h        \
-    src/security/extendedpasswordchecker.h      \
-    src/security/extendeddictpasswordchecker.h  \
-    src/security/externalpasswordchecker.h      \
-    src/security/passwordcheckerfactory.h       \
+    src/security/masterpasswordchecker.h        \
+    src/security/configpasswordchecker.h        \
     src/randompassword.h                        \
     src/smartcard/cardexception.h               \
     src/smartcard/memorycard.h                  \
@@ -107,11 +101,11 @@ CONFIG     += warn_on qt exceptions
 DEFINES    += VERSION=\"$$VERSION\"
 
 isEmpty (debug) {
-  DEFINES  += QT_NO_CHECK
+  #DEFINES  += QT_NO_CHECK
+  CONFIG    += release
 } else {
   CONFIG   += debug
   DEFINES  += DEBUG
- # LIBS     += -lefence
 }
 
 # -----------------------------------------------------------------------------
