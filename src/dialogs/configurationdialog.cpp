@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.cpp,v 1.21 2004/01/08 23:40:23 bwalle Exp $
+ * Id: $Id: configurationdialog.cpp,v 1.22 2004/01/15 22:38:56 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -86,8 +86,8 @@
     
     \ingroup dialogs
     \author Bernhard Walle
-    \version $Revision: 1.21 $
-    \date $Date: 2004/01/08 23:40:23 $
+    \version $Revision: 1.22 $
+    \date $Date: 2004/01/15 22:38:56 $
  */
 
 /*!
@@ -139,8 +139,8 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.21 $
-    \date $Date: 2004/01/08 23:40:23 $
+    \version $Revision: 1.22 $
+    \date $Date: 2004/01/15 22:38:56 $
 */
 
 /*!
@@ -181,8 +181,8 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.21 $
-    \date $Date: 2004/01/08 23:40:23 $
+    \version $Revision: 1.22 $
+    \date $Date: 2004/01/15 22:38:56 $
 */
 
 
@@ -302,8 +302,8 @@ void ConfDlgGeneralTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.21 $
-    \date $Date: 2004/01/08 23:40:23 $
+    \version $Revision: 1.22 $
+    \date $Date: 2004/01/15 22:38:56 $
 */
 
 
@@ -558,8 +558,8 @@ void ConfDlgPasswordTab::sortDictionary()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.21 $
-    \date $Date: 2004/01/08 23:40:23 $
+    \version $Revision: 1.22 $
+    \date $Date: 2004/01/15 22:38:56 $
 */
 
 
@@ -644,8 +644,8 @@ void ConfDlgSecurityTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.21 $
-    \date $Date: 2004/01/08 23:40:23 $
+    \version $Revision: 1.22 $
+    \date $Date: 2004/01/15 22:38:56 $
 */
 
 
@@ -744,8 +744,8 @@ void ConfDlgPresentationTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.21 $
-    \date $Date: 2004/01/08 23:40:23 $
+    \version $Revision: 1.22 $
+    \date $Date: 2004/01/15 22:38:56 $
 */
 
 /*!
@@ -763,7 +763,7 @@ ConfDlgSmartcardTab::ConfDlgSmartcardTab(QWidget* parent, const char* name)
 {
     createAndLayout();
     
-    connect(m_radioGroup, SIGNAL(clicked(int)), this, SLOT(radioButtonHandler(int)));
+    connect(m_useCardCB, SIGNAL(toggled(bool)), this, SLOT(setUseSmartcardEnabled(bool)));
     connect(m_testButton, SIGNAL(clicked()), this, SLOT(testSmartCard()));
 }
 
@@ -776,16 +776,16 @@ void ConfDlgSmartcardTab::createAndLayout()
     // create layouts
     QVBoxLayout* mainLayout = new QVBoxLayout(this, 0, 6);
     
+    QGroupBox* smartCardGroup = new QGroupBox(2, Vertical, tr("Smartcard"), this);
     m_settingsGroup = new QGroupBox(4, Vertical, tr("Settings"), this);
-    m_radioGroup = new QButtonGroup(2, Vertical, tr("Smartcard"), this);
     m_testGroup = new QButtonGroup(2, Vertical, tr("Testing"), this);
     
     m_settingsGroup->setFlat(true);
     m_testGroup->setFlat(true);
-    m_radioGroup->setFlat(true);
+    smartCardGroup->setFlat(true);
     
-    new QRadioButton(tr("&Don't use a smartcard"), m_radioGroup);
-    new QRadioButton(tr("&Use a smartcard"), m_radioGroup);
+    m_useCardCB = new QCheckBox(tr("&Use a smartcard"), smartCardGroup);
+    m_usePinCB = new QCheckBox(tr("Card has &write-protection"), smartCardGroup);;
     
     QLabel* libraryLabel = new QLabel(tr("CT-&API Chipcard Driver:"), m_settingsGroup);
     m_libraryEdit = new FileLineEdit(m_settingsGroup);
@@ -801,7 +801,7 @@ void ConfDlgSmartcardTab::createAndLayout()
     QWidget* dummy = new QWidget(box);
     box->setStretchFactor(dummy, 10);
     
-    mainLayout->addWidget(m_radioGroup);
+    mainLayout->addWidget(smartCardGroup);
     mainLayout->addWidget(m_settingsGroup);
     mainLayout->addWidget(m_testGroup);
     mainLayout->addStretch(5);
@@ -826,16 +826,15 @@ void ConfDlgSmartcardTab::createAndLayout()
 
 
 /*!
-    Handles the radio button. If the "enabled" button is activated, the configuration widgets get
+    Handles the smart card enabled button. If it is checked, the configuration widgets get
     displayed, otherwise they get hidden.
-    \param buttonId the id of the radio button, in reality of type SmartcardEnabled
+    \param enabled \c true if smart card support is enabled
 */
-void ConfDlgSmartcardTab::radioButtonHandler(int buttonId)
+void ConfDlgSmartcardTab::setUseSmartcardEnabled(bool enabled)
 {
-    bool enabled = SmartcardEnabled(buttonId) == Enabled;
+    m_usePinCB->setEnabled(enabled);
     m_settingsGroup->setEnabled(enabled);
     m_testGroup->setEnabled(enabled);
-    m_radioGroup->setButton( enabled ? Enabled : NotEnabled );
 }
 
 
@@ -854,7 +853,13 @@ void ConfDlgSmartcardTab::fillSettings()
     
     m_libraryEdit->setContent(qpamat->set().readEntry("Smartcard/Library"));
     m_portCombo->setCurrentItem(qpamat->set().readNumEntry("Smartcard/Port"));
-    radioButtonHandler(qpamat->set().readBoolEntry("Smartcard/UseCard") ? Enabled : NotEnabled);
+    m_useCardCB->setChecked(qpamat->set().readBoolEntry("Smartcard/UseCard"));
+    m_usePinCB->setChecked(qpamat->set().readBoolEntry("Smartcard/HasWriteProtection"));
+    
+    if (!m_useCardCB->isChecked())
+    {
+        setUseSmartcardEnabled(false);
+    }
 }
 
 
@@ -865,8 +870,8 @@ void ConfDlgSmartcardTab::applySettings()
 {
     qpamat->set().writeEntry("Smartcard/Library", m_libraryEdit->getContent() );
     qpamat->set().writeEntry("Smartcard/Port", m_portCombo->currentItem() );
-    qpamat->set().writeEntry("Smartcard/UseCard", 
-        SmartcardEnabled(m_radioGroup->selectedId()) == Enabled);
+    qpamat->set().writeEntry("Smartcard/UseCard", m_useCardCB->isChecked() );
+    qpamat->set().writeEntry("Smartcard/HasWriteProtection", m_usePinCB->isChecked() );
 }
 
 

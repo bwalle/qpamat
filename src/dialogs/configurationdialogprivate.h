@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialogprivate.h,v 1.6 2004/01/07 23:54:55 bwalle Exp $
+ * Id: $Id: configurationdialogprivate.h,v 1.7 2004/01/15 22:38:56 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -144,14 +144,14 @@ class ConfDlgSmartcardTab : public ListBoxDialogPage
         void applySettings();
         
     private slots:
-        void radioButtonHandler(int buttonId);
-        
-    private:
-        void createAndLayout();
         void setUseSmartcardEnabled(bool enabled);
         
     private:
-        QButtonGroup*   m_radioGroup;
+        void createAndLayout();
+        
+    private:
+        QCheckBox*      m_useCardCB;
+        QCheckBox*      m_usePinCB;
         QGroupBox*      m_settingsGroup;
         QGroupBox*      m_testGroup;
         FileLineEdit*   m_libraryEdit;
