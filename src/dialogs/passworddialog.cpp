@@ -1,5 +1,5 @@
 /*
- * Id: $Id: passworddialog.cpp,v 1.5 2003/12/31 16:33:33 bwalle Exp $
+ * Id: $Id: passworddialog.cpp,v 1.6 2004/01/02 12:20:57 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -38,8 +38,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.5 $
-    \date $Date: 2003/12/31 16:33:33 $
+    \version $Revision: 1.6 $
+    \date $Date: 2004/01/02 12:20:57 $
 */
 
 /*!
@@ -48,7 +48,8 @@
     \param name the name of the widget
 */
 PasswordDialog::PasswordDialog(QWidget* parent, const char* name)
-    : QDialog(parent, name)
+    : QDialog(parent, name, false, WStyle_Customize | WStyle_NormalBorder |
+                                   WStyle_Title | WStyle_SysMenu)
 {
     setCaption("QPaMaT");
     
