@@ -1,5 +1,5 @@
 /*
- * Id: $Id: main.doc,v 1.3 2003/11/29 14:43:03 bwalle Exp $
+ * Id: $Id: main.doc,v 1.4 2003/12/04 11:56:54 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -29,23 +29,18 @@
  * etc...
  */
 
-/** 
- * @defgroup security Security
+/*! 
+ * \defgroup security Security
  * Classes used for encryption, decryption and checking passworts.
  */
 
-/**
- * @defgroup gui GUI
+/*!
+ * \defgroup gui GUI
  * Classes for GUI
  */
 
-/**
- * @defgroup smartcard SmartCard
+/*!
+ * \defgroup smartcard SmartCard
  * Classes for accessing memory cards
  */
 
-/**
- * @defgroup util Utility
- * Some utility classes for general use, independent of GUI and other
- * groups used in this application.
- */
