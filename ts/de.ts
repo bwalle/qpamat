@@ -641,7 +641,7 @@ OpenSSL neu kompilieren oder zu aktualisieren.</translation>
     </message>
     <message>
         <source>QPaMaT XML files (*.xml)</source>
-        <translation>QPaMaT XML-Dateien (*.xml)</translation>
+        <translation type="obsolete">QPaMaT XML-Dateien (*.xml)</translation>
     </message>
     <message>
         <source>QPaMaT</source>
@@ -736,6 +736,30 @@ Wollen Sie jetzt speichern?</translation>
     <message>
         <source>Focus &amp;search</source>
         <translation>Suchfeld &amp;fokussieren</translation>
+    </message>
+    <message>
+        <source>The file you&apos;ve choosen exists. Do you overwrite it?</source>
+        <translation>Die gewählte Datei existiert bereits. Soll sie überschrieben werden?</translation>
+    </message>
+    <message>
+        <source>Overwrite</source>
+        <translation type="obsolete">&amp;Überschreiben</translation>
+    </message>
+    <message>
+        <source>An error occured while saving the file.</source>
+        <translation>Ein Fehler ist beim Speichern aufgetreten.</translation>
+    </message>
+    <message>
+        <source>QPaMaT XML files (*.xml);;Text files with cleartext password (*.txt)</source>
+        <translation>QPaMaT XML-Dateien (*.xml);;Textdateien mit Klartextpasswort (*.txt)</translation>
+    </message>
+    <message>
+        <source>&amp;Overwrite</source>
+        <translation>&amp;Überschreiben</translation>
+    </message>
+    <message>
+        <source>&amp;Don&apos;t export</source>
+        <translation>&amp;Nicht exportieren</translation>
     </message>
 </context>
 <context>
@@ -891,6 +915,18 @@ Prüfen Sie Ihre Einstellungen!</translation>
     <message>
         <source>&lt;qt&gt;&lt;nobr&gt;Failed to calculate the password strength. The error message&lt;/nobr&gt; was:&lt;p&gt;%1&lt;p&gt;Check your configuration!&lt;/qt&gt;</source>
         <translation>&lt;qt&gt;&lt;nobr&gt;Berechnung der Passwortstärke fehlgeschlagen. Die Fehlermeldung&lt;/nobr&gt; war:%1&lt;p&gt;Überprüfen Sie Ihre Konfiguration!&lt;/qt&gt;</translation>
+    </message>
+    <message>
+        <source>QPaMaT</source>
+        <translation>QPaMaT</translation>
+    </message>
+    <message>
+        <source>password managing tool for Unix, Windows and MacOS X</source>
+        <translation>Passwortmanager für Unix, Windows und MacOS X</translation>
+    </message>
+    <message>
+        <source>Export date:</source>
+        <translation>Exportdatum:</translation>
     </message>
 </context>
 <context>
