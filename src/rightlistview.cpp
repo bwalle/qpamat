@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightlistview.cpp,v 1.10 2004/01/02 12:20:10 bwalle Exp $
+ * Id: $Id: rightlistview.cpp,v 1.11 2004/01/03 23:41:09 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -41,8 +41,8 @@
     \brief Represents the list view on the right where the key-value pairs are displayed.
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.10 $
-    \date $Date: 2004/01/02 12:20:10 $
+    \version $Revision: 1.11 $
+    \date $Date: 2004/01/03 23:41:09 $
 */
 
 /*!
@@ -58,9 +58,11 @@
 */
 
 /*!
-    \fn RightListView::itemDeleted()
+    \fn RightListView::itemDeleted(int)
     
     This signal is emitted if an item was deleted.
+
+    \param item the number of the deleted item (first item = 0)
 */
 
 /*!
@@ -99,10 +101,10 @@ RightListView::RightListView(QWidget* parent)
         SLOT(showContextMenu(QListViewItem*, const QPoint&)));
     connect(this, SIGNAL(itemAppended()), SLOT(updateView()));
     connect(this, SIGNAL(itemAppended()), SLOT(itemAppendedHandler()));
-    connect(this, SIGNAL(itemDeleted()), SLOT(updateView()));
+    //connect(this, SIGNAL(itemDeleted(int)), SLOT(updateView()));
     connect(this, SIGNAL(doubleClicked(QListViewItem*, const QPoint&, int)),
         SLOT(doubleClickHandler(QListViewItem*)));
-    connect(this, SIGNAL(itemDeleted()), SIGNAL(stateModified()));
+    connect(this, SIGNAL(itemDeleted(int)), SIGNAL(stateModified()));
     connect(this, SIGNAL(itemAppended()), SIGNAL(stateModified()));
     connect(this, SIGNAL(selectionChanged()), SLOT(setMoveStateCorrect()));
     connect(this, SIGNAL(currentChanged(QListViewItem*)), SLOT(setMoveStateCorrect()));
@@ -145,9 +147,12 @@ void RightListView::showContextMenu(QListViewItem* item, const QPoint& point)
     switch (id)
     {
         case DELETE:
-            m_currentItem->deleteProperty(item->text(2).toInt(0));
-            emit itemDeleted();
+        {
+            int num = item->text(2).toInt(0);
+            m_currentItem->deleteProperty(num);
+            emit itemDeleted(num);
             break;
+        }
         case COPY:
             copyItem(item);
             break;
@@ -336,8 +341,9 @@ void RightListView::deleteCurrent()
     QListViewItem* selected = selectedItem();
     if (selected)
     {
-        m_currentItem->deleteProperty(selected->text(2).toInt(0));
-        emit itemDeleted();
+        int num = selected->text(2).toInt(0);
+        m_currentItem->deleteProperty(num);
+        emit itemDeleted(num);
     }
     else
     {

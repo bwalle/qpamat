@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightlistview.h,v 1.7 2003/12/29 15:12:27 bwalle Exp $
+ * Id: $Id: rightlistview.h,v 1.8 2004/01/03 23:41:09 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -29,7 +29,7 @@
 class RightListView : public QListView
 {
     Q_OBJECT
-    
+
     public:
         enum MenuID 
         { 
@@ -46,6 +46,8 @@ class RightListView : public QListView
     public slots:
         void deleteCurrent();
         void insertAtCurrentPos();
+
+        void updateView();
         
         void moveDown();
         void moveUp();
@@ -54,7 +56,6 @@ class RightListView : public QListView
         void keyPressEvent(QKeyEvent* evt);
         
     private slots:
-        void updateView();
         void updateSelected(Property* property);
         void showContextMenu(QListViewItem* item, const QPoint& point);
         void copyItem(QListViewItem* item);
@@ -65,7 +66,7 @@ class RightListView : public QListView
         
     signals:
         void itemAppended();
-        void itemDeleted();
+        void itemDeleted(int item);
         void stateModified();
         void enableMoving(bool up, bool down);
         

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightpanel.h,v 1.7 2003/12/29 15:12:27 bwalle Exp $
+ * Id: $Id: rightpanel.h,v 1.8 2004/01/03 23:41:09 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -54,6 +54,7 @@ class RightPanel : public QFrame
         
     private slots:
         void selectionChangeHandler(QListViewItem* item);
+        void itemDeletedHandler(int item);
     
     private:
         TreeEntry*      m_currentItem;

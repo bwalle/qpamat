@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.24 2004/01/02 12:20:29 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.25 2004/01/03 23:41:09 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -70,8 +70,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.24 $
-    \date $Date: 2004/01/02 12:20:29 $
+    \version $Revision: 1.25 $
+    \date $Date: 2004/01/03 23:41:09 $
 */
 
 /*!
@@ -537,7 +537,39 @@ void Tree::deleteCurrent()
         QListViewItem* selected = selectedItem();
         if (selected)
         {
+            setOpen(selected, false);
+            QListViewItem* below = selected->itemBelow();
+            if (!below || below->parent() != selected->parent())
+            {
+                below = selected->itemAbove();
+                if (!below || below->parent() != selected->parent())
+                {
+                    below = selected->parent();
+                }
+            }
+            if (!below)
+            {
+                below = lastItem();
+            }
+
+            // check if the parent of the item that should made visible is deleted
+            QListViewItem* p = below;
+            do 
+            {
+                if (p == selected)
+                {
+                    below = 0;
+                    break;
+                }
+            } while ( (p = p->parent()) );
+
             delete selected;
+            
+            if (below)
+            {
+                PRINT_TRACE("setSelected: %s", below->text(0).latin1());
+                setSelected(below, true);
+            }
             emit stateModified();
         }
         else
@@ -612,6 +644,22 @@ void Tree::searchFor(const QString& word)
     }
     
     delete it;
+
+    // wrap
+    if (selectedItem() == selected)
+    {
+        it = new QListViewItemIterator(this);
+        while ( (current = it->current()) && current != selected ) 
+        {
+            if (current->text(0).contains(word, false))
+            {
+                setSelected(current, true);
+                ensureItemVisible(current);
+                break;
+            }
+            ++(*it);
+        }
+    }
     
     if (selectedItem() == selected)
     {
@@ -1044,8 +1092,8 @@ bool Tree::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& randomNumbe
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.24 $
-    \date $Date: 2004/01/02 12:20:29 $
+    \version $Revision: 1.25 $
+    \date $Date: 2004/01/03 23:41:09 $
 */
 
 /*!

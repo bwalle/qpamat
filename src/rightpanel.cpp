@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightpanel.cpp,v 1.5 2003/12/29 15:12:27 bwalle Exp $
+ * Id: $Id: rightpanel.cpp,v 1.6 2004/01/03 23:41:09 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -37,8 +37,8 @@
     \ingroup gui
     
     \author Bernhard Walle
-    \version $Revision: 1.5 $
-    \date $Date: 2003/12/29 15:12:27 $
+    \version $Revision: 1.6 $
+    \date $Date: 2004/01/03 23:41:09 $
 */
 
 /*!
@@ -78,7 +78,7 @@ RightPanel::RightPanel(Qpamat* parent) : QFrame(parent, "RightPanel")
     
     connect(m_listView, SIGNAL(selectionChanged(QListViewItem*)),
         this, SLOT(selectionChangeHandler(QListViewItem*)));
-    connect(m_listView, SIGNAL(itemDeleted()), m_southPanel, SLOT(clear()));
+    connect(m_listView, SIGNAL(itemDeleted(int)), SLOT(itemDeletedHandler(int)));
     connect(m_listView, SIGNAL(stateModified()), SIGNAL(stateModified()));
     connect(m_southPanel, SIGNAL(moveUp()), m_listView, SLOT(moveUp()));
     connect(m_southPanel, SIGNAL(moveDown()), m_listView, SLOT(moveDown()));
@@ -101,6 +101,40 @@ void RightPanel::clear()
     m_listView->clear();
     m_southPanel->clear();
     setEnabled(false);
+}
+
+
+/*!
+    Handler for deleted widgets. Selects the next item.
+
+    \param item the item number that was deleted.
+
+*/
+void RightPanel::itemDeletedHandler(int item)
+{
+    m_listView->updateView();
+    int numberOfChilds = m_listView->childCount();
+    if (numberOfChilds == 0)
+    {
+        m_southPanel->clear();
+        return;
+    }
+
+    PRINT_TRACE("item = %d, numberOfChilds = %d", item, numberOfChilds);
+    
+    // if the last one was deleted, select the previous one
+    if (item == numberOfChilds)
+    {
+        --item;
+    }
+
+    QListViewItem* it = m_listView->firstChild();
+    for (int i = 0; i < item; ++i)
+    {
+        it = it->nextSibling();
+    }
+
+    m_listView->setSelected(it, true);
 }
 
 
