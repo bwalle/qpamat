@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.cpp,v 1.2 2003/10/11 19:50:52 bwalle Exp $
+ * Id: $Id: treeentry.cpp,v 1.3 2003/10/20 20:54:53 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -134,6 +134,7 @@ void TreeEntry::appendProperty(Property* property)
 // -------------------------------------------------------------------------------------------------
 {
     m_properties.append(property);
+    emit propertyAppended();
 }
 
 
@@ -158,7 +159,7 @@ void TreeEntry::appendXML(QDomDocument& document, QDomNode& parent, const Encryp
         while(child) 
         {
             child->appendXML(document, newElement, enc);
-            child = dynamic_cast<TreeEntry*>(nextSibling());
+            child = dynamic_cast<TreeEntry*>(child->nextSibling());
         }
     }
     else
