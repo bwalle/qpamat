@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.28 2004/01/07 00:14:16 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.29 2004/01/07 23:56:02 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -29,6 +29,7 @@ SOURCES     =                                   \
     src/widgets/copylabel.cpp                   \
     src/widgets/focuslineedit.cpp               \
     src/widgets/listboxlabeledpict.cpp          \
+    src/widgets/listboxdialog.cpp               \
     src/security/encodinghelper.cpp             \
     src/security/passwordhash.cpp               \
     src/security/abstractencryptor.cpp          \
@@ -75,6 +76,7 @@ HEADERS     =                                   \
     src/widgets/copylabel.h                     \
     src/widgets/focuslineedit.h                 \
     src/widgets/listboxlabeledpict.h            \
+    src/widgets/listboxdialog.h                 \
     src/global.h                                \
     src/security/encodinghelper.h               \
     src/security/passwordhash.h                 \
