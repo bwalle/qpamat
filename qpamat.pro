@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.41 2004/05/15 16:55:54 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.42 2004/05/26 19:06:22 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -175,6 +175,10 @@ QMAKE_EXTRA_UNIX_TARGETS   += documentation
 maketarball.target          = tarball
 maketarball.commands        = cd .. &&
 maketarball.commands       += cp -r qpamat qpamat-$$VERSION_STRING &&
+maketarball.commands       += rm qpamat-$$VERSION_STRING/out/* &&
+maketarball.commands       += rm qpamat-$$VERSION_STRING/qpamat &&
+maketarball.commands       += find qpamat-$$VERSION_STRING -name CVS -type d -exec rm -r {} \; ;
+maketarball.commands       += find qpamat-$$VERSION_STRING -name '*.o' -exec rm {} \; ;
 maketarball.commands       += tar cvfz qpamat-$${VERSION_STRING}.tar.gz qpamat-$$VERSION_STRING &&
 maketarball.commands       += cd - &&
 maketarball.commands       += mv ../qpamat-$${VERSION_STRING}.tar.gz . &&
