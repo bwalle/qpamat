@@ -1,5 +1,5 @@
 /*
- * Id: $Id: symmetricencryptor.cpp,v 1.1 2003/12/06 18:25:21 bwalle Exp $
+ * Id: $Id: symmetricencryptor.cpp,v 1.2 2003/12/10 21:48:13 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -119,7 +119,7 @@ StringMap SymmetricEncryptor::initAlgorithmsMap()
 }
 
 // -------------------------------------------------------------------------------------------------
-ByteVector SymmetricEncryptor::encrypt(const ByteVector& vector) const
+ByteVector SymmetricEncryptor::encrypt(const ByteVector& vector)
 // -------------------------------------------------------------------------------------------------
 {
     return crypt(vector, ENCRYPT);
@@ -127,7 +127,7 @@ ByteVector SymmetricEncryptor::encrypt(const ByteVector& vector) const
 
 
 // -------------------------------------------------------------------------------------------------
-ByteVector SymmetricEncryptor::decrypt(const ByteVector& vector) const
+ByteVector SymmetricEncryptor::decrypt(const ByteVector& vector)
 // -------------------------------------------------------------------------------------------------
 {
     return crypt(vector, DECRYPT);

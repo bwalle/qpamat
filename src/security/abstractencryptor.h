@@ -1,5 +1,5 @@
 /*
- * Id: $Id: abstractencryptor.h,v 1.1 2003/12/06 18:25:21 bwalle Exp $
+ * Id: $Id: abstractencryptor.h,v 1.2 2003/12/10 21:47:39 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -22,44 +22,44 @@
 #include <qstringlist.h>
 
 #include "nosuchalgorithmexception.h"
-#include "../types.h"
+#include "../global.h"
 #include "encryptor.h"
 
 /*!
  * \brief Abstract base class for Encryptor objects.
  *
- * This class implements the Encryptor::encryptString() and Encryptor::decryptString() methods
- * by passing converting data and passing them to the Encryptor::encrypt() or Encryptor::decrypt()
+ * This class implements the Encryptor::encryptStrToBytes() and Encryptor::decryptStrFromBytes() 
+ * methods by converting data and passing them to the Encryptor::encrypt() or Encryptor::decrypt()
  * methods.
  *
  * \ingroup security
  * \author Bernhard Walle
- * \version $Revision: 1.1 $
- * \date $Date: 2003/12/06 18:25:21 $
+ * \version $Revision: 1.2 $
+ * \date $Date: 2003/12/10 21:47:39 $
  */
 class AbstractEncryptor : public Encryptor
 {
     public:
         
         /*!
-         * \copydoc Encryptor::encrypt()
+         * \copydoc Encryptor::encryptStrToBytes()
          */
-        virtual ByteVector encrypt(const ByteVector& vector) const = 0;
+        ByteVector encryptStrToBytes(const QString& string);
         
         /*!
-         * \copydoc Encryptor::encryptString()
+         * \copydoc StringEncryptor::encryptStrToStr()
          */
-        virtual ByteVector encryptString(const QString& string) const;
+        QString encryptStrToStr(const QString& string);
         
         /*!
-         * \copydoc Encryptor::decrypt()
+         * \copydoc Encryptor::decryptStrFromBytes()
          */
-        virtual ByteVector decrypt(const ByteVector& vector) const = 0;
+        QString decryptStrFromBytes(const ByteVector& vector);
         
         /*!
-         * \copydoc Encryptor::decryptString()
+         * \copydoc StringEncryptor::decryptStrFromStr()
          */
-        virtual QString decryptString(const ByteVector& vector) const;
+        QString decryptStrFromStr(const QString& string);
 };
 
 #endif // ABSTRACTENCRYPTOR_H

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: symmetricencryptor.h,v 1.1 2003/12/06 18:25:21 bwalle Exp $
+ * Id: $Id: symmetricencryptor.h,v 1.2 2003/12/10 21:48:13 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,7 +24,7 @@
 #include <openssl/evp.h>
 
 #include "nosuchalgorithmexception.h"
-#include "../types.h"
+#include "../global.h"
 #include "abstractencryptor.h"
 
 /*!
@@ -32,8 +32,8 @@
  *
  * \ingroup security
  * \author Bernhard Walle
- * \version $Revision: 1.1 $
- * \date $Date: 2003/12/06 18:25:21 $
+ * \version $Revision: 1.2 $
+ * \date $Date: 2003/12/10 21:48:13 $
  */
 class SymmetricEncryptor : public AbstractEncryptor
 {
@@ -70,12 +70,12 @@ class SymmetricEncryptor : public AbstractEncryptor
         /*!
          * \copydoc Encryptor::encrypt()
          */
-        virtual ByteVector encrypt(const ByteVector& vector) const;
+        virtual ByteVector encrypt(const ByteVector& vector);
         
         /*!
          * \copydoc Encryptor::decrypt()
          */
-        virtual ByteVector decrypt(const ByteVector& vector) const;
+        virtual ByteVector decrypt(const ByteVector& vector);
         
         /*!
          * Sets a new a new password.

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: abstractencryptor.cpp,v 1.1 2003/12/06 18:25:21 bwalle Exp $
+ * Id: $Id: abstractencryptor.cpp,v 1.2 2003/12/10 21:47:47 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -19,12 +19,13 @@
 #include <qstringlist.h>
 
 #include "nosuchalgorithmexception.h"
-#include "../types.h"
+#include "../global.h"
 #include "abstractencryptor.h"
+#include "encodinghelper.h"
 
 
 // -------------------------------------------------------------------------------------------------
-ByteVector AbstractEncryptor::encryptString(const QString& string) const
+ByteVector AbstractEncryptor::encryptStrToBytes(const QString& string)
 // -------------------------------------------------------------------------------------------------
 {
     QCString utf8CString = string.utf8();
@@ -37,7 +38,15 @@ ByteVector AbstractEncryptor::encryptString(const QString& string) const
 
 
 // -------------------------------------------------------------------------------------------------
-QString AbstractEncryptor::decryptString(const ByteVector& vector) const
+QString AbstractEncryptor::encryptStrToStr(const QString& string)
+// -------------------------------------------------------------------------------------------------
+{
+    return EncodingHelper::toBase64(encryptStrToBytes(string));
+}
+
+
+// -------------------------------------------------------------------------------------------------
+QString AbstractEncryptor::decryptStrFromBytes(const ByteVector& vector)
 // -------------------------------------------------------------------------------------------------
 {
     QString result;
@@ -50,4 +59,12 @@ QString AbstractEncryptor::decryptString(const ByteVector& vector) const
     QString returnString = QString::fromUtf8(decryptedBytes);
     delete[] decryptedBytes;
     return returnString;
+}
+
+
+// -------------------------------------------------------------------------------------------------
+QString AbstractEncryptor::decryptStrFromStr(const QString& string)
+// -------------------------------------------------------------------------------------------------
+{
+    return decryptStrFromBytes(EncodingHelper::fromBase64(string));
 }

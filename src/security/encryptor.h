@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encryptor.h,v 1.9 2003/12/06 18:25:10 bwalle Exp $
+ * Id: $Id: encryptor.h,v 1.10 2003/12/10 21:47:47 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -21,55 +21,51 @@
 #include <qstring.h>
 #include <qstringlist.h>
 
+#include "stringencryptor.h"
 #include "nosuchalgorithmexception.h"
-#include "../types.h"
+#include "../global.h"
 
 /*!
  * \brief An interface for an object that encrypts bytes.
  *
  * \ingroup security
  * \author Bernhard Walle
- * \version $Revision: 1.9 $
- * \date $Date: 2003/12/06 18:25:10 $
+ * \version $Revision: 1.10 $
+ * \date $Date: 2003/12/10 21:47:47 $
  */
-class Encryptor
+class Encryptor : public StringEncryptor
 {
     public:
-        
-        /*!
-         * Destroys a Encryptor object.
-         */
-        virtual ~Encryptor() { }
         
         /*!
          * Encrypts the given amount of bytes.
          * \param vector the bytes to encrypt
          * \return the encrypted bytes
          */
-        virtual ByteVector encrypt(const ByteVector& vector) const = 0;
+        virtual ByteVector encrypt(const ByteVector& vector) = 0;
         
         /*!
          * Encrypts the given string.
          * \param string string to enctrypt
          * \return the encrypted bytes
          */
-        virtual ByteVector encryptString(const QString& string) const = 0;
+        virtual ByteVector encryptStrToBytes(const QString& string) = 0;
         
         /*!
          * Decrypts the given amount of bytes.
          * \param vector the bytes to decrypt
          * \return the decrypted bytes
          */
-        virtual ByteVector decrypt(const ByteVector& vector) const = 0;
+        virtual ByteVector decrypt(const ByteVector& vector) = 0;
         
         /*!
          * Decrypts the given amount of bytes. This method returns a String. 
          * Call this method only if you are sure that vector is the result of
-         * an encryption with encryptString().
+         * an encryption with encryptStrToBytes().
          * \param vector the bytes to decrypt
          * \return the decrypted string
          */
-        virtual QString decryptString(const ByteVector& vector) const = 0;
+        virtual QString decryptStrFromBytes(const ByteVector& vector) = 0;
 };
 
 #endif // ENCRYPTOR_H
