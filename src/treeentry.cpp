@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.cpp,v 1.10 2003/12/21 20:31:00 bwalle Exp $
+ * Id: $Id: treeentry.cpp,v 1.11 2003/12/29 15:12:27 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -22,68 +22,122 @@
 #include "treeentry.h"
 #include "settings.h"
 #include "security/notencryptor.h"
+#include "tree.h"
 
 
-// -------------------------------------------------------------------------------------------------
-bool TreeEntry::hasWeakChildren() const
-// -------------------------------------------------------------------------------------------------
+/*!
+    \class TreeEntry
+    
+    \brief Represents an entry in the tree.
+    
+    \ingroup gui
+    \author Bernhard Walle
+    \version $Revision: 1.11 $
+    \date $Date: 2003/12/29 15:12:27 $
+*/
+
+/*!
+    \typedef TreeEntry::PropertyIterator
+    
+    The iterator for the proeprties
+*/
+
+/*!
+    \fn TreeEntry::propertyAppended()
+    
+    Fired is a property was added.
+*/
+
+/*!
+    Returns the weakest passwort strength of any children of the item. All password
+    strength should be computed because of speed issues (in other words, no wait cursor
+    or something else is displayed in this function).
+    \return the password strength, Property::PUndefined should be never returned
+*/
+Property::PasswordStrength TreeEntry::weakestChildrenPassword() const
 {
+    Property::PasswordStrength lowest = Property::PUndefined;
     if (m_isCategory)
     {
         TreeEntry* item = dynamic_cast<TreeEntry*>(firstChild());
         while (item)
         {
-            if (item->hasWeakChildren())
+            Property::PasswordStrength strength = item->weakestChildrenPassword();
+            if (strength < lowest)
             {
-                return true;
+                lowest = strength;
+                if (lowest == Property::PWeak)
+                {
+                    break;
+                }
             }
             item = dynamic_cast<TreeEntry*>(item->nextSibling());
         }
     }
     else
     {
+        bool hadPasswords = false;
         PropertyIterator it = propertyIterator();
         Property* current;
         while ( (current = it.current()) != 0 ) 
         {
             ++it;
-            if (current->isWeak())
+            if (current->getType() == Property::PASSWORD)
             {
-                return true;
+                hadPasswords = true;
+                Property::PasswordStrength strength = current->getPasswordStrength();
+                if (strength < lowest)
+                {
+                    lowest = strength;
+                    if (lowest == Property::PWeak)
+                    {
+                        break;
+                    }
+                }
             }
         }
     }
-    return false;
+    
+    return lowest;
 }
 
-// -------------------------------------------------------------------------------------------------
+
+/*!
+    Returns the name of the entry.
+*/
 QString TreeEntry::getName() const
-// -------------------------------------------------------------------------------------------------
 {
     return m_name;
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Returns whether the entry is a categroy.
+*/
 bool TreeEntry::isCategory() const
-// -------------------------------------------------------------------------------------------------
 {
     return m_isCategory;
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Returns an iterator to the first entry of the properties list.
+    \return the iterator
+*/
 Property* TreeEntry::getProperty(uint index)
-// -------------------------------------------------------------------------------------------------
 {
     Q_ASSERT( index < m_properties.count() );
     return m_properties.at(index);
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Returns the name of the entry.
+    \param column the column
+    \return the name
+    \sa QListViewItem::text
+*/
 QString TreeEntry::text(int column) const
-// -------------------------------------------------------------------------------------------------
 {
     Q_ASSERT( column == 0 );
     column++; // no warnings
@@ -91,9 +145,12 @@ QString TreeEntry::text(int column) const
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Sets the text of the entry. Sets the name internally.
+    \param column the column
+    \param text the new text
+*/
 void TreeEntry::setText(int column, const QString& text)
-// -------------------------------------------------------------------------------------------------
 {
     Q_ASSERT(column == 0);
     m_name = text;
@@ -102,9 +159,11 @@ void TreeEntry::setText(int column, const QString& text)
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Moves the given property one step up.
+    \param index the index of the property
+*/
 void TreeEntry::movePropertyOneUp(uint index)
-// -------------------------------------------------------------------------------------------------
 {
     Q_ASSERT( index < m_properties.count() - 1);
     
@@ -116,9 +175,11 @@ void TreeEntry::movePropertyOneUp(uint index)
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Moves the given property one step down.
+    \param index the index of the property
+*/
 void TreeEntry::movePropertyOneDown(uint index)
-// -------------------------------------------------------------------------------------------------
 {
     Q_ASSERT( index > 0 && index < m_properties.count() );
     
@@ -130,43 +191,52 @@ void TreeEntry::movePropertyOneDown(uint index)
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Deletes the property with the specified index
+    \param index the index
+*/
 void TreeEntry::deleteProperty(uint index)
-// -------------------------------------------------------------------------------------------------
 {
     Q_ASSERT( index < m_properties.count() );
     m_properties.remove(index);
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Removes all properties.
+*/
 void TreeEntry::deleteAllProperties()
-// -------------------------------------------------------------------------------------------------
 {
     m_properties.clear();
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Inserts a new property at the end.
+    \param property the property
+*/
 void TreeEntry::appendProperty(Property* property)
-// -------------------------------------------------------------------------------------------------
 {
     m_properties.append(property);
     emit propertyAppended();
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Returns an iterator for the list
+*/
 TreeEntry::PropertyIterator TreeEntry::propertyIterator() const
-// -------------------------------------------------------------------------------------------------
 {
     return PropertyIterator(m_properties);
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    This function converts a tree entry to HTML for printing. A TreeEntry represents one
+    big table.
+    \return the RichText
+*/
 QString TreeEntry::toRichTextForPrint() const
-// -------------------------------------------------------------------------------------------------
 {
     if (m_isCategory)
     {
@@ -196,9 +266,13 @@ QString TreeEntry::toRichTextForPrint() const
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Appends the treeentry as \c category or \c entry tag in the XML structure.
+    \param document the document needed to create new elements
+    \param parent the parent to which the new created element should be attached
+    \param enc the encryptor to use for encrypting passwords
+*/
 void TreeEntry::appendXML(QDomDocument& document, QDomNode& parent, StringEncryptor& enc) const
-// -------------------------------------------------------------------------------------------------
 {
     QDomElement newElement;
     if (m_isCategory)
@@ -230,9 +304,14 @@ void TreeEntry::appendXML(QDomDocument& document, QDomNode& parent, StringEncryp
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Converts this TreeEntry to XML. This XML is used for drag and drop. It contains one
+    \<entry\> or \<category\> tag and this tag contains also an attribute named
+    \c memoryAddress which holds the memory address for this item. This can be used
+    for deleting the object or for determine whether the user is dragging to iself.
+    \return the XML string
+*/
 QString TreeEntry::toXML() const
-// -------------------------------------------------------------------------------------------------
 {
     QDomDocument doc;
     NotEncryptor enc;
@@ -243,17 +322,24 @@ QString TreeEntry::toXML() const
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Checks if the item can accept drops of the type QMimeSource. The MIME type accepted is
+    <tt>application/x-qpamat</tt>. Only categories accept drops.
+    \param mime the QMimeSource object
+    \return \c true if the item can accept drops of type QMimeSource mime; otherwise 
+            \c false.
+*/
 bool TreeEntry::acceptDrop(const QMimeSource* mime) const
-// -------------------------------------------------------------------------------------------------
 {
     return mime->provides("application/x-qpamat");
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Overwritten drop handler
+    \param evt the event
+*/
 void TreeEntry::dropped(QDropEvent *evt)
-// -------------------------------------------------------------------------------------------------
 {
     if (evt->provides("application/x-qpamat"))
     {
@@ -289,7 +375,7 @@ void TreeEntry::dropped(QDropEvent *evt)
         }
         
         listView()->setSelected(appended, true);
-        
+        dynamic_cast<Tree*>(listView())->updatePasswordStrengthView();
         delete src;
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.22 2003/12/28 15:06:31 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.23 2003/12/29 15:12:27 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -39,28 +39,28 @@
 #include <qcursor.h>
 #include <qsimplerichtext.h> 
 
-#include "../images/new_16x16.xpm"
-#include "../images/new_22x22.xpm"
-#include "../images/exit_16x16.xpm"
-#include "../images/exit_22x22.xpm"
-#include "../images/save_16x16.xpm"
-#include "../images/save_22x22.xpm"
-#include "../images/whats_this.xpm"
-#include "../images/lock_big.xpm"
-#include "../images/configure_16x16.xpm"
-#include "../images/configure_22x22.xpm"
-#include "../images/find_16x16.xpm"
-#include "../images/find_22x22.xpm"
-#include "../images/print_16x16.xpm"
-#include "../images/print_22x22.xpm"
-#include "../images/edit_add_16x16.xpm"
-#include "../images/edit_add_22x22.xpm"
-#include "../images/edit_remove_16x16.xpm"
-#include "../images/edit_remove_22x22.xpm"
+#include "images/new_16x16.xpm"
+#include "images/new_22x22.xpm"
+#include "images/exit_16x16.xpm"
+#include "images/exit_22x22.xpm"
+#include "images/save_16x16.xpm"
+#include "images/save_22x22.xpm"
+#include "images/whats_this.xpm"
+#include "images/lock_big.xpm"
+#include "images/configure_16x16.xpm"
+#include "images/configure_22x22.xpm"
+#include "images/find_16x16.xpm"
+#include "images/find_22x22.xpm"
+#include "images/print_16x16.xpm"
+#include "images/print_22x22.xpm"
+#include "images/edit_add_16x16.xpm"
+#include "images/edit_add_22x22.xpm"
+#include "images/edit_remove_16x16.xpm"
+#include "images/edit_remove_22x22.xpm"
 
 #include "qpamat.h"
 #include "settings.h"
-#include "util/timerstatusmessage.h"
+#include "timerstatusmessage.h"
 #include "dialogs/passworddialog.h"
 #include "dialogs/newpassworddialog.h"
 #include "dialogs/configurationdialog.h"
@@ -85,8 +85,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.22 $
-    \date $Date: 2003/12/28 15:06:31 $
+    \version $Revision: 1.23 $
+    \date $Date: 2003/12/29 15:12:27 $
  */
 
 /*! 

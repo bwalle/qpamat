@@ -1,5 +1,5 @@
 /*
- * Id: $Id: settings.cpp,v 1.8 2003/12/21 20:30:26 bwalle Exp $
+ * Id: $Id: settings.cpp,v 1.9 2003/12/29 15:12:27 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -23,9 +23,22 @@
 #include "settings.h"
 #include "security/encryptor.h"
 
-// -------------------------------------------------------------------------------------------------
+
+/*!
+    \class Settings
+    
+    \brief Singleton for storing settings in registry (MS Windows) or ini-file (Unix).
+    
+    \ingroup gui
+    \author Bernhard Walle
+    \version $Revision: 1.9 $
+    \date $Date: 2003/12/29 15:12:27 $
+*/
+
+/*!
+    Creates a new instance of the settings object. The default values are initialized.
+*/
 Settings::Settings()
-// -------------------------------------------------------------------------------------------------
 {
     m_qSettings.setPath( "bwalle.de", "qpamat", QSettings::User );
     m_qSettings.beginGroup("/qpamat");
@@ -36,7 +49,6 @@ Settings::Settings()
 #define DEF_BOOLEA(a, b) ( m_boolMap.insert( (a), (b) ) )
     
     DEF_BOOLEA("Main Window/maximized",          false);
-    DEF_BOOLEA("General/ShowWeakPasswords",      false);
     DEF_STRING("Main Window/SearchHistory",      "");
     DEF_STRING("Main Window/Layout",             "");
     DEF_STRING("General/Webbrowser",             "mozilla");
@@ -47,10 +59,11 @@ Settings::Settings()
     DEF_STRING("AutoText/Password",              "Password");
     DEF_STRING("AutoText/URL",                   "URL");
     DEF_STRING("Security/CipherAlgorithm",       SymmetricEncryptor::getSuggestedAlgorithm());
-    DEF_STRING("Security/EnsuredCharacters",     "ULDs");
     DEF_INTEGE("Security/Length",                8);
-    DEF_INTEGE("Security/MinLength",             6);
     DEF_STRING("Security/AllowedCharacters",     "a-zA-Z0-9@$#");
+    DEF_DOUBLE("Security/WeakPasswordLimit",     3.0);
+    DEF_DOUBLE("Security/StrongPasswordLimit",   15.0);
+    DEF_STRING("Security/DictionaryFile",        "");
     DEF_STRING("Security/PasswordGenerator",     PasswordGeneratorFactory::DEFAULT_GENERATOR_STRING);
     DEF_STRING("Security/PasswordGenAdditional", "");
 #ifdef Q_WS_WIN                                       
@@ -70,41 +83,66 @@ Settings::Settings()
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    \fn Settings::~Settings()
+    
+    Destructor
+*/
+
+/*!
+    Writes an entry into the settings.
+    \param key the key
+    \param value the value
+    \return if the entry was written
+*/
 bool Settings::writeEntry(const QString & key, const QString & value)
-// -------------------------------------------------------------------------------------------------
 {
     return m_qSettings.writeEntry(key, value);
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Writes an entry into the settings.
+    \param key the key
+    \param value the value
+    \return if the entry was written
+*/
 bool Settings::writeEntry(const QString & key, double value)
-// -------------------------------------------------------------------------------------------------
 {
     return m_qSettings.writeEntry(key, value);
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Writes an entry into the settings.
+    \param key the key
+    \param value the value
+    \return if the entry was written
+*/
 bool Settings::writeEntry(const QString & key, int value)
-// -------------------------------------------------------------------------------------------------
 {
     return m_qSettings.writeEntry(key, value);
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Writes an entry into the settings.
+    \param key the key
+    \param value the value
+    \return if the entry was written
+*/
 bool Settings::writeEntry(const QString & key, bool value)
-// -------------------------------------------------------------------------------------------------
 {
     return m_qSettings.writeEntry(key, value);
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Reads the entry. If the entry does not exist there's a automatic default value that
+    is returned.
+    \return the entry
+*/
 QString Settings::readEntry(const QString & key, const QString& def)
-// -------------------------------------------------------------------------------------------------
 {
     bool read = false;
     QString string = m_qSettings.readEntry(key, def, &read);
@@ -122,9 +160,12 @@ QString Settings::readEntry(const QString & key, const QString& def)
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Reads a number entry. If the entry does not exist there's a automatic default value that
+    is returned.
+    \return the entry
+*/
 int Settings::readNumEntry (const QString & key, int def)
-// -------------------------------------------------------------------------------------------------
 {
     bool read = false;
     int number = m_qSettings.readNumEntry(key, def, &read);
@@ -142,9 +183,12 @@ int Settings::readNumEntry (const QString & key, int def)
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Reads a double entry. If the entry does not exist there's a automatic default value that
+    is returned.
+    \return the entry
+*/
 double Settings::readDoubleEntry(const QString & key, double def) const
-// -------------------------------------------------------------------------------------------------
 {
     bool read = false;
     double number = m_qSettings.readDoubleEntry(key, def, &read);
@@ -162,9 +206,12 @@ double Settings::readDoubleEntry(const QString & key, double def) const
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Reads a boolean entry. If the entry does not exist there's a automatic default value that
+    is returned.
+    \return the entry
+*/
 bool Settings::readBoolEntry(const QString & key, bool def) const
-// -------------------------------------------------------------------------------------------------
 {
     bool read = false;
     bool res = m_qSettings.readBoolEntry(key, def, &read);

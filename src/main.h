@@ -1,5 +1,5 @@
 /*
- * Id: $Id: main.h,v 1.3 2003/12/15 18:38:08 bwalle Exp $
+ * Id: $Id: main.h,v 1.4 2003/12/29 15:12:26 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,45 +18,15 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-/**
- * \brief This namespace contains all functions that are no member functions of a class.
- *
- * In my opinion it makes no sense to put helping functions that are called in the main()
- * function in a extra class so I created this namespace.
- *
- * \ingroup gui
- * \author Bernhard Walle
- * \version $Revision: 1.3 $
- * \date $Date: 2003/12/15 18:38:08 $
- */
-namespace qpamatNS
-{
-    /*!
-     * Parses the command line and calls the right functions. Call this function after
-     * creating a QApplication.
-     * \param argc the number of arguments
-     * \param argv an array of strings
-     */
-    void parseCommandLine(int& argc, char**& argv);
-    
-    /*!
-     * Prints the available command line options on stdout and exits the program.
-     */
-    void printCommandlineOptions();
-    
-    /*!
-     * Prints the version of the program on stderr and exits the program.
-     */
-    void printVersion();
-    
-    /*!
-     * Returns the X11 version if the code is compiled on a system with X11. If not,
-     * the strings are not changed.
-     * \param protocolVersion the version of the X11 protocol, normally 11
-     * \param vendorVersion the version of the implementation e.g. of XFree86 on Linux
-     */
-    void getX11Version(QString& protocolVersion, QString& vendorVersion);
-};
+#include <csignal>
 
+void parseCommandLine(int& argc, char**& argv);
+
+void printCommandlineOptions();
+void printVersion();
+    
+void getX11Version(QString& protocolVersion, QString& vendorVersion);
+
+void sighandler(int signal = 0);
 
 #endif // MAIN_H

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightpanel.cpp,v 1.4 2003/12/16 22:52:47 bwalle Exp $
+ * Id: $Id: rightpanel.cpp,v 1.5 2003/12/29 15:12:27 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -28,9 +28,44 @@
 #include "treeentry.h"
 #include "southpanel.h"
 
-// -------------------------------------------------------------------------------------------------
+
+/*!
+    \class RightPanel
+    
+    \brief Represents the panel on the right which contains the entry list.
+    
+    \ingroup gui
+    
+    \author Bernhard Walle
+    \version $Revision: 1.5 $
+    \date $Date: 2003/12/29 15:12:27 $
+*/
+
+/*!
+    \fn RightPanel::stateModified()
+    
+    If something was modified, need to determine if saving is necessary.
+*/
+
+/*!
+    \fn RightPanel::passwordLineEditGotFocus(bool)
+    
+    This signal is emitted if the password field got this focus.
+    \param focus \c true if it got the focus, \c false if the focus is lost
+*/
+
+/*!
+    \fn RightPanel::passwordStrengthUpdated()
+    
+    This signal is emitted if the password strength of an item has changed an therefore
+    the displaying must be updated.
+*/
+
+/*!
+    Creates a new instance of the right panel.
+    \param parent the parent widget as usual for QObject
+*/
 RightPanel::RightPanel(Qpamat* parent) : QFrame(parent, "RightPanel")
-// -------------------------------------------------------------------------------------------------
 {
     QVBoxLayout* layout = new QVBoxLayout(this);
     m_listView = new RightListView(this);
@@ -54,12 +89,14 @@ RightPanel::RightPanel(Qpamat* parent) : QFrame(parent, "RightPanel")
     connect(parent, SIGNAL(insertPassword(const QString&)), 
         m_southPanel, SLOT(insertPassword(const QString&)));
     connect(m_southPanel, SIGNAL(stateModified()), SIGNAL(stateModified()));
+    connect(m_southPanel, SIGNAL(passwordStrengthUpdated()), SIGNAL(passwordStrengthUpdated()));
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Clears the widget
+*/
 void RightPanel::clear()
-// -------------------------------------------------------------------------------------------------
 {
     m_listView->clear();
     m_southPanel->clear();
@@ -67,18 +104,23 @@ void RightPanel::clear()
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Enables or diables the panel.
+    \param enabled \c true if the panel should be enabled, \c false otherwise
+*/
 void RightPanel::setEnabled(bool enabled)
-// -------------------------------------------------------------------------------------------------
 {
     QFrame::setEnabled(enabled);
     m_listView->setEnabled(enabled);
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Sets the current item. The item must be a TreeEntry, this type is only for
+    the signal and slots mechanism.
+    \param item the current item
+*/
 void RightPanel::setItem(QListViewItem* item)
-// -------------------------------------------------------------------------------------------------
 {
     clear();
     m_currentItem = dynamic_cast<TreeEntry*>(item);
@@ -94,9 +136,11 @@ void RightPanel::setItem(QListViewItem* item)
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Handles changing of selections.
+    \param item the item
+*/
 void RightPanel::selectionChangeHandler(QListViewItem* item)
-// -------------------------------------------------------------------------------------------------
 {
     disconnect(m_listView, SLOT(updateSelected(Property*)));
     
@@ -108,9 +152,11 @@ void RightPanel::selectionChangeHandler(QListViewItem* item)
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Deletes the current item if the widget has the focus inside, i.e. if isFocusInside()
+    returns \c true.
+*/
 void RightPanel::deleteCurrent()
-// -------------------------------------------------------------------------------------------------
 {
     if (isFocusInside())
     {
@@ -119,9 +165,10 @@ void RightPanel::deleteCurrent()
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Inserts an item at the current position if the widget has the focus.
+*/
 void RightPanel::insertAtCurrentPos()
-// -------------------------------------------------------------------------------------------------
 {
     if (isFocusInside())
     {
@@ -130,9 +177,35 @@ void RightPanel::insertAtCurrentPos()
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Returns if the focus is inside this object.
+    \return \c true if the focus is inside this object, \c false otherwise.
+*/
 bool RightPanel::isFocusInside() const
-// -------------------------------------------------------------------------------------------------
 {
     return m_listView->isFocusInside() || m_southPanel->isFocusInside();
+}
+
+
+/*!
+    \relates RightPanel
+    
+    Stores the width of the columns of the listview.
+*/
+QTextStream& operator<<(QTextStream& ts, const RightPanel& panel)
+{
+    ts << *panel.m_listView;
+    return ts;
+}
+
+
+/*!
+    \relates RightPanel
+    
+    Reads the width of the columns of the listview.
+*/
+QTextStream& operator>>(QTextStream& ts, RightPanel& panel)
+{
+    ts >> *panel.m_listView;
+    return ts;
 }

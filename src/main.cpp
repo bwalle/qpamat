@@ -1,5 +1,5 @@
 /*
- * Id: $Id: main.cpp,v 1.13 2003/12/18 14:08:36 bwalle Exp $
+ * Id: $Id: main.cpp,v 1.14 2003/12/29 15:12:26 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,6 +18,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <cstdlib>
+#include <cstdio>
 
 #include <qapplication.h>
 #include <qtextstream.h>
@@ -30,7 +31,7 @@
 #include "qpamat.h"
 #include "settings.h"
 #include "main.h"
-#include "singleapplication.h"
+#include "util/singleapplication.h"
 
 #ifdef Q_WS_X11
 #include <unistd.h>
@@ -45,10 +46,10 @@ namespace X11
 
 Qpamat* qpamat;
 
-
-// -------------------------------------------------------------------------------------------------
-void qpamatNS::printCommandlineOptions()
-// -------------------------------------------------------------------------------------------------
+/*!
+    Prints the available command line options on stdout and exits the program.
+*/
+void printCommandlineOptions()
 {
     std::cerr 
         << "\n" 
@@ -66,9 +67,23 @@ void qpamatNS::printCommandlineOptions()
 }
 
 
-// -------------------------------------------------------------------------------------------------
-void qpamatNS::printVersion()
-// -------------------------------------------------------------------------------------------------
+/*!
+    This is the signalhandler. It exists the application friendly.
+    \param signal the signal number
+*/
+void sighandler(int signal)
+{
+#ifdef DEBUG
+    qDebug("Caught signal No. %d", signal);
+#endif
+    qApp->quit();
+}
+
+
+/*!
+    Prints the version of the program on stderr and exits the program.
+*/
+void printVersion()
 {
 #ifdef Q_WS_X11
     struct utsname uname_struct;
@@ -93,9 +108,13 @@ void qpamatNS::printVersion()
 }
 
 
-// -------------------------------------------------------------------------------------------------
-void qpamatNS::parseCommandLine(int& argc, char**& argv)
-// -------------------------------------------------------------------------------------------------
+/*!
+    Parses the command line and calls the right functions. Call this function after
+    creating a QApplication.
+    \param argc the number of arguments
+    \param argv an array of strings
+*/
+void parseCommandLine(int& argc, char**& argv)
 {
     for (int i = 1; i < argc; ++i)
     {
@@ -114,9 +133,13 @@ void qpamatNS::parseCommandLine(int& argc, char**& argv)
 }
 
 
-// -------------------------------------------------------------------------------------------------
-void qpamatNS::getX11Version(QString& protocolVersion, QString& vendorVersion)
-// -------------------------------------------------------------------------------------------------
+/*!
+    Returns the X11 version if the code is compiled on a system with X11. If not,
+    the strings are not changed.
+    \param protocolVersion the version of the X11 protocol, normally 11
+    \param vendorVersion the version of the implementation e.g. of XFree86 on Linux
+*/
+void getX11Version(QString& protocolVersion, QString& vendorVersion)
 {
 #ifdef Q_WS_X11
     using X11::_XPrivDisplay;
@@ -131,7 +154,7 @@ void qpamatNS::getX11Version(QString& protocolVersion, QString& vendorVersion)
 #endif
 }
 
-
+#include "security/hybridpasswordchecker.h"
 // -------------------------------------------------------------------------------------------------
 int main(int argc, char** argv)
 // -------------------------------------------------------------------------------------------------
@@ -140,7 +163,7 @@ int main(int argc, char** argv)
     
     QApplication app(argc, argv);
     SingleApplication single(QDir::homeDirPath(), "QPaMaT");
-    qpamatNS::parseCommandLine(argc, argv);
+    parseCommandLine(argc, argv);
     
     try
     {
@@ -149,11 +172,19 @@ int main(int argc, char** argv)
         qpamat = new Qpamat();
         app.setMainWidget(qpamat);
         
+        // install signal handlers
+        std::signal(SIGINT, &sighandler);
+        std::signal(SIGTERM, &sighandler);
+#ifdef Q_WS_X11
+        std::signal(SIGHUP, &sighandler);
+        std::signal(SIGQUIT, &sighandler);
+#endif 
+        
         qpamat->show();
         app.connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));
         app.connect(&app, SIGNAL(aboutToQuit()), &single, SLOT(shutdown())); 
         
-        returncode = app.exec();
+        returncode = app.exec(); 
     }
     catch (const std::bad_alloc& e)
     {

@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.23 2003/12/21 20:31:14 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.24 2003/12/29 15:12:50 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -7,8 +7,11 @@
 #
 ################################################################################
 
+
 VERSION     = 0.1
 
+
+INCLUDEPATH += src/
 # set this if you installed OpenSSL in a non-standard place
 # INCLUDEPATH += /usr/local/ssl/include
 
@@ -17,6 +20,7 @@ SOURCES     =                                   \
     src/dialogs/newpassworddialog.cpp           \
     src/dialogs/configurationdialog.cpp         \
     src/dialogs/showpassworddialog.cpp          \
+	src/dialogs/waitdialog.cpp					\
     src/widgets/filelineedit.cpp                \
     src/widgets/fontchoosebox.cpp               \
     src/widgets/copylabel.cpp                   \
@@ -30,13 +34,17 @@ SOURCES     =                                   \
     src/security/randompasswordgenerator.cpp    \
     src/security/externalpasswordgenerator.cpp  \
     src/security/passwordgeneratorfactory.cpp   \
+    src/security/passwordchecker.cpp            \
+    src/security/hybridpasswordchecker.cpp      \
     src/security/masterpasswordchecker.cpp      \
-    src/security/configpasswordchecker.cpp      \
     src/smartcard/cardexception.cpp             \
     src/smartcard/memorycard.cpp                \
-    src/util/timerstatusmessage.cpp             \
+	src/smartcard/nosuchlibraryexception.cpp	\
+	src/smartcard/notinitializedexception.cpp	\
+    src/util/stringdisplay.cpp                  \
+    src/util/singleapplication.cpp              \
+    src/timerstatusmessage.cpp            	 	\
     src/randompassword.cpp                      \
-    src/singleapplication.cpp                   \
     src/treeentry.cpp                           \
     src/property.cpp                            \
     src/tree.cpp                                \
@@ -53,18 +61,18 @@ SOURCES     =                                   \
 HEADERS     =                                   \
     src/dialogs/passworddialog.h                \
     src/dialogs/newpassworddialog.h             \
+    src/dialogs/newpassworddialogprivate.h      \
     src/dialogs/configurationdialog.h           \
+    src/dialogs/configurationdialogprivate.h    \
     src/dialogs/showpassworddialog.h            \
+	src/dialogs/waitdialog.h  					\
     src/widgets/filelineedit.h                  \
     src/widgets/fontchoosebox.h                 \
     src/widgets/copylabel.h                     \
     src/widgets/focuslineedit.h                 \
     src/global.h                                \
-    src/security/passwordcheckexception.h       \
     src/security/encodinghelper.h               \
     src/security/passwordhash.h                 \
-    src/security/nosuchalgorithmexception.h     \
-    src/security/passwordgenerateexception.h    \
     src/security/encryptor.h                    \
     src/security/notencryptor.h                 \
     src/security/abstractencryptor.h            \
@@ -75,13 +83,16 @@ HEADERS     =                                   \
     src/security/externalpasswordgenerator.h    \
     src/security/passwordgeneratorfactory.h     \
     src/security/passwordchecker.h              \
+    src/security/hybridpasswordchecker.h        \
     src/security/masterpasswordchecker.h        \
-    src/security/configpasswordchecker.h        \
     src/randompassword.h                        \
     src/smartcard/cardexception.h               \
     src/smartcard/memorycard.h                  \
-    src/util/timerstatusmessage.h               \
-    src/singleapplication.h                     \
+	src/smartcard/nosuchlibraryexception.h		\
+	src/smartcard/notinitializedexception.h		\
+    src/util/stringdisplay.h                    \
+    src/util/singleapplication.h                \
+    src/timerstatusmessage.h               		\
     src/treeentry.h                             \
     src/property.h                              \
     src/settings.h                              \
@@ -113,6 +124,8 @@ isEmpty (debug) {
   DEFINES  += DEBUG
 }
 
+QMAKE_CXXFLAGS_WARN_ON 	+= -Wno-unused-parameter
+
 # -----------------------------------------------------------------------------
 
 LIBS       += -lssl -lm -lcrypto
@@ -141,3 +154,4 @@ maketarball.commands       += mv ../qpamat-$${VERSION}.tar.gz . &&
 maketarball.commands       += rm -r ../qpamat-$$VERSION
 QMAKE_EXTRA_UNIX_TARGETS   += maketarball
 
+# vim: ft=text

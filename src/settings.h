@@ -1,5 +1,5 @@
 /*
- * Id: $Id: settings.h,v 1.9 2003/12/21 20:30:36 bwalle Exp $
+ * Id: $Id: settings.h,v 1.10 2003/12/29 15:12:27 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -21,94 +21,32 @@
 #include <qsettings.h>
 #include <qmap.h>
 
-/*!
- * \brief Singleton for storing settings in registry (MS Windows) or ini-file (Unix).
- * \ingroup gui
- * \author Bernhard Walle
- * \version $Revision: 1.9 $
- * \date $Date: 2003/12/21 20:30:36 $
- */
 class Settings
 {
     public:
-        
-        /*! 
-         * Creates a new instance of the settings object. The default values are initialized.
-         */
         Settings();
-        
-        /*!
-         * Destructor
-         */
         virtual ~Settings() { }
         
-        
-        /*!
-         * Writes an entry into the settings.
-         * \param key the key
-         * \param value the value
-         * \return if the entry was written
-         */
         bool writeEntry(const QString & key, const QString & value);
-        
-        /*!
-         * Writes an entry into the settings.
-         * \param key the key
-         * \param value the value
-         * \return if the entry was written
-         */
         bool writeEntry(const QString & key, int value);
-        
-        /*!
-         * Writes an entry into the settings.
-         * \param key the key
-         * \param value the value
-         * \return if the entry was written
-         */
         bool writeEntry(const QString & key, bool value);
-        
-        /*!
-         * Writes an entry into the settings.
-         * \param key the key
-         * \param value the value
-         * \return if the entry was written
-         */
         bool writeEntry(const QString & key, double value);
         
-        /*!
-         * Reads the entry. If the entry does not exist there's a automatic default value that
-         * is returned.
-         * \return the entry
-         */
         QString readEntry(const QString & key, const QString& def = QString::null);
-        
-        /*!
-         * Reads a number entry. If the entry does not exist there's a automatic default value that
-         * is returned.
-         * \return the entry
-         */
         int readNumEntry (const QString & key, int def = 0);
-        
-        /*!
-         * Reads a double entry. If the entry does not exist there's a automatic default value that
-         * is returned.
-         * \return the entry
-         */
         double readDoubleEntry(const QString & key, double def = 0.0) const;
-        
-        /*!
-         * Reads a boolean entry. If the entry does not exist there's a automatic default value that
-         * is returned.
-         * \return the entry
-         */
         bool readBoolEntry(const QString & key, bool def = false) const;
         
     private:
-        QSettings m_qSettings;
-        QMap<QString, QString> m_stringMap;
-        QMap<QString, int> m_intMap;
-        QMap<QString, bool> m_boolMap;
-        QMap<QString, double> m_doubleMap;
+        QSettings               m_qSettings;
+        QMap<QString, QString>  m_stringMap;
+        QMap<QString, int>      m_intMap;
+        QMap<QString, bool>     m_boolMap;
+        QMap<QString, double>   m_doubleMap;
+        
+    private:
+        Settings(const Settings&);
+        Settings& operator=(const Settings&);
 };
 
 #endif // SETTINGS_H

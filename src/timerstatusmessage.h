@@ -1,5 +1,5 @@
 /*
- * Id: $Id: global.h,v 1.4 2003/12/29 15:12:26 bwalle Exp $
+ * Id: $Id: timerstatusmessage.h,v 1.1 2003/12/29 15:12:41 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,18 +15,33 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#include <qvaluevector.h>
-#include <qmap.h>
+#ifndef TIMERSTATUSMESSAGE_H
+#define TIMERSTATUSMESSAGE_H
+
 #include <qstring.h>
+#include <qstatusbar.h>
+#include <qdatetime.h>
 
-typedef unsigned char byte;
+class TimerStatusmessage : public QObject
+{
+    Q_OBJECT
+        
+    public:
+        TimerStatusmessage(QStatusBar* statusbar);
+        
+    public slots:
+        void message(const QString& message, int time);
+        
+    private slots:
+        void displayAgain();
+        void disconnectSignalsAndSlots();
+        
+    private:
+        QStatusBar* m_statusBar;
+        int         m_time;
+        QString     m_message;
+        QTime       m_begin;
+        bool        m_connected;
+};
 
-typedef QValueVector<byte>      ByteVector;
-typedef QValueVector<QString>   StringVector;
-typedef QValueVector<uint>      UIntVector;
-typedef QValueVector<int>       IntVector;
-
-typedef QMap<QString, QString>  StringMap;
-typedef QValueVector<QChar>     QCharVector;
-
-
+#endif // TIMERSTATUSMESSAGE_H

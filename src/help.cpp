@@ -1,5 +1,5 @@
 /*
- * Id: $Id: help.cpp,v 1.4 2003/12/20 15:58:02 bwalle Exp $
+ * Id: $Id: help.cpp,v 1.5 2003/12/29 15:12:26 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -25,9 +25,22 @@
 #include "help.h"
 #include "settings.h"
 
-// -------------------------------------------------------------------------------------------------
+
+/*!
+    \class Help
+    
+    \brief Helping class for providing help.
+    
+    \ingroup gui
+    \author Bernhard Walle
+    \version $Revision: 1.5 $
+    \date $Date: 2003/12/29 15:12:26 $
+*/
+
+/*!
+    Shows the about dialog
+*/
 void Help::showAbout()
-// -------------------------------------------------------------------------------------------------
 {
     QMessageBox::about(qApp->mainWidget(), "QPaMaT",
         tr("<p><b>QPaMaT "VERSION"</b></p><p>Password managing tool for Unix, Windows and MacOS X. "
@@ -37,9 +50,10 @@ void Help::showAbout()
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Opens the specified URL in the browser.
+*/
 void Help::openURL(QWidget* parent, const QString& url)
-// -------------------------------------------------------------------------------------------------
 {
     QString command = qpamat->set().readEntry("/General/Webbrowser");
     QProcess* process = new QProcess(command, parent);

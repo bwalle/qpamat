@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightlistview.h,v 1.6 2003/12/21 20:31:00 bwalle Exp $
+ * Id: $Id: rightlistview.h,v 1.7 2003/12/29 15:12:27 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -26,80 +26,32 @@
 #include "property.h"
 #include "treeentry.h"
 
-/*!
- * \brief Represents the list view on the right where the key-value pairs are displayed.
- * \ingroup gui
- * \author Bernhard Walle
- * \version $Revision: 1.6 $
- * \date $Date: 2003/12/21 20:31:00 $
- */
 class RightListView : public QListView
 {
     Q_OBJECT
     
     public:
+        enum MenuID 
+        { 
+            NEW, DELETE, COPY, SHOW_PW 
+        };
         
-        /*!
-         * Enumeration for menu.
-         */
-        enum MenuID { NEW, DELETE, COPY, SHOW_PW };
-    
-        /*!
-         * Creates a new object of the list view.
-         * \param parent the parent widget
-         */
+    public:
         RightListView(QWidget* parent);
         
-        /*!
-         * Deletes the object.
-         */
-        virtual ~RightListView() { }
-        
-        /*!
-         * Key press.
-         */
-        void keyPressEvent(QKeyEvent* evt);
-        
-        /*!
-         * Sets the current item. The item must be a TreeEntry, this type is only for
-         * the signal and slots mechanism.
-         * \param item the current item
-         */
         void setItem(QListViewItem* item);
-        
-        /*!
-         * Returns if the focus is inside this object.
-         * \return \c true if the focus is inside this object, \c false otherwise.
-         */
         bool isFocusInside() const;
-        
-        /*!
-         * Selects the specified item according to the index.
-         * \param index the index
-         */
         void setSelectedIndex(uint index);
         
     public slots:
-        
-        /*!
-         * Deletes the current item.
-         */
         void deleteCurrent();
-        
-        /*!
-         * Inserts an item at the current position.
-         */
         void insertAtCurrentPos();
         
-        /*!
-         * Moves the selected item one step down.
-         */
         void moveDown();
-        
-        /*!
-         * Moves the selected item one step up.
-         */
         void moveUp();
+        
+    protected:
+        void keyPressEvent(QKeyEvent* evt);
         
     private slots:
         void updateView();
@@ -109,38 +61,24 @@ class RightListView : public QListView
         void doubleClickHandler(QListViewItem* item);
         void itemAppendedHandler();
         void setMoveStateCorrect();
+        void mouseButtonClickedHandler(int but, QListViewItem* item, const QPoint& point, int c);
         
     signals:
-        
-        /*!
-         * This signal is emitted if an item was appended.
-         */
         void itemAppended();
-        
-        /*!
-         * This signal is emitted if an item was deleted.
-         */
         void itemDeleted();
-        
-        /*!
-         * If something was modified, need to determine if saving is necessary.
-         */
         void stateModified();
-        
-        /*!
-         * This signal is emitted always if the selection changes.
-         * \param up if moving up is enabled
-         * \param down if moving down is enabled
-         */
         void enableMoving(bool up, bool down);
         
     private:
         void initContextMenu();
         
     private:
-        TreeEntry* m_currentItem;
+        TreeEntry*  m_currentItem;
         QPopupMenu* m_contextMenu;
    
 }; 
+
+QTextStream& operator<<(QTextStream& ts, const RightListView& listview);
+QTextStream& operator>>(QTextStream& ts, RightListView& listview);
 
 #endif // RIGHTLISTVIEW_H

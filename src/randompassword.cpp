@@ -1,5 +1,5 @@
 /*
- * Id: $Id: randompassword.cpp,v 1.5 2003/12/21 20:31:00 bwalle Exp $
+ * Id: $Id: randompassword.cpp,v 1.6 2003/12/29 15:12:27 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,6 +15,8 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
+#include <memory>
+
 #include <qobject.h>
 #include <qstring.h>
 #include <qmessagebox.h>
@@ -22,41 +24,66 @@
 #include <qcursor.h>
 
 #include "qpamat.h"
+#include "global.h"
 #include "settings.h"
-#include "security/configpasswordchecker.h"
 #include "dialogs/showpassworddialog.h"
 #include "randompassword.h"
 #include "security/passwordgeneratorfactory.h"
+#include "security/hybridpasswordchecker.h"
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    \class RandomPassword
+    
+    \brief This class handles RandomPasswords in the QPaMaT application.
+    
+    It doesn't generate RandomPasswords but it manages displaying and sending them to other
+    widgets.
+    
+    \ingroup gui
+    \author Bernhard Walle
+    \version $Revision: 1.6 $
+    \date $Date: 2003/12/29 15:12:27 $
+*/
+
+/*!
+    \fn RandomPassword::insertPassword(const QString&)
+    
+    This signal is emitted every time the user wants to insert the password at current
+    position.
+    \param password the password
+*/
+
+/*!
+    Creates a new instance of a RandomPassword object. Inserting is not enabled initally.
+    \param parent the parent object
+    \param name the name of the object
+*/
 RandomPassword::RandomPassword(Qpamat* parent, const char* name)
-// -------------------------------------------------------------------------------------------------
-            : QObject(parent, name), m_insertEnabled(false), m_parent(parent)
-{
-}
+    : QObject(parent, name), m_insertEnabled(false), m_parent(parent)
+{ }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Enables the insert function.
+    \param enabled if the insert function should be enabled
+*/
 void RandomPassword::setInsertEnabled(bool enabled)
-// -------------------------------------------------------------------------------------------------
 {
     m_insertEnabled = enabled;
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Call this slot if you want a random password. A password dialog is displayed that
+    lets the user copy the password into the clipboard or insert (if possible) at the
+    current password QLineEdit.
+*/
 void RandomPassword::requestPassword()
-// -------------------------------------------------------------------------------------------------
 {
-    ShowPasswordDialog* dlg = new ShowPasswordDialog(
-        m_parent, ShowPasswordDialog::TRandomPasswordDlgInsert, "RandomPwDialog");
-    
     PasswordGenerator* passwordgen = 0;
-    int length = qpamat->set().readNumEntry("Security/Length");
-    QString ensured = qpamat->set().readEntry("Security/EnsuredCharacters");
     QString allowed = qpamat->set().readEntry("Security/AllowedCharacters");
-    ConfigPasswordChecker checker(length, ensured, allowed);
+    HybridPasswordChecker checker(qpamat->set().readEntry("Security/DictionaryFile"));
     
     try
     {
@@ -71,7 +98,6 @@ void RandomPassword::requestPassword()
                 tr("<qt><nobr>Failed to create a password checker:</nobr><br>%1</qt>")
                 .arg(exc.what()), QMessageBox::Ok, QMessageBox::NoButton);
         delete passwordgen;
-        delete dlg;
         return;
     }
     
@@ -87,9 +113,11 @@ void RandomPassword::requestPassword()
         try
         {
             password = passwordgen->getPassword(
-                qpamat->set().readNumEntry("Security/Length"), checker.allowedCharacters()
+                qpamat->set().readNumEntry("Security/Length"), 
+                qpamat->set().readEntry("Security/AllowedCharacters")
             );
-            ok = checker.isPasswordOk(password);
+            double quality = checker.passwordQuality(password);
+            ok = quality > qpamat->set().readDoubleEntry("StrongPasswordLimit");
         }
         catch (const std::exception& exc)
         {
@@ -109,6 +137,11 @@ void RandomPassword::requestPassword()
         QApplication::restoreOverrideCursor();
     }
     
+    ShowPasswordDialog::DialogType dialogType = m_insertEnabled 
+            ? ShowPasswordDialog::TRandomPasswordDlgInsert 
+            : ShowPasswordDialog::TRandomPasswordDlg;
+    
+    ShowPasswordDialog* dlg = new ShowPasswordDialog(m_parent, dialogType, "RandomPwDialog");
     if (ok)
     {
         dlg->setPassword(password);

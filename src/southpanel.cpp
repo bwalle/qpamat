@@ -1,5 +1,5 @@
 /*
- * Id: $Id: southpanel.cpp,v 1.11 2003/12/21 20:31:00 bwalle Exp $
+ * Id: $Id: southpanel.cpp,v 1.12 2003/12/29 15:12:27 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -28,21 +28,73 @@
 #include "qpamat.h"
 #include "southpanel.h"
 #include "settings.h"
-#include "../images/ok_16x16.xpm"
-#include "../images/not_ok_16x16.xpm"
-#include "../images/down_16x16.xpm"
-#include "../images/down_22x22.xpm"
-#include "../images/up_16x16.xpm"
-#include "../images/up_22x22.xpm"
+#include "util/stringdisplay.h"
+#include "images/traffic_yellow_22x22.xpm"
+#include "images/traffic_red_22x22.xpm"
+#include "images/traffic_green_22x22.xpm"
+#include "images/traffic_out_22x22.xpm"
+#include "images/down_16x16.xpm"
+#include "images/down_22x22.xpm"
+#include "images/up_16x16.xpm"
+#include "images/up_22x22.xpm"
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    \class SouthPanel
+    
+    \brief Represents the south panel.
+    
+    \ingroup gui
+    \author Bernhard Walle
+    \version $Revision: 1.12 $
+    \date $Date: 2003/12/29 15:12:27 $
+*/
+
+/*!
+    \fn SouthPanel::moveUp
+    
+    This signal is emitted if the user pressed the "Up" button to move an item one
+    step up.
+*/
+
+/*!
+    \fn SouthPanel::moveDown
+    
+    This signal is emitted if the user pressed the "Down" button to move an item one
+    step down.
+*/
+
+/*!
+    \fn SouthPanel::passwordLineEditGotFocus(bool)
+    
+    This signal is emitted if the password field got this focus.
+    \param focus \c true if it got the focus, \c false if the focus is lost
+*/
+
+/*!
+    \fn SouthPanel::stateModified()
+    
+    If something was modified, need to determine if saving is necessary.
+*/
+
+/*!
+    \fn SouthPanel::passwordStrengthUpdated()
+    
+    This signal is emitted if the password strength of an item has changed an therefore
+    the displaying must be updated.
+*/
+
+/*!
+    Creates a new instance of the south panel.
+    \param parent the parent
+*/
 SouthPanel::SouthPanel(QWidget* parent) 
-// -------------------------------------------------------------------------------------------------
-    : QFrame(parent)
+    : QFrame(parent), m_lastStrength(Property::PUndefined)
 {
     QHBoxLayout* hLayout = new QHBoxLayout(this, 10, 10, "SouthPanel-QHBoxLayout");
     QGroupBox* group = new QGroupBox(2, Horizontal, QString::null, this, "SouthPanel-GroupBox");
+    
+    m_updatePasswordQualityTimer = new QTimer(this, "Timer");
     
     // Type
     QLabel* typeLabel = new QLabel(tr("&Type"), group);
@@ -85,9 +137,9 @@ SouthPanel::SouthPanel(QWidget* parent)
     vbox->setStretchFactor(filler, 1);
     
     // indicator
-    m_indicatorLabel = new QLabel(vbox, "Indicator label");
+    m_indicatorLabel = new QLabel(vbox, "Indicator label", Qt::WRepaintNoErase);
     m_indicatorLabel->setAlignment(AlignHCenter);
-    m_indicatorLabel->setFixedHeight(22);
+    m_indicatorLabel->setFixedHeight(28);
     
     hLayout->addWidget(vbox);
     
@@ -109,16 +161,20 @@ SouthPanel::SouthPanel(QWidget* parent)
     connect(m_typeCombo, SIGNAL(activated(int)), SIGNAL(stateModified()));
     connect(m_keyLineEdit, SIGNAL(textChanged(const QString&)), SIGNAL(stateModified()));
     connect(m_valueLineEdit, SIGNAL(textChanged(const QString&)), SIGNAL(stateModified()));
+    connect(m_updatePasswordQualityTimer, SIGNAL(timeout()), SLOT(updateIndicatorLabel()));
+    connect(this, SIGNAL(stateModified()), SIGNAL(passwordStrengthUpdated()));
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Clears the south panel.
+*/
 void SouthPanel::clear()
-// -------------------------------------------------------------------------------------------------
 {
     m_currentProperty = 0;
-    
+    m_lastStrength = Property::PUndefined;
     m_indicatorLabel->setPixmap(0);
+    m_indicatorLabel->repaint(true);
     QToolTip::remove(m_indicatorLabel);
     blockSignals(true);
     m_keyLineEdit->setText(QString::null);
@@ -131,9 +187,10 @@ void SouthPanel::clear()
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Sets item with the property.
+*/
 void SouthPanel::setItem (Property* property)
-// -------------------------------------------------------------------------------------------------
 {
     clear();
     
@@ -152,34 +209,62 @@ void SouthPanel::setItem (Property* property)
         insertAutoText();
     }
     m_currentProperty = property;
-    updateIndicatorLabel();
+    updateIndicatorLabel(false);
     
     setEnabled(property != 0);
 }
 
 
-// -------------------------------------------------------------------------------------------------
-void SouthPanel::updateIndicatorLabel()
-// -------------------------------------------------------------------------------------------------
+/*!
+    Updates the traffic light.
+    \param recompute whether recomputation of the password strength should take place
+*/
+void SouthPanel::updateIndicatorLabel(bool recompute)
 {
     if (m_currentProperty && m_currentProperty->getType() == Property::PASSWORD)
     {
-        m_indicatorLabel->setPixmap( m_currentProperty->isWeak() ? not_ok_16x16_xpm : ok_16x16_xpm );
-        QToolTip::add(m_indicatorLabel, m_currentProperty->isWeak() 
-            ? tr("Password is weak.\nChange it!")
-            : tr("Password is strong!") );
+        if (recompute)
+        {
+            m_currentProperty->updatePasswordStrength();
+        }
+        if (m_currentProperty->getPasswordStrength() != m_lastStrength)
+        {
+            emit passwordStrengthUpdated();
+            m_lastStrength = m_currentProperty->getPasswordStrength();
+            switch (m_lastStrength)
+            {
+                case Property::PWeak:
+                    m_indicatorLabel->setPixmap(traffic_red_22x22_xpm);
+                    break;
+                case Property::PAcceptable:
+                    m_indicatorLabel->setPixmap(traffic_yellow_22x22_xpm);
+                    break;
+                case Property::PStrong:
+                    m_indicatorLabel->setPixmap(traffic_green_22x22_xpm);
+                    break;
+                case Property::PUndefined:
+                    m_indicatorLabel->setPixmap(traffic_out_22x22_xpm);
+                    break;
+            }
+        }
+        
+        QString timeString = StringDisplay::displayTimeSuitable(m_currentProperty->daysToCrack());
+        QString tooltipString = QString("Crack time: %1").arg(timeString);
+        QToolTip::add(m_indicatorLabel, tooltipString);
     }
     else
     {
         m_indicatorLabel->setPixmap(0);
+        m_indicatorLabel->repaint(true);
         QToolTip::remove(m_indicatorLabel);
     }
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Updates the data.
+*/
 void SouthPanel::updateData()
-// -------------------------------------------------------------------------------------------------
 {
     if (m_currentProperty != 0)
     {
@@ -187,7 +272,7 @@ void SouthPanel::updateData()
         m_currentProperty->setHidden(m_typeCombo->currentItem() == Property::PASSWORD);
         m_currentProperty->setEncrypted(m_typeCombo->currentItem() == Property::PASSWORD);
         m_currentProperty->setValue(m_valueLineEdit->text());
-        updateIndicatorLabel();
+        m_updatePasswordQualityTimer->start(200, true);
         m_currentProperty->setKey(m_keyLineEdit->text());
         m_valueLineEdit->setEchoMode(
             m_currentProperty->isHidden() 
@@ -197,9 +282,10 @@ void SouthPanel::updateData()
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Choice of the combo changed.
+*/
 void SouthPanel::comboBoxChanged(int newChoice)
-// -------------------------------------------------------------------------------------------------
 {
     
     if (m_oldComboValue != newChoice)
@@ -212,15 +298,16 @@ void SouthPanel::comboBoxChanged(int newChoice)
             m_valueLineEdit->setText("");
         }
         
-        updateIndicatorLabel();
+        updateIndicatorLabel(false);
     }
     m_oldComboValue = newChoice;
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Inserts the appropriate AutoText.
+*/
 void SouthPanel::insertAutoText()
-// -------------------------------------------------------------------------------------------------
 {
     if (m_keyLineEdit->text().isEmpty())
     {
@@ -248,26 +335,34 @@ void SouthPanel::insertAutoText()
     }
 }
 
-// -------------------------------------------------------------------------------------------------
+
+/*!
+    Returns if the focus is inside this object.
+    \return \c true if the focus is inside this object, \c false otherwise.
+*/
 bool SouthPanel::isFocusInside() const
-// -------------------------------------------------------------------------------------------------
 {
     return m_keyLineEdit->hasFocus() || m_typeCombo->hasFocus() || m_valueLineEdit->hasFocus();
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Enables or disables the moving buttons.
+    \param up \c true if the up button should be enabled, \c false otherwise
+    \param down \c true if the down button should be enabled, \c false otherwise
+*/
 void SouthPanel::setMovingEnabled(bool up, bool down)
-// -------------------------------------------------------------------------------------------------
 {
     m_upButton->setEnabled(up);
     m_downButton->setEnabled(down);
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Handles the event if the password edit got the focus.
+    Emits the passwordLineEditGotFocus signal.
+*/
 void SouthPanel::focusInValueHandler()
-// -------------------------------------------------------------------------------------------------
 {
     if (m_currentProperty && m_currentProperty->getType() == Property::PASSWORD)
     {
@@ -276,9 +371,10 @@ void SouthPanel::focusInValueHandler()
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Handles the event if the password lost the focus. Emits the passwordLineEditGotFocus signal.
+*/
 void SouthPanel::focusOutValueHandler()
-// -------------------------------------------------------------------------------------------------
 {
     if (m_currentProperty && m_currentProperty->getType() == Property::PASSWORD)
     {
@@ -287,9 +383,11 @@ void SouthPanel::focusOutValueHandler()
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Inserts a password in the password edit.
+    \param password the password
+*/
 void SouthPanel::insertPassword(const QString& password)
-// -------------------------------------------------------------------------------------------------
 {
     m_valueLineEdit->insert(password);
 }
