@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.13 2003/12/13 22:33:23 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.14 2003/12/14 16:55:28 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -142,10 +142,7 @@ Qpamat::Qpamat()
 void Qpamat::message(const QString& message, bool warning)
 // -------------------------------------------------------------------------------------------------
 {
-    if (warning)
-    {
-        statusBar()->message(message, warning ? 3000 : 2000);
-    }
+    statusBar()->message(message, warning ? 3000 : 2000);
 }
 
 
@@ -195,10 +192,8 @@ void Qpamat::initToolbar()
     // ---- Edit toolbar ---------------------------------------------------------------------------
     QToolBar* editToolbar = new QToolBar(this);
     editToolbar->setLabel(tr("Edit"));
-    m_toolButtons.addItem = new QToolButton(QIconSet(edit_add_16x16_xpm, edit_add_22x22_xpm), 
-        tr("Add item"), 0, 0, 0, editToolbar, "Add Item Toolbutton");
-    m_toolButtons.removeItem = new QToolButton(QIconSet(edit_remove_16x16_xpm, 
-        edit_remove_22x22_xpm), tr("Remove item"), 0, 0, 0, editToolbar, "Remove Item Toolbutton");
+    m_actions.addItemAction->addTo(editToolbar);
+    m_actions.removeItemAction->addTo(editToolbar);
 }
 
 
@@ -327,8 +322,8 @@ void Qpamat::setLogin(bool loggedIn)
     m_actions.changePasswordAction->setEnabled(loggedIn);
     m_actions.printAction->setEnabled(loggedIn);
     m_searchToolbar->setEnabled(loggedIn);
-    m_toolButtons.addItem->setEnabled(loggedIn);
-    m_toolButtons.removeItem->setEnabled(loggedIn);
+    m_actions.addItemAction->setEnabled(loggedIn);
+    m_actions.removeItemAction->setEnabled(loggedIn);
     
     if (!loggedIn)
     {
@@ -353,8 +348,8 @@ void Qpamat::save()
             m_password, settings.readEntry("/Security/CipherAlgorithm",
                 SymmetricEncryptor::getSuggestedAlgorithm())))
         {
-            message(tr("Wrote data successfully."), false);
             setModified(false);
+            message(tr("Wrote data successfully."), false);
         }
     }
 }
@@ -397,6 +392,7 @@ void Qpamat::changePassword()
     if (dlg->exec() == QDialog::Accepted)
     {
         m_password = dlg->getPassword();
+        setModified();
     }
     delete dlg;
 }
@@ -524,10 +520,10 @@ void Qpamat::connectSignalsAndSlots()
     connect(m_actions.aboutQtAction, SIGNAL(activated()), qApp, SLOT(aboutQt()));
     
     // edit toolbar
-    connect(m_toolButtons.addItem, SIGNAL(clicked()), m_tree, SLOT(insertAtCurrentPos()));
-    connect(m_toolButtons.addItem, SIGNAL(clicked()), m_rightPanel, SLOT(insertAtCurrentPos()));
-    connect(m_toolButtons.removeItem, SIGNAL(clicked()), m_tree, SLOT(deleteCurrent()));
-    connect(m_toolButtons.removeItem, SIGNAL(clicked()), m_rightPanel, SLOT(deleteCurrent()));
+    connect(m_actions.addItemAction, SIGNAL(activated()), m_tree, SLOT(insertAtCurrentPos()));
+    connect(m_actions.addItemAction, SIGNAL(activated()), m_rightPanel, SLOT(insertAtCurrentPos()));
+    connect(m_actions.removeItemAction, SIGNAL(activated()), m_tree, SLOT(deleteCurrent()));
+    connect(m_actions.removeItemAction, SIGNAL(activated()), m_rightPanel, SLOT(deleteCurrent()));
     
     // search function
     connect(m_searchCombo, SIGNAL(activated(int)), this, SLOT(search()));
@@ -565,5 +561,11 @@ void Qpamat::initActions()
         QKeySequence(SHIFT|Key_F1), this);
     m_actions.aboutAction = new QAction(tr("&About..."), QKeySequence(Key_F1), this);
     m_actions.aboutQtAction = new QAction(tr("About &Qt..."), QKeySequence(), this);
+    
+    // ------ Toolbar ------------------------------------------------------------------------------
+    m_actions.addItemAction = new QAction(QIconSet(edit_add_16x16_xpm, edit_add_22x22_xpm),
+        tr("Add item"), QKeySequence(Key_Insert), this, "Add item action");
+    m_actions.removeItemAction = new QAction(QIconSet(edit_remove_16x16_xpm, edit_remove_22x22_xpm),
+        tr("Remove item"), QKeySequence(), this, "Remove item action");
 }
 
