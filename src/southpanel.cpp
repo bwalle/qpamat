@@ -1,5 +1,5 @@
 /*
- * Id: $Id: southpanel.cpp,v 1.8 2003/12/18 14:08:14 bwalle Exp $
+ * Id: $Id: southpanel.cpp,v 1.9 2003/12/18 14:32:37 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -78,7 +78,8 @@ SouthPanel::SouthPanel(QWidget* parent)
     m_downButton->setUsesBigPixmap(true);
     
     // filler widget
-    new QWidget(vbox);
+    QWidget* filler = new QWidget(vbox);
+    vbox->setStretchFactor(filler, 1);
     
     hLayout->addWidget(vbox);
     
