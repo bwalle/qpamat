@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encryptor.h,v 1.3 2003/09/21 19:51:38 bwalle Exp $
+ * Id: $Id: encryptor.h,v 1.4 2003/10/03 19:44:33 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -19,6 +19,7 @@
 #define ENCRYPTOR_H
 
 #include <qstring.h>
+#include <qstringlist.h>
 
 #include <openssl/evp.h>
 
@@ -28,8 +29,8 @@
 /**
  * A object which encrypts bytes.
  * @author Bernhard Walle
- * @version $Revision: 1.3 $
- * @date $Date: 2003/09/21 19:51:38 $
+ * @version $Revision: 1.4 $
+ * @date $Date: 2003/10/03 19:44:33 $
  */
 class Encryptor
 {
@@ -60,21 +61,21 @@ class Encryptor
          * @param vector the bytes to encrypt
          * @return the encrypted bytes
          */
-        virtual ByteVector encrypt(const ByteVector& vector);
+        virtual ByteVector encrypt(const ByteVector& vector) const;
         
         /**
          * Encrypts the given string.
          * @param string string to enctrypt
          * @return the encrypted bytes
          */
-        virtual ByteVector encryptString(const QString& string);
+        virtual ByteVector encryptString(const QString& string) const;
         
         /**
          * Decrypts the given amount of bytes.
          * @param vector the bytes to decrypt
          * @return the decrypted bytes
          */
-        virtual ByteVector decrypt(const ByteVector& vector);
+        virtual ByteVector decrypt(const ByteVector& vector) const;
         
         /**
          * Decrypts the given amount of bytes. This method returns a String. 
@@ -83,7 +84,7 @@ class Encryptor
          * @param vector the bytes to decrypt
          * @return the decrypted string
          */
-        virtual QString decryptString(const ByteVector& vector);
+        virtual QString decryptString(const ByteVector& vector) const;
         
         /**
          * Sets a new a new password.
@@ -126,12 +127,12 @@ class Encryptor
          * @param operation the operation (encrypt or decrypt)
          * @return the crypted bytes
          */
-        virtual ByteVector crypt(const ByteVector& vector, OperationType operation);
+        virtual ByteVector crypt(const ByteVector& vector, OperationType operation) const;
         
     private:
         const EVP_CIPHER*     m_cipher_algorithm;
-        byte                  m_key[EVP_MAX_KEY_LENGTH];
-        byte                  m_iv[EVP_MAX_IV_LENGTH];
+        mutable byte          m_key[EVP_MAX_KEY_LENGTH];
+        mutable byte          m_iv[EVP_MAX_IV_LENGTH];
         
         static StringMap initAlgorithmsMap();
         static StringMap m_algorithms;

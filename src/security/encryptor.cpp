@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encryptor.cpp,v 1.4 2003/10/03 14:17:24 bwalle Exp $
+ * Id: $Id: encryptor.cpp,v 1.5 2003/10/03 19:44:33 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -118,7 +118,7 @@ StringMap Encryptor::initAlgorithmsMap()
 }
 
 // -------------------------------------------------------------------------------------------------
-ByteVector Encryptor::encrypt(const ByteVector& vector)
+ByteVector Encryptor::encrypt(const ByteVector& vector) const
 // -------------------------------------------------------------------------------------------------
 {
     return crypt(vector, ENCRYPT);
@@ -126,7 +126,7 @@ ByteVector Encryptor::encrypt(const ByteVector& vector)
 
 
 // -------------------------------------------------------------------------------------------------
-ByteVector Encryptor::encryptString(const QString& string)
+ByteVector Encryptor::encryptString(const QString& string) const
 // -------------------------------------------------------------------------------------------------
 {
     QCString utf8CString = string.utf8();
@@ -138,7 +138,7 @@ ByteVector Encryptor::encryptString(const QString& string)
 }
 
 // -------------------------------------------------------------------------------------------------
-ByteVector Encryptor::decrypt(const ByteVector& vector)
+ByteVector Encryptor::decrypt(const ByteVector& vector) const
 // -------------------------------------------------------------------------------------------------
 {
     return crypt(vector, DECRYPT);
@@ -146,7 +146,7 @@ ByteVector Encryptor::decrypt(const ByteVector& vector)
 
 
 // -------------------------------------------------------------------------------------------------
-QString Encryptor::decryptString(const ByteVector& vector)
+QString Encryptor::decryptString(const ByteVector& vector) const
 // -------------------------------------------------------------------------------------------------
 {
     QString result;
@@ -162,7 +162,7 @@ QString Encryptor::decryptString(const ByteVector& vector)
 }
 
 // -------------------------------------------------------------------------------------------------
-ByteVector Encryptor::crypt(const ByteVector& vector, OperationType operation)
+ByteVector Encryptor::crypt(const ByteVector& vector, OperationType operation) const
 // -------------------------------------------------------------------------------------------------
 {
     byte buf[BUFLEN];
