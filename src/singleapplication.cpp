@@ -1,5 +1,5 @@
 /*
- * Id: $Id: singleapplication.cpp,v 1.1 2003/12/15 18:38:39 bwalle Exp $
+ * Id: $Id: singleapplication.cpp,v 1.2 2003/12/15 21:19:17 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -62,9 +62,9 @@ void SingleApplication::startup()
             "%1. If you are\nreally sure that no other instance is running, "
             "delete\nthe file %2 and start again."
 #ifdef Q_WS_X11
-            "\n\n(PID of the other %1 process should be %3.)"
+            "\n\n(PID of the other %3 process should be %4.)"
 #endif
-            ).arg(m_appName).arg(m_lockfile)
+            ).arg(m_appName).arg(m_lockfile).arg(m_appName)
 #ifdef Q_WS_X11
             .arg(id)
 #endif
