@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.h,v 1.4 2003/12/04 14:06:59 bwalle Exp $
+ * Id: $Id: configurationdialog.h,v 1.5 2003/12/04 14:52:01 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -21,6 +21,7 @@
 #include <qtabdialog.h>
 #include <qcombobox.h>
 #include <qgroupbox.h>
+#include <qcheckbox.h>
 #include <qpushbutton.h>
 
 #include "../widgets/filelineedit.h"
@@ -37,8 +38,8 @@ namespace ConfigurationDialogLocal
  * 
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.4 $
- * \date $Date: 2003/12/04 14:06:59 $
+ * \version $Revision: 1.5 $
+ * \date $Date: 2003/12/04 14:52:01 $
  */
 class ConfigurationDialog : public QTabDialog
 {
@@ -56,7 +57,6 @@ class ConfigurationDialog : public QTabDialog
         ConfigurationDialogLocal::GeneralTab* m_generalTab;
         ConfigurationDialogLocal::SecurityTab* m_securityTab;
         ConfigurationDialogLocal::SmartcardTab* m_smartCardTab;
-        
 };
 
 /*!
@@ -71,8 +71,8 @@ namespace ConfigurationDialogLocal
      *
      * \ingroup gui
      * \author Bernhard Walle
-     * \version $Revision: 1.4 $
-     * \date $Date: 2003/12/04 14:06:59 $
+     * \version $Revision: 1.5 $
+     * \date $Date: 2003/12/04 14:52:01 $
      */
     class GeneralTab : public QWidget
     {
@@ -98,6 +98,7 @@ namespace ConfigurationDialogLocal
             void fillSettings();
             
         private:
+            QCheckBox* m_autoLoginCheckbox;
             FileLineEdit* m_browserEdit;
             FileLineEdit* m_datafileEdit;
             QLineEdit* m_miscEdit;
@@ -112,8 +113,8 @@ namespace ConfigurationDialogLocal
      *
      * \ingroup gui
      * \author Bernhard Walle
-     * \version $Revision: 1.4 $
-     * \date $Date: 2003/12/04 14:06:59 $
+     * \version $Revision: 1.5 $
+     * \date $Date: 2003/12/04 14:52:01 $
      */
     class SecurityTab : public QWidget
     {
@@ -159,8 +160,8 @@ namespace ConfigurationDialogLocal
      *
      * \ingroup gui
      * \author Bernhard Walle
-     * \version $Revision: 1.4 $
-     * \date $Date: 2003/12/04 14:06:59 $
+     * \version $Revision: 1.5 $
+     * \date $Date: 2003/12/04 14:52:01 $
      */
     class SmartcardTab : public QWidget
     {

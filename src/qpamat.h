@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.h,v 1.6 2003/12/04 11:58:15 bwalle Exp $
+ * Id: $Id: qpamat.h,v 1.7 2003/12/04 14:51:51 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -33,8 +33,8 @@
  *
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.6 $
- * \date $Date: 2003/12/04 11:58:15 $
+ * \version $Revision: 1.7 $
+ * \date $Date: 2003/12/04 14:51:51 $
  */
 class Qpamat : public QMainWindow
 {
@@ -91,6 +91,13 @@ class Qpamat : public QMainWindow
          * Handles a closeEvent.
          */
         void closeEvent(QCloseEvent* evt);
+        
+    public:
+        
+        /*!
+         * Reimplemented to implement AutoLogin 
+         */
+        void show();
 
     private:
         void initToolbar();
@@ -108,6 +115,7 @@ class Qpamat : public QMainWindow
         QComboBox* m_searchCombo;
         QToolBar* m_searchToolbar;
         bool m_loggedIn;
+        bool m_first;
         
         struct Actions
         {

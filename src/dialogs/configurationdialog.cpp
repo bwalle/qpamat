@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.cpp,v 1.4 2003/12/04 14:06:59 bwalle Exp $
+ * Id: $Id: configurationdialog.cpp,v 1.5 2003/12/04 14:52:01 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -81,14 +81,20 @@ void GeneralTab::createAndLayout()
 {
     // create layouts
     QVBoxLayout* mainLayout = new QVBoxLayout(this, 6, 6);
+    QGroupBox* startupGroup = new QGroupBox(1, Vertical, tr("Startup"), this);
     QGroupBox* locationsGroup = new QGroupBox(4, Vertical, tr("Locations"), this);
     QGroupBox* autoTextGroup = new QGroupBox(4, Vertical, tr("AutoText"), this);
     
     // some settings
+    startupGroup->setInsideSpacing(6);
     locationsGroup->setInsideSpacing(6);
     autoTextGroup->setInsideSpacing(6);
+    startupGroup->setFlat(true);
     locationsGroup->setFlat(true);
     autoTextGroup->setFlat(true);
+    
+    // auto login
+    m_autoLoginCheckbox = new QCheckBox(tr("Enable &AutoLogin on startup"), startupGroup);
     
     // labels  & edit fields
     QLabel* browserLabel = new QLabel(tr("&Web Browser (full path if not in PATH environment):"), 
@@ -116,6 +122,7 @@ void GeneralTab::createAndLayout()
     passwordLabel->setBuddy(m_passwordEdit);
     urlLabel->setBuddy(m_urlEdit);
     
+    mainLayout->addWidget(startupGroup);
     mainLayout->addWidget(locationsGroup);
     mainLayout->addWidget(autoTextGroup);
     mainLayout->addStretch(5);
@@ -128,6 +135,7 @@ void GeneralTab::fillSettings()
 {
     QSettings& set = Settings::getInstance().getSettings();
     
+    m_autoLoginCheckbox->setChecked( set.readBoolEntry("General/AutoLogin", false));
     m_browserEdit->setContent( set.readEntry("General/Webbrowser", Settings::DEFAULT_WEBBROWSER) );
     m_datafileEdit->setContent( set.readEntry("General/Datafile", Settings::QPAMAT_FILE_NAME) );
     m_miscEdit->setText( set.readEntry("AutoText/Misc", Settings::DEFAULT_AUTOTEXT_MISC) );
@@ -142,6 +150,7 @@ void GeneralTab::applySettings()
 // -------------------------------------------------------------------------------------------------
 {
     QSettings& set = Settings::getInstance().getSettings();
+    set.writeEntry( "General/AutoLogin", m_autoLoginCheckbox->isChecked() );
     set.writeEntry( "General/Webbrowser", m_browserEdit->getContent() );
     set.writeEntry( "General/Datafile", m_datafileEdit->getContent() );
     set.writeEntry( "AutoText/Misc", m_miscEdit->text() );

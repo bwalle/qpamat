@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.7 2003/12/04 14:07:23 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.8 2003/12/04 14:51:51 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -60,6 +60,7 @@
 // -------------------------------------------------------------------------------------------------
 Qpamat::Qpamat()
 // -------------------------------------------------------------------------------------------------
+        : m_first(true)
 {
     // Title and Icon
     setIcon(lock_big_xpm);
@@ -119,6 +120,21 @@ Qpamat::Qpamat()
             set.readNumEntry("Main Window/width", int(qApp->desktop()->width() * 0.6) ),
             set.readNumEntry("Main Window/height", int(qApp->desktop()->height() / 2.0) )
         );
+    }
+}
+
+// -------------------------------------------------------------------------------------------------
+void Qpamat::show()
+// -------------------------------------------------------------------------------------------------
+{    
+    QWidget::show();
+    if (m_first)
+    {
+        if (Settings::getInstance().getSettings().readBoolEntry("General/AutoLogin", false))
+        {
+            login();
+        }
+        m_first = false;
     }
 }
 
