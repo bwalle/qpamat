@@ -761,6 +761,14 @@ Wollen Sie jetzt speichern?</translation>
         <source>&amp;Don&apos;t export</source>
         <translation>&amp;Nicht exportieren</translation>
     </message>
+    <message>
+        <source>Logout</source>
+        <translation type="unfinished">Ausloggen</translation>
+    </message>
+    <message>
+        <source>Login</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RandomPassword</name>
