@@ -1,5 +1,5 @@
 /*
- * Id: $Id: help.cpp,v 1.3 2003/11/16 20:22:54 bwalle Exp $
+ * Id: $Id: help.cpp,v 1.4 2003/12/20 15:58:02 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -21,6 +21,7 @@
 #include <qwidget.h>
 #include <qprocess.h>
 
+#include "qpamat.h"
 #include "help.h"
 #include "settings.h"
 
@@ -40,8 +41,7 @@ void Help::showAbout()
 void Help::openURL(QWidget* parent, const QString& url)
 // -------------------------------------------------------------------------------------------------
 {
-    QString command = Settings::getInstance().getSettings().readEntry(
-        "/General/Webbrowser", Settings::DEFAULT_WEBBROWSER);
+    QString command = qpamat->set().readEntry("/General/Webbrowser");
     QProcess* process = new QProcess(command, parent);
     process->addArgument(url);
     

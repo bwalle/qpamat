@@ -1,5 +1,5 @@
 /*
- * Id: $Id: randompassworddialog.cpp,v 1.4 2003/12/18 22:00:02 bwalle Exp $
+ * Id: $Id: randompassworddialog.cpp,v 1.5 2003/12/20 15:58:12 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -25,7 +25,7 @@
 #include <qclipboard.h>
 #include <qpushbutton.h>
 
-#include "../settings.h"
+#include "../qpamat.h"
 #include "randompassworddialog.h"
 
 // -------------------------------------------------------------------------------------------------
@@ -33,13 +33,12 @@ RandomPasswordDialog::RandomPasswordDialog(QWidget* parent, bool showInsertButto
 // -------------------------------------------------------------------------------------------------
     : QDialog(parent, name)
 {
-    QSettings& set = Settings::getInstance().getSettings();
     setCaption("QPaMaT");
     
     // create elements
     QLabel* label = new QLabel(tr("The random password is:"), this);
     
-    m_passwordEdit = new CopyLabel(set.readBoolEntry("Presentation/HideRandomPassword", false), 
+    m_passwordEdit = new CopyLabel(qpamat->set().readBoolEntry("Presentation/HideRandomPass"), 
         this);
     m_passwordEdit->setMinimumWidth(250);
     m_passwordEdit->setFocusPolicy(NoFocus);

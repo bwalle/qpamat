@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.18 2003/12/18 14:32:19 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.19 2003/12/20 15:58:02 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -95,8 +95,7 @@ bool Tree::readFromXML(const QString& fileName, const QString& password) throw (
         clear();
     }
     
-    QSettings& set = Settings::getInstance().getSettings();
-    bool smartcard = set.readBoolEntry("Smartcard/UseCard", Settings::DEFAULT_USE_CARD );
+    bool smartcard = qpamat->set().readBoolEntry("Smartcard/UseCard");
     
     // load the XML structure
     QFile file(fileName);
@@ -220,8 +219,7 @@ bool Tree::readFromXML(const QString& fileName, const QString& password) throw (
 bool Tree::writeToXML(const QString& fileName, const QString& password, const QString& algorithm)
 // -------------------------------------------------------------------------------------------------
 {
-    QSettings& set = Settings::getInstance().getSettings();
-    bool smartcard = set.readBoolEntry("Smartcard/UseCard", Settings::DEFAULT_USE_CARD );
+    bool smartcard = qpamat->set().readBoolEntry("Smartcard/UseCard");
     QFile file(fileName);
     if (!file.open(IO_WriteOnly))
     {
@@ -560,9 +558,8 @@ bool Tree::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& randomNumbe
         randomNumber = byte((double(std::rand())/RAND_MAX)*256);
     }
     
-    QSettings& set = Settings::getInstance().getSettings();
-    QString library = set.readEntry("Smartcard/Library", "" );
-    int port = set.readNumEntry("Smartcard/Port", Settings::DEFAULT_PORT);
+    QString library = qpamat->set().readEntry("Smartcard/Library");
+    int port = qpamat->set().readNumEntry("Smartcard/Port");
     
     try
     {

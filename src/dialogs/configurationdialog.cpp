@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.cpp,v 1.10 2003/12/18 22:00:02 bwalle Exp $
+ * Id: $Id: configurationdialog.cpp,v 1.11 2003/12/20 15:58:12 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -34,7 +34,6 @@
 
 #include "../qpamat.h"
 #include "configurationdialog.h"
-#include "../settings.h"
 #include "../security/passwordgeneratorfactory.h"
 #include "../security/symmetricencryptor.h"
 #include "../smartcard/memorycard.h"
@@ -147,15 +146,13 @@ void GeneralTab::createAndLayout()
 void GeneralTab::fillSettings()
 // -------------------------------------------------------------------------------------------------
 {
-    QSettings& set = Settings::getInstance().getSettings();
-    
-    m_autoLoginCheckbox->setChecked( set.readBoolEntry("General/AutoLogin", false));
-    m_browserEdit->setContent( set.readEntry("General/Webbrowser", Settings::DEFAULT_WEBBROWSER) );
-    m_datafileEdit->setContent( set.readEntry("General/Datafile", Settings::QPAMAT_FILE_NAME) );
-    m_miscEdit->setText( set.readEntry("AutoText/Misc", Settings::DEFAULT_AUTOTEXT_MISC) );
-    m_usernameEdit->setText(set.readEntry("AutoText/Username",Settings::DEFAULT_AUTOTEXT_USERNAME));
-    m_passwordEdit->setText(set.readEntry("AutoText/Password",Settings::DEFAULT_AUTOTEXT_PASSWORD));
-    m_urlEdit->setText( set.readEntry("AutoText/URL", Settings::DEFAULT_AUTOTEXT_URL) );
+    m_autoLoginCheckbox->setChecked(qpamat->set().readBoolEntry("General/AutoLogin"));
+    m_browserEdit->setContent(qpamat->set().readEntry("General/Webbrowser"));
+    m_datafileEdit->setContent(qpamat->set().readEntry("General/Datafile"));
+    m_miscEdit->setText(qpamat->set().readEntry("AutoText/Misc"));
+    m_usernameEdit->setText(qpamat->set().readEntry("AutoText/Username"));
+    m_passwordEdit->setText(qpamat->set().readEntry("AutoText/Password"));
+    m_urlEdit->setText(qpamat->set().readEntry("AutoText/URL"));
 }
 
 
@@ -163,14 +160,13 @@ void GeneralTab::fillSettings()
 void GeneralTab::applySettings()
 // -------------------------------------------------------------------------------------------------
 {
-    QSettings& set = Settings::getInstance().getSettings();
-    set.writeEntry( "General/AutoLogin", m_autoLoginCheckbox->isChecked() );
-    set.writeEntry( "General/Webbrowser", m_browserEdit->getContent() );
-    set.writeEntry( "General/Datafile", m_datafileEdit->getContent() );
-    set.writeEntry( "AutoText/Misc", m_miscEdit->text() );
-    set.writeEntry( "AutoText/Username", m_usernameEdit->text() );
-    set.writeEntry( "AutoText/Password", m_passwordEdit->text() );
-    set.writeEntry( "AutoText/URL", m_urlEdit->text() );
+    qpamat->set().writeEntry("General/AutoLogin", m_autoLoginCheckbox->isChecked() );
+    qpamat->set().writeEntry("General/Webbrowser", m_browserEdit->getContent() );
+    qpamat->set().writeEntry("General/Datafile", m_datafileEdit->getContent() );
+    qpamat->set().writeEntry("AutoText/Misc", m_miscEdit->text() );
+    qpamat->set().writeEntry("AutoText/Username", m_usernameEdit->text() );
+    qpamat->set().writeEntry("AutoText/Password", m_passwordEdit->text() );
+    qpamat->set().writeEntry("AutoText/URL", m_urlEdit->text() );
 }
 
 
@@ -278,31 +274,21 @@ void SecurityTab::checkboxHandler(bool on)
 void SecurityTab::fillSettings()
 // -------------------------------------------------------------------------------------------------
 {
-    QSettings& set = Settings::getInstance().getSettings();
-    QString ensuredString = set.readEntry("Security/EnsuredCharacters", "ULDs");
+    QString ensuredString = qpamat->set().readEntry("Security/EnsuredCharacters");
     
     m_uppercaseCB->setChecked(ensuredString.contains("U"));
     m_lowercaseCB->setChecked(ensuredString.contains("L"));
     m_specialCB->setChecked(ensuredString.contains("S"));
     m_digitsCB->setChecked(ensuredString.contains("D"));
-    m_lengthSpinner->setValue(set.readNumEntry("Security/Length", 8));
-    m_allowedCharsEdit->setText(set.readEntry("Security/AllowedCharacters", "a-zA-Z0-9@$#"));
-    m_useExternalCB->setChecked(set.readEntry("Security/PasswordGenerator", 
-        PasswordGeneratorFactory::DEFAULT_GENERATOR_STRING) == "EXTERNAL");
-    m_externalEdit->setContent(set.readEntry("Security/PasswordGeneratorAdditional", ""));
+    m_lengthSpinner->setValue(qpamat->set().readNumEntry("Security/Length"));
+    m_allowedCharsEdit->setText(qpamat->set().readEntry("Security/AllowedCharacters"));
+    m_useExternalCB->setChecked(qpamat->set().readEntry("Security/PasswordGenerator") =="EXTERNAL");
+    m_externalEdit->setContent(qpamat->set().readEntry("Security/PasswordGenAdditional"));
     
     checkboxHandler(m_useExternalCB->isChecked());
     
     m_algorithmCombo->insertStringList(SymmetricEncryptor::getAlgorithms());
-    /* m_radioGroup->setButton( PasswordCheckerFactory::fromString( 
-        set.readEntry( "Security/PasswordChecker", PasswordCheckerFactory::DEFAULT_CHECKER_STRING))
-        ); */
-    m_algorithmCombo->setCurrentText( set.readEntry( "Security/CipherAlgorithm",
-        SymmetricEncryptor::getSuggestedAlgorithm()) );
-        
-    /* m_dictionaryEdit->setContent(set.readEntry( "Security/DictionaryFile"));
-    m_externalEdit->setContent(set.readEntry( "Security/ExternalProgram"));
-    radioButtonHandler(m_radioGroup->selectedId()); */
+    m_algorithmCombo->setCurrentText( qpamat->set().readEntry( "Security/CipherAlgorithm" ));
 }
 
 
@@ -310,19 +296,19 @@ void SecurityTab::fillSettings()
 void SecurityTab::applySettings()
 // -------------------------------------------------------------------------------------------------
 {
-    QSettings& set = Settings::getInstance().getSettings();
     QString ensuredString;
     ensuredString += m_uppercaseCB->isChecked() ? "U" : "u";
     ensuredString += m_lowercaseCB->isChecked() ? "L" : "l";
     ensuredString += m_specialCB->isChecked()   ? "S" : "s";
     ensuredString += m_digitsCB->isChecked()    ? "D" : "d";
     
-    set.writeEntry("Security/PasswordGenerator", m_useExternalCB->isChecked() ?"EXTERNAL":"RANDOM");
-    set.writeEntry("Security/PasswordGeneratorAdditional", m_externalEdit->getContent());
-    set.writeEntry("Security/EnsuredCharacters", ensuredString);
-    set.writeEntry("Security/Length", m_lengthSpinner->value());
-    set.writeEntry("Security/AllowedCharacters", m_allowedCharsEdit->text());
-    set.writeEntry("Security/CipherAlgorithm", m_algorithmCombo->currentText() );
+    qpamat->set().writeEntry("Security/PasswordGenerator", m_useExternalCB->isChecked() 
+        ? "EXTERNAL" : "RANDOM" );
+    qpamat->set().writeEntry("Security/PasswordGenAdditional", m_externalEdit->getContent());
+    qpamat->set().writeEntry("Security/EnsuredCharacters", ensuredString);
+    qpamat->set().writeEntry("Security/Length", m_lengthSpinner->value());
+    qpamat->set().writeEntry("Security/AllowedCharacters", m_allowedCharsEdit->text());
+    qpamat->set().writeEntry("Security/CipherAlgorithm", m_algorithmCombo->currentText() );
 }
 
 
@@ -378,14 +364,13 @@ void PresentationTab::createAndLayout()
 void PresentationTab::fillSettings()
 // -------------------------------------------------------------------------------------------------
 {
-    QSettings& set = Settings::getInstance().getSettings();
     QFont font;
     
-    font.fromString(set.readEntry( "Presentation/NormalFont", Settings::DEFAULT_NORMAL_FONT));
+    font.fromString(qpamat->set().readEntry( "Presentation/NormalFont"));
     m_normalFontEdit->setFont(font);
-    font.fromString(set.readEntry( "Presentation/FooterFont", Settings::DEFAULT_FOOTER_FONT));
+    font.fromString(qpamat->set().readEntry( "Presentation/FooterFont"));
     m_footerFontEdit->setFont(font);
-    m_hidePasswordCB->setChecked(set.readBoolEntry("Presentation/HideRandomPassword", false));
+    m_hidePasswordCB->setChecked(qpamat->set().readBoolEntry("Presentation/HideRandomPass"));
 }
 
 
@@ -393,11 +378,9 @@ void PresentationTab::fillSettings()
 void PresentationTab::applySettings()
 // -------------------------------------------------------------------------------------------------
 {
-    QSettings& set = Settings::getInstance().getSettings();
-    
-    set.writeEntry("Presentation/HideRandomPassword", m_hidePasswordCB->isChecked());
-    set.writeEntry("Presentation/NormalFont", m_normalFontEdit->getFont().toString());
-    set.writeEntry("Presentation/FooterFont", m_footerFontEdit->getFont().toString());
+    qpamat->set().writeEntry("Presentation/HideRandomPass", m_hidePasswordCB->isChecked());
+    qpamat->set().writeEntry("Presentation/NormalFont", m_normalFontEdit->getFont().toString());
+    qpamat->set().writeEntry("Presentation/FooterFont", m_footerFontEdit->getFont().toString());
 }
 
 
@@ -500,11 +483,9 @@ void SmartcardTab::fillSettings()
         QT_TR_NOOP("COM2"), QT_TR_NOOP("COM3"), QT_TR_NOOP("COM4") };
     m_portCombo->insertStrList(ports, 5);
     
-    QSettings& set = Settings::getInstance().getSettings();
-    
-    m_libraryEdit->setContent( set.readEntry("Smartcard/Library", "" ));
-    m_portCombo->setCurrentItem( set.readNumEntry("Smartcard/Port", Settings::DEFAULT_PORT) );
-    setUseSmartcardEnabled( set.readBoolEntry("Smartcard/UseCard", Settings::DEFAULT_USE_CARD ));
+    m_libraryEdit->setContent(qpamat->set().readEntry("Smartcard/Library"));
+    m_portCombo->setCurrentItem(qpamat->set().readNumEntry("Smartcard/Port"));
+    setUseSmartcardEnabled(qpamat->set().readBoolEntry("Smartcard/UseCard"));
 }
 
 
@@ -512,10 +493,10 @@ void SmartcardTab::fillSettings()
 void SmartcardTab::applySettings()
 // -------------------------------------------------------------------------------------------------
 {
-    QSettings& set = Settings::getInstance().getSettings();
-    set.writeEntry( "Smartcard/Library", m_libraryEdit->getContent() );
-    set.writeEntry( "Smartcard/Port", m_portCombo->currentItem() );
-    set.writeEntry( "Smartcard/UseCard", SmartcardEnabled(m_radioGroup->selectedId()) == Enabled);
+    qpamat->set().writeEntry("Smartcard/Library", m_libraryEdit->getContent() );
+    qpamat->set().writeEntry("Smartcard/Port", m_portCombo->currentItem() );
+    qpamat->set().writeEntry("Smartcard/UseCard", 
+        SmartcardEnabled(m_radioGroup->selectedId()) == Enabled);
 }
 
 

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: randompassword.cpp,v 1.3 2003/12/18 21:59:47 bwalle Exp $
+ * Id: $Id: randompassword.cpp,v 1.4 2003/12/20 15:58:02 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -49,22 +49,20 @@ void RandomPassword::setInsertEnabled(bool enabled)
 void RandomPassword::requestPassword()
 // -------------------------------------------------------------------------------------------------
 {
-    QSettings& set = Settings::getInstance().getSettings();
     RandomPasswordDialog* dlg = new RandomPasswordDialog(
         m_parent, m_insertEnabled, "RandomPwDialog");
     
     PasswordGenerator* passwordgen = 0;
-    int length = set.readNumEntry("Security/Length", PasswordGeneratorFactory::DEFAULT_LENGTH);
-    QString ensured = set.readEntry("Security/EnsuredCharacters", "ULDs");
-    QString allowed = set.readEntry("Security/AllowedCharacters", "a-zA-Z0-9");
+    int length = qpamat->set().readNumEntry("Security/Length");
+    QString ensured = qpamat->set().readEntry("Security/EnsuredCharacters");
+    QString allowed = qpamat->set().readEntry("Security/AllowedCharacters");
     ConfigPasswordChecker checker(length, ensured, allowed);
     
     try
     {
         passwordgen = PasswordGeneratorFactory::getGenerator(
-            set.readEntry( "Security/PasswordGenerator", 
-                PasswordGeneratorFactory::DEFAULT_GENERATOR_STRING ),
-            set.readEntry( "Security/PasswordGeneratorAdditional" ) 
+            qpamat->set().readEntry( "Security/PasswordGenerator" ),
+            qpamat->set().readEntry( "Security/PasswordGenAdditional" ) 
         );
     }
     catch (const std::exception& exc)
@@ -89,9 +87,7 @@ void RandomPassword::requestPassword()
         try
         {
             password = passwordgen->getPassword(
-                set.readNumEntry("Security/Length", 
-                PasswordGeneratorFactory::DEFAULT_LENGTH ),
-                checker.allowedCharacters()
+                qpamat->set().readNumEntry("Security/Length"), checker.allowedCharacters()
             );
             ok = checker.isPasswordOk(password);
         }

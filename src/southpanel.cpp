@@ -1,5 +1,5 @@
 /*
- * Id: $Id: southpanel.cpp,v 1.9 2003/12/18 14:32:37 bwalle Exp $
+ * Id: $Id: southpanel.cpp,v 1.10 2003/12/20 15:58:02 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -185,24 +185,22 @@ void SouthPanel::comboBoxChanged(int newChoice)
 void SouthPanel::insertAutoText()
 // -------------------------------------------------------------------------------------------------
 {
-    QSettings& set = Settings::getInstance().getSettings();
-    
     if (m_keyLineEdit->text().isEmpty())
     {
         QString newTxt;
         switch ( Property::Type(m_typeCombo->currentItem()) )
         {
             case Property::MISC:
-                newTxt = set.readEntry("AutoText/Misc", Settings::DEFAULT_AUTOTEXT_MISC);
+                newTxt = qpamat->set().readEntry("AutoText/Misc");
                 break;
             case Property::USERNAME:
-                newTxt = set.readEntry("AutoText/Username",Settings::DEFAULT_AUTOTEXT_USERNAME);
+                newTxt = qpamat->set().readEntry("AutoText/Username");
                 break;
             case Property::PASSWORD:
-                newTxt = set.readEntry("AutoText/Password",Settings::DEFAULT_AUTOTEXT_PASSWORD);
+                newTxt = qpamat->set().readEntry("AutoText/Password");
                 break;
             case Property::URL:
-                newTxt = set.readEntry("AutoText/URL", Settings::DEFAULT_AUTOTEXT_URL);
+                newTxt = qpamat->set().readEntry("AutoText/URL");
                 break;
             default:
                 qDebug("SouthPanel::comboBoxChanged: newChoice is out of range\n");

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.h,v 1.13 2003/12/16 22:53:23 bwalle Exp $
+ * Id: $Id: qpamat.h,v 1.14 2003/12/20 15:58:02 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,6 +24,7 @@
 #include <qevent.h>
 #include <qtoolbutton.h>
 
+#include "settings.h"
 #include "randompassword.h"
 #include "util/timerstatusmessage.h"
 #include "help.h"
@@ -36,8 +37,8 @@
  *
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.13 $
- * \date $Date: 2003/12/16 22:53:23 $
+ * \version $Revision: 1.14 $
+ * \date $Date: 2003/12/20 15:58:02 $
  */
 class Qpamat : public QMainWindow
 {
@@ -59,6 +60,12 @@ class Qpamat : public QMainWindow
          * Reimplemented to implement AutoLogin 
          */
         void show();
+        
+        /*!
+         * Returns the settings object.
+         * \return a reference to the object
+         */
+        Settings& set();
         
     protected slots:
         
@@ -140,6 +147,7 @@ class Qpamat : public QMainWindow
         void setLogin(bool login);
         
     private:
+        Settings m_settings;
         Tree* m_tree;
         QString m_password;
         Help m_help;
@@ -178,4 +186,12 @@ class Qpamat : public QMainWindow
         };
         Actions m_actions;
 };
+
+
+/*!
+ * Pointer to the Qpamat object.
+ */
+extern Qpamat* qpamat;
+
+
 #endif // QPAMAT_H

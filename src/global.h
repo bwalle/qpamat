@@ -1,5 +1,5 @@
 /*
- * Id: $Id: global.h,v 1.2 2003/12/18 21:58:57 bwalle Exp $
+ * Id: $Id: global.h,v 1.3 2003/12/20 15:58:02 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -63,9 +63,4 @@ typedef QValueVector<QChar> QCharVector;
 
 // Forward declaration
 class Qpamat;
-
-/*!
- * Pointer to the Qpamat object.
- */
-extern Qpamat* qpamat;
 
