@@ -1,5 +1,5 @@
 /*
- * Id: $Id: randompasswordgenerator.h,v 1.1 2003/09/21 16:01:35 bwalle Exp $
+ * Id: $Id: randompasswordgenerator.h,v 1.2 2003/09/21 19:46:50 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -23,8 +23,8 @@
  * Object to generate random passwords. The passwords are \b really random since it
  * is used the OpenSSL library for randomness.
  * @author Bernhard Walle
- * @version $Revision: 1.1 $
- * @date $Date: 2003/09/21 16:01:35 $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2003/09/21 19:46:50 $
  */
 class RandomPasswordGenerator
 {
@@ -58,11 +58,6 @@ class RandomPasswordGenerator
          * @return the instance
          */
         static RandomPasswordGenerator& getInstance();
-        
-        /** 
-         * Deletes a RandomPasswordGenerator object.
-         */
-        virtual ~RandomPasswordGenerator() { }
         
     protected:
         RandomPasswordGenerator() { }
