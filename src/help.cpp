@@ -1,5 +1,5 @@
 /*
- * Id: $Id: help.cpp,v 1.6 2004/01/06 23:32:40 bwalle Exp $
+ * Id: $Id: help.cpp,v 1.7 2004/07/23 08:47:58 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,7 +24,7 @@
 #include "qpamat.h"
 #include "help.h"
 #include "settings.h"
-
+#include "dialogs/aboutdialog.h"
 
 /*!
     \class Help
@@ -33,8 +33,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.6 $
-    \date $Date: 2004/01/06 23:32:40 $
+    \version $Revision: 1.7 $
+    \date $Date: 2004/07/23 08:47:58 $
 */
 
 /*!
@@ -42,11 +42,9 @@
 */
 void Help::showAbout()
 {
-    QMessageBox::about(qApp->mainWidget(), "QPaMaT",
-        tr("<p><b>QPaMaT "VERSION_STRING"</b></p><p>Password managing tool for Unix, Windows and "
-            "MacOS X. It uses the OpenSSL library for encryption and is distributed under the "
-            "terms of the GNU General Public License.</p>"
-            "<p>© Bernhard Walle &lt;bernhard.walle@gmx.de&gt;"));
+    std::auto_ptr<AboutDialog> dlg(new AboutDialog(qApp->mainWidget(), "About Dialog"));
+    
+    dlg->exec();
 }
 
 
