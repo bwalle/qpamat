@@ -1,5 +1,5 @@
 /*
- * Id: $Id: main.cpp,v 1.18 2004/01/06 23:35:37 bwalle Exp $
+ * Id: $Id: main.cpp,v 1.19 2004/01/11 23:20:13 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -33,7 +33,6 @@
 #include "settings.h"
 #include "main.h"
 #include "util/singleapplication.h"
-#include "security/passwordhash.h"
 
 #ifdef Q_WS_X11
 #include <unistd.h>
@@ -66,22 +65,6 @@ void printCommandlineOptions()
         << "         -fg ...       specifies the foreground color\n"
 #endif
         << std::endl;
-}
-
-
-/*!
-    This is the signalhandler. It exists the application friendly.
-    \param signal the signal number
-*/
-void sighandler(int signal)
-{
-    PRINT_DBG("Caught signal No. %d", signal);
-    
-    single->shutdown();
-    
-    PRINT_TRACE("Shutting down");
-    
-    std::exit(1);
 }
 
 
@@ -166,28 +149,20 @@ int main(int argc, char** argv)
     QApplication app(argc, argv);
     parseCommandLine(argc, argv);
     
-    SingleApplication single(QDir::homeDirPath(), "QPaMaT");
+    SingleApplication::init(QDir::homeDirPath(), "QPaMaT");
     std::auto_ptr<Qpamat> qp;
     
     try
     {
-        single.startup();
+        SingleApplication::startup();
+        SingleApplication::registerStandardExitHandlers();
         
         qp = std::auto_ptr<Qpamat>(new Qpamat());
         qpamat = qp.get();
         app.setMainWidget(qpamat);
         
-        // install signal handlers
-        std::signal(SIGINT, &sighandler);
-        std::signal(SIGTERM, &sighandler);
-#ifdef Q_WS_X11
-        std::signal(SIGHUP, &sighandler);
-        std::signal(SIGQUIT, &sighandler);
-#endif 
-        
         qpamat->show();
         app.connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));
-        app.connect(&app, SIGNAL(aboutToQuit()), ::single, SLOT(shutdown())); 
         
         return app.exec(); 
     }
