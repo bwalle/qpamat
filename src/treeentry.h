@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.h,v 1.8 2003/12/13 22:33:44 bwalle Exp $
+ * Id: $Id: treeentry.h,v 1.9 2003/12/21 20:31:00 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -39,8 +39,8 @@ typedef QPtrList<Property> PropertyPtrList;
  *
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.8 $
- * \date $Date: 2003/12/13 22:33:44 $
+ * \version $Revision: 1.9 $
+ * \date $Date: 2003/12/21 20:31:00 $
  */
 class TreeEntry : public QObject, public QListViewItem
 {
@@ -95,6 +95,12 @@ class TreeEntry : public QObject, public QListViewItem
          * Returns an iterator for the list
          */
         PropertyIterator propertyIterator() const;
+        
+        /*!
+         * Checks if the children contain week passwords.
+         * \return \c true if they do contain week passwords, \c false otherwise
+         */
+        bool hasWeakChildren() const;
         
          /*!
          * Appends the treeentry as \c category or \c entry tag in the XML structure.
@@ -193,12 +199,23 @@ class TreeEntry : public QObject, public QListViewItem
          * \param evt the event
          */
         void dropped(QDropEvent *evt);
-
+        
+        /*!
+         * Reimplemented to draw red text
+         * \param p the painter
+         * \param cg the color group
+         * \param col the column
+         * \param width the width
+         * \param align the alignment
+         */
+        //void paintCell(QPainter* p, const QColorGroup& cg, int col, int width, int align);
+        
         
     private:
         QString             m_name;
         PropertyPtrList     m_properties;
         bool                m_isCategory;
+        bool                m_weak;
         
     private:
         void init();

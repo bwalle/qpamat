@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.h,v 1.14 2003/12/20 15:58:02 bwalle Exp $
+ * Id: $Id: qpamat.h,v 1.15 2003/12/21 20:31:00 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -37,8 +37,8 @@
  *
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.14 $
- * \date $Date: 2003/12/20 15:58:02 $
+ * \version $Revision: 1.15 $
+ * \date $Date: 2003/12/21 20:31:00 $
  */
 class Qpamat : public QMainWindow
 {
@@ -55,11 +55,6 @@ class Qpamat : public QMainWindow
          * Deletes the application.
          */
         ~Qpamat();
-        
-        /*!
-         * Reimplemented to implement AutoLogin 
-         */
-        void show();
         
         /*!
          * Returns the settings object.
@@ -113,6 +108,12 @@ class Qpamat : public QMainWindow
          * Sets the application state to "modified".
          */
         void setModified(bool modified = true);
+        
+        /*!
+         * Enables showing of weak passwords.
+         * \param enabled \c true if it's enabled, \c false otherwise
+         */
+        void weakPasswordHandler(bool enabled);
     
     signals:
         
@@ -121,6 +122,12 @@ class Qpamat : public QMainWindow
          * position.
          */
         void insertPassword(const QString& password);
+        
+        
+        /*!
+         * This signal is emitted if some settings have changed.
+         */
+        void settingsChanged();
         
     public slots:
         
@@ -158,9 +165,7 @@ class Qpamat : public QMainWindow
         QToolBar* m_searchToolbar;
         RandomPassword* m_randomPassword;
         bool m_loggedIn;
-        bool m_first;
         bool m_modified;
-        
         struct ToolButtons
         {
             QToolButton* search;
@@ -183,6 +188,7 @@ class Qpamat : public QMainWindow
             QAction* addItemAction;
             QAction* removeItemAction;
             QAction* randomPasswordAction;
+            QAction* weakPasswordAction;
         };
         Actions m_actions;
 };

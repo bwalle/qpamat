@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.cpp,v 1.9 2003/12/17 23:24:18 bwalle Exp $
+ * Id: $Id: treeentry.cpp,v 1.10 2003/12/21 20:31:00 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -22,6 +22,39 @@
 #include "treeentry.h"
 #include "settings.h"
 #include "security/notencryptor.h"
+
+
+// -------------------------------------------------------------------------------------------------
+bool TreeEntry::hasWeakChildren() const
+// -------------------------------------------------------------------------------------------------
+{
+    if (m_isCategory)
+    {
+        TreeEntry* item = dynamic_cast<TreeEntry*>(firstChild());
+        while (item)
+        {
+            if (item->hasWeakChildren())
+            {
+                return true;
+            }
+            item = dynamic_cast<TreeEntry*>(item->nextSibling());
+        }
+    }
+    else
+    {
+        PropertyIterator it = propertyIterator();
+        Property* current;
+        while ( (current = it.current()) != 0 ) 
+        {
+            ++it;
+            if (current->isWeak())
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
 
 // -------------------------------------------------------------------------------------------------
 QString TreeEntry::getName() const

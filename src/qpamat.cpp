@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.20 2003/12/20 15:58:02 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.21 2003/12/21 20:31:00 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -37,6 +37,7 @@
 #include <qscrollview.h>
 #include <qprinter.h>
 #include <qpainter.h>
+#include <qtimer.h>
 #include <qfont.h>
 #include <qcursor.h>
 #include <qeventloop.h>
@@ -75,7 +76,6 @@
 // -------------------------------------------------------------------------------------------------
 Qpamat::Qpamat()
 // -------------------------------------------------------------------------------------------------
-        : m_first(true)
 {
     // Title and Icon
     setIcon(lock_big_xpm);
@@ -97,7 +97,7 @@ Qpamat::Qpamat()
     dock->setFixedExtentWidth(int(qApp->desktop()->width() * 0.15));
     addDockWindow(dock, Qt::DockLeft);
     
-    m_tree = new Tree(dock);
+    m_tree = new Tree(dock, this);
     dock->setWidget(m_tree);
     
     // main widget in the center
@@ -119,6 +119,12 @@ Qpamat::Qpamat()
     m_searchCombo->insertStringList(list);
     m_searchCombo->clearEdit();
     
+    // restore settings
+    if (set().readBoolEntry("General/ShowWeakPasswords"))
+    {
+        m_actions.weakPasswordAction->setOn(true);
+    }
+    
     // restore the layout
     QString layout = set().readEntry("Main Window/layout");
     QTextStream layoutStream(&layout, IO_ReadOnly);
@@ -136,6 +142,11 @@ Qpamat::Qpamat()
     }
     
     connectSignalsAndSlots();
+    
+    if (set().readBoolEntry("General/AutoLogin"))
+    {
+        QTimer::singleShot( 0, this, SLOT(login()) );
+    }
 }
 
 
@@ -160,22 +171,6 @@ void Qpamat::message(const QString& message, bool)
 // -------------------------------------------------------------------------------------------------
 {
     m_message->message(message, /*warning ? 3000 : */ 1500);
-}
-
-
-// -------------------------------------------------------------------------------------------------
-void Qpamat::show()
-// -------------------------------------------------------------------------------------------------
-{    
-    QWidget::show();
-    if (m_first)
-    {
-        if (set().readBoolEntry("General/AutoLogin"))
-        {
-            login();
-        }
-        m_first = false;
-    }
 }
 
 
@@ -245,6 +240,7 @@ void Qpamat::initMenubar()
      menuBar()->insertItem(tr("&Extras"), extrasMenu);
      
      m_actions.randomPasswordAction->addTo(extrasMenu);
+     m_actions.weakPasswordAction->addTo(extrasMenu);
      
      // ----- Help ---------------------------------------------------------------------------------
      menuBar()->insertSeparator();
@@ -289,6 +285,10 @@ void Qpamat::setModified(bool modified)
 {
     m_modified = modified;
     m_actions.saveAction->setEnabled(modified);
+    if (modified && set().readEntry("General/ShowWeakPasswords"))
+    {
+        m_tree->showWeakPasswordMarkers();
+    }
 }
 
 
@@ -319,7 +319,6 @@ void Qpamat::login()
         }
         catch (const WrongPassword& ex)
         {
-            delete dlg;
             QMessageBox::warning(this, QObject::tr("QPaMaT"),
                tr("The passphrase you entered was wrong. Try again."),
                QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
@@ -329,6 +328,7 @@ void Qpamat::login()
     delete dlg;
     setLogin(ok);
 }
+
 
 // -------------------------------------------------------------------------------------------------
 void Qpamat::setLogin(bool loggedIn)
@@ -354,6 +354,14 @@ void Qpamat::setLogin(bool loggedIn)
     }
     m_tree->setEnabled(loggedIn);
     setModified(false);
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void Qpamat::weakPasswordHandler(bool enabled)
+// -------------------------------------------------------------------------------------------------
+{
+    set().writeEntry("General/ShowWeakPasswords", enabled);
 }
 
 
@@ -422,6 +430,7 @@ void Qpamat::configure()
 {
     std::auto_ptr<ConfigurationDialog> dlg(new ConfigurationDialog(this));
     dlg->exec();
+    emit settingsChanged();
 }
 
 
@@ -538,6 +547,9 @@ void Qpamat::connectSignalsAndSlots()
     
     connect(m_actions.randomPasswordAction, SIGNAL(activated()),
         m_randomPassword, SLOT(requestPassword()));
+    connect(m_actions.weakPasswordAction, SIGNAL(toggled(bool)), SLOT(weakPasswordHandler(bool)));
+    connect(m_actions.weakPasswordAction, SIGNAL(toggled(bool)), 
+        m_tree, SLOT(showWeakPasswordMarkers()));
     
     // edit toolbar
     connect(m_actions.addItemAction, SIGNAL(activated()), m_tree, SLOT(insertAtCurrentPos()));
@@ -585,6 +597,9 @@ void Qpamat::initActions()
     // ----- Extras --------------------------------------------------------------------------------
     m_actions.randomPasswordAction = new QAction(tr("&Random Password..."), 
         QKeySequence(CTRL|Key_R), this);
+    m_actions.weakPasswordAction = new QAction(tr("&Show weak passwords"),
+        QKeySequence(CTRL|Key_W), this);
+    m_actions.weakPasswordAction->setToggleAction(true);
     
     // ----- Help ----------------------------------------------------------------------------------
     m_actions.whatsThisAction = new QAction(QPixmap(whats_this_xpm), tr("&What's this"), 

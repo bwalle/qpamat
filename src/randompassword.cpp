@@ -1,5 +1,5 @@
 /*
- * Id: $Id: randompassword.cpp,v 1.4 2003/12/20 15:58:02 bwalle Exp $
+ * Id: $Id: randompassword.cpp,v 1.5 2003/12/21 20:31:00 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,7 +24,7 @@
 #include "qpamat.h"
 #include "settings.h"
 #include "security/configpasswordchecker.h"
-#include "dialogs/randompassworddialog.h"
+#include "dialogs/showpassworddialog.h"
 #include "randompassword.h"
 #include "security/passwordgeneratorfactory.h"
 
@@ -49,8 +49,8 @@ void RandomPassword::setInsertEnabled(bool enabled)
 void RandomPassword::requestPassword()
 // -------------------------------------------------------------------------------------------------
 {
-    RandomPasswordDialog* dlg = new RandomPasswordDialog(
-        m_parent, m_insertEnabled, "RandomPwDialog");
+    ShowPasswordDialog* dlg = new ShowPasswordDialog(
+        m_parent, ShowPasswordDialog::TRandomPasswordDlgInsert, "RandomPwDialog");
     
     PasswordGenerator* passwordgen = 0;
     int length = qpamat->set().readNumEntry("Security/Length");

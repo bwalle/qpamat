@@ -1,5 +1,5 @@
 /*
- * Id: $Id: property.h,v 1.7 2003/12/10 21:50:21 bwalle Exp $
+ * Id: $Id: property.h,v 1.8 2003/12/21 20:30:59 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -31,12 +31,14 @@ class TreeEntry;
  *
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.7 $
- * \date $Date: 2003/12/10 21:50:21 $
+ * \version $Revision: 1.8 $
+ * \date $Date: 2003/12/21 20:30:59 $
  */
 class Property : public QObject
 {
     Q_OBJECT
+    
+    friend class Tree;
     
     public:
     
@@ -80,6 +82,13 @@ class Property : public QObject
          * \return the value string
          */
         QString getVisibleValue() const;
+        
+        /*!
+         * This function only makes sense if the property represents a password. It checkis
+         * if the password is weak according to current password settings.
+         * \return \c true if the password is weak, \c false otherwise
+         */
+        bool isWeak() const;
         
         /*!
          * Sets the value of the property.
@@ -146,7 +155,7 @@ class Property : public QObject
          * \param enc the encryptor to use for decrypting passwords
          */
         static void appendFromXML(TreeEntry* parent, QDomElement& elem, StringEncryptor& enc);
-    
+        
     signals:
         /*!
          * This signal is emited if some property is changed.
@@ -155,11 +164,15 @@ class Property : public QObject
         void propertyChanged(Property* current);
         
     private:
+        void updateWeakInformation();
+        
+    private:
         QString         m_key;
         QString         m_value;
         Type            m_type;
         bool            m_encrypted;
         bool            m_hidden;
+        bool            m_weak;
 };
 
 #endif // PROPERTY_H

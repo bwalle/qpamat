@@ -1,5 +1,5 @@
 /*
- * Id: $Id: southpanel.cpp,v 1.10 2003/12/20 15:58:02 bwalle Exp $
+ * Id: $Id: southpanel.cpp,v 1.11 2003/12/21 20:31:00 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -22,11 +22,14 @@
 #include <qvbox.h>
 #include <qvgroupbox.h>
 #include <qbuttongroup.h>
+#include <qtooltip.h>
 #include <qtoolbutton.h>
 
 #include "qpamat.h"
 #include "southpanel.h"
 #include "settings.h"
+#include "../images/ok_16x16.xpm"
+#include "../images/not_ok_16x16.xpm"
 #include "../images/down_16x16.xpm"
 #include "../images/down_22x22.xpm"
 #include "../images/up_16x16.xpm"
@@ -81,6 +84,11 @@ SouthPanel::SouthPanel(QWidget* parent)
     QWidget* filler = new QWidget(vbox);
     vbox->setStretchFactor(filler, 1);
     
+    // indicator
+    m_indicatorLabel = new QLabel(vbox, "Indicator label");
+    m_indicatorLabel->setAlignment(AlignHCenter);
+    m_indicatorLabel->setFixedHeight(22);
+    
     hLayout->addWidget(vbox);
     
     setEnabled(false);
@@ -109,10 +117,14 @@ void SouthPanel::clear()
 // -------------------------------------------------------------------------------------------------
 {
     m_currentProperty = 0;
-     
+    
+    m_indicatorLabel->setPixmap(0);
+    QToolTip::remove(m_indicatorLabel);
+    blockSignals(true);
     m_keyLineEdit->setText(QString::null);
     m_valueLineEdit->setText(QString::null);
     m_typeCombo->setCurrentItem(0);
+    blockSignals(false);
     m_valueLineEdit->setEchoMode(QLineEdit::Normal);
     m_oldComboValue = -1;
     setEnabled(false);
@@ -127,9 +139,11 @@ void SouthPanel::setItem (Property* property)
     
     if (property != 0)
     {
+        blockSignals(true);
         m_typeCombo->setCurrentItem(property->getType());
         m_valueLineEdit->setText(property->getValue());
         m_keyLineEdit->setText(property->getKey());
+        blockSignals(false);
         m_oldComboValue = property->getType();
         if (property->isHidden())
         {
@@ -138,8 +152,28 @@ void SouthPanel::setItem (Property* property)
         insertAutoText();
     }
     m_currentProperty = property;
+    updateIndicatorLabel();
     
     setEnabled(property != 0);
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void SouthPanel::updateIndicatorLabel()
+// -------------------------------------------------------------------------------------------------
+{
+    if (m_currentProperty && m_currentProperty->getType() == Property::PASSWORD)
+    {
+        m_indicatorLabel->setPixmap( m_currentProperty->isWeak() ? not_ok_16x16_xpm : ok_16x16_xpm );
+        QToolTip::add(m_indicatorLabel, m_currentProperty->isWeak() 
+            ? tr("Password is weak.\nChange it!")
+            : tr("Password is strong!") );
+    }
+    else
+    {
+        m_indicatorLabel->setPixmap(0);
+        QToolTip::remove(m_indicatorLabel);
+    }
 }
 
 
@@ -153,6 +187,7 @@ void SouthPanel::updateData()
         m_currentProperty->setHidden(m_typeCombo->currentItem() == Property::PASSWORD);
         m_currentProperty->setEncrypted(m_typeCombo->currentItem() == Property::PASSWORD);
         m_currentProperty->setValue(m_valueLineEdit->text());
+        updateIndicatorLabel();
         m_currentProperty->setKey(m_keyLineEdit->text());
         m_valueLineEdit->setEchoMode(
             m_currentProperty->isHidden() 
@@ -176,6 +211,8 @@ void SouthPanel::comboBoxChanged(int newChoice)
             m_currentProperty->setValue("");
             m_valueLineEdit->setText("");
         }
+        
+        updateIndicatorLabel();
     }
     m_oldComboValue = newChoice;
 }

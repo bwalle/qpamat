@@ -1,5 +1,5 @@
 /*
- * Id: $Id: property.cpp,v 1.6 2003/12/14 18:49:58 bwalle Exp $
+ * Id: $Id: property.cpp,v 1.7 2003/12/21 20:30:59 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -19,6 +19,8 @@
 #include <qdom.h>
 #include <qlistview.h>
 
+#include "qpamat.h"
+#include "security/configpasswordchecker.h"
 #include "property.h"
 #include "security/encodinghelper.h"
 #include "security/stringencryptor.h"
@@ -27,8 +29,12 @@
 // -------------------------------------------------------------------------------------------------
 Property::Property(const QString& key, const QString& value, Type type, bool encrypted, bool hidden)
 // -------------------------------------------------------------------------------------------------
-         : m_key(key), m_value(value), m_type(type), m_encrypted(encrypted), m_hidden(hidden)
-{ }
+         : m_key(key), m_value(value), m_type(type), m_encrypted(encrypted), m_hidden(hidden),
+           m_weak(false)
+{
+    
+    setValue(value);
+}
 
 
 // -------------------------------------------------------------------------------------------------
@@ -74,11 +80,41 @@ QString Property::getVisibleValue() const
 
 
 // -------------------------------------------------------------------------------------------------
+bool Property::isWeak() const
+// -------------------------------------------------------------------------------------------------
+{
+    return m_weak;
+}
+
+
+// -------------------------------------------------------------------------------------------------
 void Property::setValue(const QString& value) 
 // -------------------------------------------------------------------------------------------------
 {
     m_value = value;
+    updateWeakInformation();
     emit propertyChanged(this);
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void Property::updateWeakInformation()
+// -------------------------------------------------------------------------------------------------
+{
+    if (m_type == PASSWORD)
+    {
+        int length = qpamat->set().readNumEntry("Security/MinLength");
+        QString ensured = qpamat->set().readEntry("Security/EnsuredCharacters");
+        ConfigPasswordChecker checker(length, ensured, QString::null);
+        try
+        {
+            m_weak = !checker.isPasswordOk(m_value);
+        }
+        catch (const PasswordCheckException& e)
+        {
+            qDebug("Checking password failed, value = %s", m_value.latin1());
+        }
+    }
 }
 
 

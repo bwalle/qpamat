@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.h,v 1.11 2003/12/13 22:33:44 bwalle Exp $
+ * Id: $Id: tree.h,v 1.12 2003/12/21 20:31:00 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -41,8 +41,8 @@
  
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.11 $
- * \date $Date: 2003/12/13 22:33:44 $
+ * \version $Revision: 1.12 $
+ * \date $Date: 2003/12/21 20:31:00 $
  */
 class Tree : public QListView
 {
@@ -61,8 +61,9 @@ class Tree : public QListView
         /*!
          * Creates a new instance of a Tree.
          * \param parent the parent
+         * \param pQpamat the qpamat object
          */
-        Tree(QWidget* parent = 0);
+        Tree(QWidget* parent, Qpamat* pQpamat);
         
         /*!
          * Reads and updates the tree from the given XML file.
@@ -135,11 +136,18 @@ class Tree : public QListView
          */
         void insertAtCurrentPos();
         
+        /*!
+         * Shows the icons that indicate weak passwords on the left. Depends on the global
+         * setting <tt>General/ShowWeakPasswords</tt>, i.e. also hides them if necessary.
+         */
+        void showWeakPasswordMarkers();
+        
     private slots:
         void showContextMenu(QListViewItem* item, const QPoint& point);
         void insertItem(TreeEntry* item, bool category = false);
         void currentChangedHandler(QListViewItem* item);
         void droppedHandler(QDropEvent* e);
+        void recomputeWeakPasswords();
         
     private:
         void initTreeContextMenu();

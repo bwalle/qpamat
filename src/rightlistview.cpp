@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightlistview.cpp,v 1.7 2003/12/16 22:52:57 bwalle Exp $
+ * Id: $Id: rightlistview.cpp,v 1.8 2003/12/21 20:31:00 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,6 +24,8 @@
 
 #include "qpamat.h"
 #include "rightlistview.h"
+#include "dialogs/showpassworddialog.h"
+#include "../images/eye_16x16.xpm"
 #include "../images/edit_remove_16x16.xpm"
 #include "../images/edit_add_16x16.xpm"
 #include "../images/copy_16x16.xpm"
@@ -70,6 +72,7 @@ void RightListView::initContextMenu()
     m_contextMenu->insertSeparator();
     m_contextMenu->insertItem(QIconSet(copy_16x16_xpm),
         tr("&Copy") + "\t" + QString(QKeySequence(CTRL|Key_C)), COPY);
+    m_contextMenu->insertItem(QIconSet(eye_16x16_xpm), tr("Show &password..."), SHOW_PW);
 }
 
 
@@ -77,8 +80,12 @@ void RightListView::initContextMenu()
 void RightListView::showContextMenu(QListViewItem* item, const QPoint& point) 
 // -------------------------------------------------------------------------------------------------
 {
+    bool passw = item != 0 && m_currentItem->getProperty(item->text(2).toInt(0))->getType()
+        == Property::PASSWORD;
+    
     m_contextMenu->setItemEnabled(DELETE, item != 0);
     m_contextMenu->setItemEnabled(COPY, item != 0);
+    m_contextMenu->setItemEnabled(SHOW_PW, passw);
     
     int id = m_contextMenu->exec(point);
     switch (id)
@@ -94,6 +101,11 @@ void RightListView::showContextMenu(QListViewItem* item, const QPoint& point)
             m_currentItem->appendProperty(new Property());
             emit stateModified();
             break;
+        case SHOW_PW:
+            ShowPasswordDialog* dlg = new ShowPasswordDialog(this, ShowPasswordDialog::TNormalPasswordDlg);
+            dlg->setPassword(m_currentItem->getProperty(item->text(2).toInt(0))->getValue());
+            dlg->exec();
+            delete dlg;
     };
 }
 
@@ -325,8 +337,5 @@ void RightListView::setMoveStateCorrect()
         down = (index < number - 1);
         up = (index > 0);
     }
-#ifdef DEBUG
-    qDebug("RightListView::setMoveStateCorrect: Emitted enableMoving(%d, %d)", up, down);
-#endif
     emit enableMoving(up, down);
 }

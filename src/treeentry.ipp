@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.ipp,v 1.3 2003/12/13 22:33:44 bwalle Exp $
+ * Id: $Id: treeentry.ipp,v 1.4 2003/12/21 20:31:00 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -20,7 +20,7 @@ template<class T>
 // -------------------------------------------------------------------------------------------------
 TreeEntry::TreeEntry(T* parent, const QString& name, bool isCategory)
 // -------------------------------------------------------------------------------------------------
-    : QListViewItem(parent), m_name(name), m_isCategory(isCategory)
+    : QListViewItem(parent), m_name(name), m_isCategory(isCategory), m_weak(false)
 {
     setRenameEnabled(0, true);
     setDragEnabled(true);

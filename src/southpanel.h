@@ -1,5 +1,5 @@
 /*
- * Id: $Id: southpanel.h,v 1.8 2003/12/16 22:52:40 bwalle Exp $
+ * Id: $Id: southpanel.h,v 1.9 2003/12/21 20:31:00 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -19,6 +19,7 @@
 #define SOUTHPANEL_H
 
 #include <qwidget.h>
+#include <qlabel.h>
 #include <qcombobox.h>
 #include <qframe.h>
 #include <qevent.h>
@@ -31,8 +32,8 @@
  * \brief Represents the south panel.
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.8 $
- * \date $Date: 2003/12/16 22:52:40 $
+ * \version $Revision: 1.9 $
+ * \date $Date: 2003/12/21 20:31:00 $
  */
 class SouthPanel : public QFrame
 {
@@ -126,6 +127,7 @@ class SouthPanel : public QFrame
     private slots:
         void focusInValueHandler();
         void focusOutValueHandler();
+        void updateIndicatorLabel();
         
     private:
         Property* m_currentProperty;
@@ -134,6 +136,7 @@ class SouthPanel : public QFrame
         QComboBox* m_typeCombo;
         QToolButton* m_upButton;
         QToolButton* m_downButton;
+        QLabel* m_indicatorLabel;
         int m_oldComboValue;
 };
 

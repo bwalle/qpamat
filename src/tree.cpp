@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.19 2003/12/20 15:58:02 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.20 2003/12/21 20:31:00 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -28,10 +28,14 @@
 #include <qevent.h>
 #include <qcursor.h>
 #include <qprogressdialog.h>
+#include <qeventloop.h>
+#include <qguardedptr.h>
 
 #include "../images/edit_remove_16x16.xpm"
 #include "../images/rename_16x16.xpm"
 #include "../images/edit_add_16x16.xpm"
+#include "../images/ok_16x16.xpm"
+#include "../images/not_ok_16x16.xpm"
 
 #include "qpamat.h"
 #include "tree.h"
@@ -46,7 +50,7 @@
 #include "settings.h"
 
 // -------------------------------------------------------------------------------------------------
-Tree::Tree(QWidget* parent)
+Tree::Tree(QWidget* parent, Qpamat* pQpamat)
 // -------------------------------------------------------------------------------------------------
     : QListView(parent)
 {
@@ -66,6 +70,7 @@ Tree::Tree(QWidget* parent)
     connect(this, SIGNAL(currentChanged(QListViewItem*)), 
         this, SLOT(currentChangedHandler(QListViewItem*)));
     connect(this, SIGNAL(dropped(QDropEvent*)), SLOT(droppedHandler(QDropEvent*)));
+    connect(pQpamat, SIGNAL(settingsChanged()), SLOT(recomputeWeakPasswords()));
 }
 
 
@@ -84,6 +89,7 @@ void Tree::keyPressEvent(QKeyEvent* evt)
             break;
     }
 }
+
 
 // -------------------------------------------------------------------------------------------------
 bool Tree::readFromXML(const QString& fileName, const QString& password) throw (WrongPassword)
@@ -209,6 +215,8 @@ bool Tree::readFromXML(const QString& fileName, const QString& password) throw (
         return false;
     }
     
+    
+    showWeakPasswordMarkers();
     qpamat->message(tr("Reading of data finished successfully."), false);
     
     return true;
@@ -545,6 +553,18 @@ void Tree::currentChangedHandler(QListViewItem*)
 }
 
 
+static QGuardedPtr<QProgressDialog> progressDialog;
+static int offset = 0;
+
+void memorycard_callback(int, int)
+{
+    qApp->processEvents();
+    progressDialog->setProgress(offset++);
+    qDebug("Called, offset = %d", offset);
+    qApp->processEvents();
+}
+
+
 // -------------------------------------------------------------------------------------------------
 bool Tree::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& randomNumber)
 // -------------------------------------------------------------------------------------------------
@@ -568,14 +588,25 @@ bool Tree::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& randomNumbe
         card.init(port);
         
         QApplication::restoreOverrideCursor();
-        
         QMessageBox::information(this, "QPaMaT", tr("Insert the smartcard in your reader!"), 
             QMessageBox::Ok, QMessageBox::NoButton);
         QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
         
+        qApp->processEvents();
+        
+        int steps = ( bytes.size() == 0 ? 500 : bytes.size() ) / 256 + 11;
+        progressDialog = new QProgressDialog( write ? tr("Writing data ...") : 
+            tr("Reading data ..."), QString::null, steps, this, "progress", true);
+        progressDialog->setMinimumDuration(1000);
+        offset = 0;
+        card.setCallback(memorycard_callback);
+        
+        memorycard_callback(0, steps);
+        
         if (card.getType() != MemoryCard::TMemoryCard)
         {
             QApplication::restoreOverrideCursor();
+            delete progressDialog;
             QMessageBox::critical(this, "QPaMaT", tr("There's no memory card in your "
                 "reader.\nUse the test function in the configuration\ndialog to set up your "
                 "reader properly."), QMessageBox::Ok, QMessageBox::NoButton);
@@ -584,6 +615,7 @@ bool Tree::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& randomNumbe
         
         if (!card.selectFile())
         {
+            delete progressDialog;
             QApplication::restoreOverrideCursor();
             QMessageBox::critical(this, "QPaMaT", "<qt>" + tr("It was not possible to select the "
                 "file on the smartcard") + "</qt>", QMessageBox::Ok, QMessageBox::NoButton);
@@ -597,7 +629,9 @@ bool Tree::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& randomNumbe
             byteVector[0] = randomNumber;
             card.write(0, byteVector);
             
+#ifdef DEBUG
             qDebug("Random = %d", byteVector[0]);
+#endif
             
             // then write the number of bytes
             int numberOfBytes = bytes.size();
@@ -607,10 +641,13 @@ bool Tree::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& randomNumbe
             byteVector[2] = 0; // fillbyte
             card.write(1, byteVector);
             
-            qDebug("First = %d\nSecond = %d", byteVector[0], byteVector[1]);
-            
             // and finally write the data
             card.write(4, bytes);
+            
+            progressDialog->reset();
+            qApp->processEvents();
+            
+            card.setCallback(0);
         }
         else
         {
@@ -632,6 +669,9 @@ bool Tree::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& randomNumbe
             ByteVector vec = card.read(1, 2);
             int numberOfBytes = (vec[0] << 8) + (vec[1]);
             
+            progressDialog->setTotalSteps( 11 + numberOfBytes / 256);
+            qApp->processEvents();
+            
 #ifdef DEBUG
             qDebug("Read numberOfBytes = %d", numberOfBytes);
 #endif
@@ -640,11 +680,14 @@ bool Tree::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& randomNumbe
             
             // read the bytes
             bytes = card.read(4, numberOfBytes);
+            
+            qApp->processEvents();
         }
         card.close(); // if not, the destructor does, no problem for exceptions here!
     }
     catch (const NoSuchLibraryException& e)
     {
+        delete progressDialog;
         QApplication::restoreOverrideCursor();
         QMessageBox::critical(this, "QPaMaT", tr("The application was not set up correctly "
             "for using the smartcard. Call the configuration dialog and use the Test button "
@@ -654,13 +697,15 @@ bool Tree::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& randomNumbe
     }
     catch (const CardException& e)
     {
+        delete progressDialog;
         QApplication::restoreOverrideCursor();
         QMessageBox::critical(this, "QPaMaT", tr("There was a communication error while "
             "writing to the card.<p>The error message was:<br><nobr>%1</nobr>").arg(e.what()), 
             QMessageBox::Ok, QMessageBox::NoButton);
         return false;
     }
-    
+    progressDialog->reset();
+    delete progressDialog;
     QApplication::restoreOverrideCursor();
     return true;
 }
@@ -682,6 +727,52 @@ void Tree::droppedHandler(QDropEvent* evt)
         QListViewItem* appended = TreeEntry::appendFromXML(this, elem, enc);
         setSelected(appended, true);
         delete src;
+    }
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void Tree::recomputeWeakPasswords()
+// -------------------------------------------------------------------------------------------------
+{
+    QListViewItemIterator it(this);
+    while (it.current()) 
+    {
+        TreeEntry* current = dynamic_cast<TreeEntry*>(it.current());
+        TreeEntry::PropertyIterator propIt = current->propertyIterator();
+        while (propIt.current())
+        {
+            propIt.current()->updateWeakInformation();
+            ++propIt;
+        }
+        ++it;
+    }
+    showWeakPasswordMarkers();
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void Tree::showWeakPasswordMarkers()
+// -------------------------------------------------------------------------------------------------
+{
+    if (qpamat->set().readBoolEntry("General/ShowWeakPasswords"))
+    {
+        QListViewItemIterator it(this);
+        while (it.current()) 
+        {
+            bool weak = dynamic_cast<TreeEntry*>(it.current())->hasWeakChildren();
+            it.current()->setPixmap(0, weak ? not_ok_16x16_xpm : ok_16x16_xpm);
+            ++it;
+        }
+    }
+    else
+    {
+        QListViewItemIterator it(this);
+        while (it.current()) 
+        {
+            it.current()->setPixmap(0, 0);
+            ++it;
+        }
     }
 }
 

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightlistview.h,v 1.5 2003/12/11 22:02:03 bwalle Exp $
+ * Id: $Id: rightlistview.h,v 1.6 2003/12/21 20:31:00 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -30,8 +30,8 @@
  * \brief Represents the list view on the right where the key-value pairs are displayed.
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.5 $
- * \date $Date: 2003/12/11 22:02:03 $
+ * \version $Revision: 1.6 $
+ * \date $Date: 2003/12/21 20:31:00 $
  */
 class RightListView : public QListView
 {
@@ -42,7 +42,7 @@ class RightListView : public QListView
         /*!
          * Enumeration for menu.
          */
-        enum MenuID { NEW, DELETE, COPY };
+        enum MenuID { NEW, DELETE, COPY, SHOW_PW };
     
         /*!
          * Creates a new object of the list view.
