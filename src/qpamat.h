@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.h,v 1.21 2004/09/03 14:51:12 bwalle Exp $
+ * Id: $Id: qpamat.h,v 1.22 2004/12/26 17:44:38 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -45,7 +45,7 @@ class Qpamat : public QMainWindow
         
     protected slots:
         void login();
-        void logout();
+        bool logout();
         void newFile();
         void save();
         void changePassword();

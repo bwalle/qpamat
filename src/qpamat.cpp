@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.46 2004/09/03 14:51:09 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.47 2004/12/26 17:44:38 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -69,8 +69,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.46 $
-    \date $Date: 2004/09/03 14:51:09 $
+    \version $Revision: 1.47 $
+    \date $Date: 2004/12/26 17:44:38 $
  */
 
 /*! 
@@ -298,7 +298,10 @@ void Qpamat::initMenubar()
  */
 void Qpamat::closeEvent(QCloseEvent* e)
 {
-    logout();
+    if (!logout())
+    {
+        return;
+    }
     
     // write the history
     QStringList list;
@@ -524,21 +527,35 @@ void Qpamat::exportData()
 
 /*!
     Performs the logout operation.
+
+    \return \c true if logout should be continued, \c false otherwise
  */
-void Qpamat::logout()
+bool Qpamat::logout()
 {
     // save the data
     if (m_modified)
     {
-        if (QMessageBox::question(this, "QPaMaT", tr("There is modified data that was not saved."
-            "\nDo you want to save it now?"), QMessageBox::Yes | QMessageBox::Default, QMessageBox::No) 
-                == QMessageBox::Yes)
+        int ret = QMessageBox::question(this, "QPaMaT", tr("There is modified data that was not saved."
+            "\nDo you want to save it now?"), QMessageBox::Yes | QMessageBox::Default,
+                    QMessageBox::No, QMessageBox::Cancel) ;
+
+        switch (ret)
         {
-            save();
+            case QMessageBox::Yes:
+                save();
+                break;
+
+            case QMessageBox::Cancel:
+                return false;
+
+            default:
+                break;
         }
     }
     
     setLogin(false);
+
+    return true;
 }
 
 
