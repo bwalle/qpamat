@@ -1,5 +1,5 @@
 /*
- * Id: $Id: passwordchecker.h,v 1.2 2003/12/17 21:54:04 bwalle Exp $
+ * Id: $Id: passwordchecker.h,v 1.3 2003/12/18 22:00:12 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -19,7 +19,9 @@
 #define PASSWORDCHECKER_H
 
 #include <qstring.h>
+#include <qvaluevector.h>
 
+#include "../global.h"
 #include "passwordcheckexception.h"
 
 /*!
@@ -29,8 +31,8 @@
  *
  * \ingroup security
  * \author Bernhard Walle
- * \version $Revision: 1.2 $
- * \date $Date: 2003/12/17 21:54:04 $
+ * \version $Revision: 1.3 $
+ * \date $Date: 2003/12/18 22:00:12 $
  */
 class PasswordChecker
 {
@@ -58,12 +60,12 @@ class PasswordChecker
         virtual uint minimalLength() const = 0;
         
         /*!
-         * Returns if the password checker is slow. Of course, the word slow is relative. Calling
-         * an external program is always slow, checking only the length and a few characters
-         * is fast.
-         * \return \c true if it is slow, \c false otherwise
+         * Returns the allowed characters literally. If the vector is empty, all characters are
+         * allowed. It's no guarantee but it gives the random generator some hints how to work
+         * quicker.
+         * \return the vector of QChar characters (for unicode handling)
          */
-        virtual bool isSlow() const = 0;
+        virtual QCharVector allowedCharacters() const = 0;
 };
 
 #endif // PASSWORDCHECKER_H

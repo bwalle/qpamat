@@ -1,5 +1,5 @@
 /*
- * Id: $Id: randompassworddialog.h,v 1.1 2003/12/16 22:49:55 bwalle Exp $
+ * Id: $Id: randompassworddialog.h,v 1.2 2003/12/18 22:00:02 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -22,15 +22,15 @@
 #include <qlineedit.h>
 #include <qwidget.h>
 
-#include "../widgets/copylineedit.h"
+#include "../widgets/copylabel.h"
 
 /*!
  * \brief Dialog which displayes a random password.
  *
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.1 $
- * \date $Date: 2003/12/16 22:49:55 $
+ * \version $Revision: 1.2 $
+ * \date $Date: 2003/12/18 22:00:02 $
  */
 class RandomPasswordDialog : public QDialog 
 {
@@ -79,9 +79,10 @@ class RandomPasswordDialog : public QDialog
         
     private slots:
         void insertButtonHandler();
+        void copyPassword();
         
     private:
-        CopyLineEdit* m_passwordEdit;
+        CopyLabel* m_passwordEdit;
 };
 
 #endif // RANDOMPASSWORDDIALOG_H

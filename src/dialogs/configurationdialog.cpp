@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.cpp,v 1.9 2003/12/17 23:05:16 bwalle Exp $
+ * Id: $Id: configurationdialog.cpp,v 1.10 2003/12/18 22:00:02 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -35,7 +35,6 @@
 #include "../qpamat.h"
 #include "configurationdialog.h"
 #include "../settings.h"
-#include "../security/passwordcheckerfactory.h"
 #include "../security/passwordgeneratorfactory.h"
 #include "../security/symmetricencryptor.h"
 #include "../smartcard/memorycard.h"
@@ -44,33 +43,28 @@
 using ConfigurationDialogLocal::GeneralTab;
 using ConfigurationDialogLocal::SmartcardTab;
 using ConfigurationDialogLocal::SecurityTab;
-using ConfigurationDialogLocal::SecurityTab2;
-using ConfigurationDialogLocal::PrintingTab;
+using ConfigurationDialogLocal::PresentationTab;
 
 // -------------------------------------------------------------------------------------------------
 ConfigurationDialog::ConfigurationDialog(QWidget* parent)
 // -------------------------------------------------------------------------------------------------
-        : QTabDialog(parent)
+        : QTabDialog(parent), m_generalTab(0), m_securityTab(0), m_smartCardTab(0), m_printingTab(0)
 {
     setCaption("QPaMaT");
     
     m_generalTab = new GeneralTab(this);
     m_smartCardTab = new SmartcardTab(this);
     m_securityTab = new SecurityTab(this);
-    m_securityTab2 = new SecurityTab2(this);
-    m_printingTab = new PrintingTab(this);
+    m_printingTab = new PresentationTab(this);
     
     addTab(m_generalTab, "&General");
-    addTab(m_securityTab, "&Security 1");
-    addTab(m_securityTab2, "&Security 2");
+    addTab(m_securityTab, "&Security"); 
     addTab(m_smartCardTab, "Smart &Card");
-    addTab(m_printingTab, "&Printing");
-    
+    addTab(m_printingTab, "&Presentation");
     
     setCancelButton(tr("Cancel"));
     connect(this, SIGNAL(applyButtonPressed()), m_generalTab, SLOT(applySettings()));
     connect(this, SIGNAL(applyButtonPressed()), m_securityTab, SLOT(applySettings()));
-    connect(this, SIGNAL(applyButtonPressed()), m_securityTab2, SLOT(applySettings()));
     connect(this, SIGNAL(applyButtonPressed()), m_smartCardTab, SLOT(applySettings()));
     connect(this, SIGNAL(applyButtonPressed()), m_printingTab, SLOT(applySettings()));
     
@@ -183,14 +177,16 @@ void GeneralTab::applySettings()
 // -------------------------------------------------------------------------------------------------
 SecurityTab::SecurityTab(QWidget* parent)
 // -------------------------------------------------------------------------------------------------
-        : QWidget(parent)
+        : QWidget(parent), m_lengthSpinner(0), m_externalEdit(0), m_allowedCharsEdit(0), 
+          m_useExternalCB(0), m_uppercaseCB(0), m_lowercaseCB(0), m_digitsCB(0), m_specialCB(0), 
+          m_algorithmCombo(0)
 {
     createAndLayout();
     
     // init contents
     fillSettings();
     
-    connect(m_radioGroup, SIGNAL(clicked(int)), this, SLOT(radioButtonHandler(int)));
+    connect(m_useExternalCB, SIGNAL(toggled(bool)), SLOT(checkboxHandler(bool)));
 }
 
 
@@ -200,46 +196,62 @@ void SecurityTab::createAndLayout()
 {
     // create layouts
     QVBoxLayout* mainLayout = new QVBoxLayout(this, 6, 6);
-    m_radioGroup = new QButtonGroup(7, Vertical,tr("Password Checker"), this);
+    QGroupBox* passwordGroup = new QGroupBox(5, Vertical, tr("Generated Passwords"), this);
     QGroupBox* encryptionGroup = new QGroupBox(2, Vertical, tr("Encryption"), this);
     
     // some settings
-    encryptionGroup->setInsideSpacing(6);
-    m_radioGroup->setFlat(true);
+    encryptionGroup->setInsideSpacing(6);  // ???
+    passwordGroup->setFlat(true);
+    passwordGroup->setInsideSpacing(6);
     encryptionGroup->setFlat(true);
     
-    new QRadioButton(tr("S&imple"), m_radioGroup);
-    new QRadioButton(tr("&Extended"), m_radioGroup);
-    new QRadioButton(tr("&Using dictionary:"), m_radioGroup);
-    QWidget* box1 = new QWidget(m_radioGroup);
-    QHBoxLayout* hlayout1 = new QHBoxLayout(box1);
-    m_dictionaryEdit = new FileLineEdit(box1);
-    hlayout1->addSpacing(20);
-    hlayout1->addWidget(m_dictionaryEdit);
+    QWidget* ensureGrid = new QWidget(passwordGroup, "EnsureGrid");
+    QGridLayout* ensureGridLayout = new QGridLayout(ensureGrid, 5, 3, 0, 6, "EnsureGridLayout");
+    QLabel* ensureLabel = new QLabel(tr("Ensure following components of a password:"), 
+        ensureGrid, "EnsureLabel");
+    m_uppercaseCB = new QCheckBox(tr("&Uppercase letters"), ensureGrid);
+    m_lowercaseCB = new QCheckBox(tr("&Lowercase letters"), ensureGrid);
+    m_digitsCB    = new QCheckBox(tr("&Digits"), ensureGrid);
+    m_specialCB   = new QCheckBox(tr("&Special characters"), ensureGrid);
+    QLabel* lengthLabel = new QLabel(tr("L&ength:"), ensureGrid);
+    QLabel* allowedLabel = new QLabel(tr("&Allowed characters:"), ensureGrid);
+    m_lengthSpinner = new QSpinBox(6, 20, 1, ensureGrid, "LengthSpinner");
+    m_allowedCharsEdit = new QLineEdit(ensureGrid, "AllowedLineEdit");
     
-    new QRadioButton(tr("E&xternal Application (full path if not in PATH environment):"), 
-        m_radioGroup);
-    QWidget* box2 = new QWidget(m_radioGroup);
-    QHBoxLayout* hlayout2 = new QHBoxLayout(box2);
-    m_externalEdit = new FileLineEdit(box2);
-    hlayout2->addSpacing(20);
-    hlayout2->addWidget(m_externalEdit);
+    // layout the grid
+    ensureGridLayout->setColSpacing(1, 6);
+    ensureGridLayout->addMultiCellWidget(ensureLabel, 0, 0, 0, 2);
+    ensureGridLayout->addWidget(m_uppercaseCB,        1, 0);
+    ensureGridLayout->addWidget(m_lowercaseCB,        1, 2);
+    ensureGridLayout->addWidget(m_digitsCB,           2, 0);
+    ensureGridLayout->addWidget(m_specialCB,          2, 2);
+    ensureGridLayout->addWidget(lengthLabel,          3, 0);
+    ensureGridLayout->addWidget(allowedLabel,         3, 2);
+    ensureGridLayout->addWidget(m_lengthSpinner,      4, 0);
+    ensureGridLayout->addWidget(m_allowedCharsEdit,   4, 2);
+    
+    m_useExternalCB = new QCheckBox(tr("Use external application for generation:"), passwordGroup,
+        "ExternalCB");
+    m_externalEdit = new FileLineEdit(passwordGroup, "ExternalEdit");
     
     // algorithm stuff
     QLabel* algorithmLabel = new QLabel(tr("Cipher &algorithm:"), encryptionGroup);
-    m_algorithmCombo = new QComboBox(false, encryptionGroup);
+    m_algorithmCombo = new QComboBox(false, encryptionGroup); 
     
     // buddys
     algorithmLabel->setBuddy(m_algorithmCombo);
+    lengthLabel->setBuddy(m_lengthSpinner);
+    allowedLabel->setBuddy(m_allowedCharsEdit);
     
-    mainLayout->addWidget(m_radioGroup);
+    mainLayout->addWidget(passwordGroup);
     mainLayout->addWidget(encryptionGroup);
+    mainLayout->addSpacing(10);
     mainLayout->addStretch(5);
     
     // help
-    QWhatsThis::add(m_radioGroup, tr("<qt>Password checkers are used to check the initial password "
+    /* QWhatsThis::add(m_radioGroup, tr("<qt>Password checkers are used to check the initial password "
         "and the random password. That means that a random password has always the security of the "
-        "password checker.<p>Using an external password checker may be slow.</qt>"));
+        "password checker.<p>Using an external password checker may be slow.</qt>")); */
     QWhatsThis::add(m_algorithmCombo, tr("<qt>Only change this if you know what you do. The "
         "algorithms are provided by the OpenSSL library and the availability is determined "
         "at runtime. You can read a file encrypted with <i>X</i> only if the computer on which "
@@ -247,28 +259,15 @@ void SecurityTab::createAndLayout()
         "it's free and available everywhere. IDEA is patended (but secure, PGP uses it!) "
         "and AES (the successor of DES) is only available at new versions of OpenSSL."
         "Read a book about cryptography if you're interested in this algorithms.</qt>"));
-    
 }
 
 
 // -------------------------------------------------------------------------------------------------
-void SecurityTab::radioButtonHandler(int buttonId)
+void SecurityTab::checkboxHandler(bool on)
 // -------------------------------------------------------------------------------------------------
 {
-    // dictionary edit
-    m_dictionaryEdit->setEnabled( PasswordCheckerFactory::PasswordCheckerType(buttonId) == 
-        PasswordCheckerFactory::TExtendedDictPasswordChecker );
-    if (PasswordCheckerFactory::PasswordCheckerType(buttonId) != 
-            PasswordCheckerFactory::TExtendedDictPasswordChecker)
-    {
-        m_dictionaryEdit->clearFocus();
-    }
-    
-    // external program edit
-    m_externalEdit->setEnabled( PasswordCheckerFactory::PasswordCheckerType(buttonId) == 
-        PasswordCheckerFactory::TExternalPasswordChecker );
-    if (PasswordCheckerFactory::PasswordCheckerType(buttonId) != 
-            PasswordCheckerFactory::TExternalPasswordChecker)
+    m_externalEdit->setEnabled(on);
+    if (!on)
     {
         m_externalEdit->clearFocus();
     }
@@ -280,16 +279,30 @@ void SecurityTab::fillSettings()
 // -------------------------------------------------------------------------------------------------
 {
     QSettings& set = Settings::getInstance().getSettings();
+    QString ensuredString = set.readEntry("Security/EnsuredCharacters", "ULDs");
+    
+    m_uppercaseCB->setChecked(ensuredString.contains("U"));
+    m_lowercaseCB->setChecked(ensuredString.contains("L"));
+    m_specialCB->setChecked(ensuredString.contains("S"));
+    m_digitsCB->setChecked(ensuredString.contains("D"));
+    m_lengthSpinner->setValue(set.readNumEntry("Security/Length", 8));
+    m_allowedCharsEdit->setText(set.readEntry("Security/AllowedCharacters", "a-zA-Z0-9@$#"));
+    m_useExternalCB->setChecked(set.readEntry("Security/PasswordGenerator", 
+        PasswordGeneratorFactory::DEFAULT_GENERATOR_STRING) == "EXTERNAL");
+    m_externalEdit->setContent(set.readEntry("Security/PasswordGeneratorAdditional", ""));
+    
+    checkboxHandler(m_useExternalCB->isChecked());
     
     m_algorithmCombo->insertStringList(SymmetricEncryptor::getAlgorithms());
-    m_radioGroup->setButton( PasswordCheckerFactory::fromString( 
+    /* m_radioGroup->setButton( PasswordCheckerFactory::fromString( 
         set.readEntry( "Security/PasswordChecker", PasswordCheckerFactory::DEFAULT_CHECKER_STRING))
-        );
-    m_dictionaryEdit->setContent(set.readEntry( "Security/DictionaryFile"));
-    m_externalEdit->setContent(set.readEntry( "Security/ExternalProgram"));
-    radioButtonHandler(m_radioGroup->selectedId());
+        ); */
     m_algorithmCombo->setCurrentText( set.readEntry( "Security/CipherAlgorithm",
         SymmetricEncryptor::getSuggestedAlgorithm()) );
+        
+    /* m_dictionaryEdit->setContent(set.readEntry( "Security/DictionaryFile"));
+    m_externalEdit->setContent(set.readEntry( "Security/ExternalProgram"));
+    radioButtonHandler(m_radioGroup->selectedId()); */
 }
 
 
@@ -298,161 +311,23 @@ void SecurityTab::applySettings()
 // -------------------------------------------------------------------------------------------------
 {
     QSettings& set = Settings::getInstance().getSettings();
-    PasswordCheckerFactory::PasswordCheckerType type = 
-        PasswordCheckerFactory::PasswordCheckerType(m_radioGroup->selectedId());
+    QString ensuredString;
+    ensuredString += m_uppercaseCB->isChecked() ? "U" : "u";
+    ensuredString += m_lowercaseCB->isChecked() ? "L" : "l";
+    ensuredString += m_specialCB->isChecked()   ? "S" : "s";
+    ensuredString += m_digitsCB->isChecked()    ? "D" : "d";
     
-    QString additional;
-    switch (type)
-    {
-        case PasswordCheckerFactory::TExtendedDictPasswordChecker:
-            additional = m_dictionaryEdit->getContent();
-            break;
-        case PasswordCheckerFactory::TExternalPasswordChecker:
-            additional = m_externalEdit->getContent();
-            break;
-        default:
-            additional = "";
-            break;
-    }
-    
-    set.writeEntry("Security/PasswordChecker", PasswordCheckerFactory::toString(type));
-    set.writeEntry("Security/PasswordCheckerAdditional", additional);
-    set.writeEntry("Security/DictionaryFile", m_dictionaryEdit->getContent() );
-    set.writeEntry("Security/ExternalProgram", m_externalEdit->getContent() );
+    set.writeEntry("Security/PasswordGenerator", m_useExternalCB->isChecked() ?"EXTERNAL":"RANDOM");
+    set.writeEntry("Security/PasswordGeneratorAdditional", m_externalEdit->getContent());
+    set.writeEntry("Security/EnsuredCharacters", ensuredString);
+    set.writeEntry("Security/Length", m_lengthSpinner->value());
+    set.writeEntry("Security/AllowedCharacters", m_allowedCharsEdit->text());
     set.writeEntry("Security/CipherAlgorithm", m_algorithmCombo->currentText() );
 }
 
 
 // -------------------------------------------------------------------------------------------------
-SecurityTab2::SecurityTab2(QWidget* parent)
-// -------------------------------------------------------------------------------------------------
-        : QWidget(parent)
-{
-    createAndLayout();
-    
-    // init contents
-    fillSettings();
-    
-    connect(m_radioGroup, SIGNAL(clicked(int)), this, SLOT(radioButtonHandler(int)));
-}
-
-
-// -------------------------------------------------------------------------------------------------
-SecurityTab2::~SecurityTab2()
-// -------------------------------------------------------------------------------------------------
-{
-    delete m_radioGroup;
-}
-
-
-// -------------------------------------------------------------------------------------------------
-void SecurityTab2::createAndLayout()
-// -------------------------------------------------------------------------------------------------
-{
-    // create layouts
-    QVBoxLayout* mainLayout = new QVBoxLayout(this, 6, 6);
-    QGroupBox* passwordGeneratorGroup = new QGroupBox(4, Vertical,tr("Password Generator"), this);
-    QGroupBox* displayGroup = new QGroupBox(1, Vertical, tr("Displaying"), this);
-    m_radioGroup = new QButtonGroup(0, "SecurityTab2 Radio Group");
-    
-    // some settings
-    passwordGeneratorGroup->setFlat(true);
-    displayGroup->setFlat(true);
-    
-    QHBox* hbox = new QHBox(passwordGeneratorGroup, "SecurityTab2 hbox");
-    QLabel* lengthLabel = new QLabel(tr("Length of the generated password:"), 
-        hbox, "Length label");
-    QWidget* filler = new QWidget(hbox, "Filler widget");
-    filler->setFixedWidth(15);
-    m_lengthSpinner = new QSpinBox(6, 20, 1, hbox, "Length spinner");
-    QWidget* filler2 = new QWidget(hbox, "Filler widget");
-    hbox->setStretchFactor(lengthLabel, 0);
-    hbox->setStretchFactor(m_lengthSpinner, 0);
-    hbox->setStretchFactor(filler2, 10);
-    
-    QRadioButton* internalRadioButton = new QRadioButton(
-        tr("&Internal Random Password Generator"), passwordGeneratorGroup);
-    QRadioButton* externalRadioButton = new QRadioButton(
-        tr("&External Password Generator:"), passwordGeneratorGroup);
-    QHBox* box1 = new QHBox(passwordGeneratorGroup);
-    QWidget* filler3 = new QWidget(box1);
-    filler3->setFixedWidth(20);
-    m_externalEdit = new FileLineEdit(box1);
-    
-    // insert in the invisible ButtonGroup
-    m_radioGroup->insert(internalRadioButton);
-    m_radioGroup->insert(externalRadioButton);
-    
-    m_displayPasswordCheckbox = new QCheckBox(tr("&Hide password in random "
-        "password dialog"), displayGroup);
-    
-    mainLayout->addWidget(passwordGeneratorGroup);
-    mainLayout->addWidget(displayGroup);
-    mainLayout->addStretch(5);
-}
-
-
-// -------------------------------------------------------------------------------------------------
-void SecurityTab2::radioButtonHandler(int buttonId)
-// -------------------------------------------------------------------------------------------------
-{
-    m_externalEdit->setEnabled( PasswordGeneratorFactory::PasswordGeneratorType(buttonId) == 
-        PasswordGeneratorFactory::TExternalPasswordGenerator );
-    if (PasswordGeneratorFactory::PasswordGeneratorType(buttonId) != 
-            PasswordGeneratorFactory::TExternalPasswordGenerator)
-    {
-        m_externalEdit->clearFocus();
-    }
-}
-
-
-// -------------------------------------------------------------------------------------------------
-void SecurityTab2::fillSettings()
-// -------------------------------------------------------------------------------------------------
-{
-    QSettings& set = Settings::getInstance().getSettings();
-    
-    m_lengthSpinner->setValue( set.readNumEntry("Security/GeneratedPasswordLength", 
-        PasswordGeneratorFactory::DEFAULT_LENGTH ) );
-    m_radioGroup->setButton( PasswordGeneratorFactory::fromString( 
-        set.readEntry( "Security/PasswordGenerator", 
-        PasswordGeneratorFactory::DEFAULT_GENERATOR_STRING)) );
-    m_externalEdit->setContent(set.readEntry( "Security/ExternalGeneratorProgram"));
-    radioButtonHandler(m_radioGroup->selectedId());
-    m_displayPasswordCheckbox->setChecked(set.readBoolEntry("Security/DisplayRandomPassword",
-        false));
-}
-
-
-// -------------------------------------------------------------------------------------------------
-void SecurityTab2::applySettings()
-// -------------------------------------------------------------------------------------------------
-{
-    QSettings& set = Settings::getInstance().getSettings();
-    PasswordGeneratorFactory::PasswordGeneratorType type = 
-        PasswordGeneratorFactory::PasswordGeneratorType(m_radioGroup->selectedId());
-    
-    QString additional;
-    switch (type)
-    {
-        case PasswordGeneratorFactory::TExternalPasswordGenerator:
-            additional = m_externalEdit->getContent();
-            break;
-        default:
-            additional = "";
-            break;
-    }
-    
-    set.writeEntry("Security/PasswordGenerator", PasswordGeneratorFactory::toString(type));
-    set.writeEntry("Security/PasswordGeneratorAdditional", additional);
-    set.writeEntry("Security/ExternalGeneratorProgram", m_externalEdit->getContent() );
-    set.writeEntry("Security/GeneratedPasswordLength", m_lengthSpinner->value() );
-    set.writeEntry("Security/DisplayRandomPassword", m_displayPasswordCheckbox->isChecked() );
-}
-
-
-// -------------------------------------------------------------------------------------------------
-PrintingTab::PrintingTab(QWidget* parent)
+PresentationTab::PresentationTab(QWidget* parent)
 // -------------------------------------------------------------------------------------------------
         : QWidget(parent)
 {
@@ -465,14 +340,18 @@ PrintingTab::PrintingTab(QWidget* parent)
 
 
 // -------------------------------------------------------------------------------------------------
-void PrintingTab::createAndLayout()
+void PresentationTab::createAndLayout()
 // -------------------------------------------------------------------------------------------------
 {
     // create layouts
     QVBoxLayout* mainLayout = new QVBoxLayout(this, 6, 6);
-    QGroupBox* fontGroup = new QGroupBox(4, Vertical, tr("Fonts"), this);
+    QGroupBox* passwordGroup = new QGroupBox(1, Vertical, tr("Passwords"), this);
+    QGroupBox* fontGroup = new QGroupBox(4, Vertical, tr("Printing Fonts"), this);
+     
     
     // some settings
+    passwordGroup->setInsideSpacing(6);
+    passwordGroup->setFlat(true);
     fontGroup->setInsideSpacing(6);
     fontGroup->setFlat(true);
     
@@ -481,10 +360,14 @@ void PrintingTab::createAndLayout()
     QLabel* footerLabel = new QLabel("&Footer font:", fontGroup);
     m_footerFontEdit = new FontChooseBox(fontGroup);
     
+    m_hidePasswordCB = new QCheckBox(tr("Hide passwords in Random Password Dialog"), 
+        passwordGroup, "HidePasswords");
+    
     // buddys
     normalLabel->setBuddy(m_normalFontEdit);
     footerLabel->setBuddy(m_footerFontEdit);
     
+    mainLayout->addWidget(passwordGroup);
     mainLayout->addWidget(fontGroup);
     mainLayout->addStretch(5);
     
@@ -492,27 +375,29 @@ void PrintingTab::createAndLayout()
 
 
 // -------------------------------------------------------------------------------------------------
-void PrintingTab::fillSettings()
+void PresentationTab::fillSettings()
 // -------------------------------------------------------------------------------------------------
 {
     QSettings& set = Settings::getInstance().getSettings();
     QFont font;
     
-    font.fromString(set.readEntry( "Printing/NormalFont", Settings::DEFAULT_NORMAL_FONT));
+    font.fromString(set.readEntry( "Presentation/NormalFont", Settings::DEFAULT_NORMAL_FONT));
     m_normalFontEdit->setFont(font);
-    font.fromString(set.readEntry( "Printing/FooterFont", Settings::DEFAULT_FOOTER_FONT));
+    font.fromString(set.readEntry( "Presentation/FooterFont", Settings::DEFAULT_FOOTER_FONT));
     m_footerFontEdit->setFont(font);
+    m_hidePasswordCB->setChecked(set.readBoolEntry("Presentation/HideRandomPassword", false));
 }
 
 
 // -------------------------------------------------------------------------------------------------
-void PrintingTab::applySettings()
+void PresentationTab::applySettings()
 // -------------------------------------------------------------------------------------------------
 {
     QSettings& set = Settings::getInstance().getSettings();
     
-    set.writeEntry("Printing/NormalFont", m_normalFontEdit->getFont().toString());
-    set.writeEntry("Printing/FooterFont", m_footerFontEdit->getFont().toString());
+    set.writeEntry("Presentation/HideRandomPassword", m_hidePasswordCB->isChecked());
+    set.writeEntry("Presentation/NormalFont", m_normalFontEdit->getFont().toString());
+    set.writeEntry("Presentation/FooterFont", m_footerFontEdit->getFont().toString());
 }
 
 

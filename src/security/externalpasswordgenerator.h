@@ -1,5 +1,5 @@
 /*
- * Id: $Id: externalpasswordgenerator.h,v 1.1 2003/12/17 21:55:19 bwalle Exp $
+ * Id: $Id: externalpasswordgenerator.h,v 1.2 2003/12/18 22:00:06 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -31,8 +31,8 @@
  *
  * \ingroup security
  * \author Bernhard Walle
- * \version $Revision: 1.1 $
- * \date $Date: 2003/12/17 21:55:19 $
+ * \version $Revision: 1.2 $
+ * \date $Date: 2003/12/18 22:00:06 $
  */
 class ExternalPasswordGenerator : public PasswordGenerator
 {
@@ -51,10 +51,12 @@ class ExternalPasswordGenerator : public PasswordGenerator
         /*!
          * Generates a random password.
          * \param length the length of the password
+         * \param allowedChars ignored
          * \return the password
          * \exception PasswordGenerateException if launching the external application failed
          */
-        QString getPassword(int length) throw (PasswordGenerateException);
+        QString getPassword(uint length, QCharVector allowedChars = QCharVector()) 
+            throw (PasswordGenerateException);
         
         /*!
          * Returns \c true

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: externalpasswordgenerator.cpp,v 1.1 2003/12/17 21:55:19 bwalle Exp $
+ * Id: $Id: externalpasswordgenerator.cpp,v 1.2 2003/12/18 22:00:06 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -35,8 +35,9 @@ ExternalPasswordGenerator::ExternalPasswordGenerator(const QString& applicationN
 {}
 
 // -------------------------------------------------------------------------------------------------
-QString ExternalPasswordGenerator::getPassword(int length) throw (PasswordGenerateException)
+QString ExternalPasswordGenerator::getPassword(uint length, QCharVector)
 // -------------------------------------------------------------------------------------------------
+        throw (PasswordGenerateException)
 {
     if (m_applicationName.isNull())
     {

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: randompasswordgenerator.h,v 1.7 2003/12/17 21:55:00 bwalle Exp $
+ * Id: $Id: randompasswordgenerator.h,v 1.8 2003/12/18 22:00:12 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -20,6 +20,7 @@
 
 #include <qstring.h>
 
+#include "../global.h"
 #include "passwordgenerator.h"
 
 /*!
@@ -29,8 +30,8 @@
  *
  * \ingroup security
  * \author Bernhard Walle
- * \version $Revision: 1.7 $
- * \date $Date: 2003/12/17 21:55:00 $
+ * \version $Revision: 1.8 $
+ * \date $Date: 2003/12/18 22:00:12 $
  */
 class RandomPasswordGenerator : public PasswordGenerator
 {
@@ -45,10 +46,13 @@ class RandomPasswordGenerator : public PasswordGenerator
          * However, if you need a good password to memorize, just use your brain. A
          * computer cannot output what is easy to memorize for <b>you</b>!
          * \param length the length of the password
+         * \param allowedChars list of all allowed characters or an empty list if all chars are
+         *                     allowed
          * \return the password
          * \exception PasswordGenerateException if the object was not seeded
          */
-        virtual QString getPassword(int length) throw (PasswordGenerateException);
+        virtual QString getPassword(uint length, QCharVector allowedChars = QCharVector()) 
+            throw (PasswordGenerateException);
         
         /*!
          * Returns if the object was seeded. On Linux or other operating systems with

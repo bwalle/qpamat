@@ -1,5 +1,5 @@
 /*
- * Id: $Id: randompassworddialog.cpp,v 1.3 2003/12/17 23:17:31 bwalle Exp $
+ * Id: $Id: randompassworddialog.cpp,v 1.4 2003/12/18 22:00:02 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -19,7 +19,10 @@
 #include <qlineedit.h>
 #include <qlayout.h>
 #include <qhbox.h>
+#include <qframe.h>
 #include <qlabel.h>
+#include <qapplication.h>
+#include <qclipboard.h>
 #include <qpushbutton.h>
 
 #include "../settings.h"
@@ -36,12 +39,10 @@ RandomPasswordDialog::RandomPasswordDialog(QWidget* parent, bool showInsertButto
     // create elements
     QLabel* label = new QLabel(tr("The random password is:"), this);
     
-    m_passwordEdit = new CopyLineEdit(false, this);
-    if (set.readBoolEntry("Security/DisplayRandomPassword", false))
-    {
-        m_passwordEdit->setHidden(true);
-    }
+    m_passwordEdit = new CopyLabel(set.readBoolEntry("Presentation/HideRandomPassword", false), 
+        this);
     m_passwordEdit->setMinimumWidth(250);
+    m_passwordEdit->setFocusPolicy(NoFocus);
     
     QPushButton* closeButton = new QPushButton(tr("&Close"), this);
     closeButton->setDefault(true);
@@ -102,5 +103,15 @@ void RandomPasswordDialog::insertButtonHandler()
 // -------------------------------------------------------------------------------------------------
 {
     emit insertPassword(m_passwordEdit->getContent());
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void RandomPasswordDialog::copyPassword()
+// -------------------------------------------------------------------------------------------------
+{
+    QClipboard* cb = QApplication::clipboard();
+    cb->setText(m_passwordEdit->getContent(), QClipboard::Clipboard);
+    cb->setText(m_passwordEdit->getContent(), QClipboard::Selection);
 }
 

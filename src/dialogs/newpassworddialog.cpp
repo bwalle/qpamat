@@ -1,5 +1,5 @@
 /*
- * Id: $Id: newpassworddialog.cpp,v 1.4 2003/12/04 11:55:48 bwalle Exp $
+ * Id: $Id: newpassworddialog.cpp,v 1.5 2003/12/18 21:59:57 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,7 +24,7 @@
 #include <qpushbutton.h>
 
 #include "newpassworddialog.h"
-#include "../security/passwordcheckerfactory.h"
+#include "../security/masterpasswordchecker.h"
 #include "../settings.h"
 
 using NewPasswordDialogLocal::PasswordValidator;
@@ -155,18 +155,13 @@ void NewPasswordDialog::accept()
         return;
     }
     
-    PasswordChecker* checker = 0;
+    MasterPasswordChecker checker;
     const QString& password = m_secondPasswordEdit->text();
-    QSettings& set = Settings::getInstance().getSettings();
     bool ok;
     
     try
     {
-        checker = PasswordCheckerFactory::getChecker(
-            set.readEntry( "Security/PasswordChecker", PasswordCheckerFactory::DEFAULT_CHECKER_STRING),
-            set.readEntry( "Security/PasswordCheckerAdditional" )
-        );
-        ok = checker->isPasswordOk(password);
+        ok = checker.isPasswordOk(password);
     }
     catch (const std::exception& exc)
     {
@@ -174,11 +169,8 @@ void NewPasswordDialog::accept()
             ("<qt>"+tr("An error occurred while checking the password:<br>%1")+"</qt>").
             arg(exc.what()),
             QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
-        delete checker;
         return;
     }
-    
-    delete checker;
     
     if (!ok)
     {

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.h,v 1.8 2003/12/17 23:05:16 bwalle Exp $
+ * Id: $Id: configurationdialog.h,v 1.9 2003/12/18 22:00:02 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -32,9 +32,8 @@ namespace ConfigurationDialogLocal
 {
     class GeneralTab;
     class SecurityTab;
-    class SecurityTab2;
     class SmartcardTab;
-    class PrintingTab;
+    class PresentationTab;
 }
 
 /*!
@@ -42,8 +41,8 @@ namespace ConfigurationDialogLocal
  * 
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.8 $
- * \date $Date: 2003/12/17 23:05:16 $
+ * \version $Revision: 1.9 $
+ * \date $Date: 2003/12/18 22:00:02 $
  */
 class ConfigurationDialog : public QTabDialog
 {
@@ -60,9 +59,8 @@ class ConfigurationDialog : public QTabDialog
     private:
         ConfigurationDialogLocal::GeneralTab* m_generalTab;
         ConfigurationDialogLocal::SecurityTab* m_securityTab;
-        ConfigurationDialogLocal::SecurityTab2* m_securityTab2;
         ConfigurationDialogLocal::SmartcardTab* m_smartCardTab;
-        ConfigurationDialogLocal::PrintingTab* m_printingTab;
+        ConfigurationDialogLocal::PresentationTab* m_printingTab;
 };
 
 /*!
@@ -77,8 +75,8 @@ namespace ConfigurationDialogLocal
      *
      * \ingroup gui
      * \author Bernhard Walle
-     * \version $Revision: 1.8 $
-     * \date $Date: 2003/12/17 23:05:16 $
+     * \version $Revision: 1.9 $
+     * \date $Date: 2003/12/18 22:00:02 $
      */
     class GeneralTab : public QWidget
     {
@@ -119,8 +117,8 @@ namespace ConfigurationDialogLocal
      *
      * \ingroup gui
      * \author Bernhard Walle
-     * \version $Revision: 1.8 $
-     * \date $Date: 2003/12/17 23:05:16 $
+     * \version $Revision: 1.9 $
+     * \date $Date: 2003/12/18 22:00:02 $
      */
     class SecurityTab : public QWidget
     {
@@ -142,20 +140,26 @@ namespace ConfigurationDialogLocal
             void applySettings();
             
             /*!
-             * Handles changes of the radio button.
-             * \param buttonId the buttonId as returned by the event. In reality this is of type
-             *        PasswordCheckerType.
+             * Handles changes of the external checkbox.
+             * \param on if the checkbox was enabled
              */
-            void radioButtonHandler(int buttonId);
+            void checkboxHandler(bool on);
             
         private:
             void createAndLayout();
             void fillSettings();
             
         private:
-            QButtonGroup* m_radioGroup;
-            FileLineEdit* m_dictionaryEdit;
+            // passwords
+            QSpinBox* m_lengthSpinner;
             FileLineEdit* m_externalEdit;
+            QLineEdit* m_allowedCharsEdit;
+            QCheckBox* m_useExternalCB;
+            QCheckBox* m_uppercaseCB;
+            QCheckBox* m_lowercaseCB;
+            QCheckBox* m_digitsCB;
+            QCheckBox* m_specialCB;
+            // algorithm
             QComboBox* m_algorithmCombo;
     };
     
@@ -164,59 +168,8 @@ namespace ConfigurationDialogLocal
      *
      * \ingroup gui
      * \author Bernhard Walle
-     * \version $Revision: 1.8 $
-     * \date $Date: 2003/12/17 23:05:16 $
-     */
-    class SecurityTab2 : public QWidget
-    {
-        Q_OBJECT
-        
-        public:
-            
-            /*!
-             * Creates a new instance of the widget.
-             * \param parent the parent widget
-             */
-            SecurityTab2(QWidget* parent);
-            
-            /*!
-             * Deletes a SecurityTab2 object.
-             */
-            ~SecurityTab2();
-        
-        public slots:
-            
-            /*!
-             * Stores the settings.
-             */
-            void applySettings();
-            
-            /*!
-             * Handles changes of the radio button.
-             * \param buttonId the buttonId as returned by the event. In reality this is of type
-             *        PasswordCheckerType.
-             */
-            void radioButtonHandler(int buttonId);
-            
-        private:
-            void createAndLayout();
-            void fillSettings();
-            
-        private:
-            QButtonGroup* m_radioGroup;
-            FileLineEdit* m_externalEdit;
-            QSpinBox* m_lengthSpinner;
-            QCheckBox* m_displayPasswordCheckbox;
-    };
-    
-    
-    /*! 
-     * \brief This class represents the Smartcard tab of the configuration dialog.
-     *
-     * \ingroup gui
-     * \author Bernhard Walle
-     * \version $Revision: 1.8 $
-     * \date $Date: 2003/12/17 23:05:16 $
+     * \version $Revision: 1.9 $
+     * \date $Date: 2003/12/18 22:00:02 $
      */
     class SmartcardTab : public QWidget
     {
@@ -271,10 +224,10 @@ namespace ConfigurationDialogLocal
      *
      * \ingroup gui
      * \author Bernhard Walle
-     * \version $Revision: 1.8 $
-     * \date $Date: 2003/12/17 23:05:16 $
+     * \version $Revision: 1.9 $
+     * \date $Date: 2003/12/18 22:00:02 $
      */
-    class PrintingTab : public QWidget
+    class PresentationTab : public QWidget
     {
         Q_OBJECT
         
@@ -284,7 +237,7 @@ namespace ConfigurationDialogLocal
              * Creates a new instance of the widget.
              * \param parent the parent widget
              */
-            PrintingTab(QWidget* parent);
+            PresentationTab(QWidget* parent);
         
         public slots:
             
@@ -300,6 +253,7 @@ namespace ConfigurationDialogLocal
         private:
             FontChooseBox* m_normalFontEdit;
             FontChooseBox* m_footerFontEdit;
+            QCheckBox* m_hidePasswordCB;
     };
 }
 

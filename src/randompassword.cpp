@@ -1,5 +1,5 @@
 /*
- * Id: $Id: randompassword.cpp,v 1.2 2003/12/17 21:57:28 bwalle Exp $
+ * Id: $Id: randompassword.cpp,v 1.3 2003/12/18 21:59:47 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -23,7 +23,7 @@
 
 #include "qpamat.h"
 #include "settings.h"
-#include "security/passwordcheckerfactory.h"
+#include "security/configpasswordchecker.h"
 #include "dialogs/randompassworddialog.h"
 #include "randompassword.h"
 #include "security/passwordgeneratorfactory.h"
@@ -53,8 +53,11 @@ void RandomPassword::requestPassword()
     RandomPasswordDialog* dlg = new RandomPasswordDialog(
         m_parent, m_insertEnabled, "RandomPwDialog");
     
-    PasswordChecker* checker = 0;
     PasswordGenerator* passwordgen = 0;
+    int length = set.readNumEntry("Security/Length", PasswordGeneratorFactory::DEFAULT_LENGTH);
+    QString ensured = set.readEntry("Security/EnsuredCharacters", "ULDs");
+    QString allowed = set.readEntry("Security/AllowedCharacters", "a-zA-Z0-9");
+    ConfigPasswordChecker checker(length, ensured, allowed);
     
     try
     {
@@ -63,11 +66,6 @@ void RandomPassword::requestPassword()
                 PasswordGeneratorFactory::DEFAULT_GENERATOR_STRING ),
             set.readEntry( "Security/PasswordGeneratorAdditional" ) 
         );
-        checker = PasswordCheckerFactory::getChecker(
-            set.readEntry( "Security/PasswordChecker", 
-                PasswordCheckerFactory::DEFAULT_CHECKER_STRING),
-            set.readEntry( "Security/PasswordCheckerAdditional" )
-        );
     }
     catch (const std::exception& exc)
     {
@@ -75,13 +73,11 @@ void RandomPassword::requestPassword()
                 tr("<qt><nobr>Failed to create a password checker:</nobr><br>%1</qt>")
                 .arg(exc.what()), QMessageBox::Ok, QMessageBox::NoButton);
         delete passwordgen;
-        delete checker;
         delete dlg;
         return;
     }
-    bool slow = checker->isSlow() || passwordgen->isSlow();
     
-    if (slow)
+    if (passwordgen->isSlow())
     {
         QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
     }
@@ -92,15 +88,16 @@ void RandomPassword::requestPassword()
     {
         try
         {
-            password = passwordgen->getPassword( 
-                set.readNumEntry("Security/GeneratedPasswordLength", 
-                PasswordGeneratorFactory::DEFAULT_LENGTH )
+            password = passwordgen->getPassword(
+                set.readNumEntry("Security/Length", 
+                PasswordGeneratorFactory::DEFAULT_LENGTH ),
+                checker.allowedCharacters()
             );
-            ok = checker->isPasswordOk(password);
+            ok = checker.isPasswordOk(password);
         }
         catch (const std::exception& exc)
         {
-            if (slow)
+            if (passwordgen->isSlow())
             {
                 QApplication::restoreOverrideCursor();
             }
@@ -111,11 +108,10 @@ void RandomPassword::requestPassword()
         }
     }
     
-    if (slow)
+    if (passwordgen->isSlow())
     {
         QApplication::restoreOverrideCursor();
     }
-    delete checker;
     
     if (ok)
     {

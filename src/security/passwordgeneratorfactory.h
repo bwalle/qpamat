@@ -1,5 +1,5 @@
 /*
- * Id: $Id: passwordgeneratorfactory.h,v 1.2 2003/12/17 21:54:23 bwalle Exp $
+ * Id: $Id: passwordgeneratorfactory.h,v 1.3 2003/12/18 22:00:12 bwalle Exp $
  * ------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -39,8 +39,8 @@
  * 
  * \ingroup security
  * \author Bernhard Walle
- * \version $Revision: 1.2 $
- * \date $Date: 2003/12/17 21:54:23 $
+ * \version $Revision: 1.3 $
+ * \date $Date: 2003/12/18 22:00:12 $
  */
 class PasswordGeneratorFactory
 {
@@ -97,7 +97,7 @@ class PasswordGeneratorFactory
         /*!
          * Converts the PasswordGeneratorType to a string representation.
          * \param type the password checker type
-         * \return the string representation, one of \c SIMPLE, \c EXTENDED, \c EXTENDEDDICT or 
+         * \return the string representation, one of \c SIMPLE, \c EXTENDED or 
          *         \c EXTERNAL
          * \exception std::invalid_argument if the type is not a valid PasswordGeneratorType
          */

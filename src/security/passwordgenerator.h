@@ -1,5 +1,5 @@
 /*
- * Id: $Id: passwordgenerator.h,v 1.2 2003/12/17 21:54:43 bwalle Exp $
+ * Id: $Id: passwordgenerator.h,v 1.3 2003/12/18 22:00:12 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -20,6 +20,7 @@
 
 #include <qstring.h>
 
+#include "../global.h"
 #include "passwordgenerateexception.h"
 
 /*!
@@ -29,8 +30,8 @@
  *
  * \ingroup security
  * \author Bernhard Walle
- * \version $Revision: 1.2 $
- * \date $Date: 2003/12/17 21:54:43 $
+ * \version $Revision: 1.3 $
+ * \date $Date: 2003/12/18 22:00:12 $
  */
 class PasswordGenerator
 {
@@ -46,10 +47,13 @@ class PasswordGenerator
          * arbitrary excepting, depending on the implementation. So read the documentation of
          * the implementation crefully.
          * \param length the length of the password
+         * \param allowedChars a vector of all allowed characters or a empty list if all characters
+         *                     are allowed
          * \return the password
          * \exception PasswordGenerateException if generation failed
          */
-        virtual QString getPassword(int length) throw (PasswordGenerateException) = 0;
+        virtual QString getPassword(uint length, QCharVector allowedChars = QCharVector()) 
+            throw (PasswordGenerateException) = 0;
         
         /*!
          * Indicates whether the password generator is slow.
