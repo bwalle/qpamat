@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.cpp,v 1.3 2003/10/20 20:54:53 bwalle Exp $
+ * Id: $Id: treeentry.cpp,v 1.4 2003/12/04 20:31:31 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,7 +18,7 @@
 #include <qstring.h>
 
 #include "treeentry.h"
-
+#include "settings.h"
 
 // -------------------------------------------------------------------------------------------------
 TreeEntry::~TreeEntry()
@@ -48,7 +48,7 @@ bool TreeEntry::isCategory() const
 Property* TreeEntry::getProperty(uint index)
 // -------------------------------------------------------------------------------------------------
 {
-#ifdef QT_CHECK_RANGE
+#ifdef DEBUG
     Q_ASSERT( index < m_properties.count() );
 #endif
     return m_properties.at(index);
@@ -59,7 +59,7 @@ Property* TreeEntry::getProperty(uint index)
 QString TreeEntry::text(int column) const
 // -------------------------------------------------------------------------------------------------
 {
-#ifdef QT_CHECK_RANGE 
+#ifdef DEBUG 
     Q_ASSERT( column == 0 );
 #endif
     column++; // no warnings
@@ -71,7 +71,7 @@ QString TreeEntry::text(int column) const
 void TreeEntry::setText(int column, const QString& text)
 // -------------------------------------------------------------------------------------------------
 {
-#ifdef QT_CHECK_RANGE
+#ifdef DEBUG
     Q_ASSERT(column == 0);
 #endif
     m_name = text;
@@ -84,7 +84,7 @@ void TreeEntry::setText(int column, const QString& text)
 void TreeEntry::movePropertyOneUp(uint index)
 // -------------------------------------------------------------------------------------------------
 {
-#ifdef QT_CHECK_RANGE 
+#ifdef DEBUG 
     Q_ASSERT( index > 0 && index < m_properties.count() );
 #endif
     m_properties.setAutoDelete(false);
@@ -99,7 +99,7 @@ void TreeEntry::movePropertyOneUp(uint index)
 void TreeEntry::movePropertyOneDown(uint index)
 // -------------------------------------------------------------------------------------------------
 {
-#ifdef QT_CHECK_RANGE 
+#ifdef DEBUG 
     Q_ASSERT( index < m_properties.count()-1 );
 #endif
     m_properties.setAutoDelete(false);
@@ -114,7 +114,7 @@ void TreeEntry::movePropertyOneDown(uint index)
 void TreeEntry::deleteProperty(uint index)
 // -------------------------------------------------------------------------------------------------
 {
-#ifdef QT_CHECK_RANGE
+#ifdef DEBUG
     Q_ASSERT( index < m_properties.count() );
 #endif
     m_properties.remove(index);
@@ -139,10 +139,44 @@ void TreeEntry::appendProperty(Property* property)
 
 
 // -------------------------------------------------------------------------------------------------
-TreeEntry::PropertyIterator TreeEntry::propertyIterator()
+TreeEntry::PropertyIterator TreeEntry::propertyIterator() const
 // -------------------------------------------------------------------------------------------------
 {
     return PropertyIterator(m_properties);
+}
+
+
+// -------------------------------------------------------------------------------------------------
+QString TreeEntry::toRichTextForPrint() const
+// -------------------------------------------------------------------------------------------------
+{
+    if (m_isCategory)
+    {
+        return QString("");
+    }
+    
+    QSettings& set = Settings::getInstance().getSettings();
+    QString catString;
+    const QListViewItem* item = this;
+    while ((item = item->parent()))
+    {
+        catString = catString.prepend( dynamic_cast<const TreeEntry*>(item)->getName() + ": ");
+    }
+    QString ret;
+    ret += QString("<table width=\"100%\"><tr><td bgcolor=grey cellpadding=\"3\"><font face=\""+ 
+            set.readEntry("Printing/SansSerifFont", Settings::DEFAULT_SANSSERIF_FONT)+ "\">"
+            "&nbsp;<b>%1</b></font></td></tr><tr><td>"
+            "<table border=\"0\">").arg(catString + m_name);
+    
+    PropertyIterator it = propertyIterator();
+    Property* current;
+    while ( (current = it.current()) != 0 ) 
+    {
+        ++it;
+        ret += current->toRichTextForPrint();
+    }
+    ret += "</table></td></tr></table><br>";
+    return ret;
 }
 
 

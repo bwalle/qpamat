@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.h,v 1.5 2003/12/04 11:59:27 bwalle Exp $
+ * Id: $Id: treeentry.h,v 1.6 2003/12/04 20:31:34 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -35,8 +35,8 @@ typedef QPtrList<Property> PropertyPtrList;
  *
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.5 $
- * \date $Date: 2003/12/04 11:59:27 $
+ * \version $Revision: 1.6 $
+ * \date $Date: 2003/12/04 20:31:34 $
  */
 class TreeEntry : public QObject, public QListViewItem
 {
@@ -88,7 +88,7 @@ class TreeEntry : public QObject, public QListViewItem
         /*!
          * Returns an iterator for the list
          */
-        PropertyIterator propertyIterator();
+        PropertyIterator propertyIterator() const;
         
          /*!
          * Appends the treeentry as \c category or \c entry tag in the XML structure.
@@ -121,6 +121,13 @@ class TreeEntry : public QObject, public QListViewItem
          * \param text the new text
          */
         void setText(int column, const QString& text);
+        
+        /*!
+         * This function converts a tree entry to HTML for printing. A TreeEntry represents one
+         * big table.
+         * \return the RichText
+         */
+        QString toRichTextForPrint() const;
         
     public slots:
     

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: property.cpp,v 1.3 2003/11/28 18:42:34 bwalle Exp $
+ * Id: $Id: property.cpp,v 1.4 2003/12/04 20:30:17 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -134,6 +134,15 @@ void Property::setEncrypted(bool encrypted)
 
 
 // -------------------------------------------------------------------------------------------------
+QString Property::toRichTextForPrint() const
+// -------------------------------------------------------------------------------------------------
+{
+    return QString("<tr><td width=\"30%\">%1</td><td width=\"70%\">%2</td></tr>")
+        .arg(m_key, m_value);
+}
+
+
+// -------------------------------------------------------------------------------------------------
 void Property::appendXML(QDomDocument& document, QDomNode& parent, const Encryptor& enc) const
 // -------------------------------------------------------------------------------------------------
 {
@@ -168,7 +177,7 @@ void Property::appendXML(QDomDocument& document, QDomNode& parent, const Encrypt
 void Property::appendFromXML(TreeEntry* parent, QDomElement& element, const Encryptor& enc)
 // -------------------------------------------------------------------------------------------------
 {
-#ifdef QT_CHECK_STATE 
+#ifdef DEBUG 
     Q_ASSERT( element.tagName() == "property" );
 #endif
     
