@@ -1,5 +1,5 @@
 /*
- * Id: $Id: cardexception.cpp,v 1.2 2003/11/12 22:17:57 bwalle Exp $
+ * Id: $Id: cardexception.cpp,v 1.3 2003/12/10 21:46:39 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -17,6 +17,7 @@
  */
 #include <stdexcept>
 #include <string>
+#include <cstring>
 
 #include "cardexception.h"
 
@@ -58,7 +59,10 @@ const char* CardException::what() const throw ()
         case Error:
             return "Error";
         default:
-            return std::runtime_error::what();
+            char buf[100];
+            std::snprintf(buf, 100, "CT-API Errorcode: %x", m_errorcode);
+            buf[99] = 0;
+            return (std::string(buf) + std::runtime_error::what()).c_str();
     }
 }
 
