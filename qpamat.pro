@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.12 2003/11/28 18:42:55 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.13 2003/12/04 11:59:37 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -16,6 +16,11 @@ SOURCES     =                                   \
     src/security/passwordhash.cpp               \
     src/security/encryptor.cpp                  \
     src/security/randompasswordgenerator.cpp    \
+    src/security/simplepasswordchecker.cpp      \
+    src/security/extendedpasswordchecker.cpp    \
+    src/security/extendeddictpasswordchecker.cpp\
+    src/security/externalpasswordchecker.cpp    \
+    src/security/passwordcheckerfactory.cpp     \
     src/smartcard/cardexception.cpp             \
     src/smartcard/memorycard.cpp                \
     src/treeentry.cpp                           \
@@ -37,12 +42,19 @@ HEADERS     =                                   \
     src/dialogs/configurationdialog.h           \
     src/widgets/filelineedit.h                  \
     src/types.h                                 \
+    src/security/passwordcheckexception.h       \
     src/security/encodinghelper.h               \
     src/security/passwordhash.h                 \
     src/security/nosuchalgorithmexception.h     \
     src/security/notseededexception.h           \
     src/security/encryptor.h                    \
     src/security/randompasswordgenerator.h      \
+    src/security/passwordchecker.h              \
+    src/security/simplepasswordchecker.h        \
+    src/security/extendedpasswordchecker.h      \
+    src/security/extendeddictpasswordchecker.h  \
+    src/security/externalpasswordchecker.h      \
+    src/security/passwordcheckerfactory.h       \
     src/smartcard/cardexception.h               \
     src/smartcard/memorycard.h                  \
     src/treeentry.h                             \
