@@ -1,5 +1,5 @@
 /* XPM */
-static char *down_22x22[] = {
+static const char *down_22x22_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "22 22 54 1",
 "  c #010001",

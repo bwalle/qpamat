@@ -1,5 +1,5 @@
 /* XPM */
-static char *down_16x16[] = {
+static const char *down_16x16_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 64 1",
 "  c #000000",
