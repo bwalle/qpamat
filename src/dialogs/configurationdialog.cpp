@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.cpp,v 1.17 2003/12/31 16:33:33 bwalle Exp $
+ * Id: $Id: configurationdialog.cpp,v 1.18 2004/01/02 12:20:42 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -79,8 +79,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.17 $
-    \date $Date: 2003/12/31 16:33:33 $
+    \version $Revision: 1.18 $
+    \date $Date: 2004/01/02 12:20:42 $
  */
 
 /*!
@@ -153,7 +153,7 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     connect(m_listBox, SIGNAL(highlighted(int)), m_widgetStack, SLOT(raiseWidget(int)));
     connect(m_widgetStack, SIGNAL(aboutToShow(QWidget*)), SLOT(aboutToShowHandler(QWidget*)));
     
-    QAction* whatsThis = new QAction("What's this", QKeySequence(Key_F1), this);
+    QAction* whatsThis = new QAction("What's this", QKeySequence(SHIFT|Key_F1), this);
     connect(whatsThis, SIGNAL(activated()), qpamat, SLOT(whatsThis()));
     
     aboutToShowHandler(generalTab);
@@ -169,7 +169,6 @@ void ConfigurationDialog::accept()
     // apply the settings
     for (std::set<ConfDlgTab*>::iterator it = m_filledTabs.begin(); it != m_filledTabs.end(); ++it)
     {
-        qDebug("Apply called");
         (*it)->applySettings();
     }
     QDialog::accept();
@@ -205,8 +204,8 @@ void ConfigurationDialog::aboutToShowHandler(QWidget* w)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.17 $
-    \date $Date: 2003/12/31 16:33:33 $
+    \version $Revision: 1.18 $
+    \date $Date: 2004/01/02 12:20:42 $
 */
 
 /*!
@@ -247,8 +246,8 @@ void ConfigurationDialog::aboutToShowHandler(QWidget* w)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.17 $
-    \date $Date: 2003/12/31 16:33:33 $
+    \version $Revision: 1.18 $
+    \date $Date: 2004/01/02 12:20:42 $
 */
 
 
@@ -368,8 +367,8 @@ void ConfDlgGeneralTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.17 $
-    \date $Date: 2003/12/31 16:33:33 $
+    \version $Revision: 1.18 $
+    \date $Date: 2004/01/02 12:20:42 $
 */
 
 
@@ -624,8 +623,8 @@ void ConfDlgPasswordTab::sortDictionary()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.17 $
-    \date $Date: 2003/12/31 16:33:33 $
+    \version $Revision: 1.18 $
+    \date $Date: 2004/01/02 12:20:42 $
 */
 
 
@@ -709,8 +708,8 @@ void ConfDlgSecurityTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.17 $
-    \date $Date: 2003/12/31 16:33:33 $
+    \version $Revision: 1.18 $
+    \date $Date: 2004/01/02 12:20:42 $
 */
 
 
@@ -809,8 +808,8 @@ void ConfDlgPresentationTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.17 $
-    \date $Date: 2003/12/31 16:33:33 $
+    \version $Revision: 1.18 $
+    \date $Date: 2004/01/02 12:20:42 $
 */
 
 /*!

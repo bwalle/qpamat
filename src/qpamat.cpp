@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.27 2004/01/01 14:09:17 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.28 2004/01/02 12:20:03 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -86,8 +86,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.27 $
-    \date $Date: 2004/01/01 14:09:17 $
+    \version $Revision: 1.28 $
+    \date $Date: 2004/01/02 12:20:03 $
  */
 
 /*! 
@@ -727,7 +727,7 @@ void Qpamat::initActions()
     
     // ----- Help ----------------------------------------------------------------------------------
     m_actions.whatsThisAction = new QAction(QPixmap(whats_this_xpm), tr("&What's this"), 
-        QKeySequence(Key_F1), this);
+        QKeySequence(SHIFT|Key_F1), this);
     m_actions.aboutAction = new QAction(tr("&About..."), 0, this);
     m_actions.aboutQtAction = new QAction(tr("About &Qt..."), QKeySequence(), this);
     
