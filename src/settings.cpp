@@ -1,5 +1,5 @@
 /*
- * Id: $Id: settings.cpp,v 1.16 2005/02/15 02:03:11 bwalle Exp $
+ * Id: $Id: settings.cpp,v 1.17 2005/02/15 13:01:16 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -32,8 +32,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.16 $
-    \date $Date: 2005/02/15 02:03:11 $
+    \version $Revision: 1.17 $
+    \date $Date: 2005/02/15 13:01:16 $
 */
 
 /*!
@@ -84,6 +84,7 @@ Settings::Settings()
 #endif
     DEF_BOOLEA("Presentation/HideRandomPass",    false);
     DEF_BOOLEA("Presentation/SystemTrayIcon",    false);
+    DEF_BOOLEA("Presentation/StartHidden",       false);
     
     
 #undef DEF_STRING

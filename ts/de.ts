@@ -144,6 +144,10 @@ Sie ohne Backup fortfahren?</translation>
         <source>Show icon in system tray (needs restart!)</source>
         <translation>Icon im Systemabschnitt anzeigen (Neustart!)</translation>
     </message>
+    <message>
+        <source>Start hidden</source>
+        <translation>Versteckt starten</translation>
+    </message>
 </context>
 <context>
     <name>ConfDlgSecurityTab</name>
@@ -300,6 +304,10 @@ um die Einstellungen zu testen:</translation>
     </message>
     <message>
         <source>Presenstation</source>
+        <translation type="obsolete">Anzeige</translation>
+    </message>
+    <message>
+        <source>Presentation</source>
         <translation>Anzeige</translation>
     </message>
 </context>

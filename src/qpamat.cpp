@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.49 2005/02/15 02:03:27 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.50 2005/02/15 13:01:16 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -71,8 +71,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.49 $
-    \date $Date: 2005/02/15 02:03:27 $
+    \version $Revision: 1.50 $
+    \date $Date: 2005/02/15 13:01:16 $
  */
 
 /*! 
@@ -101,7 +101,7 @@
  */
 Qpamat::Qpamat()
     : QMainWindow(0, "qpamat main window"), m_tree(0), m_treeContextMenu(0), m_message(0), m_rightPanel(0), m_searchCombo(0), 
-      m_searchToolbar(0), m_randomPassword(0), m_trayIcon(0)
+      m_searchToolbar(0), m_randomPassword(0), m_trayIcon(0), m_lastGeometry(0, 0, 0, 0)
 {
     // Title and Icon
     setIcon(QPixmap::fromMimeSource("stock_dialog_authentication_48.png"));
@@ -384,10 +384,16 @@ void Qpamat::handleTrayiconClick()
 {
     if (isShown())
     {
+        m_lastGeometry = geometry();
         hide();
     }
     else
     {
+        if (!(m_lastGeometry.x() == 0 && m_lastGeometry.y() == 0
+                && m_lastGeometry.width() == 0 && m_lastGeometry.height() == 0))
+        {
+            setGeometry(m_lastGeometry);
+        }
         WindowFunctions::bringToFront(this);
     }
 }

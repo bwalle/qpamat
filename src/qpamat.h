@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.h,v 1.23 2005/02/15 02:03:27 bwalle Exp $
+ * Id: $Id: qpamat.h,v 1.24 2005/02/15 13:01:16 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -124,6 +124,7 @@ class Qpamat : public QMainWindow
         ToolButtons         m_toolButtons;
         Actions             m_actions;
         TrayIcon*           m_trayIcon;
+        QRect               m_lastGeometry;
     
     private:
         Qpamat(const Qpamat&);

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.cpp,v 1.28 2005/02/15 02:01:42 bwalle Exp $
+ * Id: $Id: configurationdialog.cpp,v 1.29 2005/02/15 13:01:05 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -67,7 +67,7 @@
      - \b Password which does the password settings
      - \b Security which does the security settings
      - \b SmartCard which controls all stuff about smartcards
-     - \b Presenstation which holds all about printing and some other things
+     - \b Presentation which holds all about printing and some other things
     
     Just use following to use the dialog:
     
@@ -83,8 +83,8 @@
     
     \ingroup dialogs
     \author Bernhard Walle
-    \version $Revision: 1.28 $
-    \date $Date: 2005/02/15 02:01:42 $
+    \version $Revision: 1.29 $
+    \date $Date: 2005/02/15 13:01:05 $
  */
 
 /*!
@@ -113,7 +113,7 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     
     // Add the presentation tab
     ConfDlgPresentationTab* presentationTab = new ConfDlgPresentationTab(this, "PresTab");
-    addPage(presentationTab, QPixmap::fromMimeSource("presentation_34.png"), tr("Presenstation"));
+    addPage(presentationTab, QPixmap::fromMimeSource("presentation_34.png"), tr("Presentation"));
     
     QAction* whatsThis = new QAction("What's this", QKeySequence(SHIFT|Key_F1), this);
     connect(whatsThis, SIGNAL(activated()), qpamat, SLOT(whatsThis()));
@@ -136,8 +136,8 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.28 $
-    \date $Date: 2005/02/15 02:01:42 $
+    \version $Revision: 1.29 $
+    \date $Date: 2005/02/15 13:01:05 $
 */
 
 /*!
@@ -178,8 +178,8 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.28 $
-    \date $Date: 2005/02/15 02:01:42 $
+    \version $Revision: 1.29 $
+    \date $Date: 2005/02/15 13:01:05 $
 */
 
 
@@ -299,8 +299,8 @@ void ConfDlgGeneralTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.28 $
-    \date $Date: 2005/02/15 02:01:42 $
+    \version $Revision: 1.29 $
+    \date $Date: 2005/02/15 13:01:05 $
 */
 
 
@@ -555,8 +555,8 @@ void ConfDlgPasswordTab::sortDictionary()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.28 $
-    \date $Date: 2005/02/15 02:01:42 $
+    \version $Revision: 1.29 $
+    \date $Date: 2005/02/15 13:01:05 $
 */
 
 /*!
@@ -670,8 +670,8 @@ void ConfDlgSecurityTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.28 $
-    \date $Date: 2005/02/15 02:01:42 $
+    \version $Revision: 1.29 $
+    \date $Date: 2005/02/15 13:01:05 $
 */
 
 
@@ -683,6 +683,8 @@ ConfDlgPresentationTab::ConfDlgPresentationTab(QWidget* parent, const char* name
     : ListBoxDialogPage(parent, name), m_nograbCB(0)
 {
     createAndLayout();
+    
+    connect(m_systrayCB, SIGNAL(toggled(bool)), m_hiddenCB, SLOT(setEnabled(bool)));
 }
 
 
@@ -695,7 +697,7 @@ void ConfDlgPresentationTab::createAndLayout()
     QVBoxLayout* mainLayout = new QVBoxLayout(this, 0, 6);
     QGroupBox* passwordGroup = new QGroupBox(2, Vertical, tr("Passwords"), this);
     QGroupBox* fontGroup = new QGroupBox(4, Vertical, tr("Printing Fonts"), this);
-    QGroupBox* systemTrayGroup = new QGroupBox(1, Vertical, tr("System tray"), this);
+    QGroupBox* systemTrayGroup = new QGroupBox(2, Vertical, tr("System tray"), this);
     
     // some settings
     passwordGroup->setInsideSpacing(6);
@@ -715,8 +717,10 @@ void ConfDlgPresentationTab::createAndLayout()
     m_nograbCB = new QCheckBox(tr("Don't &grab keyboard focus in the password dialog"),
         passwordGroup, "Nograb");
     
+    // Systray
     m_systrayCB = new QCheckBox(tr("Show icon in system tray (needs restart!)"),
         systemTrayGroup, "IconInSystemtray");
+    m_hiddenCB = new QCheckBox(tr("Start hidden"), systemTrayGroup, "StartHidden");
     
     // buddys
     normalLabel->setBuddy(m_normalFontEdit);
@@ -744,6 +748,8 @@ void ConfDlgPresentationTab::fillSettings()
     m_hidePasswordCB->setChecked(qpamat->set().readBoolEntry("Presentation/HideRandomPass"));
     m_nograbCB->setChecked(qpamat->set().readBoolEntry("Password/NoGrabbing"));
     m_systrayCB->setChecked(qpamat->set().readBoolEntry("Presentation/SystemTrayIcon"));
+    m_hiddenCB->setChecked(qpamat->set().readBoolEntry("Presentation/StartHidden"));
+    m_hiddenCB->setEnabled(m_systrayCB->isChecked());
 }
 
 
@@ -757,6 +763,7 @@ void ConfDlgPresentationTab::applySettings()
     qpamat->set().writeEntry("Presentation/NormalFont", m_normalFontEdit->getFont().toString());
     qpamat->set().writeEntry("Presentation/FooterFont", m_footerFontEdit->getFont().toString());
     qpamat->set().writeEntry("Presentation/SystemTrayIcon", m_systrayCB->isChecked());
+    qpamat->set().writeEntry("Presentation/StartHidden", m_hiddenCB->isChecked());
 }
 
 
@@ -778,8 +785,8 @@ void ConfDlgPresentationTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.28 $
-    \date $Date: 2005/02/15 02:01:42 $
+    \version $Revision: 1.29 $
+    \date $Date: 2005/02/15 13:01:05 $
 */
 
 /*!
