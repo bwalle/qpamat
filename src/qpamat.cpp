@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.40 2004/04/21 18:51:56 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.41 2004/05/09 15:13:50 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -91,8 +91,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.40 $
-    \date $Date: 2004/04/21 18:51:56 $
+    \version $Revision: 1.41 $
+    \date $Date: 2004/05/09 15:13:50 $
  */
 
 /*! 
@@ -451,7 +451,8 @@ void Qpamat::setLogin(bool loggedIn)
     m_actions.saveAction->setEnabled(loggedIn);
     m_actions.changePasswordAction->setEnabled(loggedIn);
     m_actions.printAction->setEnabled(loggedIn);
-    m_searchToolbar->setEnabled(loggedIn);
+    m_searchCombo->setEnabled(loggedIn);
+    m_toolButtons.search->setEnabled(loggedIn);
     m_actions.addItemAction->setEnabled(loggedIn);
     m_actions.removeItemAction->setEnabled(loggedIn);
     m_actions.passwordStrengthAction->setEnabled(loggedIn);
