@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.14 2003/12/15 16:43:28 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.15 2003/12/15 21:19:36 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -265,6 +265,10 @@ bool Tree::writeToXML(const QString& fileName, const QString& password, const QS
         {
             ByteVector vec = dynamic_cast<CollectEncryptor*>(enc)->getBytes();
             success = writeOrReadSmartcard(vec, true, id);
+        }
+        else
+        {
+            success = true;
         }
         root.setAttribute("card-id", id);
         
