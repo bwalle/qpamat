@@ -1,5 +1,5 @@
 /*
- * Id: $Id: types.h,v 1.5 2003/11/29 14:43:03 bwalle Exp $
+ * Id: $Id: global.h,v 1.1 2003/12/10 21:48:40 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,11 +18,10 @@
 #include <qvaluevector.h>
 #include <qmap.h>
 
-
 /*!
- * \file types.h
+ * \file global.h
  * \ingroup gui
- * Defines some types used in the whole application.
+ * Defines some types and functions used in the whole application.
  */
 
 
@@ -56,4 +55,11 @@ typedef QValueVector<uint> UIntVector;
  */
 typedef QValueVector<int> IntVector;
 
+// Forward declaration
+class Qpamat;
+
+/*!
+ * Pointer to the Qpamat object.
+ */
+extern Qpamat* qpamat;
 

@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.14 2003/12/06 18:26:13 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.15 2003/12/10 21:51:30 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -45,7 +45,7 @@ HEADERS     =                                   \
     src/dialogs/configurationdialog.h           \
     src/widgets/filelineedit.h                  \
     src/widgets/fontchoosebox.h                 \
-    src/types.h                                 \
+    src/global.h                                \
     src/security/passwordcheckexception.h       \
     src/security/encodinghelper.h               \
     src/security/passwordhash.h                 \
