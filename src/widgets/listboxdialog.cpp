@@ -1,5 +1,5 @@
 /*
- * Id: $Id: listboxdialog.cpp,v 1.1 2004/01/07 23:55:11 bwalle Exp $
+ * Id: $Id: listboxdialog.cpp,v 1.2 2004/01/08 23:09:00 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -36,8 +36,8 @@
     
     \ingroup widgets
     \author $Author: bwalle $
-    \version $Revision: 1.1 $
-    \date $Date: 2004/01/07 23:55:11 $
+    \version $Revision: 1.2 $
+    \date $Date: 2004/01/08 23:09:00 $
 */
 
 /*!
@@ -78,8 +78,8 @@
     
     \ingroup widgets
     \author $Author: bwalle $
-    \version $Revision: 1.1 $
-    \date $Date: 2004/01/07 23:55:11 $
+    \version $Revision: 1.2 $
+    \date $Date: 2004/01/08 23:09:00 $
     
 */
 
@@ -99,7 +99,7 @@ ListBoxDialog::ListBoxDialog(QWidget* parent, const char* name)
     QFont f = m_listBox->font();
     f.setBold(true);
     m_listBox->setFont(f);
-    //m_listBox->setCursor(PointingHandCursor);
+    m_listBox->setCursor(PointingHandCursor);
     m_widgetStack = new QWidgetStack(mainHBox, "ConfDlg-Widget");
     
     // buttons
