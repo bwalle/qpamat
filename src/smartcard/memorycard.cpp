@@ -1,5 +1,5 @@
 /*
- * Id: $Id: memorycard.cpp,v 1.8 2004/01/02 12:21:16 bwalle Exp $
+ * Id: $Id: memorycard.cpp,v 1.9 2004/01/13 23:48:54 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -70,8 +70,8 @@ int MemoryCard::m_lastNumber = 1;
     
     \ingroup smartcard
     \author Bernhard Walle
-    \version $Revision: 1.8 $
-    \date $Date: 2004/01/02 12:21:16 $
+    \version $Revision: 1.9 $
+    \date $Date: 2004/01/13 23:48:54 $
 */
 
 /*!
@@ -588,6 +588,7 @@ void MemoryCard::write(ushort offset, const ByteVector& data)
         
         if (ret != OK)
         {
+            PRINT_DBG("Throwing exception with error code %d", ret)
             throw CardException(CardException::ErrorCode(ret));
         }
         
@@ -595,6 +596,7 @@ void MemoryCard::write(ushort offset, const ByteVector& data)
         
         if (sw1sw2 != 0x9000)
         {
+            PRINT_DBG("Throwing card exception with error code %x", sw1sw2);
             throw CardException(CardException::ErrorCode(sw1sw2));
         }
         
