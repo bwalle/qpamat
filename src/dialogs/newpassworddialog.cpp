@@ -1,5 +1,5 @@
 /*
- * Id: $Id: newpassworddialog.cpp,v 1.3 2003/11/28 19:14:21 bwalle Exp $
+ * Id: $Id: newpassworddialog.cpp,v 1.4 2003/12/04 11:55:48 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,6 +24,8 @@
 #include <qpushbutton.h>
 
 #include "newpassworddialog.h"
+#include "../security/passwordcheckerfactory.h"
+#include "../settings.h"
 
 using NewPasswordDialogLocal::PasswordValidator;
 
@@ -153,37 +155,41 @@ void NewPasswordDialog::accept()
         return;
     }
     
-    bool uppercase = false;
-    bool lowercase = false;
-    bool nonLetter = false;
+    PasswordChecker* checker = 0;
     const QString& password = m_secondPasswordEdit->text();
-    for (uint i = 0; i < password.length(); ++i)
-    {
-        const QChar character = password[i];
-        QChar::Category cat = character.category();
-        if (cat == QChar::Letter_Uppercase)
-        {
-            uppercase = true;
-        } 
-        else if (cat == QChar::Letter_Lowercase)
-        {
-            lowercase = true;
-        }
-        else if (! character.isLetter())
-        {
-            nonLetter = true;
-        }
-    }
+    QSettings& set = Settings::getInstance().getSettings();
+    bool ok;
     
-    if (!( uppercase && lowercase && nonLetter))
+    try
+    {
+        checker = PasswordCheckerFactory::getChecker(
+            set.readEntry( "Security/PasswordChecker", PasswordCheckerFactory::DEFAULT_CHECKER_STRING),
+            set.readEntry( "Security/PasswordCheckerAdditional" )
+        );
+        ok = checker->isPasswordOk(password);
+    }
+    catch (const std::exception& exc)
     {
         QMessageBox::warning(this, "QPaMaT",
-               "<qt>"+tr("The passphrase is too simple. It must contain at least one uppercase "
-               "character, one lowercase character and one non-letter character.")+"</qt>",
+            ("<qt>"+tr("An error occurred while checking the password:<br>%1")+"</qt>").
+            arg(exc.what()),
+            QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
+        delete checker;
+        return;
+    }
+    
+    delete checker;
+    
+    if (!ok)
+    {
+        QMessageBox::warning(this, "QPaMaT",
+               "<qt>"+tr("The passphrase is too simple. See the Security settings for details "
+               "about the conditions a valid password must met.")+"</qt>",
                QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
         m_firstPasswordEdit->setFocus();
         return;
     }
+    
     QDialog::accept();
 }
 
