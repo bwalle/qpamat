@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.h,v 1.2 2003/10/12 15:11:36 bwalle Exp $
+ * Id: $Id: tree.h,v 1.3 2003/10/20 20:54:22 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -20,8 +20,8 @@
 
 #include <qstring.h>
 #include <qlistview.h>
+#include <qpopupmenu.h>
 
-#include "globals.h"
 #include "wrongpassword.h"
 #include "treeentry.h"
 #include "cipher/nosuchalgorithmexception.h"
@@ -31,8 +31,8 @@
  * Represents the tree that holds the password entries.
  * @ingroup gui
  * @author Bernhard Walle
- * @version $Revision: 1.2 $
- * @date $Date: 2003/10/12 15:11:36 $
+ * @version $Revision: 1.3 $
+ * @date $Date: 2003/10/20 20:54:22 $
  */
 class Tree : public QListView
 {
@@ -40,6 +40,13 @@ class Tree : public QListView
     
     public:
         
+        enum MenuID
+        {
+            INSERT_ITEM,
+            INSERT_CATEGORY,
+            RENAME_ITEM,
+            DELETE_ITEM
+        };
         /**
          * Creates a new instance of a Tree.
          * @param parent the parent
@@ -55,7 +62,6 @@ class Tree : public QListView
          */
         bool readFromXML(const QString& fileName, const QString& password) throw (WrongPassword);
         
-    public slots:
         
         /**
          * Writs the current tree to the XML file. The error handling is done by the function,
@@ -66,8 +72,24 @@ class Tree : public QListView
          */
         void writeToXML(const QString& fileName, const QString& password, const QString& algorithm);
         
+        /**
+         * If the users presses a key.
+         * @param evt the key event
+         */
+        void keyPressEvent(QKeyEvent* evt);
+        
+        
+    private slots:
+        void showContextMenu(QListViewItem* item, const QPoint& point);
+        void insertItem(bool category, TreeEntry* item);
+        
     private:
+        void initTreeContextMenu();
         void showCurruptedMessage(const QString& fileName);
+    
+    private:
+        QPopupMenu* m_contextMenu; 
 };
+
 
 #endif // TREE_H
