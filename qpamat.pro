@@ -1,22 +1,30 @@
-# Id: $Id: qpamat.pro,v 1.31 2004/01/20 21:43:57 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.32 2004/02/09 19:30:47 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
 #  Use "qmake -o Makefile qpamat.pro" for release code, and
 #  use "qmake -o Makefile qpamat.pro debug=1" for debug code.
 #
-################################################################################
+#  Adapt these variables to your system
 
+PREFIX             = /usr/local/
+SHAREDIR           = $${PREFIX}/share
+DOCDIR             = $${SHAREDIR}/doc/packages
+BINDIR             = $${PREFIX}/bin
 
-VERSION_STRING     = 0.1.0
-MAJOR_VERSION      = 0
-MINOR_VERSION      = 1
-PATCH_VERSION      = 0
-
-
-INCLUDEPATH += src/
 # set this if you installed OpenSSL in a non-standard place
 # INCLUDEPATH += /usr/local/ssl/include
+
+################################################################################
+
+VERSION_STRING     = 0.2.1
+MAJOR_VERSION      = 0
+MINOR_VERSION      = 2
+PATCH_VERSION      = 1
+
+################################################################################
+
+INCLUDEPATH += src/
 
 SOURCES     =                                   \
     src/dialogs/passworddialog.cpp              \
@@ -122,7 +130,8 @@ HEADERS     =                                   \
 isEmpty(static) {
   CONFIG     += warn_on qt exceptions
 } else {
-  LIBS        += /usr/lib/qt3/lib/libqt-mt.a -lfreetype -lXft -lz -lpthread -lpng -lX11 -lXext -lXinerama -lXi -lSM -lXcursor -lXrandr -lGL
+  LIBS        += /usr/lib/qt3/lib/libqt-mt.a -lfreetype -lXft -lz -lpthread \
+                 -lpng -lX11 -lXext -lXinerama -lXi -lSM -lXcursor -lXrandr -lGL
   CONFIG      += x11 warn_on exceptions
 }
 
@@ -178,5 +187,20 @@ tags.target                 = tagfile
 tags.commands               = ctags -R src/ &&
 tags.commands              += echo "Tag created"
 QMAKE_EXTRA_UNIX_TARGETS   += tags
+
+# ------------------------------------------------------------------------------
+
+#
+# Installation
+i_documentation.path        = $$DOCDIR
+i_documentation.files      += doc/qpamat.dtd README COPYING
+INSTALLS                   += i_documentation
+
+i_dictionary.path           = $$SHAREDIR/qpamat
+i_dictionary.files         += share/dicts
+INSTALLS                   += i_dictionary
+
+target.path                 = $$BINDIR
+INSTALLS                   += target
 
 # vim: ft=text et
