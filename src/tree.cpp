@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.25 2004/01/03 23:41:09 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.26 2004/01/06 23:38:11 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -40,7 +40,6 @@
 #include "images/traffic_red_16x16.xpm"
 #include "images/traffic_green_16x16.xpm"
 #include "images/traffic_gray_16x16.xpm"
-#include "images/smartcard_24x24.xpm"
 
 #include "qpamat.h"
 #include "tree.h"
@@ -70,8 +69,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.25 $
-    \date $Date: 2004/01/03 23:41:09 $
+    \version $Revision: 1.26 $
+    \date $Date: 2004/01/06 23:38:11 $
 */
 
 /*!
@@ -159,186 +158,46 @@ void Tree::keyPressEvent(QKeyEvent* evt)
 
 /*!
     Reads and updates the tree from the given XML file.
-    \param fileName the XML file from which the information should be read
-    \param password the password
-    \return \c true on success, \c false  otherwise
-    \exception WrongPassword if the given password was wrong according to the XML file
+    \param rootElement the XML element which represents the <tt>\<qpamat\></tt> tag
 */
-bool Tree::readFromXML(const QString& fileName, const QString& password) throw (WrongPassword)
+void Tree::readFromXML(const QDomElement& rootElement)
 {
     // delete the old tree
     if (childCount() > 0)
     {
         clear();
     }
-    
-    bool smartcard = qpamat->set().readBoolEntry("Smartcard/UseCard");
-    
-    // load the XML structure
-    QFile file(fileName);
-    if (!file.open(IO_ReadOnly))
+
+    QDomNode n = rootElement.firstChild();
+    while( !n.isNull() ) 
     {
-        QMessageBox::critical(this, "QPaMaT", tr("The file %1 could not be opened:\n%2.").
-            arg(fileName).arg(qApp->translate("QFile", file.errorString())), QMessageBox::Ok, 
-            QMessageBox::NoButton);
-        return false;
-    }
-    QDomDocument doc;
-    if (!doc.setContent(&file))
-    {
-        file.close();
-        showCurruptedMessage(fileName);
-        return false;
-    }
-    file.close();
-    QDomElement root = doc.documentElement();
-    
-    // check the password
-    try
-    {
-        if (!PasswordHash::isCorrect(password, root.attribute("password-hash")))
+        QDomElement e = n.toElement(); // try to convert the node to an element.
+        if( !e.isNull() ) 
         {
-            throw WrongPassword(tr("The password is incorrect.").latin1());
+            TreeEntry::appendFromXML(this, e);
         }
-    }
-    catch (const std::invalid_argument& ex)
-    {
-        PRINT_DBG("Caught invalid_argument: %s", ex.what());
-        showCurruptedMessage(fileName);
-        return false;
+        n = n.nextSibling();
     }
     
-    if (root.attribute("card-id") && !smartcard)
-    {
-        QMessageBox::warning(this, "QPaMaT", tr("<qt><nobr>The passwords of the current data file"
-            " are stored</nobr> on a smartcard but you did not configure QPaMaT for reading "
-            "smartcards.<p>Change the settings and try again!</qt>"), QMessageBox::Ok,
-            QMessageBox::NoButton);
-        return false;
-    }
-    smartcard = !root.attribute("card-id").isNull();
-    
-    try
-    {
-        QString algorithm = root.attribute("crypt-algorithm");
-        StringEncryptor* enc = 0;
-        Encryptor* realEncryptor = 0;
-        try
-        {
-            if (smartcard)
-            {
-                realEncryptor = new SymmetricEncryptor(algorithm, password);
-                enc = new CollectEncryptor(*realEncryptor);
-            }
-            else
-            {
-                enc = new SymmetricEncryptor(algorithm, password);
-            }
-        }
-        catch (const NoSuchAlgorithmException& ex)
-        {
-            QMessageBox::critical(this, "QPaMaT", tr("The algorithm '%1' is not avaible on "
-                "your system.\nIt is impossible to read the file. Try to recompile or\n",
-                "update your OpenSSL library.").arg(algorithm), QMessageBox::Ok, QMessageBox::NoButton);
-            return false;
-        }
-        
-        // read the data from the smartcard
-        if (smartcard && root.attribute("card-id"))
-        {
-            bool success = false;
-            ByteVector vec;
-            while (!success)
-            {
-                byte id = byte(root.attribute("card-id").toShort());
-                success = writeOrReadSmartcard(vec, false, id);
-                
-                if (!success && QMessageBox::question(this, "QPaMaT", tr("Reading from the "
-                    "smartcard was not successful.\nDo you want to try again?"), QMessageBox::Yes |
-                    QMessageBox::Default, QMessageBox::No | QMessageBox::Escape) == QMessageBox::No)
-                {
-                    delete enc;
-                    delete realEncryptor;
-                    return false;
-                }
-            }
-            dynamic_cast<CollectEncryptor*>(enc)->setBytes(vec);
-        }
-        
-        QDomNode n = root.firstChild();
-        while( !n.isNull() ) 
-        {
-            QDomElement e = n.toElement(); // try to convert the node to an element.
-            if( !e.isNull() ) 
-            {
-                TreeEntry::appendFromXML(this, e, *enc);
-            }
-            n = n.nextSibling();
-        }
-    
-        delete enc;
-        delete realEncryptor;
-    }
-    catch (const std::exception& e)
-    {
-        clear();
-        showReadErrorMessage(e.what());
-        return false;
-    }
-    
-    qpamat->message(tr("Reading of data finished successfully."), false);
-    
-    return true;
+    // qpamat->message(tr("Reading of data finished successfully."), false);
 }
 
 
 /*!
-    Writs the current tree to the XML file. The error handling is done by the function,
-    i.e. suitable dialog messages are displayed.
-    \param fileName the file name where the tree should be written
-    \param password the password for encryption
-    \param algorithm the algorithm for encryption
-    \return \c true on success, \c false  otherwise
+    Appends the tree data to the specified QDomDocument. The document must contain a 
+    <tt>\<qpamat\></tt> document element which must contain a <tt>\<passwords\></tt> child.
+    \param doc the QDomDocument to which the tree is appended. If the tree is empty, nothing is
+               appended
+    \exception std::invalid_argument if the given document does not met the described requirements
 */
-bool Tree::writeToXML(const QString& fileName, const QString& password, const QString& algorithm)
+void Tree::appendXML(QDomDocument& doc) const throw (std::invalid_argument)
 {
-    bool smartcard = qpamat->set().readBoolEntry("Smartcard/UseCard");
-    QFile file(fileName);
-    if (!QFileInfo(file).isWritable())
+    QDomElement docElem = doc.documentElement();
+    QDomNode passwords = docElem.namedItem("passwords");
+    if (passwords.isNull())
     {
-        QMessageBox::critical(this, "QPaMaT", tr("<qt><nobr>The data file is not writable. Change "
-            "the file in</nobr> the configuration dialog or change the permission of the file!"
-            "</qt>"), QMessageBox::Ok, QMessageBox::NoButton);
-        return false;
-    }
-    
-    QDomDocument doc;
-    QDomElement root = doc.createElement("qpamat");
-    root.setAttribute("version", VERSION);
-    root.setAttribute("crypt-algorithm", algorithm);
-    root.setAttribute("password-hash", PasswordHash::generateHash(password));
-    doc.appendChild(root);
-    
-    StringEncryptor* enc;
-    Encryptor* realEncryptor = 0;
-    try
-    {
-        if (smartcard)
-        {
-            realEncryptor = new SymmetricEncryptor(algorithm, password);
-            enc = new CollectEncryptor(*realEncryptor);
-        }
-        else
-        {
-            enc = new SymmetricEncryptor(algorithm, password);
-        }
-    }
-    catch (const NoSuchAlgorithmException& e)
-    {
-        QMessageBox::critical(this, "QPaMaT", tr("The algorithm '%1' is not avaible on "
-            "your system.\nChoose another crypto algorithm in the settings.\nThe data "
-            "is not saved!").arg(algorithm), QMessageBox::Ok, QMessageBox::NoButton);
-        return false;
+        throw std::invalid_argument("The QDomDocument must have a passwords tag as child of the "
+            "qpamat document element.");
     }
     
     // we have one child that contains all children. The root child is not appended to
@@ -346,59 +205,9 @@ bool Tree::writeToXML(const QString& fileName, const QString& password, const QS
     TreeEntry* currentItem = dynamic_cast<TreeEntry*>(firstChild());
     while (currentItem)
     {
-        currentItem->appendXML(doc, root, *enc);
+        currentItem->appendXML(doc, passwords);
         currentItem = dynamic_cast<TreeEntry*>(currentItem->nextSibling());
     }
-    
-    bool success = false; 
-    while (!success)
-    {
-        byte id = 0;
-        if (smartcard)
-        {
-            ByteVector vec = dynamic_cast<CollectEncryptor*>(enc)->getBytes();
-            success = writeOrReadSmartcard(vec, true, id);
-            root.setAttribute("card-id", id);
-        }
-        else
-        {
-            success = true;
-        }
-        
-        if (!success && QMessageBox::question(this, "QPaMaT", tr("Writing to the smartcard was not"
-            " successful.\nDo you want to try again?"), QMessageBox::Yes | QMessageBox::Default, 
-            QMessageBox::No | QMessageBox::Escape) == QMessageBox::No)
-        {
-            break;
-        }
-    }
-    
-    delete enc;
-    delete realEncryptor;
-    
-    if (!success)
-    {
-        qpamat->message(tr("No data was saved!"));
-        return false;
-    }
-    else
-    {
-        qpamat->message(tr("Data successfully written."), false);
-    }
-    
-    if (!file.open(IO_WriteOnly))
-    {
-        QMessageBox::critical(this, "QPaMaT", tr("The data could not be saved. There "
-            "was an\nerror while creating the file:\n%1").arg( qApp->translate("QFile",
-            file.errorString())), QMessageBox::Ok, QMessageBox::NoButton);
-        return false;
-    }
-    
-    QTextStream stream(&file);
-    stream.setEncoding(QTextStream::UnicodeUTF8);
-    stream << doc.toString();
-    
-    return true;
 }
 
 
@@ -418,18 +227,6 @@ QDragObject* Tree::dragObject()
         return drag;
     }
     return 0;
-}
-
-
-/*!
-    Helping function to display that a \p fileName is corrupted. Displays a message box.
-    \param fileName the file name that is included in the message
-*/
-void Tree::showCurruptedMessage(const QString& fileName)
-{
-    QMessageBox::critical(this, "QPaMaT", tr("The XML file (%1) may be corrupted "
-            "and\ncould not be read. Check the file with a text editor.").arg(fileName), 
-            QMessageBox::Ok, QMessageBox::NoButton);
 }
 
 
@@ -696,7 +493,7 @@ void Tree::droppedHandler(QDropEvent* evt)
         QDomElement elem = doc.documentElement();
         QListViewItem* src = reinterpret_cast<TreeEntry*>(elem.attribute("memoryAddress").toLong());
         NotEncryptor enc;
-        QListViewItem* appended = TreeEntry::appendFromXML(this, elem, enc);
+        QListViewItem* appended = TreeEntry::appendFromXML(this, elem);
         setSelected(appended, true);
         delete src;
         updatePasswordStrengthView(); 
@@ -744,7 +541,8 @@ void Tree::recomputePasswordStrength(bool* error)
     
     try
     {
-        QProgressDialog progress( tr("Updating password strength..."), 0, num, this, "progress", false);
+        QProgressDialog progress( tr("Updating password strength..."), 0, num, this, "progress",
+                false);
         progress.setMinimumDuration(200);
         progress.setCaption("QPaMaT");
         int progr = 0;
@@ -853,253 +651,3 @@ void Tree::updatePasswordStrengthView()
 }
 
 
-// -------------------------------------------------------------------------------------------------
-
-class ReadWriteThread : public QThread
-{
-    public:
-        ReadWriteThread(MemoryCard& card, ByteVector& bytes, bool write, byte& randomNumber);
-        bool wasOk() const;
-        QString errorText() const;
-    protected:
-        void run();
-    private:
-        MemoryCard& m_card;
-        ByteVector& m_bytes;
-        const bool m_write;
-        byte& m_randomNumber;
-        QString m_error;
-};
-
-// -------------------------------------------------------------------------------------------------
-
-
-/*!
-    \class ReadWriteThread
-    
-    Thread that is responsible for reading and writing to the smart card. Because the real
-    operations are long and atomar, the GUI would be blocked if the operations are not running
-    in an own thread.
-    
-    No GUI operations take place in this thread. Instead of that, if an error occured the
-    error message is set and the operation is finished. The caller has to check the error message
-    and must display a message.
-    
-    The access to the variables which are passed to the constructor are not locked with a
-    QMutex or something like that. The caller must ensure that he doesn't access this variables
-    while this thread is running. This is usually no problem because the caller displays just
-    a dialog which says the user that he must wait until the operation is finished.
-*/
-
-/*!
-    Creates a new instance of a ReadWriteThread.
-    \param card the memory card, it must be initialized with the right port (the reason is that
-           the user should get a message box, insert the card and confirm the box while the
-           memory card class should wait for it. So another process cannot access the card terminal
-           at this time, this is important for security reasons
-    \param bytes the read or write bytes
-    \param write \c true if a write operation should be made, \c false for a read operation
-    \param rand the random number
-*/
-ReadWriteThread::ReadWriteThread( MemoryCard& card, ByteVector& bytes, bool write, byte& rand)
-    :  m_card(card), m_bytes(bytes), m_write(write), m_randomNumber(rand)
-{}
-
-
-/*!
-    Runs the operation.
-*/
-void ReadWriteThread::run()
-{
-    try
-    {
-        if (m_card.getType() != MemoryCard::TMemoryCard)
-        {
-            m_error = QObject::tr("There's no memory card in your reader.\nUse the test function in the "
-                "configuration\ndialog to set up your reader properly.");
-            return;
-        }
-        
-        if (!m_card.selectFile())
-        {
-            m_error = "<qt>" + QObject::tr("It was not possible to select the file on "
-                "the smartcard") + "</qt>";
-            return;
-        }
-        
-        if (m_write)
-        {
-            // write the random number
-            ByteVector byteVector(1);
-            byteVector[0] = m_randomNumber;
-            m_card.write(0, byteVector);
-            
-            PRINT_DBG("Random = %d", byteVector[0])
-            
-            // then write the number of bytes
-            int numberOfBytes = m_bytes.size();
-            byteVector.resize(3);
-            byteVector[0] = (numberOfBytes & 0xFF00) >> 8;
-            byteVector[1] = numberOfBytes & 0xFF;
-            byteVector[2] = 0; // fillbyte
-            m_card.write(1, byteVector);
-            
-            // and finally write the data
-            m_card.write(4, m_bytes);
-            
-        }
-        else
-        {
-            // read the random number
-            if (m_card.read(0, 1)[0] != m_randomNumber)
-            {
-                m_error = QObject::tr("You inserted the wrong smartcard!");
-                return;
-            }
-            
-            PRINT_DBG("Read randomNumber = %d", m_randomNumber)
-
-            // read the number
-            ByteVector vec = m_card.read(1, 2);
-            int numberOfBytes = (vec[0] << 8) + (vec[1]);
-            
-            PRINT_DBG("Read numberOfBytes = %d", numberOfBytes);
-
-            Q_ASSERT(numberOfBytes >= 0);
-            
-            // read the bytes
-            m_bytes = m_card.read(4, numberOfBytes);
-        }
-    }
-    catch (const CardException& e)
-    {
-        m_error = QObject::tr("There was a communication error while writing to the card.<p>The error "
-            "message was:<br><nobr>%1</nobr>").arg(e.what());
-        return;
-    }
-}
-
-
-/*!
-    Checks if running was Ok. This function should be called if the thread is not running
-    any more.
-    \return the bool value
-*/
-bool ReadWriteThread::wasOk() const
-{
-    return m_error.isNull();
-}
-
-
-/*!
-    Returns the error text.
-    \return hhe error text or QString::null if no error occured.
-*/
-QString ReadWriteThread::errorText() const
-{
-    return m_error;
-}
-
-// -------------------------------------------------------------------------------------------------
-
-/*!
-    Reads or writes from the smartcard. Displays an error message if needed. Refer to the
-    ReadWriteThread for more information.
-    \param bytes the bytes
-    \param write reading or writing
-    \param randomNumber the random number
-*/
-bool Tree::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& randomNumber)
-{
-    QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
-    
-    // at first we need a random number 
-    if (write)
-    {
-        std::srand(std::time(0));
-        randomNumber = byte((double(std::rand())/RAND_MAX)*256);
-    }
-    
-    QString library = qpamat->set().readEntry("Smartcard/Library");
-    int port = qpamat->set().readNumEntry("Smartcard/Port");
-    WaitDialog* msg = 0;
-    
-    try
-    {
-        // init the card
-        MemoryCard card(library);
-        card.init(port);
-        
-        // ask the user to insert the smartcard
-        QApplication::restoreOverrideCursor();
-        QMessageBox::information(this, "QPaMaT", tr("Insert the smartcard in your reader!"), 
-            QMessageBox::Ok, QMessageBox::NoButton); 
-        QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
-        
-        // start the thread
-        ReadWriteThread thread(card, bytes, write, randomNumber);
-        thread.start();
-        
-        // show dialog
-        QString dlgText = write 
-            ? tr("<b>Writing</b> to the smartcard...") 
-            : tr("<b>Reading</b> from the smartcard..."); 
-        msg = new WaitDialog(QPixmap(smartcard_24x24_xpm), dlgText, "QPaMaT", this, "Wait dialog");
-        msg->show();
-        
-        // loop while the thread has finished
-        QTimer timer;
-        timer.start(100, 0);
-        while (thread.running())
-        {
-            qApp->eventLoop()->processEvents(QEventLoop::ExcludeUserInput | QEventLoop::WaitForMore);
-        }
-        timer.stop();
-        
-        // hide the dialog
-        delete msg;
-        QApplication::restoreOverrideCursor();
-        qApp->processEvents();
-        
-        // error handling
-        if (!thread.wasOk())
-        {
-            QMessageBox::critical(this, "QPaMaT", thread.errorText(), QMessageBox::Ok, 
-                QMessageBox::NoButton);
-            return false;
-        }
-    }
-    catch (const NoSuchLibraryException& e)
-    {
-        delete msg;
-        QApplication::restoreOverrideCursor();
-        QMessageBox::critical(this, "QPaMaT", tr("The application was not set up correctly for "
-            "using the smartcard. Call the configuration dialog and use the Test button for "
-            "testing!<p>The error message was:<br><nobr>%1</nobr>").arg(e.what()), 
-            QMessageBox::Ok, QMessageBox::NoButton);
-        return false;
-    }
-    
-    return true;
-}
-
-// -------------------------------------------------------------------------------------------------
-
-/*!
-    \class WrongPassword
-    
-    \brief Exception that is thrown if the password is wrong.
-    
-    \ingroup gui
-    \author Bernhard Walle
-    \version $Revision: 1.25 $
-    \date $Date: 2004/01/03 23:41:09 $
-*/
-
-/*!
-    \fn WrongPassword::WrongPassword(const std::string&)
-    
-    Creates a new instance of the exception and includes the error message. This
-    message is returned by the what() method.
-    \param error the error message
-*/
