@@ -1,5 +1,5 @@
 /*
- * Id: $Id: main.cpp,v 1.19 2004/01/11 23:20:13 bwalle Exp $
+ * Id: $Id: main.cpp,v 1.20 2004/01/15 22:31:13 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -142,8 +142,6 @@ void getX11Version(QString& protocolVersion, QString& vendorVersion)
 #endif
 }
 
-SingleApplication* single_ptr;
-
 int main(int argc, char** argv)
 {
     QApplication app(argc, argv);
@@ -164,7 +162,7 @@ int main(int argc, char** argv)
         qpamat->show();
         app.connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));
         
-        return app.exec(); 
+        return app.exec();
     }
     catch (const std::bad_alloc& e)
     {
@@ -180,5 +178,4 @@ int main(int argc, char** argv)
             QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
     }
 }
-
 
