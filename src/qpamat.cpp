@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.23 2003/12/29 15:12:27 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.24 2003/12/29 19:58:34 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -37,6 +37,7 @@
 #include <qeventloop.h>
 #include <qpaintdevicemetrics.h>
 #include <qcursor.h>
+#include <qerrormessage.h>
 #include <qsimplerichtext.h> 
 
 #include "images/new_16x16.xpm"
@@ -85,8 +86,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.23 $
-    \date $Date: 2003/12/29 15:12:27 $
+    \version $Revision: 1.24 $
+    \date $Date: 2003/12/29 19:58:34 $
  */
 
 /*! 
@@ -107,8 +108,8 @@
     Creates a new instance of the application.
  */
 Qpamat::Qpamat()
-    : m_tree(0), m_treeContextMenu(0), m_message(0), m_rightPanel(0), m_searchCombo(0),
-      m_searchToolbar(0), m_randomPassword(0)
+    : m_tree(0), m_treeContextMenu(0), m_message(0), m_rightPanel(0), m_searchCombo(0), 
+      m_errorMessage(0), m_searchToolbar(0), m_randomPassword(0)
 {
     // Title and Icon
     setIcon(lock_big_xpm);
@@ -117,6 +118,10 @@ Qpamat::Qpamat()
     setUsesBigPixmaps(true);
     QIconSet::setIconSize(QIconSet::Small, QSize(16, 16));
     QIconSet::setIconSize(QIconSet::Large, QSize(22, 22));
+    
+    // message
+    m_errorMessage = new QErrorMessage(this, "Error Message");
+    m_errorMessage->resize(400, 200);
     
     // Random password, we need this for the tree
     m_randomPassword = new RandomPassword(this, "Random Password");
@@ -211,6 +216,18 @@ Settings& Qpamat::set()
 void Qpamat::message(const QString& message, bool)
 {
     m_message->message(message, /*warning ? 3000 : */ 1500);
+}
+
+
+/*!
+    Displays a message dialog. If the message was displayed previously and the user choosed not
+    to display the message again, this does nothing.
+    \param the message
+    \sa QErrorMessage
+*/
+void Qpamat::messageOnceDialog(const QString& message)
+{
+    m_errorMessage->message(message);
 }
 
 
@@ -509,14 +526,21 @@ void Qpamat::search()
  */
 void Qpamat::passwordStrengthHandler(bool enabled)
 {
-    static bool wasEnabledPreviously = false;
     m_tree->setShowPasswordStrength(enabled);
-    if (enabled && !wasEnabledPreviously)
+    bool error = false;
+    if (enabled)
     {
-        m_tree->recomputePasswordStrength();
-        wasEnabledPreviously = true;
+        m_tree->recomputePasswordStrength(&error);
+        if (error)
+        {
+            m_actions.passwordStrengthAction->setOn(false);
+        }
     }
-    m_tree->updatePasswordStrengthView();
+    
+    if (!error)
+    {
+        m_tree->updatePasswordStrengthView();
+    }
 }
 
 
