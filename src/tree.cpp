@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.2 2003/10/11 19:50:34 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.3 2003/10/12 15:11:52 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -42,7 +42,7 @@ Tree::Tree(QWidget* parent)
 
 
 // -------------------------------------------------------------------------------------------------
-void Tree::readFromXML(const QString& fileName, const QString& password) throw (WrongPassword)
+bool Tree::readFromXML(const QString& fileName, const QString& password) throw (WrongPassword)
 // -------------------------------------------------------------------------------------------------
 {
     // delete the old tree
@@ -56,17 +56,17 @@ void Tree::readFromXML(const QString& fileName, const QString& password) throw (
     QFile file(fileName);
     if (!file.open(IO_ReadOnly))
     {
-        QMessageBox::critical(this, QPAMAT_USERVISIBLE, tr("The file could not be opened:\n%1.").
-            arg(qApp->translate("QFile", file.errorString())), QMessageBox::Ok, 
+        QMessageBox::critical(this, QPAMAT_USERVISIBLE, tr("The file %1 could not be opened:\n%2.").
+            arg(fileName).arg(qApp->translate("QFile", file.errorString())), QMessageBox::Ok, 
             QMessageBox::NoButton);
-        return;
+        return false;
     }
     QDomDocument doc;
     if (!doc.setContent(&file))
     {
         file.close();
         showCurruptedMessage(fileName);
-        return;
+        return false;
     }
     file.close();
     QDomElement root = doc.documentElement();
@@ -83,7 +83,7 @@ void Tree::readFromXML(const QString& fileName, const QString& password) throw (
     {
         qDebug(ex.what());
         showCurruptedMessage(fileName);
-        return;
+        return false;
     }
     
     Encryptor* enc;
@@ -97,7 +97,7 @@ void Tree::readFromXML(const QString& fileName, const QString& password) throw (
         QMessageBox::critical(this, QPAMAT_USERVISIBLE, tr("The algorithm '%1' is not avaible on "
             "your system.\nIt is impossible to read the file. Try to recompile or\n",
             "update your OpenSSL library.").arg(algorithm), QMessageBox::Ok, QMessageBox::NoButton);
-        return;
+        return false;
     }
     
     QDomNode n = root.firstChild();
@@ -112,6 +112,8 @@ void Tree::readFromXML(const QString& fileName, const QString& password) throw (
     }
     
     delete enc;
+    
+    return true;
 }
 
 
