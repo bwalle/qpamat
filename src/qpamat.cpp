@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.28 2004/01/02 12:20:03 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.29 2004/01/06 23:39:17 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -61,6 +61,7 @@
 
 #include "qpamat.h"
 #include "settings.h"
+#include "datareadwriter.h"
 #include "timerstatusmessage.h"
 #include "dialogs/passworddialog.h"
 #include "dialogs/newpassworddialog.h"
@@ -86,8 +87,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.28 $
-    \date $Date: 2004/01/02 12:20:03 $
+    \version $Revision: 1.29 $
+    \date $Date: 2004/01/06 23:39:17 $
  */
 
 /*! 
@@ -362,37 +363,65 @@ void Qpamat::setModified(bool modified)
  */
 void Qpamat::login()
 {
-    PasswordDialog* dlg = new PasswordDialog(this);
+    std::auto_ptr<PasswordDialog> dlg(new PasswordDialog(this));
+    QDomDocument doc;
     bool ok = false;
     
     while (!ok)
     {
-        
         if (dlg->exec() == QDialog::Accepted)
         {
             m_password = dlg->getPassword();
         }
         else
         {
-            break;
+            return;
         }
         
-        // try to read the data
-        try
+        DataReadWriter reader(this);
+        while (!ok)
         {
-            ok = m_tree->readFromXML( set().readEntry( "General/Datafile" ), m_password);
-            m_tree->setEnabled(true);
-        }
-        catch (const WrongPassword& ex)
-        {
-            QMessageBox::warning(this, QObject::tr("QPaMaT"),
-               tr("The passphrase you entered was wrong. Try again."),
-               QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
+            try
+            {
+                doc = reader.readXML(m_password);
+                ok = true;
+            }
+            catch (const ReadWriteException& e)
+            {
+                // type of the message
+                QMessageBox::Icon icon = e.getSeverity() == ReadWriteException::WARNING
+                    ? QMessageBox::Warning
+                    : QMessageBox::Critical;
+                // category: different behaviour
+                ReadWriteException::Category cat = e.getCategory();
+                bool retry = e.retryMakesSense();
+                
+                QMessageBox *mb = new QMessageBox( "QPaMaT", e.getMessage(), icon, 
+                    (retry ? QMessageBox::Retry : QMessageBox::Ok) | QMessageBox::Default, 
+                    (retry ? QMessageBox::Abort : QMessageBox::NoButton), 
+                    QMessageBox::NoButton, this, "qt_msgbox_information", true, WDestructiveClose);
+                if (mb->exec() != QMessageBox::Retry)
+                {
+                    return;
+                }
+
+                // the user wants to continue, now we discriminate if we just retry
+                // or show the password dialog again
+                if (cat == ReadWriteException::CWrongPassword)
+                {
+                    break;
+                }
+                else
+                {
+                    continue;
+                }
+            }
         }
     }
+
+    m_tree->readFromXML(doc.documentElement().namedItem("passwords").toElement());
     
-    delete dlg;
-    setLogin(ok);
+    setLogin(true);
 }
 
 
@@ -433,11 +462,36 @@ void Qpamat::save()
 {
     if (m_loggedIn)
     {
-        if (m_tree->writeToXML(set().readEntry("/General/Datafile"), 
-                m_password, set().readEntry("/Security/CipherAlgorithm")))
+        DataReadWriter writer(this);
+        QDomDocument doc = writer.createSkeletonDocument();
+        m_tree->appendXML(doc);
+        bool success = false;
+        while (!success)
         {
-            setModified(false);
-            message(tr("Wrote data successfully."), false);
+            try
+            {
+                writer.writeXML(doc, m_password);
+                success = true;
+            }
+            catch (const ReadWriteException& e)
+            {   
+                QMessageBox::Icon icon = e.getSeverity() == ReadWriteException::WARNING
+                    ? QMessageBox::Warning
+                    : QMessageBox::Critical;
+                bool retry = e.retryMakesSense();
+                QMessageBox *mb = new QMessageBox( "QPaMaT", e.getMessage(), icon, 
+                    (retry ? QMessageBox::Retry : QMessageBox::Ok) | QMessageBox::Default, 
+                    (retry ? QMessageBox::Abort : QMessageBox::NoButton),     
+                    QMessageBox::NoButton, this, "qt_msgbox_information", true, WDestructiveClose);
+                if (mb->exec() != QMessageBox::Retry)
+                {
+                    break;
+                }
+            }
+        }
+        if (success)
+        {
+            m_modified = false;
         }
     }
 }
@@ -468,20 +522,18 @@ void Qpamat::logout()
  */
 void Qpamat::newFile()
 {
-    if (m_loggedIn)
-    {
-        logout();
-    }
-    
-    NewPasswordDialog* dialog = new NewPasswordDialog(this);
+    std::auto_ptr<NewPasswordDialog> dialog(new NewPasswordDialog(this));
     
     if (dialog->exec() == QDialog::Accepted)
     {
+        if (m_loggedIn)
+        {
+            logout();
+        }
+        
         m_password = dialog->getPassword();
         setLogin(true);
     }
-    
-    delete dialog;
 }
 
 
@@ -490,13 +542,12 @@ void Qpamat::newFile()
  */
 void Qpamat::changePassword()
 {
-    NewPasswordDialog* dlg = new NewPasswordDialog(this, m_password);
+    std::auto_ptr<NewPasswordDialog> dlg(new NewPasswordDialog(this, m_password));
     if (dlg->exec() == QDialog::Accepted)
     {
         m_password = dlg->getPassword();
         setModified();
     }
-    delete dlg;
 }
 
 
