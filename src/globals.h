@@ -1,5 +1,5 @@
 /*
- * Id: $Id: globals.h,v 1.1 2003/10/05 16:08:21 bwalle Exp $
+ * Id: $Id: globals.h,v 1.2 2003/10/12 15:11:26 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -17,6 +17,8 @@
  */
 #ifndef GLOBALS_H
 #define GLOBALS_H
+
+#include <qdir.h>
 
 /** 
  * @defgroup cipher Cipher
@@ -39,5 +41,9 @@
  */
 #define QPAMAT_USERVISIBLE "QPaMaT"
 
+/**
+ * The default file where the passwords are stored.
+ */
+#define QPAMAT_FILE_NAME (QDir::home().absPath()+"/.qpamat")
 
 #endif // GLOBALS_H
