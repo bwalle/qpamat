@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.h,v 1.2 2003/10/20 20:54:40 bwalle Exp $
+ * Id: $Id: treeentry.h,v 1.3 2003/11/08 15:58:42 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -34,8 +34,8 @@ typedef QPtrList<Property> PropertyPtrList;
  * Represents an entry in the tree.
  * @ingroup gui
  * @author Bernhard Walle
- * @version $Revision: 1.2 $
- * @date $Date: 2003/10/20 20:54:40 $
+ * @version $Revision: 1.3 $
+ * @date $Date: 2003/11/08 15:58:42 $
  */
 class TreeEntry : public QObject, public QListViewItem
 {
@@ -162,48 +162,6 @@ class TreeEntry : public QObject, public QListViewItem
         void init();
 };
 
-// =================================================================================================
-
-
-template<class T>
-// -------------------------------------------------------------------------------------------------
-TreeEntry::TreeEntry(T* parent, const QString& name, bool isCategroy)
-// -------------------------------------------------------------------------------------------------
-    : QListViewItem(parent), m_name(name), m_isCategory(isCategroy)
-{
-    setRenameEnabled(0, true);
-    m_properties.setAutoDelete(true);
-}
-
-
-template<class T>
-// -------------------------------------------------------------------------------------------------
-void TreeEntry::appendFromXML(T* parent, QDomElement& element, const Encryptor& enc)
-// -------------------------------------------------------------------------------------------------
-{
-    QString name = element.attribute("name");
-    bool isCategory = element.tagName() == "category";
-    TreeEntry* returnvalue = new TreeEntry(parent, name, isCategory);
-    QDomNode node = element.firstChild();
-    QDomElement childElement;
-    while ( !node.isNull() ) 
-    {
-        if (node.isElement())
-        {
-            childElement = node.toElement();
-            if (isCategory)
-            {
-                TreeEntry::appendFromXML(returnvalue, childElement, enc);
-                returnvalue->setOpen(element.attribute("wasOpen", "0") == "1");
-            }
-            else
-            {
-                Property::appendFromXML(returnvalue, childElement, enc);
-            }
-            node = node.nextSibling();
-        }
-    }
-}
-
+#include "treeentry.ipp"
 
 #endif // TREEENTRY_H
