@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.cpp,v 1.3 2003/12/04 11:55:16 bwalle Exp $
+ * Id: $Id: configurationdialog.cpp,v 1.4 2003/12/04 14:06:59 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -53,13 +53,13 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     m_securityTab = new SecurityTab(this);
     
     addTab(m_generalTab, "&General");
-    addTab(m_smartCardTab, "Smart &Card");
     addTab(m_securityTab, "&Security");
+    addTab(m_smartCardTab, "Smart &Card");
     
     setCancelButton(tr("Cancel"));
     connect(this, SIGNAL(applyButtonPressed()), m_generalTab, SLOT(applySettings()));
-    connect(this, SIGNAL(applyButtonPressed()), m_smartCardTab, SLOT(applySettings()));
     connect(this, SIGNAL(applyButtonPressed()), m_securityTab, SLOT(applySettings()));
+    connect(this, SIGNAL(applyButtonPressed()), m_smartCardTab, SLOT(applySettings()));
 }
 
 
@@ -82,12 +82,13 @@ void GeneralTab::createAndLayout()
     // create layouts
     QVBoxLayout* mainLayout = new QVBoxLayout(this, 6, 6);
     QGroupBox* locationsGroup = new QGroupBox(4, Vertical, tr("Locations"), this);
-    QGroupBox* encryptionGroup = new QGroupBox(2, Vertical, tr("Encryption"), this);
+    QGroupBox* autoTextGroup = new QGroupBox(4, Vertical, tr("AutoText"), this);
+    
+    // some settings
     locationsGroup->setInsideSpacing(6);
-    encryptionGroup->setInsideSpacing(6);
-    mainLayout->addWidget(locationsGroup);
-    mainLayout->addWidget(encryptionGroup);
-    mainLayout->addStretch(5);
+    autoTextGroup->setInsideSpacing(6);
+    locationsGroup->setFlat(true);
+    autoTextGroup->setFlat(true);
     
     // labels  & edit fields
     QLabel* browserLabel = new QLabel(tr("&Web Browser (full path if not in PATH environment):"), 
@@ -97,20 +98,27 @@ void GeneralTab::createAndLayout()
     QLabel* datafileLabel = new QLabel(tr("&Data File:"), locationsGroup);
     m_datafileEdit = new FileLineEdit(locationsGroup);
     
-    QLabel* algorithmLabel = new QLabel(tr("&Algorithm (don't change this if the names don't "
-        "tell you anything):"), encryptionGroup);
-    m_algorithmCombo = new QComboBox(false, encryptionGroup);
+    // auto text
+    QLabel* miscLabel = new QLabel(tr("&Misc"), autoTextGroup);
+    m_miscEdit = new QLineEdit(autoTextGroup);
+    QLabel* usernameLabel = new QLabel(tr("&Username"), autoTextGroup);
+    m_usernameEdit = new QLineEdit(autoTextGroup);
+    QLabel* passwordLabel = new QLabel(tr("&Password"), autoTextGroup);
+    m_passwordEdit = new QLineEdit(autoTextGroup);
+    QLabel* urlLabel = new QLabel(tr("&URL"), autoTextGroup);
+    m_urlEdit = new QLineEdit(autoTextGroup);
     
     // set buddys
     browserLabel->setBuddy(m_browserEdit);
     datafileLabel->setBuddy(m_datafileEdit);
-    algorithmLabel->setBuddy(m_algorithmCombo);
+    miscLabel->setBuddy(m_miscEdit);
+    usernameLabel->setBuddy(m_usernameEdit);
+    passwordLabel->setBuddy(m_passwordEdit);
+    urlLabel->setBuddy(m_urlEdit);
     
-    // minimum width
-    //m_browserEdit->setMinimumWidth(450);
-    
-    locationsGroup->setFlat(true);
-    encryptionGroup->setFlat(true);
+    mainLayout->addWidget(locationsGroup);
+    mainLayout->addWidget(autoTextGroup);
+    mainLayout->addStretch(5);
 }
 
 
@@ -118,13 +126,14 @@ void GeneralTab::createAndLayout()
 void GeneralTab::fillSettings()
 // -------------------------------------------------------------------------------------------------
 {
-    m_algorithmCombo->insertStringList(Encryptor::getAlgorithms());
     QSettings& set = Settings::getInstance().getSettings();
     
     m_browserEdit->setContent( set.readEntry("General/Webbrowser", Settings::DEFAULT_WEBBROWSER) );
     m_datafileEdit->setContent( set.readEntry("General/Datafile", Settings::QPAMAT_FILE_NAME) );
-    m_algorithmCombo->setCurrentText( set.readEntry( "General/CipherAlgorithm",
-        Encryptor::getSuggestedAlgorithm()) );
+    m_miscEdit->setText( set.readEntry("AutoText/Misc", Settings::DEFAULT_AUTOTEXT_MISC) );
+    m_usernameEdit->setText(set.readEntry("AutoText/Username",Settings::DEFAULT_AUTOTEXT_USERNAME));
+    m_passwordEdit->setText(set.readEntry("AutoText/Password",Settings::DEFAULT_AUTOTEXT_PASSWORD));
+    m_urlEdit->setText( set.readEntry("AutoText/URL", Settings::DEFAULT_AUTOTEXT_URL) );
 }
 
 
@@ -135,7 +144,115 @@ void GeneralTab::applySettings()
     QSettings& set = Settings::getInstance().getSettings();
     set.writeEntry( "General/Webbrowser", m_browserEdit->getContent() );
     set.writeEntry( "General/Datafile", m_datafileEdit->getContent() );
-    set.writeEntry( "General/CipherAlgorithm", m_algorithmCombo->currentText() );
+    set.writeEntry( "AutoText/Misc", m_miscEdit->text() );
+    set.writeEntry( "AutoText/Username", m_usernameEdit->text() );
+    set.writeEntry( "AutoText/Password", m_passwordEdit->text() );
+    set.writeEntry( "AutoText/URL", m_urlEdit->text() );
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void SecurityTab::createAndLayout()
+// -------------------------------------------------------------------------------------------------
+{
+    // create layouts
+    QVBoxLayout* mainLayout = new QVBoxLayout(this, 6, 6);
+    m_radioGroup = new QButtonGroup(6, Vertical,tr("Password Checker"), this);
+    QGroupBox* encryptionGroup = new QGroupBox(2, Vertical, tr("Encryption"), this);
+    
+    // some settings
+    encryptionGroup->setInsideSpacing(6);
+    m_radioGroup->setFlat(true);
+    encryptionGroup->setFlat(true);
+    
+    new QRadioButton(tr("S&imple"), m_radioGroup);
+    new QRadioButton(tr("&Extended"), m_radioGroup);
+    new QRadioButton(tr("&Using dictionary:"), m_radioGroup);
+    QWidget* box1 = new QWidget(m_radioGroup);
+    QHBoxLayout* hlayout1 = new QHBoxLayout(box1);
+    m_dictionaryEdit = new FileLineEdit(box1);
+    hlayout1->addSpacing(20);
+    hlayout1->addWidget(m_dictionaryEdit);
+    
+    new QRadioButton(tr("E&xternal Application (full path if not in PATH environment):"), 
+        m_radioGroup);
+    QWidget* box2 = new QWidget(m_radioGroup);
+    QHBoxLayout* hlayout2 = new QHBoxLayout(box2);
+    m_externalEdit = new FileLineEdit(box2);
+    hlayout2->addSpacing(20);
+    hlayout2->addWidget(m_externalEdit);
+    
+    // algorithm stuff
+    QLabel* algorithmLabel = new QLabel(tr("&Algorithm (don't change this if the names don't "
+        "tell you anything):"), encryptionGroup);
+    m_algorithmCombo = new QComboBox(false, encryptionGroup);
+    
+    // buddys
+    algorithmLabel->setBuddy(m_algorithmCombo);
+    
+    mainLayout->addWidget(m_radioGroup);
+    mainLayout->addWidget(encryptionGroup);
+    mainLayout->addStretch(5);
+    
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void SecurityTab::radioButtonHandler(int buttonId)
+// -------------------------------------------------------------------------------------------------
+{
+    m_dictionaryEdit->setEnabled( PasswordCheckerFactory::PasswordCheckerType(buttonId) == 
+        PasswordCheckerFactory::TExtendedDictPasswordChecker );
+    m_externalEdit->setEnabled( PasswordCheckerFactory::PasswordCheckerType(buttonId) == 
+        PasswordCheckerFactory::TExternalPasswordChecker );
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void SecurityTab::fillSettings()
+// -------------------------------------------------------------------------------------------------
+{
+    QSettings& set = Settings::getInstance().getSettings();
+    
+    m_algorithmCombo->insertStringList(Encryptor::getAlgorithms());
+    m_radioGroup->setButton( PasswordCheckerFactory::fromString( 
+        set.readEntry( "Security/PasswordChecker", PasswordCheckerFactory::DEFAULT_CHECKER_STRING))
+        );
+    m_dictionaryEdit->setContent(set.readEntry( "Security/DictionaryFile"));
+    m_externalEdit->setContent(set.readEntry( "Security/ExternalProgram"));
+    radioButtonHandler(m_radioGroup->selectedId());
+    m_algorithmCombo->setCurrentText( set.readEntry( "Security/CipherAlgorithm",
+        Encryptor::getSuggestedAlgorithm()) );
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void SecurityTab::applySettings()
+// -------------------------------------------------------------------------------------------------
+{
+    QSettings& set = Settings::getInstance().getSettings();
+    PasswordCheckerFactory::PasswordCheckerType type = 
+        PasswordCheckerFactory::PasswordCheckerType(m_radioGroup->selectedId());
+    
+    QString additional;
+    switch (type)
+    {
+        case PasswordCheckerFactory::TExtendedDictPasswordChecker:
+            additional = m_dictionaryEdit->getContent();
+            break;
+        case PasswordCheckerFactory::TExternalPasswordChecker:
+            additional = m_externalEdit->getContent();
+            break;
+        default:
+            additional = "";
+            break;
+    }
+    
+    set.writeEntry("Security/PasswordChecker", PasswordCheckerFactory::toString(type));
+    set.writeEntry("Security/PasswordCheckerAdditional", additional);
+    set.writeEntry("Security/DictionaryFile", m_dictionaryEdit->getContent() );
+    set.writeEntry("Security/ExternalProgram", m_externalEdit->getContent() );
+    set.writeEntry("Security/CipherAlgorithm", m_algorithmCombo->currentText() );
 }
 
 
@@ -327,88 +444,3 @@ SecurityTab::SecurityTab(QWidget* parent)
 }
 
 
-// -------------------------------------------------------------------------------------------------
-void SecurityTab::createAndLayout()
-// -------------------------------------------------------------------------------------------------
-{
-    // create layouts
-    QVBoxLayout* mainLayout = new QVBoxLayout(this, 6, 6);
-    
-    m_radioGroup = new QButtonGroup(6, Vertical,tr("Password Checker"), this);
-    m_radioGroup->setFlat(true);
-    
-    new QRadioButton(tr("S&imple"), m_radioGroup);
-    new QRadioButton(tr("&Extended"), m_radioGroup);
-    new QRadioButton(tr("&Using dictionary:"), m_radioGroup);
-    QWidget* box1 = new QWidget(m_radioGroup);
-    QHBoxLayout* hlayout1 = new QHBoxLayout(box1);
-    m_dictionaryEdit = new FileLineEdit(box1);
-    hlayout1->addSpacing(20);
-    hlayout1->addWidget(m_dictionaryEdit);
-    
-    new QRadioButton(tr("E&xternal Application (full path if not in PATH environment):"), 
-        m_radioGroup);
-    QWidget* box2 = new QWidget(m_radioGroup);
-    QHBoxLayout* hlayout2 = new QHBoxLayout(box2);
-    m_externalEdit = new FileLineEdit(box2);
-    hlayout2->addSpacing(20);
-    hlayout2->addWidget(m_externalEdit);
-    
-    mainLayout->addWidget(m_radioGroup);
-    mainLayout->addStretch(5);
-}
-
-
-// -------------------------------------------------------------------------------------------------
-void SecurityTab::radioButtonHandler(int buttonId)
-// -------------------------------------------------------------------------------------------------
-{
-    m_dictionaryEdit->setEnabled( PasswordCheckerFactory::PasswordCheckerType(buttonId) == 
-        PasswordCheckerFactory::TExtendedDictPasswordChecker );
-    m_externalEdit->setEnabled( PasswordCheckerFactory::PasswordCheckerType(buttonId) == 
-        PasswordCheckerFactory::TExternalPasswordChecker );
-}
-
-
-// -------------------------------------------------------------------------------------------------
-void SecurityTab::fillSettings()
-// -------------------------------------------------------------------------------------------------
-{
-    QSettings& set = Settings::getInstance().getSettings();
-    
-    m_radioGroup->setButton( PasswordCheckerFactory::fromString( 
-        set.readEntry( "Security/PasswordChecker", PasswordCheckerFactory::DEFAULT_CHECKER_STRING))
-        );
-    m_dictionaryEdit->setContent(set.readEntry( "Security/DictionaryFile"));
-    m_externalEdit->setContent(set.readEntry( "Security/ExternalProgram"));
-    radioButtonHandler(m_radioGroup->selectedId());
-}
-
-
-// -------------------------------------------------------------------------------------------------
-void SecurityTab::applySettings()
-// -------------------------------------------------------------------------------------------------
-{
-    QSettings& set = Settings::getInstance().getSettings();
-    PasswordCheckerFactory::PasswordCheckerType type = 
-        PasswordCheckerFactory::PasswordCheckerType(m_radioGroup->selectedId());
-    
-    QString additional;
-    switch (type)
-    {
-        case PasswordCheckerFactory::TExtendedDictPasswordChecker:
-            additional = m_dictionaryEdit->getContent();
-            break;
-        case PasswordCheckerFactory::TExternalPasswordChecker:
-            additional = m_externalEdit->getContent();
-            break;
-        default:
-            additional = "";
-            break;
-    }
-    
-    set.writeEntry("Security/PasswordChecker", PasswordCheckerFactory::toString(type));
-    set.writeEntry("Security/PasswordCheckerAdditional", additional);
-    set.writeEntry("Security/DictionaryFile", m_dictionaryEdit->getContent() );
-    set.writeEntry("Security/ExternalProgram", m_externalEdit->getContent() );
-}

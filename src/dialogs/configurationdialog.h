@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.h,v 1.3 2003/12/04 11:55:30 bwalle Exp $
+ * Id: $Id: configurationdialog.h,v 1.4 2003/12/04 14:06:59 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -28,8 +28,8 @@
 namespace ConfigurationDialogLocal
 {
     class GeneralTab;
-    class SmartcardTab;
     class SecurityTab;
+    class SmartcardTab;
 }
 
 /*!
@@ -37,8 +37,8 @@ namespace ConfigurationDialogLocal
  * 
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.3 $
- * \date $Date: 2003/12/04 11:55:30 $
+ * \version $Revision: 1.4 $
+ * \date $Date: 2003/12/04 14:06:59 $
  */
 class ConfigurationDialog : public QTabDialog
 {
@@ -54,8 +54,8 @@ class ConfigurationDialog : public QTabDialog
         
     private:
         ConfigurationDialogLocal::GeneralTab* m_generalTab;
-        ConfigurationDialogLocal::SmartcardTab* m_smartCardTab;
         ConfigurationDialogLocal::SecurityTab* m_securityTab;
+        ConfigurationDialogLocal::SmartcardTab* m_smartCardTab;
         
 };
 
@@ -71,8 +71,8 @@ namespace ConfigurationDialogLocal
      *
      * \ingroup gui
      * \author Bernhard Walle
-     * \version $Revision: 1.3 $
-     * \date $Date: 2003/12/04 11:55:30 $
+     * \version $Revision: 1.4 $
+     * \date $Date: 2003/12/04 14:06:59 $
      */
     class GeneralTab : public QWidget
     {
@@ -100,16 +100,67 @@ namespace ConfigurationDialogLocal
         private:
             FileLineEdit* m_browserEdit;
             FileLineEdit* m_datafileEdit;
-            QComboBox* m_algorithmCombo;
+            QLineEdit* m_miscEdit;
+            QLineEdit* m_usernameEdit;
+            QLineEdit* m_passwordEdit;
+            QLineEdit* m_urlEdit;
     };
+    
     
     /*! 
      * \brief This class represents the Smartcard tab of the configuration dialog.
      *
      * \ingroup gui
      * \author Bernhard Walle
-     * \version $Revision: 1.3 $
-     * \date $Date: 2003/12/04 11:55:30 $
+     * \version $Revision: 1.4 $
+     * \date $Date: 2003/12/04 14:06:59 $
+     */
+    class SecurityTab : public QWidget
+    {
+        Q_OBJECT
+        
+        public:
+            
+            /*!
+             * Creates a new instance of the widget.
+             * \param parent the parent widget
+             */
+            SecurityTab(QWidget* parent);
+        
+        public slots:
+            
+            /*!
+             * Stores the settings.
+             */
+            void applySettings();
+            
+            /*!
+             * Handles changes of the radio button.
+             * \param buttonId the buttonId as returned by the event. In reality this is of type
+             *        PasswordCheckerType.
+             */
+            void radioButtonHandler(int buttonId);
+            
+        private:
+            void createAndLayout();
+            void fillSettings();
+            
+        private:
+            QButtonGroup* m_radioGroup;
+            QGroupBox* m_passwordCheckerGroup;
+            FileLineEdit* m_dictionaryEdit;
+            FileLineEdit* m_externalEdit;
+            QComboBox* m_algorithmCombo;
+    };
+    
+    
+    /*! 
+     * \brief This class represents the Smartcard tab of the configuration dialog.
+     *
+     * \ingroup gui
+     * \author Bernhard Walle
+     * \version $Revision: 1.4 $
+     * \date $Date: 2003/12/04 14:06:59 $
      */
     class SmartcardTab : public QWidget
     {
@@ -157,52 +208,6 @@ namespace ConfigurationDialogLocal
             FileLineEdit* m_libraryEdit;
             QComboBox* m_portCombo;
             QPushButton* m_testButton;
-    };
-    
-    
-    /*! 
-     * \brief This class represents the Smartcard tab of the configuration dialog.
-     *
-     * \ingroup gui
-     * \author Bernhard Walle
-     * \version $Revision: 1.3 $
-     * \date $Date: 2003/12/04 11:55:30 $
-     */
-    class SecurityTab : public QWidget
-    {
-        Q_OBJECT
-        
-        public:
-            
-            /*!
-             * Creates a new instance of the widget.
-             * \param parent the parent widget
-             */
-            SecurityTab(QWidget* parent);
-        
-        public slots:
-            
-            /*!
-             * Stores the settings.
-             */
-            void applySettings();
-            
-            /*!
-             * Handles changes of the radio button.
-             * \param buttonId the buttonId as returned by the event. In reality this is of type
-             *        PasswordCheckerType.
-             */
-            void radioButtonHandler(int buttonId);
-            
-        private:
-            void createAndLayout();
-            void fillSettings();
-            
-        private:
-            QButtonGroup* m_radioGroup;
-            QGroupBox* m_passwordCheckerGroup;
-            FileLineEdit* m_dictionaryEdit;
-            FileLineEdit* m_externalEdit;
     };
 }
 
