@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.h,v 1.10 2003/12/11 22:02:03 bwalle Exp $
+ * Id: $Id: qpamat.h,v 1.11 2003/12/14 16:55:38 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -34,8 +34,8 @@
  *
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.10 $
- * \date $Date: 2003/12/11 22:02:03 $
+ * \version $Revision: 1.11 $
+ * \date $Date: 2003/12/14 16:55:38 $
  */
 class Qpamat : public QMainWindow
 {
@@ -141,8 +141,6 @@ class Qpamat : public QMainWindow
         
         struct ToolButtons
         {
-            QToolButton* addItem;
-            QToolButton* removeItem;
             QToolButton* search;
         };
         ToolButtons m_toolButtons;
@@ -160,6 +158,8 @@ class Qpamat : public QMainWindow
             QAction* whatsThisAction;
             QAction* changePasswordAction;
             QAction* settingsAction;
+            QAction* addItemAction;
+            QAction* removeItemAction;
         };
         Actions m_actions;
 };
