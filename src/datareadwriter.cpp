@@ -1,5 +1,5 @@
 /*
- * Id: $Id: datareadwriter.cpp,v 1.3 2004/01/20 21:43:35 bwalle Exp $
+ * Id: $Id: datareadwriter.cpp,v 1.4 2004/02/09 19:31:39 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -57,8 +57,8 @@
 
     \ingroup gui
     \author $Author: bwalle $
-    \version $Revision: 1.3 $
-    \date $Date: 2004/01/20 21:43:35 $
+    \version $Revision: 1.4 $
+    \date $Date: 2004/02/09 19:31:39 $
     
 */
 
@@ -194,8 +194,8 @@
 
     \ingroup gui
     \author $Author: bwalle $
-    \version $Revision: 1.3 $
-    \date $Date: 2004/01/20 21:43:35 $
+    \version $Revision: 1.4 $
+    \date $Date: 2004/02/09 19:31:39 $
 */
 
 /*!
@@ -229,6 +229,11 @@ QDomDocument DataReadWriter::createSkeletonDocument() throw ()
     version.setAttribute("minor", MINOR_VERSION);
     version.setAttribute("patch", PATCH_VERSION);
     appData.appendChild(version);
+    
+    QDomElement date = doc.createElement("date");
+    QDomText algo = doc.createTextNode(QDateTime::currentDateTime(Qt::UTC).toString(Qt::ISODate));
+    date.appendChild(algo);
+    appData.appendChild(date);
     
     QDomElement cryptAlgorithm = doc.createElement("crypt-algorithm");
     QDomText algorithm = doc.createTextNode(qpamat->set().readEntry("Security/CipherAlgorithm"));

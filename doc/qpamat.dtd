@@ -1,7 +1,8 @@
 <!ELEMENT qpamat            (app-data, passwords)>
 
-<!ELEMENT app-data          (version, crypt-algorithm, passwordhash, smartcard)>
+<!ELEMENT app-data          (version, date, crypt-algorithm, passwordhash, smartcard)>
 <!ELEMENT version           EMPTY>
+<!ELEMENT date              (#PCDATA)>
 <!ELEMENT passwordhash      (#PCDATA)>
 <!ELEMENT crypt-algorithm   (#PCDATA)>
 <!ELEMENT smartcard			EMPTY>
