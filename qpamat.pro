@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.5 2003/10/03 18:56:02 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.6 2003/10/05 16:08:36 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -9,23 +9,28 @@
 
 SOURCES     =                                   \
     src/main.cpp                                \
-    src/encodinghelper.cpp                      \
+    src/cipher/encodinghelper.cpp               \
+    src/cipher/passwordhash.cpp                 \
     src/cipher/encryptor.cpp                    \
     src/cipher/randompasswordgenerator.cpp      \
     src/treeentry.cpp                           \
-    src/property.cpp
+    src/property.cpp                            \
+    src/tree.cpp
 
 # -----------------------------------------------------------------------------
 
 HEADERS     =                                   \
+    src/io_exception.h                          \
     src/types.h                                 \
-    src/encodinghelper.h                        \
+    src/cipher/encodinghelper.h                 \
+    src/cipher/passwordhash.h                   \
     src/cipher/nosuchalgorithmexception.h       \
     src/cipher/notseededexception.h             \
     src/cipher/encryptor.h                      \
     src/cipher/randompasswordgenerator.h        \
     src/treeentry.h                             \
-    src/property.h
+    src/property.h                              \
+    src/tree.h
 
 # -----------------------------------------------------------------------------
 
@@ -39,6 +44,7 @@ isEmpty (debug) {
   DEFINES  += QT_NO_CHECK
 } else {
   CONFIG   += debug
+  DEFINES  += DEBUG
 }
 
 # -----------------------------------------------------------------------------
