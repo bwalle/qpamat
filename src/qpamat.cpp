@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.5 2003/11/28 18:42:34 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.6 2003/12/04 11:58:06 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,6 +15,8 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
+#include <iostream>
+
 #include <qmainwindow.h>
 #include <qaction.h>
 #include <qkeysequence.h>
@@ -50,6 +52,7 @@
 #include "dialogs/passworddialog.h"
 #include "dialogs/newpassworddialog.h"
 #include "dialogs/configurationdialog.h"
+#include "security/externalpasswordchecker.h"
 #include "qpamat.h"
 #include "settings.h"
 #include "rightpanel.h"
@@ -273,6 +276,7 @@ void Qpamat::setLogin(bool loggedIn)
     {
         m_tree->clear();
         m_rightPanel->clear();
+        this->setFocus();
     }
     m_tree->setEnabled(loggedIn);
     
