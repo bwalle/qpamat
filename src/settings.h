@@ -1,5 +1,5 @@
 /*
- * Id: $Id: settings.h,v 1.8 2003/12/20 15:58:02 bwalle Exp $
+ * Id: $Id: settings.h,v 1.9 2003/12/21 20:30:36 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -25,8 +25,8 @@
  * \brief Singleton for storing settings in registry (MS Windows) or ini-file (Unix).
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.8 $
- * \date $Date: 2003/12/20 15:58:02 $
+ * \version $Revision: 1.9 $
+ * \date $Date: 2003/12/21 20:30:36 $
  */
 class Settings
 {
@@ -41,6 +41,23 @@ class Settings
          * Destructor
          */
         virtual ~Settings() { }
+        
+        
+        /*!
+         * Writes an entry into the settings.
+         * \param key the key
+         * \param value the value
+         * \return if the entry was written
+         */
+        bool writeEntry(const QString & key, const QString & value);
+        
+        /*!
+         * Writes an entry into the settings.
+         * \param key the key
+         * \param value the value
+         * \return if the entry was written
+         */
+        bool writeEntry(const QString & key, int value);
         
         /*!
          * Writes an entry into the settings.
@@ -57,22 +74,6 @@ class Settings
          * \return if the entry was written
          */
         bool writeEntry(const QString & key, double value);
-        
-        /*!
-         * Writes an entry into the settings.
-         * \param key the key
-         * \param value the value
-         * \return if the entry was written
-         */
-        bool writeEntry(const QString & key, int value);
-        
-        /*!
-         * Writes an entry into the settings.
-         * \param key the key
-         * \param value the value
-         * \return if the entry was written
-         */
-        bool writeEntry(const QString & key, const QString & value);
         
         /*!
          * Reads the entry. If the entry does not exist there's a automatic default value that
