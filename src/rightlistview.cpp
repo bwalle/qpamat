@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightlistview.cpp,v 1.6 2003/12/15 21:19:54 bwalle Exp $
+ * Id: $Id: rightlistview.cpp,v 1.7 2003/12/16 22:52:57 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -89,7 +89,6 @@ void RightListView::showContextMenu(QListViewItem* item, const QPoint& point)
             break;
         case COPY:
             copyItem(item);
-            emit stateModified();
             break;
         case NEW:
             m_currentItem->appendProperty(new Property());
