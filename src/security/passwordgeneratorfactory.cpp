@@ -1,5 +1,5 @@
 /*
- * Id: $Id: passwordgeneratorfactory.cpp,v 1.1 2003/12/16 22:50:06 bwalle Exp $
+ * Id: $Id: passwordgeneratorfactory.cpp,v 1.2 2003/12/17 21:54:19 bwalle Exp $
  * ------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -20,21 +20,25 @@
 #include "passwordgenerator.h"
 #include "passwordgeneratorfactory.h"
 #include "randompasswordgenerator.h"
+#include "externalpasswordgenerator.h"
 
 // -------------------------------------------------------------------------------------------------
 const PasswordGeneratorFactory::PasswordGeneratorType PasswordGeneratorFactory::DEFAULT_GENERATOR 
     = TRandomPasswordGenerator;
 const QString PasswordGeneratorFactory::DEFAULT_GENERATOR_STRING = "RANDOM";
+const int     PasswordGeneratorFactory::DEFAULT_LENGTH = 8;
 
 // -------------------------------------------------------------------------------------------------
-PasswordGenerator* PasswordGeneratorFactory::getGenerator(PasswordGeneratorType type)
+PasswordGenerator* PasswordGeneratorFactory::getGenerator(PasswordGeneratorType type,
+    const QString& additionalArgument) throw (std::invalid_argument)
 // -------------------------------------------------------------------------------------------------
-            throw ()
 {
     switch (type)
     {
         case TRandomPasswordGenerator:
             return new RandomPasswordGenerator();
+        case TExternalPasswordGenerator:
+            return new ExternalPasswordGenerator(additionalArgument);
         default:
             throw std::invalid_argument("PasswordGeneratorFactory::getChecker: "
                 "type is out of range");
@@ -43,11 +47,11 @@ PasswordGenerator* PasswordGeneratorFactory::getGenerator(PasswordGeneratorType 
 
 
 // -------------------------------------------------------------------------------------------------
-PasswordGenerator* PasswordGeneratorFactory::getGenerator(const QString& type)
+PasswordGenerator* PasswordGeneratorFactory::getGenerator(const QString& type, const QString&
+    additionalArgument) throw (std::invalid_argument)
 // -------------------------------------------------------------------------------------------------
-            throw (std::invalid_argument)
 {
-    return getGenerator(fromString(type));
+    return getGenerator(fromString(type), additionalArgument);
 }
 
 
@@ -60,6 +64,10 @@ PasswordGeneratorFactory::PasswordGeneratorType PasswordGeneratorFactory::fromSt
     if (type == "RANDOM")
     {
         return TRandomPasswordGenerator;
+    }
+    else if (type == "EXTERNAL")
+    {
+        return TExternalPasswordGenerator;
     }
     else
     {
@@ -78,6 +86,8 @@ QString PasswordGeneratorFactory::toString(PasswordGeneratorType type)
     {
         case TRandomPasswordGenerator:
             return "RANDOM";
+        case TExternalPasswordGenerator:
+            return "EXTERNAL";
         default:
             throw std::invalid_argument("PasswordGeneratorFactory::toString: type is out of range");
     }

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: passwordgeneratorfactory.h,v 1.1 2003/12/16 22:50:06 bwalle Exp $
+ * Id: $Id: passwordgeneratorfactory.h,v 1.2 2003/12/17 21:54:23 bwalle Exp $
  * ------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -32,11 +32,15 @@
  * getChecker(). QPaMaT provides different password generators:
  *
  * - \c RANDOM: RandomPasswordGenerator
+ * - \c EXTERNAL: ExternalPasswordGenerator
+ *
+ * The additional argument is passed to the constructor. For the ExternalPasswordGenerator
+ * it's the program name. See the documentation of the classes for details.
  * 
  * \ingroup security
  * \author Bernhard Walle
- * \version $Revision: 1.1 $
- * \date $Date: 2003/12/16 22:50:06 $
+ * \version $Revision: 1.2 $
+ * \date $Date: 2003/12/17 21:54:23 $
  */
 class PasswordGeneratorFactory
 {
@@ -45,7 +49,8 @@ class PasswordGeneratorFactory
         /*! Enumeration type for the password checker. */
         enum PasswordGeneratorType 
         { 
-            TRandomPasswordGenerator          //!< Represents the RandomPasswordGenerator
+            TRandomPasswordGenerator,         //!< Represents the RandomPasswordGenerator
+            TExternalPasswordGenerator        //!< Represents the ExternalPasswordGenerator
         };
         
         /*! The default password checker */
@@ -54,23 +59,32 @@ class PasswordGeneratorFactory
         /*! The default password checker as string. */
         static const QString DEFAULT_GENERATOR_STRING;
         
+        /*! Default length of a password. */
+        static const int DEFAULT_LENGTH;
+        
         /*!
          * Creates a new instance of a PasswordGenerator class. 
          * \param type the type of the password generator
+         * \param additionalArgument see class documentation.
          * \return a pointer to the creates PasswordChecker object. This object must be delected
          *         by the caller.
+         * \exception std::invalid_argument if the additional argument is invalid
          */
-        static PasswordGenerator* getGenerator(PasswordGeneratorType type) throw ();
+        static PasswordGenerator* getGenerator(PasswordGeneratorType type, const QString& 
+            additionalArgument = QString::null) throw (std::invalid_argument);
             
         /*!
          * This method is provided for convenience. It behaves exactly like the above function.
          * It just calls fromString to get the type reperesentation of the string.
          * \param type the type of the password generator
+         * \param additionalArgument see class documentation.
          * \return a pointer to the created PasswordGenerator object. This object must be delected
          *         by the caller.
-         * \exception std::invalid_argument if a wrong \p type is specified
+         * \exception std::invalid_argument if a wrong \p type is specified or if the argument 
+         *                                  is invalid
          */
-        static PasswordGenerator* getGenerator(const QString& type) throw (std::invalid_argument);
+        static PasswordGenerator* getGenerator(const QString& type, const QString& 
+            additionalArgument = QString::null) throw (std::invalid_argument);
         
         /*!
          * Converts the string representation which is one of \c RANDOM to a PasswordGeneratorType.
