@@ -1,5 +1,5 @@
 /*
- * Id: $Id: memorycard.h,v 1.4 2003/11/29 14:43:03 bwalle Exp $
+ * Id: $Id: memorycard.h,v 1.5 2003/12/04 11:54:51 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -68,8 +68,8 @@ typedef char (*CT_close_ptr) (ushort ctn);
  * 
  * \ingroup smartcard
  * \author Bernhard Walle
- * \version $Revision: 1.4 $
- * \date $Date: 2003/11/29 14:43:03 $
+ * \version $Revision: 1.5 $
+ * \date $Date: 2003/12/04 11:54:51 $
  */
 class MemoryCard
 {
@@ -140,13 +140,13 @@ class MemoryCard
          *                   may not work. On Unix often 1 is mapped to COM1 (/dev/ttyS0), on 
          *                   Windows it is COM2. For USB or PS/2 there's no rule at all. Just
          *                   let the user test all possibilities. :-)
-         * @exception CardException if an exception occured
+         * @exception CardException if an exception occurred
          */
         void init(int portNumber) throw (CardException);
         
         /*!
          * Closes the MemoryCard communtion. This method must be called after the communction.
-         * @exception CardException if an exception occured
+         * @exception CardException if an exception occurred
          * @exception NotInitializedException if the object was not initialized
          */
         void close() throw (CardException, NotInitializedException);
@@ -179,7 +179,7 @@ class MemoryCard
          *                 0, then no value is stored
          * \param protocolType a pointer to a ProtocolType enumeration value where the protocol
          *                     type is stored. If it's 0, then no value is stored
-         * @exception CardException if an exception occured while resetting the card
+         * @exception CardException if an exception occurred while resetting the card
          * @exception NotInitializedException if the object was not initialized*
          */
         void resetCard(int* capacity = 0, ProtocolType* protocolType = 0) const
@@ -189,7 +189,7 @@ class MemoryCard
          * This selects a file on the chipcard. It is implemented in a way that selects the whole
          * data area on the chipcard. The return value of this function indicates the success.
          * \return \c true if the command was successfull, \c false otherwise.
-         * @exception CardException if an exception occured while selecting the file
+         * @exception CardException if an exception occurred while selecting the file
          * @exception NotInitializedException if the object was not initialized
          */
         bool selectFile() const throw (NotInitializedException, CardException);
@@ -199,7 +199,7 @@ class MemoryCard
          * \param offset the offset
          * \param length the number of bytes that should be read
          * \return the read bytes
-         * @exception CardException if an exception occured while reading
+         * @exception CardException if an exception occurred while reading
          * @exception NotInitializedException if the object was not initialized
          */
         ByteVector read(ushort offset, ushort length) const
@@ -209,7 +209,7 @@ class MemoryCard
          * Writes the specified data to the smartcard. The data must fit on the card.
          * \param offset the offset where the data should be written
          * \param data the data that should be written
-         * @exception CardException if an exception occured while writing
+         * @exception CardException if an exception occurred while writing
          * @exception NotInitializedException if the object was not initialized
          */
         void write(ushort offset, const ByteVector& data) const 

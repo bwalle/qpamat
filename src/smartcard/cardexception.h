@@ -1,5 +1,5 @@
 /*
- * Id: $Id: cardexception.h,v 1.3 2003/11/29 14:43:03 bwalle Exp $
+ * Id: $Id: cardexception.h,v 1.4 2003/12/04 11:54:41 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,15 +24,15 @@
 #include "ctapi.h"
 
 /*!
- * \brief  This exception is thrown if an error occured while communicating with the smartcard
+ * \brief  This exception is thrown if an error occurred while communicating with the smartcard
  * terminal. 
  
  * It just encapsulates the error codes of CT-API in a programmer-friendly way.
  *
  * \ingroup smartcard
  * \author Bernhard Walle
- * \version $Revision: 1.3 $
- * \date $Date: 2003/11/29 14:43:03 $
+ * \version $Revision: 1.4 $
+ * \date $Date: 2003/12/04 11:54:41 $
  */
 class CardException : public std::runtime_error
 {
@@ -51,7 +51,7 @@ class CardException : public std::runtime_error
             Transmission  = ERR_TRANS,   /*!< Transmission error. Transmission error due to
                                             mechanical, electrical or protocol failures. Reset of
                                             of cardterminal is necessary. */
-            Memory        = ERR_MEMORY,  /*!< Memory assignment error. A memory error occured (the
+            Memory        = ERR_MEMORY,  /*!< Memory assignment error. A memory error occurred (the
                                             allocated buffer is too small for the returned data).*/
             HTSI          = ERR_HTSI,    /*!< Host Transport Service Interface error. Commonly re-
                                             turned if the error is produced by the software layer
