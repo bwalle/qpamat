@@ -1,5 +1,5 @@
 /*
- * Id: $Id: singleapplication.h,v 1.1 2003/12/29 00:13:48 bwalle Exp $
+ * Id: $Id: singleapplication.h,v 1.2 2004/01/06 23:32:26 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -39,5 +39,7 @@ class SingleApplication : public QObject
         const QString   m_appName;
         bool            m_shutdown;
 };
+
+extern SingleApplication* single;
 
 #endif // SINGLEAPPLICATION_H

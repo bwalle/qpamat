@@ -1,5 +1,5 @@
 /*
- * Id: $Id: singleapplication.cpp,v 1.2 2004/01/02 12:21:22 bwalle Exp $
+ * Id: $Id: singleapplication.cpp,v 1.3 2004/01/06 23:32:26 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -28,6 +28,8 @@
 #include "global.h"
 #include "singleapplication.h"
 
+SingleApplication* single = 0;
+
 /*!
     \class SingleApplication
     
@@ -39,8 +41,8 @@
     
     \ingroup misc
     \author Bernhard Walle
-    \version $Revision: 1.2 $
-    \date $Date: 2004/01/02 12:21:22 $
+    \version $Revision: 1.3 $
+    \date $Date: 2004/01/06 23:32:26 $
 */
 
 /*!
@@ -59,6 +61,7 @@ SingleApplication::SingleApplication(const QString& lockfileDir, const QString& 
             .latin1());
     }
     m_lockfile = lockfileDir + "/" + "." + appName.lower() + ".lock";
+    single = this;
 }
 
 
