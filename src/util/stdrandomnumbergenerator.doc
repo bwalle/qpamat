@@ -1,0 +1,56 @@
+/*
+ * Id: $Id: stdrandomnumbergenerator.doc,v 1.1 2004/01/06 23:32:17 bwalle Exp $
+ * -------------------------------------------------------------------------------------------------
+ * 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the 
+ * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * version 2 of the License, you have no option to use any other version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if 
+ * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ * ------------------------------------------------------------------------------------------------- 
+ */
+
+/*!
+    \class StdRandomNumberGenerator
+    
+    \brief Class that implments the STL "Random Number Generator" concept.
+    
+    This class implements the SLT "Random Number Generator" concept with the standard
+    random number generator provided by the ISO C++ standard.
+    
+    The template parameter \a type must be an integer type such as int or char.
+    
+    \ingroup util
+    \author $Author: bwalle $
+    \version $Revision: 1.1 $
+    \date $Date: 2004/01/06 23:32:17 $
+*/
+
+/*!
+    \fn StdRandomNumberGenerator::StdRandomNumberGenerator
+    
+    Generates a new instance of the StdRandomNumberGenerator. Just seeds the standard
+    random number generator std::srand() with the current system time.
+*/
+
+/*!
+    \fn StdRandomNumberGenerator::operator() (type)
+    
+    Returns a random number in the range [0, \p max[.
+    \param max the maximum (exclusively)
+    \return the random number 
+*/
+
+/*!
+    \fn StdRandomNumberGenerator::operator() ()
+    
+    Returns a random number in the whole range of the template type.
+*/
+
+
