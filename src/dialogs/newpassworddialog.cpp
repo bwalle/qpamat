@@ -1,5 +1,5 @@
 /*
- * Id: $Id: newpassworddialog.cpp,v 1.2 2003/10/20 20:53:46 bwalle Exp $
+ * Id: $Id: newpassworddialog.cpp,v 1.3 2003/11/28 19:14:21 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,6 +24,8 @@
 #include <qpushbutton.h>
 
 #include "newpassworddialog.h"
+
+using NewPasswordDialogLocal::PasswordValidator;
 
 // -------------------------------------------------------------------------------------------------
 NewPasswordDialog::NewPasswordDialog(QWidget* parent, const QString& oldPassword)
@@ -207,8 +209,6 @@ void NewPasswordDialog::checkOkEnabled() const
         m_okButton->setEnabled(false);
     } 
 }
-
-// =================================================================================================
 
 // -------------------------------------------------------------------------------------------------
 PasswordValidator::PasswordValidator(QObject* parent, const char* name)

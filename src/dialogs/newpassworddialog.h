@@ -1,5 +1,5 @@
 /*
- * Id: $Id: newpassworddialog.h,v 1.1 2003/10/12 15:10:39 bwalle Exp $
+ * Id: $Id: newpassworddialog.h,v 1.2 2003/11/28 19:14:21 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -23,12 +23,17 @@
 #include <qwidget.h>
 #include <qvalidator.h>
 
+namespace NewPasswordDialogLocal
+{
+    class NewPasswordDialog;
+}
+
 /**
  * Dialog which is used to create a new file with a password or to change the password.
  * @ingroup gui
  * @author Bernhard Walle
- * @version $Revision: 1.1 $
- * @date $Date: 2003/10/12 15:10:39 $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2003/11/28 19:14:21 $
  */
 class NewPasswordDialog : public QDialog 
 {
@@ -71,33 +76,39 @@ class NewPasswordDialog : public QDialog
         QLineEdit* m_oldPasswordEdit;
 };
 
-// =================================================================================================
-
 /**
- * Simple password validator. The validator checks if the password is longer than six
- * characters.
- * @ingroup gui
- * @author Bernhard Walle
- * @version $Revision: 1.1 $
- * @date $Date: 2003/10/12 15:10:39 $
+ * This namespace contains implementation details of the NewPasswordDialog. I didn't want to
+ * waste the global namespace with this.
  */
-class PasswordValidator : public QValidator
+namespace NewPasswordDialogLocal
 {
-    public:
-        /**
-         * Creates a new validator. 
-         * @param parent the parent
-         * @param name the object name
-         */
-        PasswordValidator(QObject* parent = 0, const char* name = 0);
-        
-        /**
-         * Does the validating.
-         * @param input the input
-         * @param pos the position of the new character
-         * @return the result of validation
-         */
-        State validate(QString& input, int& pos) const;
-};
+    
+    /**
+     * Simple password validator. The validator checks if the password is longer than six
+     * characters.
+     * @ingroup gui
+     * @author Bernhard Walle
+     * @version $Revision: 1.2 $
+     * @date $Date: 2003/11/28 19:14:21 $
+     */
+    class PasswordValidator : public QValidator
+    {
+        public:
+            /**
+             * Creates a new validator. 
+             * @param parent the parent
+             * @param name the object name
+             */
+            PasswordValidator(QObject* parent = 0, const char* name = 0);
+            
+            /**
+             * Does the validating.
+             * @param input the input
+             * @param pos the position of the new character
+             * @return the result of validation
+             */
+            State validate(QString& input, int& pos) const;
+    };
+}
     
 #endif // NEWPASSWORDDIALOG_H
