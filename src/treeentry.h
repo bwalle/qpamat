@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.h,v 1.1 2003/10/05 16:08:21 bwalle Exp $
+ * Id: $Id: treeentry.h,v 1.2 2003/10/20 20:54:40 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -34,8 +34,8 @@ typedef QPtrList<Property> PropertyPtrList;
  * Represents an entry in the tree.
  * @ingroup gui
  * @author Bernhard Walle
- * @version $Revision: 1.1 $
- * @date $Date: 2003/10/05 16:08:21 $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2003/10/20 20:54:40 $
  */
 class TreeEntry : public QObject, public QListViewItem
 {
@@ -146,14 +146,19 @@ class TreeEntry : public QObject, public QListViewItem
          */
         void deleteAllProperties();
         
+    signals:
+        
+        /**
+         * Fired is a property was added.
+         */
+        void propertyAppended();
+        
     private:
         QString             m_name;
         PropertyPtrList     m_properties;
         bool                m_isCategory;
         
     private:
-        static void appendFromXMLPrivate(QListViewItem* item, QDomElement& element, 
-            const Encryptor& enc);
         void init();
 };
 
@@ -179,7 +184,6 @@ void TreeEntry::appendFromXML(T* parent, QDomElement& element, const Encryptor& 
     QString name = element.attribute("name");
     bool isCategory = element.tagName() == "category";
     TreeEntry* returnvalue = new TreeEntry(parent, name, isCategory);
-    
     QDomNode node = element.firstChild();
     QDomElement childElement;
     while ( !node.isNull() ) 
