@@ -1,5 +1,5 @@
 /*
- * Id: $Id: main.cpp,v 1.20 2004/01/15 22:31:13 bwalle Exp $
+ * Id: $Id: main.cpp,v 1.21 2004/01/21 20:57:24 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -19,6 +19,7 @@
 #include <stdexcept>
 #include <cstdlib>
 #include <cstdio>
+#include <memory>
 
 #include <qapplication.h>
 #include <qtextstream.h>
