@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.8 2003/12/04 14:51:36 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.9 2003/12/04 20:31:14 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -47,8 +47,10 @@ Tree::Tree(QWidget* parent)
     setFocusPolicy(QWidget::StrongFocus);
     
     initTreeContextMenu();
-    QObject::connect(this, SIGNAL(contextMenuRequested(QListViewItem*, const QPoint&, int)),
+    connect(this, SIGNAL(contextMenuRequested(QListViewItem*, const QPoint&, int)),
         this, SLOT(showContextMenu(QListViewItem*, const QPoint&)));
+    connect(this, SIGNAL(currentChanged(QListViewItem*)), 
+        this, SLOT(currentChangedHandler(QListViewItem*)));
 }
 
 
@@ -284,6 +286,23 @@ void Tree::initTreeContextMenu()
     
 }
 
+// -------------------------------------------------------------------------------------------------
+QString Tree::toRichTextForPrint() 
+// -------------------------------------------------------------------------------------------------
+{
+    QListViewItemIterator it(this);
+    QListViewItem* current;
+    QString ret;
+    ret += "<qt>";
+    while ( (current = it.current()) ) 
+    {
+        ret += dynamic_cast<TreeEntry*>(current)->toRichTextForPrint();
+        ++it;
+    }
+    ret += "</qt>";
+    return ret;
+}
+
 
 // -------------------------------------------------------------------------------------------------
 void Tree::searchFor(const QString& word)
@@ -330,3 +349,13 @@ void Tree::searchFor(const QString& word)
     }
 }
 
+
+// -------------------------------------------------------------------------------------------------
+void Tree::currentChangedHandler(QListViewItem*)
+// -------------------------------------------------------------------------------------------------
+{
+    if (selectedItem() == 0)
+    {
+        emit selectionCleared();
+    }
+}

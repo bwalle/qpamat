@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.h,v 1.7 2003/11/29 14:43:03 bwalle Exp $
+ * Id: $Id: tree.h,v 1.8 2003/12/04 20:31:18 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -31,8 +31,8 @@
  * \brief Represents the tree that holds the password entries.
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.7 $
- * \date $Date: 2003/11/29 14:43:03 $
+ * \version $Revision: 1.8 $
+ * \date $Date: 2003/12/04 20:31:18 $
  */
 class Tree : public QListView
 {
@@ -78,7 +78,20 @@ class Tree : public QListView
          * \param evt the key event
          */
         void keyPressEvent(QKeyEvent* evt);
+        
+        /*!
+         * Converts all entries to RichText for printing.
+         * \return the HTML string
+         */
+        QString toRichTextForPrint(); 
     
+    signals:
+        
+        /*!
+         * If the tree has a current item but no item is selected. 
+         */
+        void selectionCleared();
+        
     public slots:
         
         /*!
@@ -90,6 +103,7 @@ class Tree : public QListView
     private slots:
         void showContextMenu(QListViewItem* item, const QPoint& point);
         void insertItem(bool category, TreeEntry* item);
+        void currentChangedHandler(QListViewItem* item);
         
     private:
         void initTreeContextMenu();
