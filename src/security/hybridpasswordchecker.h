@@ -1,5 +1,5 @@
 /*
- * Id: $Id: hybridpasswordchecker.h,v 1.1 2003/12/29 10:59:16 bwalle Exp $
+ * Id: $Id: hybridpasswordchecker.h,v 1.2 2003/12/29 19:57:18 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -35,7 +35,7 @@ class HybridPasswordChecker : public PasswordChecker
 {
     public:
         HybridPasswordChecker(const QString& dictFileName, bool checkModtime = true) 
-            throw (std::invalid_argument);
+            throw (PasswordCheckException);
         
         double passwordQuality(const QString& password) throw ();
         

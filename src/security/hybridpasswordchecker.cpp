@@ -1,5 +1,5 @@
 /*
- * Id: $Id: hybridpasswordchecker.cpp,v 1.1 2003/12/29 10:59:16 bwalle Exp $
+ * Id: $Id: hybridpasswordchecker.cpp,v 1.2 2003/12/29 19:57:18 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -55,8 +55,8 @@ QDateTime       HybridPasswordChecker::m_lastModifed;
     
     \ingroup security
     \author Bernhard Walle
-    \version $Revision: 1.1 $
-    \date $Date: 2003/12/29 10:59:16 $
+    \version $Revision: 1.2 $
+    \date $Date: 2003/12/29 19:57:18 $
 */
 
 
@@ -71,14 +71,14 @@ QDateTime       HybridPasswordChecker::m_lastModifed;
                         time of the file and re-reads the dictionary if necessary. On slow
                         filesystems (NFS), this can be set to \c false to increase
                         performance.
-    \exception std::invalid_argument if the file does not exist
+    \exception PasswordCheckException if the file does not exist or if the file cannot be opened
 */
 HybridPasswordChecker::HybridPasswordChecker(const QString& dictFileName, bool checkModtime)
-            throw (std::invalid_argument)
+            throw (PasswordCheckException)
 {
     if (!QFile::exists(dictFileName))
     {
-        throw std::invalid_argument( QString("The file %1 does not exist.").arg(
+        throw PasswordCheckException( QString("The file %1 does not exist.").arg(
             dictFileName).latin1());
     }
     
@@ -92,7 +92,7 @@ HybridPasswordChecker::HybridPasswordChecker(const QString& dictFileName, bool c
         QFile file(dictFileName);
         if (!file.open(IO_ReadOnly))
         {
-            throw std::invalid_argument( QString("Could not open the file %1.").arg(
+            throw PasswordCheckException( QString("Could not open the file %1.").arg(
                 dictFileName).latin1() );
         }
         
