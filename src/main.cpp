@@ -1,5 +1,5 @@
 /*
- * Id: $Id: main.cpp,v 1.17 2004/01/06 23:33:01 bwalle Exp $
+ * Id: $Id: main.cpp,v 1.18 2004/01/06 23:35:37 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -167,13 +167,14 @@ int main(int argc, char** argv)
     parseCommandLine(argc, argv);
     
     SingleApplication single(QDir::homeDirPath(), "QPaMaT");
+    std::auto_ptr<Qpamat> qp;
     
     try
     {
         single.startup();
         
-        Qpamat q;
-        qpamat = &q;
+        qp = std::auto_ptr<Qpamat>(new Qpamat());
+        qpamat = qp.get();
         app.setMainWidget(qpamat);
         
         // install signal handlers
