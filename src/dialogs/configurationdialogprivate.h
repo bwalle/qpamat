@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialogprivate.h,v 1.7 2004/01/15 22:38:56 bwalle Exp $
+ * Id: $Id: configurationdialogprivate.h,v 1.8 2004/07/23 08:47:31 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -36,6 +36,8 @@
 
 class ConfDlgGeneralTab : public ListBoxDialogPage
 {
+    Q_OBJECT
+    
     friend class ConfigurationDialog;
     
     public:
@@ -103,6 +105,8 @@ class ConfDlgPasswordTab : public ListBoxDialogPage
 
 class ConfDlgSecurityTab : public ListBoxDialogPage
 {
+    Q_OBJECT
+    
     friend class ConfigurationDialog;
     
     public:
@@ -163,6 +167,8 @@ class ConfDlgSmartcardTab : public ListBoxDialogPage
 
 class ConfDlgPresentationTab : public ListBoxDialogPage
 {
+    Q_OBJECT
+    
     public:
         ConfDlgPresentationTab(QWidget* parent, const char* name = 0);
     

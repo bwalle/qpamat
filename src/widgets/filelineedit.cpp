@@ -1,5 +1,5 @@
 /*
- * Id: $Id: filelineedit.cpp,v 1.7 2004/02/07 00:11:01 bwalle Exp $
+ * Id: $Id: filelineedit.cpp,v 1.8 2004/07/23 08:46:59 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -34,8 +34,8 @@
     
     \ingroup widgets
     \author Bernhard Walle
-    \version $Revision: 1.7 $
-    \date $Date: 2004/02/07 00:11:01 $
+    \version $Revision: 1.8 $
+    \date $Date: 2004/07/23 08:46:59 $
 */
 
 /*!
@@ -66,6 +66,11 @@ FileLineEdit::FileLineEdit(QWidget* parent, bool save, const char* name)
     
 }
 
+/*!
+    \property FileLineEdit::content
+    
+    The content, i. e. the current file, of the line edit.
+*/
 
 /*!
     Sets the content. This must be no valid file but it makes sense.
@@ -86,6 +91,11 @@ QString FileLineEdit::getContent() const
     return m_lineEdit->text();
 }
 
+/*!
+    \property FileLineEdit::filter
+    
+    The current filter.
+*/
 
 /*!
      Sets a filter for the dialog.

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: datareadwriter.cpp,v 1.5 2004/04/21 22:22:43 bwalle Exp $
+ * Id: $Id: datareadwriter.cpp,v 1.6 2004/07/23 08:47:44 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -25,6 +25,7 @@
 #include <qeventloop.h>
 #include <qmessagebox.h>
 #include <qfileinfo.h>
+#include <qtranslator.h>
 
 #include "qpamat.h"
 #include "datareadwriter.h"
@@ -57,8 +58,8 @@
 
     \ingroup gui
     \author $Author: bwalle $
-    \version $Revision: 1.5 $
-    \date $Date: 2004/04/21 22:22:43 $
+    \version $Revision: 1.6 $
+    \date $Date: 2004/07/23 08:47:44 $
     
 */
 
@@ -194,8 +195,8 @@
 
     \ingroup gui
     \author $Author: bwalle $
-    \version $Revision: 1.5 $
-    \date $Date: 2004/04/21 22:22:43 $
+    \version $Revision: 1.6 $
+    \date $Date: 2004/07/23 08:47:44 $
 */
 
 /*!
@@ -324,7 +325,7 @@ void ReadWriteThread::run()
     {
         if (m_card.getType() != MemoryCard::TMemoryCard)
         {
-            m_exception = new ReadWriteException(qApp->tr("There's no memory card in your "
+            m_exception = new ReadWriteException(QObject::tr("There's no memory card in your "
                 "reader.\nUse the test function in the configuration\ndialog to set up your "
                 "reader properly."), ReadWriteException::CSmartcardError);
             return;
@@ -339,7 +340,7 @@ void ReadWriteThread::run()
         
         if (!m_card.selectFile())
         {
-            m_exception = new ReadWriteException(qApp->tr("<qt>It was not possible to select the "
+            m_exception = new ReadWriteException(QObject::tr("<qt>It was not possible to select the "
                 "file on the smartcard</qt>"), ReadWriteException::CSmartcardError);
             return;
         }
@@ -376,7 +377,7 @@ void ReadWriteThread::run()
             // read the random number
             if (m_card.read(0, 1)[0] != m_randomNumber)
             {
-                m_exception = new ReadWriteException(qApp->tr("You inserted the wrong smartcard!"),
+                m_exception = new ReadWriteException(QObject::tr("You inserted the wrong smartcard!"),
                     ReadWriteException::CSmartcardError);
                 return;
             }
@@ -391,7 +392,7 @@ void ReadWriteThread::run()
             
             if (!PasswordHash::isCorrect(m_password, pwHash))
             {
-                m_exception = new ReadWriteException(qApp->tr("The given password was wrong."),
+                m_exception = new ReadWriteException(QObject::tr("The given password was wrong."),
                     ReadWriteException::CWrongPassword);
                 return;
             }
@@ -412,13 +413,13 @@ void ReadWriteThread::run()
     {
         if (e.getErrorCode() == CardException::WrongVerification)
         {
-            m_exception = new ReadWriteException(qApp->tr("<qt><nobr>The PIN you entered was wrong. "
+            m_exception = new ReadWriteException(QObject::tr("<qt><nobr>The PIN you entered was wrong. "
                 "You have</nobr> <b>%1</b> retries. After that, the card is destroyed!").arg(
                 QString::number(e.getRetryNumber())), ReadWriteException::CSmartcardError);
         }
         else
         {
-            m_exception = new ReadWriteException(qApp->tr("<qt><nobr>There was a communication error "
+            m_exception = new ReadWriteException(QObject::tr("<qt><nobr>There was a communication error "
                 "while</nobr> communicating with the smartcard terminal.<p>The error message was:"
                 "<br><nobr>%1</nobr>").arg(e.what()), ReadWriteException::CSmartcardError);
         }
@@ -462,7 +463,7 @@ void DataReadWriter::writeXML(QDomDocument document, const QString& password)
     
     if (QFileInfo(file).exists() && !QFileInfo(file).isWritable())
     {
-        throw ReadWriteException(qApp->tr("<qt><nobr>The data file is not writable. Change "
+        throw ReadWriteException(QObject::tr("<qt><nobr>The data file is not writable. Change "
             "the file in</nobr> the configuration dialog or change the permission of the file!"
             "</qt>"), ReadWriteException::CIOError);
     }
@@ -484,7 +485,7 @@ void DataReadWriter::writeXML(QDomDocument document, const QString& password)
     }
     catch (const NoSuchAlgorithmException& e)
     {
-        throw ReadWriteException(qApp->tr("The algorithm '%1' is not avaible on "
+        throw ReadWriteException(QObject::tr("The algorithm '%1' is not avaible on "
             "your system.\nChoose another crypto algorithm in the settings.\nThe data "
             "is not saved!").arg(algorithm), ReadWriteException::CNoAlgorithm);
     }
@@ -511,7 +512,7 @@ void DataReadWriter::writeXML(QDomDocument document, const QString& password)
     
     if (!file.open(IO_WriteOnly))
     {
-        throw ReadWriteException(qApp->tr("The data could not be saved. There "
+        throw ReadWriteException(QObject::tr("The data could not be saved. There "
             "was an\nerror while creating the file:\n%1").arg( qApp->translate("QFile",
             file.errorString())), ReadWriteException::CIOError);
     }
@@ -548,14 +549,14 @@ QDomDocument DataReadWriter::readXML(const QString& password)
     QFile file(fileName);
     if (!file.open(IO_ReadOnly))
     {
-        throw ReadWriteException(qApp->tr("The file %1 could not be opened:\n%2.").
+        throw ReadWriteException(QObject::tr("The file %1 could not be opened:\n%2.").
             arg(fileName).arg(qApp->translate("QFile", file.errorString())),
             ReadWriteException::CIOError);
     }
     QDomDocument doc;
     if (!doc.setContent(&file))
     {
-        throw ReadWriteException(qApp->tr("The XML file (%1) may be corrupted "
+        throw ReadWriteException(QObject::tr("The XML file (%1) may be corrupted "
             "and\ncould not be read. Check the file with a text editor.").arg(fileName),
             ReadWriteException::CInvalidData);
     }
@@ -564,7 +565,7 @@ QDomDocument DataReadWriter::readXML(const QString& password)
     
     if (appData.namedItem("smartcard").toElement().attribute("useCard").toInt() && !smartcard)
     {
-        throw ReadWriteException(qApp->tr("<qt><nobr>The passwords of the current data file"
+        throw ReadWriteException(QObject::tr("<qt><nobr>The passwords of the current data file"
             " are stored</nobr> on a smartcard but you did not configure QPaMaT for reading "
             "smartcards.<p>Change the settings and try again!</qt>"), 
             ReadWriteException::CConfigurationError);
@@ -577,7 +578,7 @@ QDomDocument DataReadWriter::readXML(const QString& password)
         const QString hash = appData.namedItem("passwordhash").toElement().text();
         if (hash == "SMARTCARD" || !PasswordHash::isCorrect(password, hash))
         {
-            throw ReadWriteException(qApp->tr("The password is incorrect."),
+            throw ReadWriteException(QObject::tr("The password is incorrect."),
                 ReadWriteException::CWrongPassword);
         }
     }
@@ -600,8 +601,8 @@ QDomDocument DataReadWriter::readXML(const QString& password)
     }
     catch (const NoSuchAlgorithmException& ex)
     {
-        throw ReadWriteException(qApp->tr("The algorithm '%1' is not avaible on "
-                "your system.\nIt is impossible to read the file. Try to recompile or\n",
+        throw ReadWriteException(QObject::tr("The algorithm '%1' is not avaible on "
+                "your system.\nIt is impossible to read the file. Try to recompile or\n"
                 "update your OpenSSL library.").arg(algorithm), ReadWriteException::CNoAlgorithm);
     }
         
@@ -652,7 +653,7 @@ void DataReadWriter::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& r
     catch (const NoSuchLibraryException& e)
     {
         QApplication::restoreOverrideCursor();
-        throw ReadWriteException(qApp->tr("The application was not set up correctly for "
+        throw ReadWriteException(QObject::tr("The application was not set up correctly for "
             "using the smartcard. Call the configuration dialog and use the Test button for "
             "testing!<p>The error message was:<br><nobr>%1</nobr>").arg(e.what()), 
             ReadWriteException::CConfigurationError);
@@ -665,7 +666,7 @@ void DataReadWriter::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& r
     catch (const CardException& e)
     {
         QApplication::restoreOverrideCursor();
-        throw ReadWriteException(qApp->tr("Error in initializing the smart card reader:\n"
+        throw ReadWriteException(QObject::tr("Error in initializing the smart card reader:\n"
              "%1").arg(e.what()), ReadWriteException::CSmartcardError);
     }
     
@@ -692,8 +693,8 @@ void DataReadWriter::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& r
     
     // show dialog
     QString dlgText = write 
-        ? qApp->tr("<b>Writing</b> to the smartcard...") 
-        : qApp->tr("<b>Reading</b> from the smartcard..."); 
+        ? QObject::tr("<b>Writing</b> to the smartcard...") 
+        : QObject::tr("<b>Reading</b> from the smartcard..."); 
     std::auto_ptr<WaitDialog> msg(new WaitDialog(QPixmap(smartcard_24x24_xpm), dlgText, 
          "QPaMaT", m_parent, "Wait dialog"));
     msg->show();

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: copylabel.cpp,v 1.5 2004/03/30 15:43:51 bwalle Exp $
+ * Id: $Id: copylabel.cpp,v 1.6 2004/07/23 08:46:59 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -36,8 +36,8 @@
     
     \ingroup widgets
     \author Bernhard Walle
-    \version $Revision: 1.5 $
-    \date $Date: 2004/03/30 15:43:51 $
+    \version $Revision: 1.6 $
+    \date $Date: 2004/07/23 08:46:59 $
 */
 
 /*!
@@ -91,6 +91,12 @@ void CopyLabel::init()
 
 
 /*!
+    \property CopyLabel::content
+    
+    The content of the label.
+*/
+
+/*!
     Sets the content.
     \param content the content string
 */
@@ -121,6 +127,12 @@ QString CopyLabel::getContent() const
     return m_label->text();
 }
 
+
+/*!
+    \property CopyLabel::hidden
+    
+    Whether the text is displayed hidden.
+*/
 
 /*!
     If the word is displayed hidden.

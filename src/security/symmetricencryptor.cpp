@@ -1,5 +1,5 @@
 /*
- * Id: $Id: symmetricencryptor.cpp,v 1.3 2003/12/29 10:59:16 bwalle Exp $
+ * Id: $Id: symmetricencryptor.cpp,v 1.4 2004/07/23 08:47:06 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -44,8 +44,8 @@ StringMap SymmetricEncryptor::m_algorithms = initAlgorithmsMap();
 
     \ingroup security
     \author Bernhard Walle
-    \version $Revision: 1.3 $
-    \date $Date: 2003/12/29 10:59:16 $
+    \version $Revision: 1.4 $
+    \date $Date: 2004/07/23 08:47:06 $
 */
 
 /*!
@@ -158,7 +158,7 @@ StringMap SymmetricEncryptor::initAlgorithmsMap()
 
 
 /*!
-    \copydoc Encryptor::encrypt()
+    \copydoc Encryptor::encrypt
 */
 ByteVector SymmetricEncryptor::encrypt(const ByteVector& vector)
 {
@@ -167,7 +167,7 @@ ByteVector SymmetricEncryptor::encrypt(const ByteVector& vector)
 
 
 /*!
-    \copydoc Encryptor::decrypt()
+    \copydoc Encryptor::decrypt
 */
 ByteVector SymmetricEncryptor::decrypt(const ByteVector& vector)
 {

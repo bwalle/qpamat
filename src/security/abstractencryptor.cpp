@@ -1,5 +1,5 @@
 /*
- * Id: $Id: abstractencryptor.cpp,v 1.3 2003/12/29 10:59:16 bwalle Exp $
+ * Id: $Id: abstractencryptor.cpp,v 1.4 2004/07/23 08:47:06 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -33,12 +33,12 @@
     
     \ingroup security
     \author Bernhard Walle
-    \version $Revision: 1.3 $
-    \date $Date: 2003/12/29 10:59:16 $
+    \version $Revision: 1.4 $
+    \date $Date: 2004/07/23 08:47:06 $
 */
 
 /*!
-    \copydoc Encryptor::encryptStrToBytes()
+    \copydoc Encryptor::encryptStrToBytes
 */
 ByteVector AbstractEncryptor::encryptStrToBytes(const QString& string)
 {
@@ -52,7 +52,7 @@ ByteVector AbstractEncryptor::encryptStrToBytes(const QString& string)
 
 
 /*!
-    \copydoc StringEncryptor::encryptStrToStr()
+    \copydoc StringEncryptor::encryptStrToStr
 */
 QString AbstractEncryptor::encryptStrToStr(const QString& string)
 {
@@ -61,7 +61,7 @@ QString AbstractEncryptor::encryptStrToStr(const QString& string)
 
 
 /*!
-    \copydoc Encryptor::decryptStrFromBytes()
+    \copydoc Encryptor::decryptStrFromBytes
 */
 QString AbstractEncryptor::decryptStrFromBytes(const ByteVector& vector)
 {
@@ -79,7 +79,7 @@ QString AbstractEncryptor::decryptStrFromBytes(const ByteVector& vector)
 
 
 /*!
-    \copydoc StringEncryptor::decryptStrFromStr()
+    \copydoc StringEncryptor::decryptStrFromStr
 */
 QString AbstractEncryptor::decryptStrFromStr(const QString& string)
 {

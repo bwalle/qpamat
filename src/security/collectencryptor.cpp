@@ -1,5 +1,5 @@
 /*
- * Id: $Id: collectencryptor.cpp,v 1.3 2003/12/29 10:59:16 bwalle Exp $
+ * Id: $Id: collectencryptor.cpp,v 1.4 2004/07/23 08:47:06 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -44,8 +44,8 @@
     
     \ingroup security
     \author Bernhard Walle
-    \version $Revision: 1.3 $
-    \date $Date: 2003/12/29 10:59:16 $
+    \version $Revision: 1.4 $
+    \date $Date: 2004/07/23 08:47:06 $
 */
 
 /*!
@@ -58,7 +58,7 @@ CollectEncryptor::CollectEncryptor(Encryptor& encryptor)
 
 
 /*!
-    \copydoc StringEncryptor::encryptStrToStr()
+    \copydoc StringEncryptor::encryptStrToStr
 */
 QString CollectEncryptor::encryptStrToStr(const QString& string)
 {
@@ -72,7 +72,7 @@ QString CollectEncryptor::encryptStrToStr(const QString& string)
 
 
 /*!
-    \copydoc StringEncryptor::decryptStrFromStr()
+    \copydoc StringEncryptor::decryptStrFromStr
     \exception std::invalid_argument if the argument is not of the specified form
     \exception std::range_error if the byte array does not contain the specified bytes
 */

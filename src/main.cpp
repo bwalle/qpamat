@@ -1,5 +1,5 @@
 /*
- * Id: $Id: main.cpp,v 1.21 2004/01/21 20:57:24 bwalle Exp $
+ * Id: $Id: main.cpp,v 1.22 2004/07/23 08:47:44 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -28,6 +28,7 @@
 #include <qsettings.h>
 #include <qfile.h>
 #include <qdir.h>
+#include <qtextcodec.h>
 
 #include "qpamat.h"
 #include "global.h"
@@ -147,6 +148,14 @@ int main(int argc, char** argv)
 {
     QApplication app(argc, argv);
     parseCommandLine(argc, argv);
+    
+    // translation
+    QTranslator translator(0), ttranslator(0);
+    QString loc = QTextCodec::locale();
+    translator.load(loc, "ts");
+    ttranslator.load(QString("qt_") + loc, QString(getenv("QTDIR")) + "/translations/");
+    app.installTranslator(&translator);
+    app.installTranslator(&ttranslator);
     
     SingleApplication::init(QDir::homeDirPath(), "QPaMaT");
     std::auto_ptr<Qpamat> qp;

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: fontchoosebox.cpp,v 1.4 2003/12/29 00:37:11 bwalle Exp $
+ * Id: $Id: fontchoosebox.cpp,v 1.5 2004/07/23 08:46:59 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -35,8 +35,8 @@
     
     \ingroup widgets
     \author Bernhard Walle
-    \version $Revision: 1.4 $
-    \date $Date: 2003/12/29 00:37:11 $
+    \version $Revision: 1.5 $
+    \date $Date: 2004/07/23 08:46:59 $
 */
 
 /*!
@@ -78,6 +78,12 @@ FontChooseBox::FontChooseBox(QWidget* parent, const char* name)
     connect(this, SIGNAL(fontChanged(const QFont&)), this, SLOT(setDisplayFont(const QFont&)));
 }
 
+
+/*!
+    \property FontChooseBox::font
+    
+    Current font.
+*/
 
 /*!
     Sets the font. The font is displayed in itself.
