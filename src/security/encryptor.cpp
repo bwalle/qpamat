@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encryptor.cpp,v 1.2 2003/09/21 19:51:38 bwalle Exp $
+ * Id: $Id: encryptor.cpp,v 1.3 2003/10/03 13:04:51 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -33,10 +33,12 @@
 
 // -------------------------------------------------------------------------------------------------
 StringMap Encryptor::m_algorithms= initAlgorithmsMap();
+// -------------------------------------------------------------------------------------------------
 
 // -------------------------------------------------------------------------------------------------
 Encryptor::Encryptor(const QString& algorithm, const QString& password)
             throw (NoSuchAlgorithmException)
+// -------------------------------------------------------------------------------------------------
 {
     // set the right cipher algorithm
     if (m_algorithms.contains(algorithm.upper()))
@@ -55,6 +57,7 @@ Encryptor::Encryptor(const QString& algorithm, const QString& password)
 
 // -------------------------------------------------------------------------------------------------
 QStringList Encryptor::getAlgorithms()
+// -------------------------------------------------------------------------------------------------
 {
     QStringList algorithms;
     
@@ -70,6 +73,7 @@ QStringList Encryptor::getAlgorithms()
 
 // -------------------------------------------------------------------------------------------------
 QString Encryptor::getSuggestedAlgorithm()
+// -------------------------------------------------------------------------------------------------
 {
     StringVector vec;
     vec.push_back("BLOWFISH");
@@ -89,6 +93,8 @@ QString Encryptor::getSuggestedAlgorithm()
 
 // -------------------------------------------------------------------------------------------------
 StringMap Encryptor::initAlgorithmsMap()
+// -------------------------------------------------------------------------------------------------
+
 {
     StringMap map, returned;
     OpenSSL_add_all_algorithms();
@@ -113,6 +119,7 @@ StringMap Encryptor::initAlgorithmsMap()
 
 // -------------------------------------------------------------------------------------------------
 ByteVector Encryptor::encrypt(const ByteVector& vector)
+// -------------------------------------------------------------------------------------------------
 {
     return crypt(vector, ENCRYPT);
 }
@@ -120,6 +127,7 @@ ByteVector Encryptor::encrypt(const ByteVector& vector)
 
 // -------------------------------------------------------------------------------------------------
 ByteVector Encryptor::encryptString(const QString& string)
+// -------------------------------------------------------------------------------------------------
 {
     QCString utf8CString = string.utf8();
     uint utf8Length = utf8CString.length();
@@ -131,6 +139,7 @@ ByteVector Encryptor::encryptString(const QString& string)
 
 // -------------------------------------------------------------------------------------------------
 ByteVector Encryptor::decrypt(const ByteVector& vector)
+// -------------------------------------------------------------------------------------------------
 {
     return crypt(vector, DECRYPT);
 }
@@ -138,6 +147,7 @@ ByteVector Encryptor::decrypt(const ByteVector& vector)
 
 // -------------------------------------------------------------------------------------------------
 QString Encryptor::decryptString(const ByteVector& vector)
+// -------------------------------------------------------------------------------------------------
 {
     QString result;
     ByteVector decrypted = crypt(vector, DECRYPT);
@@ -153,6 +163,7 @@ QString Encryptor::decryptString(const ByteVector& vector)
 
 // -------------------------------------------------------------------------------------------------
 ByteVector Encryptor::crypt(const ByteVector& vector, OperationType operation)
+// -------------------------------------------------------------------------------------------------
 {
     byte buf[BUFLEN];
 	byte ebuf[BUFLEN + 8];
@@ -190,6 +201,7 @@ ByteVector Encryptor::crypt(const ByteVector& vector, OperationType operation)
 
 // -------------------------------------------------------------------------------------------------
 void Encryptor::setPassword(const QString& password)
+// -------------------------------------------------------------------------------------------------
 {
     QCString pwUtf8 = password.utf8();
     EVP_BytesToKey(m_cipher_algorithm, HASH_ALGORITHM, NULL, 
@@ -199,5 +211,6 @@ void Encryptor::setPassword(const QString& password)
 
 // -------------------------------------------------------------------------------------------------
 Encryptor::~Encryptor()
+// -------------------------------------------------------------------------------------------------
 {}
 
