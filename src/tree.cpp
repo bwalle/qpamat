@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.17 2003/12/16 22:52:20 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.18 2003/12/18 14:32:19 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -90,7 +90,10 @@ bool Tree::readFromXML(const QString& fileName, const QString& password) throw (
 // -------------------------------------------------------------------------------------------------
 {
     // delete the old tree
-    clear();
+    if (childCount() > 0)
+    {
+        clear();
+    }
     
     QSettings& set = Settings::getInstance().getSettings();
     bool smartcard = set.readBoolEntry("Smartcard/UseCard", Settings::DEFAULT_USE_CARD );
