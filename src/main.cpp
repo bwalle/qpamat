@@ -1,5 +1,5 @@
 /*
- * Id: $Id: main.cpp,v 1.7 2003/12/04 11:56:37 bwalle Exp $
+ * Id: $Id: main.cpp,v 1.8 2003/12/10 21:48:53 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -29,6 +29,8 @@
 #include "qpamat.h"
 #include "settings.h"
 
+Qpamat* qpamat;
+
 int main(int argc, char** argv)
 {
 #ifdef DEBUG
@@ -39,10 +41,10 @@ int main(int argc, char** argv)
     QApplication app(argc, argv);
     try
     {
-        Qpamat qpamat;
-        app.setMainWidget(&qpamat);
+        qpamat = new Qpamat();
+        app.setMainWidget(qpamat);
         
-        qpamat.show();
+        qpamat->show();
         
         returncode = app.exec();
     }
@@ -60,6 +62,7 @@ int main(int argc, char** argv)
             QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
     }
     
+    delete qpamat;
     return returncode;
 }
 
