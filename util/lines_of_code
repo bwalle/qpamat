@@ -1,0 +1,11 @@
+#!/bin/sh
+
+LOC=0
+
+for i in `find -name '*.cpp' ` ; do 
+  ADD=`stripcomment < $i | grep -v "^\w*$" | wc -l`
+  LOC=`expr $LOC + $ADD`
+done
+
+echo Lines of code = $LOC
+
