@@ -1,5 +1,5 @@
 /*
- * Id: $Id: settings.h,v 1.2 2003/11/04 22:49:38 bwalle Exp $
+ * Id: $Id: settings.h,v 1.3 2003/11/16 20:23:23 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,18 +24,24 @@
  * Singleton for storing settings in registry (MS Windows) or ini-file (Unix).
  * @ingroup gui
  * @author Bernhard Walle
- * @version $Revision: 1.2 $
- * @date $Date: 2003/11/04 22:49:38 $
+ * @version $Revision: 1.3 $
+ * @date $Date: 2003/11/16 20:23:23 $
  */
 class Settings
 {
     public:
         
         /** the default web browser */
-        static QString DEFAULT_WEBBROWSER;
+        static const QString DEFAULT_WEBBROWSER;
         
         /** the default file name */
-        static QString QPAMAT_FILE_NAME;
+        static const QString QPAMAT_FILE_NAME;
+        
+        /** the default port number */
+        static const int DEFAULT_PORT;
+        
+        /** if the card should be used */
+        static const bool DEFAULT_USE_CARD;
         
         /**
          * Destructor
