@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configpasswordchecker.cpp,v 1.1 2003/12/18 21:57:53 bwalle Exp $
+ * Id: $Id: configpasswordchecker.cpp,v 1.2 2003/12/21 20:31:51 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -53,7 +53,7 @@ bool ConfigPasswordChecker::isPasswordOk(const QString& password) throw (Passwor
     bool digit = !m_ensuredChars.contains("D");;
     bool special = !m_ensuredChars.contains("S");;
     
-    int numOfPairs = 0;
+    uint numOfPairs = 0;
     for (uint i = 0; i < password.length(); ++i)
     {
         const QChar character = password[i];
@@ -81,7 +81,7 @@ bool ConfigPasswordChecker::isPasswordOk(const QString& password) throw (Passwor
         }
     }
     
-    if (!(uppercase && lowercase && digit && special && numOfPairs <= 1))
+    if (!(uppercase && lowercase && digit && special && numOfPairs <= (password.length() / 4)))
     {
         return false;
     }
