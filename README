@@ -1,0 +1,18 @@
+QPaMaT -- password managing tool
+================================
+
+
+You find the documentation in the doc/user/en/manual subdirectory in HTML
+format. Just start your favourite web browser and read this manual. It contains
+also installation instruction. For licensing issues read COPYING.
+
+There's no version for MS Windows now, but Qt 4.0 will be available in terms
+of GNU GPL, so I think I'm able to port it.
+
+If you encounter any problems and if you've read the manual, feel free to
+contact me via e-mail (bernhard.walle@gmx.de) or Jabber (bwalle@jabber.ccc.de)
+if I have time.
+
+
+ -Bernhard Walle
+
