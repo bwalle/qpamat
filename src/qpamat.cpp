@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.32 2004/01/13 23:49:16 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.33 2004/01/15 22:06:58 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -90,8 +90,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.32 $
-    \date $Date: 2004/01/13 23:49:16 $
+    \version $Revision: 1.33 $
+    \date $Date: 2004/01/15 22:06:58 $
  */
 
 /*! 
@@ -260,6 +260,7 @@ void Qpamat::initToolbar()
     m_searchCombo->setSizeLimit(10);
     m_searchCombo->setFocusPolicy(QWidget::ClickFocus);
     m_searchCombo->setInsertionPolicy(QComboBox::AtTop);
+    m_searchCombo->setAutoCompletion(true);
     
     m_toolButtons.search = new QToolButton(
         QIconSet(find_16x16_xpm, find_22x22_xpm), 0, 0, 0, 0, m_searchToolbar, "Search Toolbutton");
