@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.cpp,v 1.25 2004/05/15 16:55:33 bwalle Exp $
+ * Id: $Id: configurationdialog.cpp,v 1.26 2004/07/23 13:11:42 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -55,12 +55,6 @@
 #include "security/hybridpasswordchecker.h"
 #include "smartcard/memorycard.h"
 
-#include "images/general_34x34.xpm"
-#include "images/password_34x34.xpm"
-#include "images/smartcard_34x34.xpm"
-#include "images/lock_big.xpm"
-#include "images/presentation_34x34.xpm"
-
 /*!
     \class ConfigurationDialog
     
@@ -89,8 +83,8 @@
     
     \ingroup dialogs
     \author Bernhard Walle
-    \version $Revision: 1.25 $
-    \date $Date: 2004/05/15 16:55:33 $
+    \version $Revision: 1.26 $
+    \date $Date: 2004/07/23 13:11:42 $
  */
 
 /*!
@@ -103,23 +97,23 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     
     // Add the general tab
     ConfDlgGeneralTab* generalTab = new ConfDlgGeneralTab(this, "GeneralTab");
-    addPage(generalTab, general_34x34_xpm, tr("General"));
+    addPage(generalTab, QPixmap::fromMimeSource("general_34.png"), tr("General"));
     
     // Add the password tab
     ConfDlgPasswordTab* passwordTab = new ConfDlgPasswordTab(this, "PasswordTab");
-    addPage(passwordTab, password_34x34_xpm, tr("Password"));
+    addPage(passwordTab, QPixmap::fromMimeSource("password_34.png"), tr("Password"));
     
     // Add the security tab
     ConfDlgSecurityTab* securityTab = new ConfDlgSecurityTab(this, "SecurityTab");
-    addPage(securityTab, lock_big_xpm, tr("Security"));
+    addPage(securityTab, QPixmap::fromMimeSource("stock_dialog_authentication_34.png"), tr("Security"));
     
     // Add the smartcard tab
     ConfDlgSmartcardTab* smartCardTab = new ConfDlgSmartcardTab(this, "SmartCardTab");
-    addPage(smartCardTab, smartcard_34x34_xpm, tr("Smart Card"));
+    addPage(smartCardTab, QPixmap::fromMimeSource("smartcard_34.png"), tr("Smart Card"));
     
     // Add the presentation tab
     ConfDlgPresentationTab* presentationTab = new ConfDlgPresentationTab(this, "PresTab");
-    addPage(presentationTab, presentation_34x34_xpm, tr("Presenstation"));
+    addPage(presentationTab, QPixmap::fromMimeSource("presentation_34.png"), tr("Presenstation"));
     
     QAction* whatsThis = new QAction("What's this", QKeySequence(SHIFT|Key_F1), this);
     connect(whatsThis, SIGNAL(activated()), qpamat, SLOT(whatsThis()));
@@ -142,8 +136,8 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.25 $
-    \date $Date: 2004/05/15 16:55:33 $
+    \version $Revision: 1.26 $
+    \date $Date: 2004/07/23 13:11:42 $
 */
 
 /*!
@@ -184,8 +178,8 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.25 $
-    \date $Date: 2004/05/15 16:55:33 $
+    \version $Revision: 1.26 $
+    \date $Date: 2004/07/23 13:11:42 $
 */
 
 
@@ -305,8 +299,8 @@ void ConfDlgGeneralTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.25 $
-    \date $Date: 2004/05/15 16:55:33 $
+    \version $Revision: 1.26 $
+    \date $Date: 2004/07/23 13:11:42 $
 */
 
 
@@ -562,8 +556,8 @@ void ConfDlgPasswordTab::sortDictionary()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.25 $
-    \date $Date: 2004/05/15 16:55:33 $
+    \version $Revision: 1.26 $
+    \date $Date: 2004/07/23 13:11:42 $
 */
 
 
@@ -648,8 +642,8 @@ void ConfDlgSecurityTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.25 $
-    \date $Date: 2004/05/15 16:55:33 $
+    \version $Revision: 1.26 $
+    \date $Date: 2004/07/23 13:11:42 $
 */
 
 
@@ -748,8 +742,8 @@ void ConfDlgPresentationTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.25 $
-    \date $Date: 2004/05/15 16:55:33 $
+    \version $Revision: 1.26 $
+    \date $Date: 2004/07/23 13:11:42 $
 */
 
 /*!

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: filelineedit.cpp,v 1.8 2004/07/23 08:46:59 bwalle Exp $
+ * Id: $Id: filelineedit.cpp,v 1.9 2004/07/23 13:13:01 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -22,7 +22,6 @@
 #include <qdir.h>
 
 #include "filelineedit.h"
-#include "images/find_16x16.xpm"
 
 /*!
     \class FileLineEdit
@@ -34,8 +33,8 @@
     
     \ingroup widgets
     \author Bernhard Walle
-    \version $Revision: 1.8 $
-    \date $Date: 2004/07/23 08:46:59 $
+    \version $Revision: 1.9 $
+    \date $Date: 2004/07/23 13:13:01 $
 */
 
 /*!
@@ -54,7 +53,7 @@ FileLineEdit::FileLineEdit(QWidget* parent, bool save, const char* name)
     // we need a tool button because it has no border and it looks better in this size
     // in Platin style
     m_fileDialogButton = new QToolButton(this);
-    m_fileDialogButton->setIconSet(QIconSet(find_16x16_xpm));
+    m_fileDialogButton->setIconSet(QIconSet(QPixmap::fromMimeSource("stock_directory_16.png")));
     
     boxLayout->addWidget(m_lineEdit);
     boxLayout->addWidget(m_fileDialogButton);

@@ -1,7 +1,7 @@
 Summary: 	Password manager written with Qt
 Name: 		qpamat
-Version: 	0.2.11
-Release: 	0
+Version: 	0.3.0
+Release: 	3
 Packager:       Bernhard Walle <bernhard@bwalle.de>
 License:	GPL
 URL: 		http://www.bwalle.de/temp/qpamat/
@@ -28,14 +28,18 @@ Author
 
 %build
 qmake -o Makefile qpamat.pro
+lrelease qpamat.pro
 make
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%{_bindir} 
 mkdir -p $RPM_BUILD_ROOT/%{_datadir}/qpamat
+mkdir -p $RPM_BUILD_ROOT/%{_datadir}/qpamat/translations
 install -m 0755 qpamat $RPM_BUILD_ROOT/%{_bindir}
 cp -R share/dicts $RPM_BUILD_ROOT/%{_datadir}/qpamat
+install -m 0644 COPYING $RPM_BUILD_ROOT/%{_datadir}/qpamat/
+install -m 0644 ts/*.qm $RPM_BUILD_ROOT/%{_datadir}/qpamat/translations
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -45,4 +49,3 @@ rm -rf $RPM_BUILD_ROOT
 %doc README COPYING doc/qpamat.dtd
 %{_bindir}/qpamat
 %{_datadir}/qpamat
-

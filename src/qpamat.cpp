@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.42 2004/06/05 13:26:30 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.43 2004/07/23 13:13:26 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -41,27 +41,6 @@
 #include <qfiledialog.h>
 #include <qsimplerichtext.h> 
 
-#include "images/new_16x16.xpm"
-#include "images/new_22x22.xpm"
-#include "images/exit_16x16.xpm"
-#include "images/exit_22x22.xpm"
-#include "images/save_16x16.xpm"
-#include "images/save_22x22.xpm"
-#include "images/whats_this.xpm"
-#include "images/lock_big.xpm"
-#include "images/configure_16x16.xpm"
-#include "images/configure_22x22.xpm"
-#include "images/find_16x16.xpm"
-#include "images/find_22x22.xpm"
-#include "images/print_16x16.xpm"
-#include "images/print_22x22.xpm"
-#include "images/edit_add_16x16.xpm"
-#include "images/edit_add_22x22.xpm"
-#include "images/edit_remove_16x16.xpm"
-#include "images/edit_remove_22x22.xpm"
-#include "images/clear_clipboard_16x16.xpm"
-#include "images/qpamat_16x16.xpm"
-#include "images/qt_16x16.xpm"
 
 #include "qpamat.h"
 #include "settings.h"
@@ -91,8 +70,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.42 $
-    \date $Date: 2004/06/05 13:26:30 $
+    \version $Revision: 1.43 $
+    \date $Date: 2004/07/23 13:13:26 $
  */
 
 /*! 
@@ -117,7 +96,7 @@ Qpamat::Qpamat()
       m_errorMessage(0), m_searchToolbar(0), m_randomPassword(0)
 {
     // Title and Icon
-    setIcon(lock_big_xpm);
+    setIcon(QPixmap::fromMimeSource("stock_dialog_authentication_48.png"));
     setCaption("QPaMaT");
     
     setUsesBigPixmaps(true);
@@ -271,7 +250,9 @@ void Qpamat::initToolbar()
     m_searchCombo->setAutoCompletion(true);
     
     m_toolButtons.search = new QToolButton(
-        QIconSet(find_16x16_xpm, find_22x22_xpm), 0, 0, 0, 0, m_searchToolbar, "Search Toolbutton");
+        QIconSet(QPixmap::fromMimeSource("stock_search_16.png"),
+        QPixmap::fromMimeSource("stock_search_24.png")), 0, 0, 0, 0,
+        m_searchToolbar, "Search Toolbutton");
     
     // ---- Edit toolbar ---------------------------------------------------------------------------
     QToolBar* editToolbar = new QToolBar(this);
@@ -813,21 +794,28 @@ void Qpamat::connectSignalsAndSlots()
 void Qpamat::initActions()
 {
     // ----- File ----------------------------------------------------------------------------------
-    m_actions.newAction = new QAction(QIconSet(new_16x16_xpm, new_22x22_xpm), tr("&New"), 
+    m_actions.newAction = new QAction(QIconSet(QPixmap::fromMimeSource("stock_new_16.png"),
+        QPixmap::fromMimeSource("stock_new_24.png")), tr("&New"), 
         QKeySequence(CTRL|Key_N), this);
-    m_actions.quitAction = new QAction(QIconSet(exit_16x16_xpm, exit_22x22_xpm), tr("E&xit"),
+    m_actions.quitAction = new QAction(QIconSet( QPixmap::fromMimeSource("stock_exit_16.png"),
+        QPixmap::fromMimeSource("stock_exit_24.png") ), tr("E&xit"),
         QKeySequence(CTRL|Key_Q), this);
     m_actions.loginAction = new QAction(tr("&Login"), QKeySequence(CTRL|Key_L), this);
     m_actions.logoutAction = new QAction(tr("&Logout"), QKeySequence(CTRL|Key_L), this);
-    m_actions.saveAction = new QAction(QIconSet(save_16x16_xpm, save_22x22_xpm), tr("&Save"), 
+    m_actions.saveAction = new QAction(QIconSet(QPixmap::fromMimeSource("stock_save_16.png"),
+        QPixmap::fromMimeSource("stock_save_24.png")), tr("&Save"), 
         QKeySequence(CTRL|Key_S), this);
     m_actions.exportAction = new QAction(tr("&Export..."), QKeySequence(), this);
-    m_actions.printAction = new QAction(QIconSet(print_16x16_xpm, print_22x22_xpm),
+    m_actions.printAction = new QAction(QIconSet(
+        QPixmap::fromMimeSource("stock_print_16.png"), 
+        QPixmap::fromMimeSource("stock_print_24.png")),
         tr("&Print..."), QKeySequence(CTRL|Key_P), this);
     
     // ----- Options -------------------------------------------------------------------------------
     m_actions.changePasswordAction = new QAction(tr("&Change Password..."), QKeySequence(), this);
-    m_actions.settingsAction = new QAction(QIconSet(configure_16x16_xpm, configure_22x22_xpm), 
+    m_actions.settingsAction = new QAction(QIconSet(
+        QPixmap::fromMimeSource("stock_preferences_16.png"),
+        QPixmap::fromMimeSource("stock_preferences_24.png")), 
         tr("&Settings..."), QKeySequence(CTRL|Key_T), this);
         
     // ----- Extras --------------------------------------------------------------------------------
@@ -836,20 +824,23 @@ void Qpamat::initActions()
     m_actions.passwordStrengthAction = new QAction(tr("&Show password strength"),
         QKeySequence(CTRL|Key_W), this);
     m_actions.passwordStrengthAction->setToggleAction(true);
-    m_actions.clearClipboardAction = new QAction(QIconSet(clear_clipboard_16x16_xpm), 
+    m_actions.clearClipboardAction = new QAction(QIconSet(
+        QPixmap::fromMimeSource("clear_clipboard_16.png")), 
         tr("&Clear clipboard"), QKeySequence(CTRL|Key_E), this);
     
     // ----- Help ----------------------------------------------------------------------------------
-    m_actions.whatsThisAction = new QAction(QPixmap(whats_this_xpm), tr("&What's this"), 
-        QKeySequence(SHIFT|Key_F1), this);
-    m_actions.aboutAction = new QAction(QIconSet(qpamat_16x16_xpm), tr("&About..."), 0, this);
-    m_actions.aboutQtAction = new QAction(QIconSet(qt_16x16_xpm), 
+    m_actions.whatsThisAction = new QAction(QPixmap(QPixmap::fromMimeSource("whats_this.png")), 
+        tr("&What's this"), QKeySequence(SHIFT|Key_F1), this);
+    m_actions.aboutAction = new QAction(tr("&About..."), 0, this);
+    m_actions.aboutQtAction = new QAction(QPixmap::fromMimeSource("qt_16.png"), 
         tr("About &Qt..."), QKeySequence(), this);
     
     // ------ Toolbar ------------------------------------------------------------------------------
-    m_actions.addItemAction = new QAction(QIconSet(edit_add_16x16_xpm, edit_add_22x22_xpm),
+    m_actions.addItemAction = new QAction(QIconSet(QPixmap::fromMimeSource("stock_add_16.png"),
+        QPixmap::fromMimeSource("stock_add_24.png")),
         tr("Add item"), QKeySequence(Key_Insert), this, "Add item action");
-    m_actions.removeItemAction = new QAction(QIconSet(edit_remove_16x16_xpm, edit_remove_22x22_xpm),
+    m_actions.removeItemAction = new QAction(QIconSet(QPixmap::fromMimeSource("stock_remove_16.png"),
+        QPixmap::fromMimeSource("stock_remove_24.png")),
         tr("Remove item"), QKeySequence(), this, "Remove item action");
         
     // ------ Misc ---------------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightlistview.cpp,v 1.14 2004/03/30 15:42:43 bwalle Exp $
+ * Id: $Id: rightlistview.cpp,v 1.15 2004/07/23 13:13:38 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -28,10 +28,6 @@
 #include "global.h"
 #include "rightlistview.h"
 #include "dialogs/showpassworddialog.h"
-#include "images/eye_16x16.xpm"
-#include "images/edit_remove_16x16.xpm"
-#include "images/edit_add_16x16.xpm"
-#include "images/copy_16x16.xpm"
 #include "help.h"
 
 
@@ -41,8 +37,8 @@
     \brief Represents the list view on the right where the key-value pairs are displayed.
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.14 $
-    \date $Date: 2004/03/30 15:42:43 $
+    \version $Revision: 1.15 $
+    \date $Date: 2004/07/23 13:13:38 $
 */
 
 /*!
@@ -119,13 +115,13 @@ RightListView::RightListView(QWidget* parent)
 void RightListView::initContextMenu()
 {
     m_contextMenu = new QPopupMenu(this);
-    m_contextMenu->insertItem(QIconSet(edit_add_16x16_xpm), tr("&New"), NEW);
-    m_contextMenu->insertItem(QIconSet(edit_remove_16x16_xpm), 
+    m_contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("stock_add_16.png")), tr("&New"), NEW);
+    m_contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("stock_remove_16.png")), 
         tr("&Delete") + "\t" + QString(QKeySequence(Key_Delete)), DELETE);
     m_contextMenu->insertSeparator();
-    m_contextMenu->insertItem(QIconSet(copy_16x16_xpm),
+    m_contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("stock_copy_16.png")),
         tr("&Copy") + "\t" + QString(QKeySequence(CTRL|Key_C)), COPY);
-    m_contextMenu->insertItem(QIconSet(eye_16x16_xpm), tr("Show &password..."), SHOW_PW);
+    m_contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("eye_16.png")), tr("Show &password..."), SHOW_PW);
 }
 
 

@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.44 2004/07/23 08:48:14 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.45 2004/07/23 13:14:18 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -17,10 +17,10 @@ BINDIR             = $${PREFIX}/bin
 
 ################################################################################
 
-VERSION_STRING     = 0.2.11
+VERSION_STRING     = 0.3.0
 MAJOR_VERSION      = 0
-MINOR_VERSION      = 2
-PATCH_VERSION      = 11
+MINOR_VERSION      = 3
+PATCH_VERSION      = 0
 
 ################################################################################
 
@@ -134,6 +134,57 @@ TRANSLATIONS =                                  \
 
 # -----------------------------------------------------------------------------
 
+UI_DIR = out
+IMAGES =                                        \
+    images/stock_print_16.png                   \
+    images/stock_print_24.png                   \
+    images/stock_exit_16.png                    \
+    images/stock_exit_24.png                    \
+    images/stock_new_16.png                     \
+    images/stock_new_24.png                     \
+    images/stock_save_16.png                    \
+    images/stock_save_24.png                    \             
+    images/stock_preferences_16.png             \
+    images/stock_preferences_24.png             \
+    images/stock_search_16.png                  \
+    images/stock_search_24.png                  \
+    images/stock_up_arrow_16.png                \
+    images/stock_up_arrow_24.png                \
+    images/stock_down_arrow_16.png              \
+    images/stock_down_arrow_24.png              \
+    images/stock_copy_16.png                    \
+    images/stock_copy_24.png                    \
+    images/stock_font_16.png                    \
+    images/stock_font_24.png                    \
+    images/stock_add_16.png                     \
+    images/stock_add_24.png                     \
+    images/stock_remove_16.png                  \
+    images/stock_remove_24.png                  \
+    images/stock_directory_16.png               \
+    images/clear_clipboard_16.png               \
+    images/general_34.png                       \
+    images/password_34.png                      \
+    images/stock_dialog_authentication_48.png   \
+    images/stock_dialog_authentication_34.png   \
+    images/presentation_34.png                  \
+    images/traffic_gray_16.png                  \
+    images/traffic_out_22.png                   \
+    images/traffic_red_16.png                   \
+    images/traffic_red_22.png                   \
+    images/traffic_green_16.png                 \
+    images/traffic_green_22.png                 \
+    images/traffic_yellow_16.png                \
+    images/traffic_yellow_22.png                \
+    images/rename_16.png                        \
+    images/smartcard_24.png                     \
+    images/smartcard_34.png                     \
+    images/smartcard_48.png                     \
+    images/whats_this.png                       \
+    images/qt_16.png                            \
+    images/eye_16.png
+
+# -----------------------------------------------------------------------------
+
 isEmpty(static) {
   CONFIG     += warn_on qt exceptions
 } else {
@@ -186,6 +237,8 @@ maketarball.commands       += rm qpamat-$$VERSION_STRING/out/* &&
 maketarball.commands       += rm qpamat-$$VERSION_STRING/qpamat &&
 maketarball.commands       += find qpamat-$$VERSION_STRING -name CVS -type d -exec rm -r {} \; ;
 maketarball.commands       += find qpamat-$$VERSION_STRING -name '*.o' -exec rm {} \; ;
+maketarball.commands       += find qpamat-$$VERSION_STRING -name '*.qm' -exec rm {} \; ;
+maketarball.commands       += find qpamat-$$VERSION_STRING -name .cvsignore -exec rm {} \; ;
 maketarball.commands       += tar cvfz qpamat-$${VERSION_STRING}.tar.gz qpamat-$$VERSION_STRING &&
 maketarball.commands       += cd - &&
 maketarball.commands       += mv ../qpamat-$${VERSION_STRING}.tar.gz . &&
@@ -210,6 +263,10 @@ INSTALLS                   += i_documentation
 i_dictionary.path           = $$SHAREDIR/qpamat
 i_dictionary.files         += share/dicts
 INSTALLS                   += i_dictionary
+
+i_messages.path             = $$SHAREDIR/qpamat/translations
+i_messages.files           += ts/*.qm
+INSTALLS                   += i_messages
 
 target.path                 = $$BINDIR
 INSTALLS                   += target

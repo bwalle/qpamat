@@ -1,5 +1,5 @@
 /*
- * Id: $Id: copylabel.cpp,v 1.6 2004/07/23 08:46:59 bwalle Exp $
+ * Id: $Id: copylabel.cpp,v 1.7 2004/07/23 13:13:01 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,7 +24,6 @@
 #include <qclipboard.h>
 
 #include "copylabel.h"
-#include "images/copy_16x16.xpm"
 
 
 /*!
@@ -36,8 +35,8 @@
     
     \ingroup widgets
     \author Bernhard Walle
-    \version $Revision: 1.6 $
-    \date $Date: 2004/07/23 08:46:59 $
+    \version $Revision: 1.7 $
+    \date $Date: 2004/07/23 13:13:01 $
 */
 
 /*!
@@ -76,7 +75,7 @@ void CopyLabel::init()
     // we need a tool button because it has no border and it looks better in this size
     // in Platin style
     m_copyButton = new QToolButton(this);
-    m_copyButton->setIconSet(QIconSet(copy_16x16_xpm));
+    m_copyButton->setIconSet(QIconSet(QPixmap::fromMimeSource("stock_copy_16.png")));
     
     boxLayout->addWidget(m_label);
     boxLayout->addWidget(m_copyButton);

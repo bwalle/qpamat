@@ -1,5 +1,5 @@
 /*
- * Id: $Id: southpanel.cpp,v 1.14 2004/01/02 12:20:21 bwalle Exp $
+ * Id: $Id: southpanel.cpp,v 1.15 2004/07/23 13:13:41 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -30,14 +30,6 @@
 #include "southpanel.h"
 #include "settings.h"
 #include "util/stringdisplay.h"
-#include "images/traffic_yellow_22x22.xpm"
-#include "images/traffic_red_22x22.xpm"
-#include "images/traffic_green_22x22.xpm"
-#include "images/traffic_out_22x22.xpm"
-#include "images/down_16x16.xpm"
-#include "images/down_22x22.xpm"
-#include "images/up_16x16.xpm"
-#include "images/up_22x22.xpm"
 
 
 /*!
@@ -47,8 +39,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.14 $
-    \date $Date: 2004/01/02 12:20:21 $
+    \version $Revision: 1.15 $
+    \date $Date: 2004/07/23 13:13:41 $
 */
 
 /*!
@@ -125,12 +117,14 @@ SouthPanel::SouthPanel(QWidget* parent)
     
     // up button
     m_upButton = new QToolButton(vbox, "SouthPanel up button");
-    m_upButton->setIconSet(QIconSet(up_16x16_xpm, up_22x22_xpm));
+    m_upButton->setIconSet(QIconSet(QPixmap::fromMimeSource("stock_up_arrow_16.png"),
+        QPixmap::fromMimeSource("stock_up_arrow_24.png")));
     m_upButton->setUsesBigPixmap(true);
     
     // down button
     m_downButton = new QToolButton(vbox, "SouthPanel down button");
-    m_downButton->setIconSet(QIconSet(down_16x16_xpm, down_22x22_xpm));
+    m_downButton->setIconSet(QIconSet(QPixmap::fromMimeSource("stock_down_arrow_16.png"), 
+        QPixmap::fromMimeSource("stock_down_arrow_24.png")));
     m_downButton->setUsesBigPixmap(true);
     
     // filler widget
@@ -237,16 +231,16 @@ void SouthPanel::updateIndicatorLabel(bool recompute)
                 switch (m_lastStrength)
                 {
                     case Property::PWeak:
-                        m_indicatorLabel->setPixmap(traffic_red_22x22_xpm);
+                        m_indicatorLabel->setPixmap(QPixmap::fromMimeSource("traffic_red_22.png"));
                         break;
                     case Property::PAcceptable:
-                        m_indicatorLabel->setPixmap(traffic_yellow_22x22_xpm);
+                        m_indicatorLabel->setPixmap(QPixmap::fromMimeSource("traffic_yellow_22.png"));
                         break;
                     case Property::PStrong:
-                        m_indicatorLabel->setPixmap(traffic_green_22x22_xpm);
+                        m_indicatorLabel->setPixmap(QPixmap::fromMimeSource("traffic_green_22.png"));
                         break;
                     case Property::PUndefined:
-                        m_indicatorLabel->setPixmap(traffic_out_22x22_xpm);
+                        m_indicatorLabel->setPixmap(QPixmap::fromMimeSource("traffic_out_22.png"));
                         break;
                 }
             }

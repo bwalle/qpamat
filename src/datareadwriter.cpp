@@ -1,5 +1,5 @@
 /*
- * Id: $Id: datareadwriter.cpp,v 1.6 2004/07/23 08:47:44 bwalle Exp $
+ * Id: $Id: datareadwriter.cpp,v 1.7 2004/07/23 13:13:09 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -37,8 +37,6 @@
 #include "dialogs/waitdialog.h"
 #include "treeentry.h"
 
-#include "images/smartcard_24x24.xpm"
-
 #include "global.h"
 
 /*!
@@ -58,8 +56,8 @@
 
     \ingroup gui
     \author $Author: bwalle $
-    \version $Revision: 1.6 $
-    \date $Date: 2004/07/23 08:47:44 $
+    \version $Revision: 1.7 $
+    \date $Date: 2004/07/23 13:13:09 $
     
 */
 
@@ -195,8 +193,8 @@
 
     \ingroup gui
     \author $Author: bwalle $
-    \version $Revision: 1.6 $
-    \date $Date: 2004/07/23 08:47:44 $
+    \version $Revision: 1.7 $
+    \date $Date: 2004/07/23 13:13:09 $
 */
 
 /*!
@@ -695,7 +693,8 @@ void DataReadWriter::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& r
     QString dlgText = write 
         ? QObject::tr("<b>Writing</b> to the smartcard...") 
         : QObject::tr("<b>Reading</b> from the smartcard..."); 
-    std::auto_ptr<WaitDialog> msg(new WaitDialog(QPixmap(smartcard_24x24_xpm), dlgText, 
+    std::auto_ptr<WaitDialog> msg(new WaitDialog(QPixmap(
+        QPixmap::fromMimeSource("smartcard_24.png")), dlgText, 
          "QPaMaT", m_parent, "Wait dialog"));
     msg->show();
     

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.29 2004/02/12 21:46:28 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.30 2004/07/23 13:13:44 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -33,14 +33,6 @@
 #include <qfileinfo.h>
 #include <qprogressdialog.h>
 
-#include "images/edit_remove_16x16.xpm"
-#include "images/rename_16x16.xpm"
-#include "images/edit_add_16x16.xpm"
-#include "images/traffic_yellow_16x16.xpm"
-#include "images/traffic_red_16x16.xpm"
-#include "images/traffic_green_16x16.xpm"
-#include "images/traffic_gray_16x16.xpm"
-
 #include "qpamat.h"
 #include "tree.h"
 #include "treeentry.h"
@@ -68,8 +60,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.29 $
-    \date $Date: 2004/02/12 21:46:28 $
+    \version $Revision: 1.30 $
+    \date $Date: 2004/07/23 13:13:44 $
 */
 
 /*!
@@ -122,15 +114,15 @@ Tree::Tree(QWidget* parent)
 void Tree::initTreeContextMenu()
 {
     m_contextMenu = new QPopupMenu(this);
-    m_contextMenu->insertItem(QIconSet(edit_add_16x16_xpm), 
+    m_contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("stock_add_16.png")), 
         tr("Insert &Item") + "\t" + QString(QKeySequence(Key_Insert)), INSERT_ITEM);
     m_contextMenu->insertItem(tr("Insert &Category"), INSERT_CATEGORY);
     
     m_contextMenu->insertSeparator();
     
-    m_contextMenu->insertItem(QIconSet(rename_16x16_xpm), 
+    m_contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("rename_16.png")), 
         tr("&Rename") + "\t" + QString(QKeySequence(Key_F2)), RENAME_ITEM);
-    m_contextMenu->insertItem(QIconSet(edit_remove_16x16_xpm), 
+    m_contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("stock_remove_16.png")), 
         tr("Delete &Item") + "\t" + QString(QKeySequence(Key_Delete)), DELETE_ITEM);
     
 }
@@ -611,16 +603,16 @@ void Tree::updatePasswordStrengthView()
                 switch (strength)
                 {
                     case Property::PWeak:
-                        it.current()->setPixmap(0, traffic_red_16x16_xpm);
+                        it.current()->setPixmap(0, QPixmap::fromMimeSource("traffic_red_16.png"));
                         break;
                     case Property::PAcceptable:
-                        it.current()->setPixmap(0, traffic_yellow_16x16_xpm);
+                        it.current()->setPixmap(0, QPixmap::fromMimeSource("traffic_yellow_16.png"));
                         break;
                     case Property::PStrong:
-                        it.current()->setPixmap(0, traffic_green_16x16_xpm);
+                        it.current()->setPixmap(0, QPixmap::fromMimeSource("traffic_green_16.png"));
                         break;
                     case Property::PUndefined:
-                        it.current()->setPixmap(0, traffic_gray_16x16_xpm);
+                        it.current()->setPixmap(0, QPixmap::fromMimeSource("traffic_gray_16.png"));
                         break;
                     default:
                         PRINT_DBG("Value out of range: %d", strength);

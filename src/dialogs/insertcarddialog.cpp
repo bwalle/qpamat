@@ -1,5 +1,5 @@
 /*
- * Id: $Id: insertcarddialog.cpp,v 1.1 2004/01/20 21:42:46 bwalle Exp $
+ * Id: $Id: insertcarddialog.cpp,v 1.2 2004/07/23 13:11:27 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -22,7 +22,6 @@
 #include <qpushbutton.h>
 #include <qpixmap.h>
 
-#include "images/smartcard_48x48.xpm"
 #include "insertcarddialog.h"
 
 
@@ -43,8 +42,8 @@
     
     \ingroup dialogs
     \author Bernhard Walle
-    \version $Revision: 1.1 $
-    \date $Date: 2004/01/20 21:42:46 $
+    \version $Revision: 1.2 $
+    \date $Date: 2004/07/23 13:11:27 $
 */
 
 
@@ -67,7 +66,7 @@ InsertCardDialog::InsertCardDialog(bool pin, QWidget* parent, const char* name)
     QVBoxLayout* rightLayout = new QVBoxLayout(0, 0, 10, "HLayout");
     
     QLabel* leftIcon = new QLabel(this, "left icon");
-    leftIcon->setPixmap(QPixmap(smartcard_48x48_xpm));
+    leftIcon->setPixmap(QPixmap(QPixmap::fromMimeSource("smartcard_48.png")));
    
     QLabel* label = new QLabel(tr(strings[pin]), this, "Label");
     

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: fontchoosebox.cpp,v 1.5 2004/07/23 08:46:59 bwalle Exp $
+ * Id: $Id: fontchoosebox.cpp,v 1.6 2004/07/23 13:13:01 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,7 +24,6 @@
 #include <qfontdialog.h>
 
 #include "fontchoosebox.h"
-#include "images/font_16x16.xpm"
 
 /*!
     \class FontChooseBox
@@ -35,8 +34,8 @@
     
     \ingroup widgets
     \author Bernhard Walle
-    \version $Revision: 1.5 $
-    \date $Date: 2004/07/23 08:46:59 $
+    \version $Revision: 1.6 $
+    \date $Date: 2004/07/23 13:13:01 $
 */
 
 /*!
@@ -60,7 +59,7 @@ FontChooseBox::FontChooseBox(QWidget* parent, const char* name)
     // we need a tool button because it has no border and it looks better in this size
     // in Platin style
     m_fileDialogButton = new QToolButton(this);
-    m_fileDialogButton->setIconSet(QIconSet(font_16x16_xpm));
+    m_fileDialogButton->setIconSet(QIconSet(QPixmap::fromMimeSource("stock_font_16.png")));
     
     boxLayout->addWidget(m_lineEdit);
     boxLayout->addWidget(m_fileDialogButton);
