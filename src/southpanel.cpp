@@ -1,5 +1,5 @@
 /*
- * Id: $Id: southpanel.cpp,v 1.3 2003/12/04 14:08:40 bwalle Exp $
+ * Id: $Id: southpanel.cpp,v 1.4 2003/12/10 21:50:14 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -59,7 +59,7 @@ SouthPanel::SouthPanel(QWidget* parent)
     hLayout->addWidget(group);
     
     setEnabled(false);
-    setFocusPolicy(QWidget::StrongFocus);
+    setFocusPolicy(QWidget::NoFocus);
     
     QObject::connect(m_typeCombo, SIGNAL(activated(int)), this, SLOT(updateData()));
     QObject::connect(m_typeCombo, SIGNAL(activated(int)), this, SLOT(comboBoxChanged(int)));
@@ -177,3 +177,9 @@ void SouthPanel::insertAutoText()
     }
 }
 
+// -------------------------------------------------------------------------------------------------
+bool SouthPanel::isFocusInside() const
+// -------------------------------------------------------------------------------------------------
+{
+    return m_keyLineEdit->hasFocus() || m_typeCombo->hasFocus() || m_valueLineEdit->hasFocus();
+}

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: property.cpp,v 1.4 2003/12/04 20:30:17 bwalle Exp $
+ * Id: $Id: property.cpp,v 1.5 2003/12/10 21:50:21 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -21,7 +21,7 @@
 
 #include "property.h"
 #include "security/encodinghelper.h"
-#include "security/encryptor.h"
+#include "security/stringencryptor.h"
 #include "treeentry.h"
 
 // -------------------------------------------------------------------------------------------------
@@ -143,7 +143,7 @@ QString Property::toRichTextForPrint() const
 
 
 // -------------------------------------------------------------------------------------------------
-void Property::appendXML(QDomDocument& document, QDomNode& parent, const Encryptor& enc) const
+void Property::appendXML(QDomDocument& document, QDomNode& parent, StringEncryptor& enc) const
 // -------------------------------------------------------------------------------------------------
 {
     QDomElement property = document.createElement("property");
@@ -151,7 +151,7 @@ void Property::appendXML(QDomDocument& document, QDomNode& parent, const Encrypt
     
     if (m_encrypted)
     {
-        value = EncodingHelper::toBase64(enc.encryptString(value));
+        value = enc.encryptStrToStr(value);
     }
     
     property.setAttribute("key", m_key);
@@ -174,7 +174,7 @@ void Property::appendXML(QDomDocument& document, QDomNode& parent, const Encrypt
 
 
 // -------------------------------------------------------------------------------------------------
-void Property::appendFromXML(TreeEntry* parent, QDomElement& element, const Encryptor& enc)
+void Property::appendFromXML(TreeEntry* parent, QDomElement& element, StringEncryptor& enc)
 // -------------------------------------------------------------------------------------------------
 {
 #ifdef DEBUG 
@@ -207,7 +207,7 @@ void Property::appendFromXML(TreeEntry* parent, QDomElement& element, const Encr
     
     if (encrypted)
     {
-        value = enc.decryptString(EncodingHelper::fromBase64(value));
+        value = enc.decryptStrFromStr(value);
     }
     
     parent->appendProperty(new Property(key, value, type, encrypted, hidden));

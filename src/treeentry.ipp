@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.ipp,v 1.1 2003/11/08 15:58:21 bwalle Exp $
+ * Id: $Id: treeentry.ipp,v 1.2 2003/12/10 21:50:07 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -29,7 +29,7 @@ TreeEntry::TreeEntry(T* parent, const QString& name, bool isCategroy)
 
 template<class T>
 // -------------------------------------------------------------------------------------------------
-void TreeEntry::appendFromXML(T* parent, QDomElement& element, const Encryptor& enc)
+void TreeEntry::appendFromXML(T* parent, QDomElement& element, StringEncryptor& enc)
 // -------------------------------------------------------------------------------------------------
 {
     QString name = element.attribute("name");

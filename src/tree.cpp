@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.10 2003/12/06 18:23:20 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.11 2003/12/10 21:50:11 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,6 +15,8 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
+#include <cstdlib>
+
 #include <qfile.h>
 #include <qdom.h>
 #include <qstring.h>
@@ -23,15 +25,23 @@
 #include <qheader.h>
 #include <qiconset.h>
 #include <qevent.h>
+#include <qcursor.h>
+#include <qprogressdialog.h>
 
 #include "../images/delete_16x16.xpm"
 #include "../images/rename_16x16.xpm"
+#include "../images/edit_add_16x16.xpm"
 
+#include "qpamat.h"
 #include "tree.h"
 #include "treeentry.h"
 #include "wrongpassword.h"
 #include "security/passwordhash.h"
+#include "security/stringencryptor.h"
 #include "security/symmetricencryptor.h"
+#include "security/collectencryptor.h"
+#include "smartcard/memorycard.h"
+#include "settings.h"
 
 // -------------------------------------------------------------------------------------------------
 Tree::Tree(QWidget* parent)
@@ -75,11 +85,10 @@ bool Tree::readFromXML(const QString& fileName, const QString& password) throw (
 // -------------------------------------------------------------------------------------------------
 {
     // delete the old tree
-    QListViewItem* item;
-    while ((item = firstChild()))
-    {
-        delete item;
-    }
+    clear();
+    
+    QSettings& set = Settings::getInstance().getSettings();
+    bool smartcard = set.readBoolEntry("Smartcard/UseCard", Settings::DEFAULT_USE_CARD );
     
     // load the XML structure
     QFile file(fileName);
@@ -115,32 +124,75 @@ bool Tree::readFromXML(const QString& fileName, const QString& password) throw (
         return false;
     }
     
-    Encryptor* enc;
-    QString algorithm = root.attribute("crypt-algorithm");
+    smartcard = !root.attribute("card-id").isNull();
+    
     try
     {
-        enc = new SymmetricEncryptor(algorithm, password);
+        QString algorithm = root.attribute("crypt-algorithm");
+        StringEncryptor* enc = 0;
+        Encryptor* realEncryptor = 0;
+        try
+        {
+            if (smartcard)
+            {
+                realEncryptor = new SymmetricEncryptor(algorithm, password);
+                enc = new CollectEncryptor(*realEncryptor);
+            }
+            else
+            {
+                enc = new SymmetricEncryptor(algorithm, password);
+            }
+        }
+        catch (const NoSuchAlgorithmException& ex)
+        {
+            QMessageBox::critical(this, "QPaMaT", tr("The algorithm '%1' is not avaible on "
+                "your system.\nIt is impossible to read the file. Try to recompile or\n",
+                "update your OpenSSL library.").arg(algorithm), QMessageBox::Ok, QMessageBox::NoButton);
+            return false;
+        }
+        
+        // read the data from the smartcard
+        if (smartcard && root.attribute("card-id"))
+        {
+            bool success = false;
+            ByteVector vec;
+            while (!success)
+            {
+                byte id = byte(root.attribute("card-id").toShort());
+                success = writeOrReadSmartcard(vec, false, id);
+                
+                if (!success && QMessageBox::question(this, "QPaMaT", tr("Reading from the "
+                    "smartcard was not successful.\nDo you want to try again?"), QMessageBox::Yes |
+                    QMessageBox::Default, QMessageBox::No | QMessageBox::Escape) == QMessageBox::No)
+                {
+                    delete enc;
+                    delete realEncryptor;
+                    return false;
+                }
+            }
+            dynamic_cast<CollectEncryptor*>(enc)->setBytes(vec);
+        }
+        
+        QDomNode n = root.firstChild();
+        while( !n.isNull() ) 
+        {
+            QDomElement e = n.toElement(); // try to convert the node to an element.
+            if( !e.isNull() ) 
+            {
+                TreeEntry::appendFromXML(this, e, *enc);
+            }
+            n = n.nextSibling();
+        }
+    
+        delete enc;
+        delete realEncryptor;
     }
-    catch (const NoSuchAlgorithmException& ex)
+    catch (const std::exception& e)
     {
-        QMessageBox::critical(this, "QPaMaT", tr("The algorithm '%1' is not avaible on "
-            "your system.\nIt is impossible to read the file. Try to recompile or\n",
-            "update your OpenSSL library.").arg(algorithm), QMessageBox::Ok, QMessageBox::NoButton);
+        clear();
+        showReadErrorMessage(e.what());
         return false;
     }
-    
-    QDomNode n = root.firstChild();
-    while( !n.isNull() ) 
-    {
-        QDomElement e = n.toElement(); // try to convert the node to an element.
-        if( !e.isNull() ) 
-        {
-            TreeEntry::appendFromXML(this, e, *enc);
-        }
-        n = n.nextSibling();
-    }
-    
-    delete enc;
     
     return true;
 }
@@ -150,6 +202,8 @@ bool Tree::readFromXML(const QString& fileName, const QString& password) throw (
 void Tree::writeToXML(const QString& fileName, const QString& password, const QString& algorithm)
 // -------------------------------------------------------------------------------------------------
 {
+    QSettings& set = Settings::getInstance().getSettings();
+    bool smartcard = set.readBoolEntry("Smartcard/UseCard", Settings::DEFAULT_USE_CARD );
     QFile file(fileName);
     if (!file.open(IO_WriteOnly))
     {
@@ -165,10 +219,19 @@ void Tree::writeToXML(const QString& fileName, const QString& password, const QS
     root.setAttribute("password-hash", PasswordHash::generateHash(password));
     doc.appendChild(root);
     
-    Encryptor* enc;
+    StringEncryptor* enc;
+    Encryptor* realEncryptor = 0;
     try
     {
-        enc = new SymmetricEncryptor(algorithm, password);
+        if (smartcard)
+        {
+            realEncryptor = new SymmetricEncryptor(algorithm, password);
+            enc = new CollectEncryptor(*realEncryptor);
+        }
+        else
+        {
+            enc = new SymmetricEncryptor(algorithm, password);
+        }
     }
     catch (const NoSuchAlgorithmException& e)
     {
@@ -187,10 +250,37 @@ void Tree::writeToXML(const QString& fileName, const QString& password, const QS
         currentItem = dynamic_cast<TreeEntry*>(currentItem->nextSibling());
     }
     
-    QTextStream stream(&file);
-    stream << doc.toString();
-    file.close();
+    bool success = false; 
+    while (!success)
+    {
+        byte id = 0;
+        if (smartcard)
+        {
+            ByteVector vec = dynamic_cast<CollectEncryptor*>(enc)->getBytes();
+            success = writeOrReadSmartcard(vec, true, id);
+        }
+        root.setAttribute("card-id", id);
+        
+        if (!success && QMessageBox::question(this, "QPaMaT", tr("Writing to the smartcard was not"
+            " successful.\nDo you want to try again?"), QMessageBox::Yes | QMessageBox::Default, 
+            QMessageBox::No | QMessageBox::Escape) == QMessageBox::No)
+        {
+            break;
+        }
+    }
+    
     delete enc;
+    delete realEncryptor;
+    
+    if (!success)
+    {
+        QMessageBox::critical(this, "QPaMaT", tr("No data was saved!"), QMessageBox::Ok, 
+            QMessageBox::NoButton);
+    }
+    
+    QTextStream stream(&file);
+    stream.setEncoding(QTextStream::UnicodeUTF8);
+    stream << doc.toString();
 }
 
 
@@ -200,6 +290,17 @@ void Tree::showCurruptedMessage(const QString& fileName)
 {
     QMessageBox::critical(this, "QPaMaT", tr("The XML file (%1) may be corrupted "
             "and\ncould not be read. Check the file with a text editor.").arg(fileName), 
+            QMessageBox::Ok, QMessageBox::NoButton);
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void Tree::showReadErrorMessage(const QString& message)
+// -------------------------------------------------------------------------------------------------
+{
+    QMessageBox::critical(this, "QPaMaT", tr("An unknown error occured while reading the "
+            "file. If you don't know what to do try to contact the author.<p>The error message "
+            "was:<br><nobr>%1</nobr>").arg(message), 
             QMessageBox::Ok, QMessageBox::NoButton);
 }
 
@@ -218,10 +319,10 @@ void Tree::showContextMenu(QListViewItem* item, const QPoint& point)
             delete item;
             break;
         case INSERT_ITEM:
-            insertItem(false, dynamic_cast<TreeEntry*>(item));
+            insertItem(dynamic_cast<TreeEntry*>(item), false);
             break;
         case INSERT_CATEGORY:
-            insertItem(true, dynamic_cast<TreeEntry*>(item));
+            insertItem(dynamic_cast<TreeEntry*>(item), false);
             break;
         case RENAME_ITEM:
             dynamic_cast<TreeEntry*>(item)->startRename(0);
@@ -236,9 +337,14 @@ void Tree::showContextMenu(QListViewItem* item, const QPoint& point)
 
 
 // -------------------------------------------------------------------------------------------------
-void Tree::insertItem(bool category, TreeEntry* item)
+void Tree::insertItem(TreeEntry* item, bool category)
 // -------------------------------------------------------------------------------------------------
 {
+    if (!hasFocus())
+    {
+        return;
+    }
+    
     const QString name = category
         ? tr("New category")
         : tr("New Item");
@@ -270,11 +376,34 @@ void Tree::insertItem(bool category, TreeEntry* item)
 
 
 // -------------------------------------------------------------------------------------------------
+void Tree::deleteCurrent()
+// -------------------------------------------------------------------------------------------------
+{
+    if (hasFocus())
+    {
+        delete currentItem();
+    }
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void Tree::insertAtCurrentPos()
+// -------------------------------------------------------------------------------------------------
+{
+    if (hasFocus())
+    {
+        insertItem(dynamic_cast<TreeEntry*>(currentItem()));
+    }
+}
+
+
+// -------------------------------------------------------------------------------------------------
 void Tree::initTreeContextMenu()
 // -------------------------------------------------------------------------------------------------
 {
     m_contextMenu = new QPopupMenu(this);
-    m_contextMenu->insertItem(tr("Insert &Item"), INSERT_ITEM);
+    m_contextMenu->insertItem(QIconSet(edit_add_16x16_xpm), 
+        tr("Insert &Item") + "\t" + QString(QKeySequence(Key_Insert)), INSERT_ITEM);
     m_contextMenu->insertItem(tr("Insert &Category"), INSERT_CATEGORY);
     
     m_contextMenu->insertSeparator();
@@ -357,5 +486,130 @@ void Tree::currentChangedHandler(QListViewItem*)
     if (selectedItem() == 0)
     {
         emit selectionCleared();
+        //qpamat->getRemoveItemAction()->setEnabled(false);
     }
 }
+
+
+// -------------------------------------------------------------------------------------------------
+bool Tree::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& randomNumber)
+// -------------------------------------------------------------------------------------------------
+{
+    QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
+    
+    // at first we need a random number 
+    if (write)
+    {
+        std::srand(std::time(0));
+        randomNumber = byte((double(std::rand())/RAND_MAX)*256);
+    }
+    
+    QSettings& set = Settings::getInstance().getSettings();
+    QString library = set.readEntry("Smartcard/Library", "" );
+    int port = set.readNumEntry("Smartcard/Port", Settings::DEFAULT_PORT);
+    
+    try
+    {
+        MemoryCard card(library);
+        
+        card.init(port);
+        
+        QApplication::restoreOverrideCursor();
+        
+        QMessageBox::information(this, "QPaMaT", tr("Insert the smartcard in your reader!"), 
+            QMessageBox::Ok, QMessageBox::NoButton);
+        QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
+        
+        if (card.getType() != MemoryCard::TMemoryCard)
+        {
+            QApplication::restoreOverrideCursor();
+            QMessageBox::critical(this, "QPaMaT", tr("There's no memory card in your "
+                "reader.\nUse the test function in the configuration\ndialog to set up your "
+                "reader properly."), QMessageBox::Ok, QMessageBox::NoButton);
+            return false;
+        }
+        
+        if (!card.selectFile())
+        {
+            QApplication::restoreOverrideCursor();
+            QMessageBox::critical(this, "QPaMaT", "<qt>" + tr("It was not possible to select the "
+                "file on the smartcard") + "</qt>", QMessageBox::Ok, QMessageBox::NoButton);
+            return false;
+        }
+        
+        if (write)
+        {
+            // write the random number
+            ByteVector byteVector(1);
+            byteVector[0] = randomNumber;
+            card.write(0, byteVector);
+            
+            qDebug("Random = %d\n", byteVector[0]);
+            
+            // then write the number of bytes
+            int numberOfBytes = bytes.size();
+            byteVector.resize(3);
+            byteVector[0] = (numberOfBytes & 0xFF00) >> 8;
+            byteVector[1] = numberOfBytes & 0xFF;
+            byteVector[2] = 0; // fillbyte
+            card.write(1, byteVector);
+            
+            qDebug("First = %d\nSecond = %d\n", byteVector[0], byteVector[1]);
+            
+            // and finally write the data
+            card.write(4, bytes);
+        }
+        else
+        {
+            // read the random number
+            if (card.read(0, 1)[0] != randomNumber)
+            {
+                QApplication::restoreOverrideCursor();
+                QMessageBox::critical(this, "QPaMaT", tr("You inserted the wrong smartcard!"), 
+                    QMessageBox::Ok, QMessageBox::NoButton);
+                return false;
+            }
+            
+#ifdef DEBUG
+            qDebug("Reading smartcard.");
+            qDebug("Read randomNumber = %d\n", randomNumber);
+#endif
+
+            // read the number
+            ByteVector vec = card.read(1, 2);
+            int numberOfBytes = (vec[0] << 8) + (vec[1]);
+            
+#ifdef DEBUG
+            qDebug("Read numberOfBytes = %d\n", numberOfBytes);
+#endif
+
+            Q_ASSERT(numberOfBytes >= 0);
+            
+            // read the bytes
+            bytes = card.read(4, numberOfBytes);
+        }
+        card.close(); // if not, the destructor does, no problem for exceptions here!
+    }
+    catch (const NoSuchLibraryException& e)
+    {
+        QApplication::restoreOverrideCursor();
+        QMessageBox::critical(this, "QPaMaT", tr("The application was not set up correctly "
+            "for using the smartcard. Call the configuration dialog and use the Test button "
+            "for testing!<p>The error message was:<br><nobr>%1</nobr>").arg(e.what()), 
+            QMessageBox::Ok, QMessageBox::NoButton);
+        return false;
+    }
+    catch (const CardException& e)
+    {
+        QApplication::restoreOverrideCursor();
+        QMessageBox::critical(this, "QPaMaT", tr("There was a communication error while "
+            "writing to the card.<p>The error message was:<br><nobr>%1</nobr>").arg(e.what()), 
+            QMessageBox::Ok, QMessageBox::NoButton);
+        return false;
+    }
+    
+    QApplication::restoreOverrideCursor();
+    return true;
+}
+
+

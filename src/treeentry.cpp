@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.cpp,v 1.5 2003/12/06 18:23:40 bwalle Exp $
+ * Id: $Id: treeentry.cpp,v 1.6 2003/12/10 21:50:11 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -155,7 +155,6 @@ QString TreeEntry::toRichTextForPrint() const
         return QString("");
     }
     
-    QSettings& set = Settings::getInstance().getSettings();
     QString catString;
     const QListViewItem* item = this;
     while ((item = item->parent()))
@@ -180,7 +179,7 @@ QString TreeEntry::toRichTextForPrint() const
 
 
 // -------------------------------------------------------------------------------------------------
-void TreeEntry::appendXML(QDomDocument& document, QDomNode& parent, const Encryptor& enc) const
+void TreeEntry::appendXML(QDomDocument& document, QDomNode& parent, StringEncryptor& enc) const
 // -------------------------------------------------------------------------------------------------
 {
     QDomElement newElement;

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightlistview.cpp,v 1.2 2003/12/04 14:07:55 bwalle Exp $
+ * Id: $Id: rightlistview.cpp,v 1.3 2003/12/10 21:50:21 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -23,8 +23,8 @@
 #include <qevent.h>
 
 #include "rightlistview.h"
-#include "../images/delete_16x16.xpm"
-#include "../images/new_16x16.xpm"
+#include "../images/edit_remove_16x16.xpm"
+#include "../images/edit_add_16x16.xpm"
 #include "../images/copy_16x16.xpm"
 #include "help.h"
 
@@ -47,6 +47,7 @@ RightListView::RightListView(QWidget* parent)
     connect(this, SIGNAL(contextMenuRequested(QListViewItem*, const QPoint&, int)), 
         this, SLOT(showContextMenu(QListViewItem*, const QPoint&)));
     connect(this, SIGNAL(itemAppended()), this, SLOT(updateView()));
+    connect(this, SIGNAL(itemAppended()), this, SLOT(itemAppendedHandler()));
     connect(this, SIGNAL(itemDeleted()), this, SLOT(updateView()));
     connect(this, SIGNAL(doubleClicked(QListViewItem*, const QPoint&, int)),
         this, SLOT(doubleClickHandler(QListViewItem*)));
@@ -58,8 +59,8 @@ void RightListView::initContextMenu()
 // -------------------------------------------------------------------------------------------------
 {
     m_contextMenu = new QPopupMenu(this);
-    m_contextMenu->insertItem(QIconSet(new_16x16_xpm), tr("&New"), NEW);
-    m_contextMenu->insertItem(QIconSet(delete_16x16_xpm), 
+    m_contextMenu->insertItem(QIconSet(edit_add_16x16_xpm), tr("&New"), NEW);
+    m_contextMenu->insertItem(QIconSet(edit_remove_16x16_xpm), 
         tr("&Delete") + "\t" + QString(QKeySequence(Key_Delete)), DELETE);
     m_contextMenu->insertSeparator();
     m_contextMenu->insertItem(QIconSet(copy_16x16_xpm),
@@ -204,3 +205,38 @@ void RightListView::setItem(QListViewItem* item)
     }
 }
 
+
+// -------------------------------------------------------------------------------------------------
+void RightListView::deleteCurrent()
+// -------------------------------------------------------------------------------------------------
+{
+    m_currentItem->deleteProperty(currentItem()->text(2).toInt(0));
+    emit itemDeleted();
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void RightListView::insertAtCurrentPos()
+// -------------------------------------------------------------------------------------------------
+{
+    m_currentItem->appendProperty(new Property());
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void RightListView::itemAppendedHandler()
+// -------------------------------------------------------------------------------------------------
+{
+    QListViewItem* addedItem = lastItem();
+    if (addedItem)
+    {
+        setSelected(addedItem, true);
+    }
+}
+
+// -------------------------------------------------------------------------------------------------
+bool RightListView::isFocusInside() const
+// -------------------------------------------------------------------------------------------------
+{
+    return hasFocus();
+}

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.h,v 1.6 2003/12/04 20:31:34 bwalle Exp $
+ * Id: $Id: treeentry.h,v 1.7 2003/12/10 21:50:11 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -23,6 +23,7 @@
 #include <qlistview.h>
 
 #include "property.h"
+#include "security/stringencryptor.h"
 
 /*!
  * Vector of Properties.
@@ -35,8 +36,8 @@ typedef QPtrList<Property> PropertyPtrList;
  *
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.6 $
- * \date $Date: 2003/12/04 20:31:34 $
+ * \version $Revision: 1.7 $
+ * \date $Date: 2003/12/10 21:50:11 $
  */
 class TreeEntry : public QObject, public QListViewItem
 {
@@ -94,9 +95,9 @@ class TreeEntry : public QObject, public QListViewItem
          * Appends the treeentry as \c category or \c entry tag in the XML structure.
          * \param document the document needed to create new elements
          * \param parent the parent to which the new created element should be attached
-         * \param encryptor the encryptor to use for encrypting passwords
+         * \param enc the encryptor to use for encrypting passwords
          */
-        void appendXML(QDomDocument& document, QDomNode& parent, const Encryptor& encryptor) const;
+        void appendXML(QDomDocument& document, QDomNode& parent, StringEncryptor& enc) const;
         
         /*!
          * Creates a Propery element from a XML \c property tag.
@@ -105,7 +106,7 @@ class TreeEntry : public QObject, public QListViewItem
          * \param enc the encryptor to use for decrypting passwords
          */
         template<class T>
-        static void appendFromXML(T* parent, QDomElement& element, const Encryptor& enc);
+        static void appendFromXML(T* parent, QDomElement& element, StringEncryptor& enc);
         
         /*!
          * Returns the name of the entry.

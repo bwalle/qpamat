@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.h,v 1.8 2003/12/04 20:31:18 bwalle Exp $
+ * Id: $Id: tree.h,v 1.9 2003/12/10 21:50:04 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -29,10 +29,19 @@
 
 /*!
  * \brief Represents the tree that holds the password entries.
+ *
+ * This class also handles reading and writing to XML files (by calling the right methods
+ * of an TreeEntry) and -- very important -- writing to the smartcard. Each XML file has a
+ * random number which is created on each successful write. It is used to identify the card.
+ *
+ * So the first byte (a value between 0 and 255) is the random number. Then two bytes on the
+ * card indicate the number of bytes stored. Then a fill byte is stored which is reserved for future
+ * use. The 5th byte on the card is then the first real byte for passwords.
+ 
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.8 $
- * \date $Date: 2003/12/04 20:31:18 $
+ * \version $Revision: 1.9 $
+ * \date $Date: 2003/12/10 21:50:04 $
  */
 class Tree : public QListView
 {
@@ -91,7 +100,7 @@ class Tree : public QListView
          * If the tree has a current item but no item is selected. 
          */
         void selectionCleared();
-        
+    
     public slots:
         
         /*!
@@ -100,14 +109,26 @@ class Tree : public QListView
          */
         void searchFor(const QString& word);
         
+        /*!
+         * Deletes the current item if the widget has the focus.
+         */
+        void deleteCurrent();
+        
+        /*!
+         * Inserts an item at the current position if the widget has the focus.
+         */
+        void insertAtCurrentPos();
+        
     private slots:
         void showContextMenu(QListViewItem* item, const QPoint& point);
-        void insertItem(bool category, TreeEntry* item);
+        void insertItem(TreeEntry* item, bool category = false);
         void currentChangedHandler(QListViewItem* item);
         
     private:
         void initTreeContextMenu();
         void showCurruptedMessage(const QString& fileName);
+        void showReadErrorMessage(const QString& message);
+        bool writeOrReadSmartcard(ByteVector& bytes, bool write, byte& randomNumber);
     
     private:
         QPopupMenu* m_contextMenu; 

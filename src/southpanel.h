@@ -1,5 +1,5 @@
 /*
- * Id: $Id: southpanel.h,v 1.5 2003/12/04 14:08:53 bwalle Exp $
+ * Id: $Id: southpanel.h,v 1.6 2003/12/10 21:50:14 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -29,8 +29,8 @@
  * \brief Represents the south panel.
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.5 $
- * \date $Date: 2003/12/04 14:08:53 $
+ * \version $Revision: 1.6 $
+ * \date $Date: 2003/12/10 21:50:14 $
  */
 class SouthPanel : public QFrame
 {
@@ -47,6 +47,12 @@ class SouthPanel : public QFrame
          * Deletes the South Panel.
          */
         virtual ~SouthPanel() { }
+        
+        /*!
+         * Returns if the focus is inside this object.
+         * \return \c true if the focus is inside this object, \c false otherwise.
+         */
+        bool isFocusInside() const;
         
     public slots:
         

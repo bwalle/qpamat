@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.h,v 1.8 2003/12/04 20:30:48 bwalle Exp $
+ * Id: $Id: qpamat.h,v 1.9 2003/12/10 21:50:21 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -33,8 +33,8 @@
  *
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.8 $
- * \date $Date: 2003/12/04 20:30:48 $
+ * \version $Revision: 1.9 $
+ * \date $Date: 2003/12/10 21:50:21 $
  */
 class Qpamat : public QMainWindow
 {
@@ -46,6 +46,11 @@ class Qpamat : public QMainWindow
          * Creates a new instance of the application.
          */
         Qpamat();
+        
+        /*!
+         * Reimplemented to implement AutoLogin 
+         */
+        void show();
         
     protected slots:
         
@@ -88,8 +93,13 @@ class Qpamat : public QMainWindow
          * Prints the current stuff.
          */
         void print();
-        
     
+        
+    public slots:
+        
+        //void setAddItemEnabled(bool enabled);
+        //void setRemoveItemEnabled(bool enabled);
+        
     protected:
         
         /*!
@@ -97,12 +107,6 @@ class Qpamat : public QMainWindow
          */
         void closeEvent(QCloseEvent* evt);
         
-    public:
-        
-        /*!
-         * Reimplemented to implement AutoLogin 
-         */
-        void show();
 
     private:
         void initToolbar();
@@ -137,6 +141,8 @@ class Qpamat : public QMainWindow
             QAction* changePasswordAction;
             QAction* settingsAction;
             QAction* searchAction;
+            QAction* addItemAction;
+            QAction* removeItemAction;
         };
         Actions m_actions;
 };

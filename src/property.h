@@ -1,5 +1,5 @@
 /*
- * Id: $Id: property.h,v 1.6 2003/12/04 20:30:27 bwalle Exp $
+ * Id: $Id: property.h,v 1.7 2003/12/10 21:50:21 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -22,7 +22,7 @@
 #include <qdom.h>
 #include <qobject.h>
 
-#include "security/encryptor.h"
+#include "security/stringencryptor.h"
 
 class TreeEntry;
 
@@ -31,8 +31,8 @@ class TreeEntry;
  *
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.6 $
- * \date $Date: 2003/12/04 20:30:27 $
+ * \version $Revision: 1.7 $
+ * \date $Date: 2003/12/10 21:50:21 $
  */
 class Property : public QObject
 {
@@ -135,17 +135,17 @@ class Property : public QObject
          * Appends the property as \c property tag in the XML structure.
          * \param document the document needed to create new elements
          * \param parent the parent to which the new created element should be attached
-         * \param encryptor the encryptor to use for encrypting passwords
+         * \param enc the encryptor to use for encrypting passwords
          */
-        void appendXML(QDomDocument& document, QDomNode& parent, const Encryptor& encryptor) const;
+        void appendXML(QDomDocument& document, QDomNode& parent, StringEncryptor& enc) const;
         
         /*!
          * Creates a Propery element from a XML \c property tag.
          * \param parent the parent
-         * \param element the \c property tag
+         * \param elem the \c property tag
          * \param enc the encryptor to use for decrypting passwords
          */
-        static void appendFromXML(TreeEntry* parent, QDomElement& element, const Encryptor& enc);
+        static void appendFromXML(TreeEntry* parent, QDomElement& elem, StringEncryptor& enc);
     
     signals:
         /*!

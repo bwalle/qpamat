@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightlistview.h,v 1.3 2003/11/29 14:43:03 bwalle Exp $
+ * Id: $Id: rightlistview.h,v 1.4 2003/12/10 21:50:21 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -30,8 +30,8 @@
  * \brief Represents the list view on the right where the key-value pairs are displayed.
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.3 $
- * \date $Date: 2003/11/29 14:43:03 $
+ * \version $Revision: 1.4 $
+ * \date $Date: 2003/12/10 21:50:21 $
  */
 class RightListView : public QListView
 {
@@ -66,6 +66,24 @@ class RightListView : public QListView
          * \param item the current item
          */
         void setItem(QListViewItem* item);
+        
+        /*!
+         * Returns if the focus is inside this object.
+         * \return \c true if the focus is inside this object, \c false otherwise.
+         */
+        bool isFocusInside() const;
+        
+    public slots:
+        
+        /*!
+         * Deletes the current item.
+         */
+        void deleteCurrent();
+        
+        /*!
+         * Inserts an item at the current position.
+         */
+        void insertAtCurrentPos();
     
     private slots:
         void updateView();
@@ -73,7 +91,8 @@ class RightListView : public QListView
         void showContextMenu(QListViewItem* item, const QPoint& point);
         void copyItem(QListViewItem* item);
         void doubleClickHandler(QListViewItem* item);
-    
+        void itemAppendedHandler();
+        
     signals:
         
         /*!

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightpanel.cpp,v 1.1 2003/10/20 20:55:13 bwalle Exp $
+ * Id: $Id: rightpanel.cpp,v 1.2 2003/12/10 21:50:21 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -42,7 +42,6 @@ RightPanel::RightPanel(QWidget* parent) : QFrame(parent, "RightPanel")
     
     connect(m_listView, SIGNAL(selectionChanged(QListViewItem*)),
         this, SLOT(selectionChangeHandler(QListViewItem*)));
-    connect(m_listView, SIGNAL(itemAppended()), this, SLOT(itemAppendedHandler()));
     connect(m_listView, SIGNAL(itemDeleted()), m_southPanel, SLOT(clear()));
 }
 
@@ -54,16 +53,6 @@ void RightPanel::clear()
     m_listView->clear();
     m_southPanel->clear();
     setEnabled(false);
-}
-
-
-// -------------------------------------------------------------------------------------------------
-void RightPanel::itemAppendedHandler()
-// -------------------------------------------------------------------------------------------------
-{
-    QListViewItem* addedItem = m_listView->lastItem();
-    m_listView->setSelected(addedItem, true);
-    m_southPanel->setFocus();
 }
 
 
@@ -103,6 +92,36 @@ void RightPanel::selectionChangeHandler(QListViewItem* item)
     Property* currentProperty = m_currentItem->getProperty(item->text(2).toInt(0));
     m_southPanel->setItem(currentProperty);
     
-    connect(currentProperty, SIGNAL(propertyChanged(Property*)),
+    connect(currentProperty, SIGNAL(propertyChanged(Property*)), 
         m_listView, SLOT(updateSelected(Property*)));
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void RightPanel::deleteCurrent()
+// -------------------------------------------------------------------------------------------------
+{
+    if (isFocusInside())
+    {
+        m_listView->deleteCurrent();
+    }
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void RightPanel::insertAtCurrentPos()
+// -------------------------------------------------------------------------------------------------
+{
+    if (isFocusInside())
+    {
+        m_listView->insertAtCurrentPos();
+    }
+}
+
+
+// -------------------------------------------------------------------------------------------------
+bool RightPanel::isFocusInside() const
+// -------------------------------------------------------------------------------------------------
+{
+    return m_listView->isFocusInside() || m_southPanel->isFocusInside();
 }
