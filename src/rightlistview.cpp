@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightlistview.cpp,v 1.1 2003/10/20 20:55:13 bwalle Exp $
+ * Id: $Id: rightlistview.cpp,v 1.2 2003/12/04 14:07:55 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -71,8 +71,10 @@ void RightListView::initContextMenu()
 void RightListView::showContextMenu(QListViewItem* item, const QPoint& point) 
 // -------------------------------------------------------------------------------------------------
 {
-    int id = m_contextMenu->exec(point);
+    m_contextMenu->setItemEnabled(DELETE, item != 0);
+    m_contextMenu->setItemEnabled(COPY, item != 0);
     
+    int id = m_contextMenu->exec(point);
     switch (id)
     {
         case DELETE:
@@ -195,13 +197,10 @@ void RightListView::setItem(QListViewItem* item)
 {
     disconnect(this, SIGNAL(itemAppended()));
     m_currentItem = dynamic_cast<TreeEntry*>(item);
-    
-    if (m_currentItem == 0)
+    if (m_currentItem != 0)
     {
-        return;
+        connect(m_currentItem, SIGNAL(propertyAppended()), this, SIGNAL(itemAppended()));
+        updateView();
     }
-    
-    connect(m_currentItem, SIGNAL(propertyAppended()), this, SIGNAL(itemAppended()));
-    updateView();
 }
 
