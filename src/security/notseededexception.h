@@ -1,5 +1,5 @@
 /*
- * Id: $Id: notseededexception.h,v 1.1 2003/09/21 16:01:35 bwalle Exp $
+ * Id: $Id: notseededexception.h,v 1.2 2003/10/05 16:07:36 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,6 +24,10 @@
  * Exception that is thrown if the random generator was not seeded in order to
  * generate bytes. Not that on each system which has no /dev/urandom device the
  * programmer must seed the algorithm manually.
+ * @ingroup cipher
+ * @version $Revision: 1.2 $
+ * @author Bernhard Walle
+ * @date $Date: 2003/10/05 16:07:36 $
  */
 class NotSeededException : public std::runtime_error
 {

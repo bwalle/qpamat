@@ -1,5 +1,5 @@
 /*
- * Id: $Id: types.h,v 1.2 2003/10/03 19:45:21 bwalle Exp $
+ * Id: $Id: types.h,v 1.3 2003/10/05 16:08:07 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -20,6 +20,7 @@
 
 /**
  * @file types.h
+ * @ingroup gui
  * Defines some types used in the whole application.
  */
 
