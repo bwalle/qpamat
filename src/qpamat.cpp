@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.33 2004/01/15 22:06:58 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.34 2004/01/20 21:43:26 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -90,8 +90,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.33 $
-    \date $Date: 2004/01/15 22:06:58 $
+    \version $Revision: 1.34 $
+    \date $Date: 2004/01/20 21:43:26 $
  */
 
 /*! 
@@ -112,7 +112,7 @@
     Creates a new instance of the application.
  */
 Qpamat::Qpamat()
-    : m_tree(0), m_treeContextMenu(0), m_message(0), m_rightPanel(0), m_searchCombo(0), 
+    : QMainWindow(0, "qpamat main window"), m_tree(0), m_treeContextMenu(0), m_message(0), m_rightPanel(0), m_searchCombo(0), 
       m_errorMessage(0), m_searchToolbar(0), m_randomPassword(0)
 {
     // Title and Icon
@@ -399,6 +399,12 @@ void Qpamat::login()
                     : QMessageBox::Critical;
                 // category: different behaviour
                 ReadWriteException::Category cat = e.getCategory();
+                
+                if (cat == ReadWriteException::CAbort)
+                {
+                    return;
+                }
+                
                 bool retry = e.retryMakesSense();
                 
                 QMessageBox *mb = new QMessageBox( "QPaMaT", e.getMessage(), icon, 

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: datareadwriter.cpp,v 1.2 2004/01/11 23:21:18 bwalle Exp $
+ * Id: $Id: datareadwriter.cpp,v 1.3 2004/01/20 21:43:35 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -32,6 +32,7 @@
 #include "security/passwordhash.h"
 #include "security/symmetricencryptor.h"
 #include "security/collectencryptor.h"
+#include "dialogs/insertcarddialog.h"
 #include "dialogs/waitdialog.h"
 #include "treeentry.h"
 
@@ -56,8 +57,8 @@
 
     \ingroup gui
     \author $Author: bwalle $
-    \version $Revision: 1.2 $
-    \date $Date: 2004/01/11 23:21:18 $
+    \version $Revision: 1.3 $
+    \date $Date: 2004/01/20 21:43:35 $
     
 */
 
@@ -109,6 +110,11 @@
 
     The default: we don't know the category. This is always bad because we cannot
     react properly. Avoid this!
+*/
+/*!
+    \fn ReadWriteException::CAbort
+    
+    User wants to abort the action.
 */
 
 /*!
@@ -183,11 +189,13 @@
     <tt>\<password\></tt> tag. The document must be passed to the Tree::writeToXML()
     function.
     
+    \bug PIN verification does not work here: I get 90 00 as response after verifying, but
+          writing fails with 62 00 error !??
 
     \ingroup gui
     \author $Author: bwalle $
-    \version $Revision: 1.2 $
-    \date $Date: 2004/01/11 23:21:18 $
+    \version $Revision: 1.3 $
+    \date $Date: 2004/01/20 21:43:35 $
 */
 
 /*!
@@ -248,9 +256,9 @@ class ReadWriteThread : public QThread
 {
     public:
         ReadWriteThread(MemoryCard& card, ByteVector& bytes, bool write, byte& randomNumber,
-            const QString& password)
+            const QString& password, const QString& pin)
             : m_card(card), m_bytes(bytes), m_write(write), m_randomNumber(randomNumber), 
-              m_password(password), m_exception(0) { }
+              m_password(password), m_exception(0), m_pin(pin) { }
             
         ~ReadWriteThread() 
             { delete m_exception; }
@@ -260,12 +268,13 @@ class ReadWriteThread : public QThread
     protected:
         void run();
     private:
-        MemoryCard& m_card;
-        ByteVector& m_bytes;
-        const bool m_write;
-        byte& m_randomNumber;
-        const QString& m_password;
+        MemoryCard&         m_card;
+        ByteVector&         m_bytes;
+        const bool          m_write;
+        byte&               m_randomNumber;
+        const QString&      m_password;
         ReadWriteException* m_exception;
+        const QString&      m_pin;
 };
 
 // -------------------------------------------------------------------------------------------------
@@ -316,6 +325,13 @@ void ReadWriteThread::run()
             return;
         }
         
+        if (m_write && m_pin)
+        {
+            // try to unlock
+            PRINT_DBG("Trying to unlock the card ...");
+            m_card.verify(m_pin);
+        }
+        
         if (!m_card.selectFile())
         {
             m_exception = new ReadWriteException(qApp->tr("<qt>It was not possible to select the "
@@ -328,9 +344,8 @@ void ReadWriteThread::run()
             // write the random number
             ByteVector byteVector(1);
             byteVector[0] = m_randomNumber;
+            PRINT_DBG("Writing random = %d", byteVector[0])
             m_card.write(0, byteVector);
-            
-            PRINT_DBG("Random = %d", byteVector[0])
             
             // write the password hash and include a length information
             ByteVector pwHash = PasswordHash::generateHash(m_password);
@@ -390,9 +405,18 @@ void ReadWriteThread::run()
     }
     catch (const CardException& e)
     {
-        m_exception = new ReadWriteException(qApp->tr("<qt><nobr>There was a communication error "
-            "while</nobr> communicating with the smartcard terminal.<p>The error message was:"
-            "<br><nobr>%1</nobr>").arg(e.what()), ReadWriteException::CSmartcardError);
+        if (e.getErrorCode() == CardException::WrongVerification)
+        {
+            m_exception = new ReadWriteException(qApp->tr("<qt><nobr>The PIN you entered was wrong. "
+                "You have</nobr> <b>%1</b> retries. After that, the card is destroyed!").arg(
+                QString::number(e.getRetryNumber())), ReadWriteException::CSmartcardError);
+        }
+        else
+        {
+            m_exception = new ReadWriteException(qApp->tr("<qt><nobr>There was a communication error "
+                "while</nobr> communicating with the smartcard terminal.<p>The error message was:"
+                "<br><nobr>%1</nobr>").arg(e.what()), ReadWriteException::CSmartcardError);
+        }
         return;
     }
 }
@@ -633,12 +657,23 @@ void DataReadWriter::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& r
     
     // ask the user to insert the smartcard
     QApplication::restoreOverrideCursor();
-    QMessageBox::information(m_parent, "QPaMaT", qApp->tr("Insert the smartcard in your "
-        "reader!"), QMessageBox::Ok, QMessageBox::NoButton); 
+    
+    QString pin;
+    bool havePin = qpamat->set().readBoolEntry("Smartcard/HasWriteProtection") && write;
+    std::auto_ptr<InsertCardDialog> dlg(new InsertCardDialog(havePin, m_parent, "InsertCardDlg"));
+    if (dlg->exec() != QDialog::Accepted)
+    {
+        throw ReadWriteException(0, ReadWriteException::CAbort);
+    }
+    if (havePin)
+    {
+        pin = dlg->getPIN();
+    }
+    
     QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
     
     // start the thread
-    ReadWriteThread thread(*card, bytes, write, randomNumber, password);
+    ReadWriteThread thread(*card, bytes, write, randomNumber, password, pin);
     thread.start();
     
     // show dialog

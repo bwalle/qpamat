@@ -1,5 +1,5 @@
 /*
- * Id: $Id: datareadwriter.h,v 1.2 2004/01/13 23:20:46 bwalle Exp $
+ * Id: $Id: datareadwriter.h,v 1.3 2004/01/20 21:43:35 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -38,7 +38,7 @@ class ReadWriteException : public std::runtime_error
         enum Category
         {
             CWrongPassword, CInvalidData, CIOError, CSmartcardError, CNoAlgorithm, 
-            CConfigurationError, COtherError
+            CConfigurationError, COtherError, CAbort
         };
         
     public:
