@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.21 2003/12/18 21:58:40 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.22 2003/12/20 15:59:05 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -94,7 +94,12 @@ HEADERS     =                                   \
 
 # -----------------------------------------------------------------------------
 
-CONFIG     += warn_on qt exceptions
+isEmpty(static) {
+  CONFIG     += warn_on qt exceptions
+} else {
+  LIBS        += /usr/lib/qt3/lib/libqt-mt.a -lfreetype -lXft -lz -lpthread -lpng -lX11 -lXext -lXinerama -lXi -lSM -lXcursor -lXrandr -lGL
+  CONFIG      += x11 warn_on exceptions
+}
 
 # -----------------------------------------------------------------------------
 
