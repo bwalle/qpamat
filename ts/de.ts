@@ -280,6 +280,18 @@ um die Einstellungen zu testen:</translation>
         <source>&lt;qt&gt;&lt;p&gt;Failed to open the link &lt;tt&gt;%1&lt;/tt&gt; in the specified web browser. The command was:&lt;/p&gt;&lt;p&gt;&lt;tt&gt;&lt;nobr&gt;%2&lt;/tt&gt;&lt;/nobr&gt;&lt;/p&gt;&lt;/qt&gt;</source>
         <translation>&lt;qt&gt;&lt;p&gt;Öffnen des Links &lt;tt&gt;%1&lt;/tt&gt; im angegebenen Web-Browser fehlgeschlagen. Der Befehl war:&lt;/p&gt;&lt;p&gt;&lt;tt&gt;&lt;nobr&gt;%2&lt;/tt&gt;&lt;/nobr&gt;&lt;/p&gt;&lt;/qt&gt;</translation>
     </message>
+    <message>
+        <source>QPaMaT</source>
+        <translation>QPaMaT</translation>
+    </message>
+    <message>
+        <source>The QPaMaT documentation is not installed.</source>
+        <translation>Die QPaMaT-Dokumentation ist nicht installiert.</translation>
+    </message>
+    <message>
+        <source>Help started in web browser.</source>
+        <translation>Hilfe wurde in Web-Browser gestartet.</translation>
+    </message>
 </context>
 <context>
     <name>InsertCardDialog</name>
@@ -615,7 +627,7 @@ Wollen Sie jetzt speichern?</translation>
     </message>
     <message>
         <source>E&amp;xit</source>
-        <translation>B&amp;eenden</translation>
+        <translation>&amp;Beenden</translation>
     </message>
     <message>
         <source>&amp;Login</source>
