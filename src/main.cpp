@@ -1,5 +1,5 @@
 /*
- * Id: $Id: main.cpp,v 1.11 2003/12/15 18:38:08 bwalle Exp $
+ * Id: $Id: main.cpp,v 1.12 2003/12/16 22:53:42 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -69,7 +69,7 @@ void qpamatNS::printVersion()
 {
 #ifdef Q_WS_X11
     struct utsname uname_struct;
-    bool nameAvailable = (uname(&uname_struct) == 0);
+    bool nameAvailable = (uname(&uname_struct) >= 0);
     QString X11protocolVersion, X11vendorVersion;
     getX11Version(X11protocolVersion, X11vendorVersion);
 #endif
