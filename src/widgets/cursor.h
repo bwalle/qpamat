@@ -1,5 +1,5 @@
 /*
- * Id: $Id: cursor.h,v 1.1 2004/01/08 23:40:08 bwalle Exp $
+ * Id: $Id: cursor.h,v 1.2 2005/02/23 18:01:48 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,7 +18,7 @@
 #ifndef CURSOR_H
 #define CURSOR_H
 
-#include <qt.h>
+#include <qbitmap.h>
 #include <qcursor.h>
 
 
