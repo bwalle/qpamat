@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.13 2003/12/04 11:59:37 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.14 2003/12/06 18:26:13 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -12,9 +12,12 @@ SOURCES     =                                   \
     src/dialogs/newpassworddialog.cpp           \
     src/dialogs/configurationdialog.cpp         \
     src/widgets/filelineedit.cpp                \
+    src/widgets/fontchoosebox.cpp               \
     src/security/encodinghelper.cpp             \
     src/security/passwordhash.cpp               \
-    src/security/encryptor.cpp                  \
+    src/security/abstractencryptor.cpp          \
+    src/security/symmetricencryptor.cpp         \
+    src/security/collectencryptor.cpp           \
     src/security/randompasswordgenerator.cpp    \
     src/security/simplepasswordchecker.cpp      \
     src/security/extendedpasswordchecker.cpp    \
@@ -41,6 +44,7 @@ HEADERS     =                                   \
     src/dialogs/newpassworddialog.h             \
     src/dialogs/configurationdialog.h           \
     src/widgets/filelineedit.h                  \
+    src/widgets/fontchoosebox.h                 \
     src/types.h                                 \
     src/security/passwordcheckexception.h       \
     src/security/encodinghelper.h               \
@@ -48,6 +52,9 @@ HEADERS     =                                   \
     src/security/nosuchalgorithmexception.h     \
     src/security/notseededexception.h           \
     src/security/encryptor.h                    \
+    src/security/abstractencryptor.h            \
+    src/security/symmetricencryptor.h           \
+    src/security/collectencryptor.h             \
     src/security/randompasswordgenerator.h      \
     src/security/passwordchecker.h              \
     src/security/simplepasswordchecker.h        \
