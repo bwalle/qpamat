@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.36 2004/02/07 00:11:14 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.37 2004/03/14 12:03:27 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -91,8 +91,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.36 $
-    \date $Date: 2004/02/07 00:11:14 $
+    \version $Revision: 1.37 $
+    \date $Date: 2004/03/14 12:03:27 $
  */
 
 /*! 
@@ -483,7 +483,10 @@ void Qpamat::save()
 
 
 /*!
-    df
+    Exports or saves the data. The file name is determined by the global property
+    General/Datafile and the property Smartcard/UseCard is considered for smartcard
+    writing.
+    \return \c true if the action was successful, \c false otherwise
 */
 bool Qpamat::exportOrSave()
 {
@@ -525,7 +528,7 @@ void Qpamat::exportData()
 {
     QString oldFilename = set().readEntry("General/Datafile");
     QString file = QFileDialog::getSaveFileName(
-        QDir::homeDirPath(), 0, this, "file dialog", tr("QPaMaT") );
+        QDir::homeDirPath(), tr("QPaMaT XML files (*.xml)"), this, "file dialog", tr("QPaMaT") );
     bool oldCard = set().readBoolEntry("Smartcard/UseCard");
     if (!file)
     {
