@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.25 2003/12/30 00:29:03 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.26 2003/12/30 23:06:03 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -86,8 +86,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.25 $
-    \date $Date: 2003/12/30 00:29:03 $
+    \version $Revision: 1.26 $
+    \date $Date: 2003/12/30 23:06:03 $
  */
 
 /*! 
@@ -414,7 +414,7 @@ void Qpamat::setLogin(bool loggedIn)
     
     if (!loggedIn)
     {
-        
+        m_actions.passwordStrengthAction->setOn(false);
         m_tree->clear();
         m_rightPanel->clear();
         this->setFocus();
