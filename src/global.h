@@ -1,5 +1,5 @@
 /*
- * Id: $Id: global.h,v 1.5 2004/01/02 12:19:40 bwalle Exp $
+ * Id: $Id: global.h,v 1.6 2004/01/07 23:55:24 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -51,7 +51,7 @@ typedef QValueVector<QChar>     QCharVector;
 
 #define PRINT_DBG(fmt, args...)                                                  \
 {                                                                                \
-    qDebug("DEBUG[%s:%d] %s(): \n   "fmt, __FILE__, __LINE__, __DBG_FUNC__, ##args);  \
+    qDebug("DEBUG[%s:%d] %s(): "fmt, __FILE__, __LINE__, __DBG_FUNC__, ##args);  \
 }
 
 #else
@@ -65,7 +65,7 @@ typedef QValueVector<QChar>     QCharVector;
 
 #define PRINT_TRACE(fmt, args...)                                                 \
 {                                                                                 \
-    qDebug("TRACE[%s:%d] %s(): \n   "fmt, __FILE__, __LINE__, __DBG_FUNC__, ##args);   \
+    qDebug("TRACE[%s:%d] %s(): "fmt, __FILE__, __LINE__, __DBG_FUNC__, ##args);   \
 }
 
 #else
