@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.26 2004/01/03 23:41:37 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.27 2004/01/06 23:42:31 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -8,7 +8,10 @@
 ################################################################################
 
 
-VERSION     = 0.1
+VERSION_STRING     = 0.1.0
+MAJOR_VERSION      = 0
+MINOR_VERSION      = 1
+PATCH_VERSION      = 0
 
 
 INCLUDEPATH += src/
@@ -44,6 +47,7 @@ SOURCES     =                                   \
 	src/smartcard/notinitializedexception.cpp	\
     src/util/stringdisplay.cpp                  \
     src/util/singleapplication.cpp              \
+    src/datareadwriter.cpp                      \
     src/timerstatusmessage.cpp            	 	\
     src/randompassword.cpp                      \
     src/treeentry.cpp                           \
@@ -92,8 +96,10 @@ HEADERS     =                                   \
     src/smartcard/memorycard.h                  \
 	src/smartcard/nosuchlibraryexception.h		\
 	src/smartcard/notinitializedexception.h		\
+    src/util/stdrandomnumbergenerator.h         \
     src/util/stringdisplay.h                    \
     src/util/singleapplication.h                \
+    src/datareadwriter.h                        \
     src/timerstatusmessage.h               		\
     src/treeentry.h                             \
     src/property.h                              \
@@ -116,7 +122,10 @@ isEmpty(static) {
 
 # -----------------------------------------------------------------------------
 
-DEFINES    += VERSION=\"$$VERSION\"
+DEFINES    += VERSION_STRING=\"$$VERSION_STRING\" 
+DEFINES    += MAJOR_VERSION=$$MAJOR_VERSION
+DEFINES    += MINOR_VERSION=$$MINOR_VERSION
+DEFINES    += PATCH_VERSION=$$PATCH_VERSION
 
 isEmpty (debug) {
   #DEFINES  += QT_NO_CHECK
@@ -142,7 +151,7 @@ OBJECTS_DIR = out/
 
 # build the documentation with "make doc"
 # (Unix only, run "doxygen qpamant.doxy" on Microsoft Windows)
-documentation.target        = doc
+documentation.target        = documentation
 documentation.commands      = doxygen qpamat.doxy
 QMAKE_EXTRA_UNIX_TARGETS   += documentation
 
