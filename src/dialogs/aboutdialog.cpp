@@ -1,5 +1,5 @@
 /*
- * Id: $Id: aboutdialog.cpp,v 1.3 2004/07/23 13:37:05 bwalle Exp $
+ * Id: $Id: aboutdialog.cpp,v 1.4 2004/09/03 13:41:14 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -33,8 +33,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.3 $
-    \date $Date: 2004/07/23 13:37:05 $
+    \version $Revision: 1.4 $
+    \date $Date: 2004/09/03 13:41:14 $
 */
 
 /*!
@@ -46,7 +46,7 @@
 AboutDialog::AboutDialog(QWidget* parent, const char* name = 0)
     : QDialog(parent, name)
 {
-    m_mainLayout = new QVBoxLayout(this, 6, 6);
+    m_mainLayout = new QVBoxLayout(this, 10, 6);
     setCaption(tr("About QPaMaT"));
     
     // the top of the dialog
