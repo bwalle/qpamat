@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.34 2004/01/20 21:43:26 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.35 2004/01/22 12:12:43 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -90,8 +90,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.34 $
-    \date $Date: 2004/01/20 21:43:26 $
+    \version $Revision: 1.35 $
+    \date $Date: 2004/01/22 12:12:43 $
  */
 
 /*! 
@@ -502,7 +502,8 @@ void Qpamat::save()
         }
         if (success)
         {
-            m_modified = false;
+            setModified(false);
+            message("Wrote data successfully.");
         }
     }
 }
