@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.30 2004/01/07 23:55:48 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.31 2004/01/11 23:20:28 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -87,8 +87,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.30 $
-    \date $Date: 2004/01/07 23:55:48 $
+    \version $Revision: 1.31 $
+    \date $Date: 2004/01/11 23:20:28 $
  */
 
 /*! 
@@ -733,6 +733,7 @@ void Qpamat::connectSignalsAndSlots()
     // search function
     connect(m_searchCombo, SIGNAL(activated(int)), this, SLOT(search()));
     connect(m_toolButtons.search, SIGNAL(clicked()), this, SLOT(search()));
+    connect(m_actions.focusSearch, SIGNAL(activated()), m_searchCombo, SLOT(setFocus()));
     
     // modified
     connect(m_tree, SIGNAL(stateModified()), SLOT(setModified()));
@@ -788,5 +789,8 @@ void Qpamat::initActions()
         tr("Add item"), QKeySequence(Key_Insert), this, "Add item action");
     m_actions.removeItemAction = new QAction(QIconSet(edit_remove_16x16_xpm, edit_remove_22x22_xpm),
         tr("Remove item"), QKeySequence(), this, "Remove item action");
+        
+    // ------ Misc ---------------------------------------------------------------------------------
+    m_actions.focusSearch = new QAction(tr("Focus &search"), QKeySequence(CTRL|Key_G), this);
 }
 
