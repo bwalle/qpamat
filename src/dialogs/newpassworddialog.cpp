@@ -1,5 +1,5 @@
 /*
- * Id: $Id: newpassworddialog.cpp,v 1.11 2004/01/08 23:40:23 bwalle Exp $
+ * Id: $Id: newpassworddialog.cpp,v 1.12 2004/07/21 08:03:48 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -44,8 +44,8 @@
     
     \ingroup dialogs
     \author Bernhard Walle
-    \version $Revision: 1.11 $
-    \date $Date: 2004/01/08 23:40:23 $
+    \version $Revision: 1.12 $
+    \date $Date: 2004/07/21 08:03:48 $
 */
 
 
@@ -187,7 +187,7 @@ void NewPasswordDialog::accept()
     if (m_oldPassword && m_oldPassword != m_oldPasswordEdit->text())
     {
         QMessageBox::warning(this, "QPaMaT",
-               "<qt>"+tr("The old password was incorrect. Without the old password "
+               "<qt>"+tr("The old password was incorrect. Without the old password, "
                "the password cannot be changed.")+"</qt>",
                QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
         m_oldPasswordEdit->setFocus();
@@ -313,8 +313,8 @@ void NewPasswordDialog::checkOkEnabled() const
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.11 $
-    \date $Date: 2004/01/08 23:40:23 $
+    \version $Revision: 1.12 $
+    \date $Date: 2004/07/21 08:03:48 $
 */
 
 /*!
