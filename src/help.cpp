@@ -1,5 +1,5 @@
 /*
- * Id: $Id: help.cpp,v 1.2 2003/10/20 20:55:27 bwalle Exp $
+ * Id: $Id: help.cpp,v 1.3 2003/11/16 20:22:54 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -32,7 +32,7 @@ void Help::showAbout()
         tr("<p><b>QPaMaT "VERSION"</b></p><p>Password managing tool for Unix, Windows and MacOS X. "
             "It uses the OpenSSL library for encryption and is distributed under the terms "
             "of the GNU General Public License.</p>"
-            "<p>© Bernhard Walle (<tt>bernhard.walle@gmx.de</tt>)"));
+            "<p>© Bernhard Walle &lt;bernhard.walle@gmx.de&gt;"));
 }
 
 
@@ -41,7 +41,7 @@ void Help::openURL(QWidget* parent, const QString& url)
 // -------------------------------------------------------------------------------------------------
 {
     QString command = Settings::getInstance().getSettings().readEntry(
-        "/External Programs/Web Browser", Settings::DEFAULT_WEBBROWSER);
+        "/General/Webbrowser", Settings::DEFAULT_WEBBROWSER);
     QProcess* process = new QProcess(command, parent);
     process->addArgument(url);
     
