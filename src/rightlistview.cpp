@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightlistview.cpp,v 1.4 2003/12/11 22:02:03 bwalle Exp $
+ * Id: $Id: rightlistview.cpp,v 1.5 2003/12/15 18:39:10 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -119,25 +119,21 @@ void RightListView::setSelectedIndex(uint index)
 void RightListView::keyPressEvent(QKeyEvent* evt)
 // -------------------------------------------------------------------------------------------------
 {
-    QListViewItem* current = currentItem();
+    QListViewItem* selected = selectedItem();
     int key = evt->key();
     
-    if (current != 0)
+    if (key == Key_Delete)
     {
-        if (key == Key_Delete)
-        {
-            m_currentItem->deleteProperty(current->text(2).toInt(0));
-            emit itemDeleted();
-        }
-        else if (key == Key_C && evt->state() == ControlButton)
-        {
-            copyItem(current);
-        }
-        else
-        {
-            evt->ignore();
-            QListView::keyPressEvent(evt);
-        }
+        deleteCurrent();
+    }
+    else if (selected && key == Key_C && evt->state() == ControlButton)
+    {
+        copyItem(selected);
+    }
+    else
+    {
+        evt->ignore();
+        QListView::keyPressEvent(evt);
     }
 }
 
@@ -233,6 +229,7 @@ void RightListView::setItem(QListViewItem* item)
 void RightListView::deleteCurrent()
 // -------------------------------------------------------------------------------------------------
 {
+    qDebug("RightListView::deleteCurrent");
     QListViewItem* selected = selectedItem();
     if (selected)
     {
