@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.16 2003/12/14 18:50:55 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.17 2003/12/15 18:39:20 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -6,6 +6,10 @@
 #  use "qmake -o Makefile qpamat.pro debug=1" for debug code.
 #
 ################################################################################
+
+
+# set this if you installed OpenSSL in a non-standard place
+# INCLUDEPATH += /usr/local/ssl/include
 
 SOURCES     =                                   \
     src/dialogs/passworddialog.cpp              \
@@ -27,6 +31,8 @@ SOURCES     =                                   \
     src/security/passwordcheckerfactory.cpp     \
     src/smartcard/cardexception.cpp             \
     src/smartcard/memorycard.cpp                \
+    src/util/timerstatusmessage.cpp             \
+    src/singleapplication.cpp                   \
     src/treeentry.cpp                           \
     src/property.cpp                            \
     src/tree.cpp                                \
@@ -66,6 +72,8 @@ HEADERS     =                                   \
     src/security/passwordcheckerfactory.h       \
     src/smartcard/cardexception.h               \
     src/smartcard/memorycard.h                  \
+    src/util/timerstatusmessage.h               \
+    src/singleapplication.h                     \
     src/treeentry.h                             \
     src/property.h                              \
     src/settings.h                              \
@@ -94,7 +102,7 @@ isEmpty (debug) {
 
 # -----------------------------------------------------------------------------
 
-LIBS       += -lssl -lm 
+LIBS       += -lssl -lm -lcrypto
 
 # -----------------------------------------------------------------------------
 
