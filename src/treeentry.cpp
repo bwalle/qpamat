@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.cpp,v 1.1 2003/10/05 16:08:21 bwalle Exp $
+ * Id: $Id: treeentry.cpp,v 1.2 2003/10/11 19:50:52 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -75,8 +75,8 @@ void TreeEntry::setText(int column, const QString& text)
     Q_ASSERT(column == 0);
 #endif
     m_name = text;
+    listView()->sort();
     listView()->triggerUpdate();
-    //listView()->sort();
 }
 
 
