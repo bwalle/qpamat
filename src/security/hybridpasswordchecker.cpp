@@ -1,5 +1,5 @@
 /*
- * Id: $Id: hybridpasswordchecker.cpp,v 1.4 2004/01/02 12:21:08 bwalle Exp $
+ * Id: $Id: hybridpasswordchecker.cpp,v 1.5 2004/02/09 19:33:08 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -53,8 +53,8 @@ QMap<int, int>  HybridPasswordChecker::m_lengthBeginMap;
     
     \ingroup security
     \author Bernhard Walle
-    \version $Revision: 1.4 $
-    \date $Date: 2004/01/02 12:21:08 $
+    \version $Revision: 1.5 $
+    \date $Date: 2004/02/09 19:33:08 $
 */
 
 
@@ -149,10 +149,9 @@ double HybridPasswordChecker::passwordQuality(const QString& password) throw ()
     uint P = longest ? (password.length() - longest.length() + 1 ) : password.length();
     
     PRINT_TRACE("-----------------------------------------------------");
-    PRINT_TRACE("Password = %s", password.latin1());
     PRINT_TRACE("Z = %d, L = %d, W = %d, P = %d", Z, L, W, P);
     
-    return double( (powl( double(Z), double(L)) * W * P) / CRACKS_PER_SECOND / 86400);
+    return std::pow(double(Z), double(L)) * W * P / CRACKS_PER_SECOND / 86400;
 }
 
 
