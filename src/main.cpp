@@ -1,5 +1,5 @@
 /*
- * Id: $Id: main.cpp,v 1.10 2003/12/14 19:19:50 bwalle Exp $
+ * Id: $Id: main.cpp,v 1.11 2003/12/15 18:38:08 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -30,6 +30,7 @@
 #include "qpamat.h"
 #include "settings.h"
 #include "main.h"
+#include "singleapplication.h"
 
 #ifdef Q_WS_X11
 #include <unistd.h>
@@ -109,64 +110,6 @@ void qpamatNS::parseCommandLine(int& argc, char**& argv)
     }
 }
 
-// -------------------------------------------------------------------------------------------------
-void qpamatNS::singleAppStartup()
-// -------------------------------------------------------------------------------------------------
-{
-    QString lockfile = QDir::homeDirPath() + "/" + ".qpamat.lock";
-    QFile file(lockfile);
-    
-    // check if the file exists
-    if (QFile::exists(lockfile))
-    {
-        QString id = "???";
-        if (file.open(IO_ReadOnly))
-        {
-            QTextStream textstream(&file);
-            textstream >> id;
-        }
-        
-        QMessageBox::critical(0, "QPaMaT", QObject::tr("You can only start one instance of "
-            "QPaMaT. If you are\nreally sure that no other instance is running, "
-            "delete\nthe file %1 and start again."
-#ifdef Q_WS_X11
-            "\n\n(PID of the currently running process should be %2.)"
-#endif
-            ).arg(lockfile)
-#ifdef Q_WS_X11
-            .arg(id)
-#endif
-            , QMessageBox::Ok, 
-            QMessageBox::NoButton);
-        std::exit(1);
-    }
-    
-    
-    if (!file.open(IO_WriteOnly))
-    {
-        qDebug("Could not open the file %s for writing.", lockfile.latin1());
-        return;
-    }
-    QTextStream textstream(&file);
-#ifdef Q_WS_X11
-    textstream << "Process ID only implemented on X11.";
-#else
-    textstream << getpid();
-#endif
-}
-
-
-// -------------------------------------------------------------------------------------------------
-void qpamatNS::singleAppEnd()
-// -------------------------------------------------------------------------------------------------
-{
-    QString lockfile = QDir::homeDirPath() + "/" + ".qpamat.lock";
-    if (!QFile::remove(lockfile))
-    {
-        qDebug("Could not remove the lockfile %s", lockfile.latin1());
-    }
-}
-
 
 // -------------------------------------------------------------------------------------------------
 void qpamatNS::getX11Version(QString& protocolVersion, QString& vendorVersion)
@@ -192,20 +135,21 @@ int main(int argc, char** argv)
     int returncode = 0;
     
     QApplication app(argc, argv);
+    SingleApplication single(QDir::homeDirPath(), "QPaMaT");
     qpamatNS::parseCommandLine(argc, argv);
     
     try
     {
-        qpamatNS::singleAppStartup();
+        single.startup();
         
         qpamat = new Qpamat();
         app.setMainWidget(qpamat);
         
         qpamat->show();
+        app.connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));
+        app.connect(&app, SIGNAL(aboutToQuit()), &single, SLOT(shutdown())); 
         
         returncode = app.exec();
-        
-        qpamatNS::singleAppEnd();
     }
     catch (const std::bad_alloc& e)
     {
