@@ -1,5 +1,5 @@
 /*
- * Id: $Id: main.cpp,v 1.1 2003/10/11 19:51:15 bwalle Exp $
+ * Id: $Id: main.cpp,v 1.2 2003/10/20 20:55:43 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -23,22 +23,26 @@
 
 #include <qapplication.h>
 #include <qmessagebox.h>
+#include <qdesktopwidget.h>
+#include <qsettings.h>
 
 #include "qpamat.h"
+#include "settings.h"
 
 int main(int argc, char** argv)
 {
 #ifdef DEBUG
     mtrace();
 #endif
-    int returncode;
+    int returncode = 0;
     
     QApplication app(argc, argv);
     try
     {
-        Qpamat* qpamat = new Qpamat();
-        app.setMainWidget(qpamat);
-        qpamat->show();
+        Qpamat qpamat;
+        app.setMainWidget(&qpamat);
+        
+        qpamat.show();
         
         returncode = app.exec();
     }
