@@ -1,4 +1,9 @@
-Sat Jul 24 15:51:00 2004  Bernhard Walle bernhard@bwalle.de
+Fri Sep 03 16:41:00 2004  Bernhard Walle <bernhard@bwalle.de>
+	
+	* Removed superflous code (QErrorMessage) in qpamat.cpp.
+	* Improved AboutDialog (increased border).
+
+Sat Jul 24 15:51:00 2004  Bernhard Walle <bernhard@bwalle.de>
 
 	* Bufix: If a new document is created, it's now in "modified" state
 
