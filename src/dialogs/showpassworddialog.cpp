@@ -1,5 +1,5 @@
 /*
- * Id: $Id: showpassworddialog.cpp,v 1.2 2003/12/28 22:08:15 bwalle Exp $
+ * Id: $Id: showpassworddialog.cpp,v 1.3 2003/12/29 11:00:05 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -25,7 +25,7 @@
 #include <qclipboard.h>
 #include <qpushbutton.h>
 
-#include "../qpamat.h"
+#include "qpamat.h"
 #include "showpassworddialog.h"
 
 /*!
@@ -43,8 +43,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.2 $
-    \date $Date: 2003/12/28 22:08:15 $
+    \version $Revision: 1.3 $
+    \date $Date: 2003/12/29 11:00:05 $
 */
 
 /*!

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialogprivate.h,v 1.1 2003/12/28 22:08:15 bwalle Exp $
+ * Id: $Id: configurationdialogprivate.h,v 1.2 2003/12/29 10:59:47 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -29,8 +29,8 @@
 #include <qspinbox.h>
 #include <qlcdnumber.h>
 
-#include "../widgets/filelineedit.h"
-#include "../widgets/fontchoosebox.h"
+#include "widgets/filelineedit.h"
+#include "widgets/fontchoosebox.h"
 
 class ConfDlgGeneralTab : public QWidget
 {
