@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.41 2004/05/09 15:13:50 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.42 2004/06/05 13:26:30 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -91,8 +91,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.41 $
-    \date $Date: 2004/05/09 15:13:50 $
+    \version $Revision: 1.42 $
+    \date $Date: 2004/06/05 13:26:30 $
  */
 
 /*! 
@@ -188,7 +188,14 @@ Qpamat::Qpamat()
     
     if (set().readBoolEntry("General/AutoLogin"))
     {
-        QTimer::singleShot( 0, this, SLOT(login()) );
+        if (QFile::exists(set().readEntry("General/Datafile")) )
+        {
+            QTimer::singleShot( 0, this, SLOT(login()) );
+        }
+        else
+        {
+            QTimer::singleShot( 0, this, SLOT(newFile()) );
+        }
     }
 }
 
