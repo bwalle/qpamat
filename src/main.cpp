@@ -1,5 +1,5 @@
 /*
- * Id: $Id: main.cpp,v 1.6 2003/11/29 14:43:03 bwalle Exp $
+ * Id: $Id: main.cpp,v 1.7 2003/12/04 11:56:37 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -28,7 +28,6 @@
 
 #include "qpamat.h"
 #include "settings.h"
-#include "util/processthread.h"
 
 int main(int argc, char** argv)
 {
@@ -40,13 +39,6 @@ int main(int argc, char** argv)
     QApplication app(argc, argv);
     try
     {
-        ProcessThread pt("acroread");
-        pt.start();
-        pt.wait();
-        qDebug("Wait finished in main method");
-        qDebug("Exit = %d\n", pt.getExitStatus());
-        
-        
         Qpamat qpamat;
         app.setMainWidget(&qpamat);
         
@@ -63,7 +55,7 @@ int main(int argc, char** argv)
     catch (const std::exception& e)
     {
         QMessageBox::warning(0, QObject::tr("QPaMaT"),
-            QObject::tr("An unknown error occured:\n%1\nThe application will be closed.")
+            QObject::tr("An unknown error occurred:\n%1\nThe application will be closed.")
             .arg(e.what()),
             QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
     }
