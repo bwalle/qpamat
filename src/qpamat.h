@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.h,v 1.17 2003/12/29 19:58:34 bwalle Exp $
+ * Id: $Id: qpamat.h,v 1.18 2004/01/11 23:20:36 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -95,6 +95,7 @@ class Qpamat : public QMainWindow
             QAction* randomPasswordAction;
             QAction* passwordStrengthAction;
             QAction* clearClipboardAction;
+            QAction* focusSearch;
         };
         struct ToolButtons
         {
