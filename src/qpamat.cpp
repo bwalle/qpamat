@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.26 2003/12/30 23:06:03 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.27 2004/01/01 14:09:17 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -86,8 +86,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.26 $
-    \date $Date: 2003/12/30 23:06:03 $
+    \version $Revision: 1.27 $
+    \date $Date: 2004/01/01 14:09:17 $
  */
 
 /*! 
@@ -319,6 +319,8 @@ void Qpamat::initMenubar()
  */
 void Qpamat::closeEvent(QCloseEvent* e)
 {
+    logout();
+    
     // write the history
     QStringList list;
     for (int i = 0; i < m_searchCombo->count(); ++i)
@@ -446,6 +448,17 @@ void Qpamat::save()
  */
 void Qpamat::logout()
 {
+    // save the data
+    if (m_modified)
+    {
+        if (QMessageBox::question(this, "QPaMaT", tr("There is modified data that was not saved."
+            "\nDo you want to save it now?"), QMessageBox::Yes | QMessageBox::Default, QMessageBox::No) 
+                == QMessageBox::Yes)
+        {
+            save();
+        }
+    }
+    
     setLogin(false);
 }
 
