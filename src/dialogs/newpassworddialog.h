@@ -1,5 +1,5 @@
 /*
- * Id: $Id: newpassworddialog.h,v 1.3 2003/11/29 14:43:03 bwalle Exp $
+ * Id: $Id: newpassworddialog.h,v 1.4 2003/12/03 22:33:53 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -33,8 +33,8 @@ namespace NewPasswordDialogLocal
  *
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.3 $
- * \date $Date: 2003/11/29 14:43:03 $
+ * \version $Revision: 1.4 $
+ * \date $Date: 2003/12/03 22:33:53 $
  */
 class NewPasswordDialog : public QDialog 
 {
@@ -78,8 +78,9 @@ class NewPasswordDialog : public QDialog
 };
 
 /*!
- * This namespace contains implementation details of the NewPasswordDialog. I didn't want to
- * waste the global namespace with this.
+ * \brief This namespace contains implementation details of the NewPasswordDialog. 
+ *
+ * I didn't want to waste the global namespace with this.
  */
 namespace NewPasswordDialogLocal
 {
@@ -91,8 +92,8 @@ namespace NewPasswordDialogLocal
      *
      * \ingroup gui
      * \author Bernhard Walle
-     * \version $Revision: 1.3 $
-     * \date $Date: 2003/11/29 14:43:03 $
+     * \version $Revision: 1.4 $
+     * \date $Date: 2003/12/03 22:33:53 $
      */
     class PasswordValidator : public QValidator
     {
