@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightlistview.cpp,v 1.3 2003/12/10 21:50:21 bwalle Exp $
+ * Id: $Id: rightlistview.cpp,v 1.4 2003/12/11 22:02:03 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -22,6 +22,7 @@
 #include <qapplication.h>
 #include <qevent.h>
 
+#include "qpamat.h"
 #include "rightlistview.h"
 #include "../images/edit_remove_16x16.xpm"
 #include "../images/edit_add_16x16.xpm"
@@ -51,6 +52,10 @@ RightListView::RightListView(QWidget* parent)
     connect(this, SIGNAL(itemDeleted()), this, SLOT(updateView()));
     connect(this, SIGNAL(doubleClicked(QListViewItem*, const QPoint&, int)),
         this, SLOT(doubleClickHandler(QListViewItem*)));
+    connect(this, SIGNAL(itemDeleted()), SIGNAL(stateModified()));
+    connect(this, SIGNAL(itemAppended()), SIGNAL(stateModified()));
+    connect(this, SIGNAL(selectionChanged()), SLOT(setMoveStateCorrect()));
+    connect(this, SIGNAL(currentChanged(QListViewItem*)), SLOT(setMoveStateCorrect()));
 }
 
 
@@ -84,11 +89,29 @@ void RightListView::showContextMenu(QListViewItem* item, const QPoint& point)
             break;
         case COPY:
             copyItem(item);
+            emit stateModified();
             break;
         case NEW:
             m_currentItem->appendProperty(new Property());
+            emit stateModified();
             break;
     };
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void RightListView::setSelectedIndex(uint index)
+// -------------------------------------------------------------------------------------------------
+{
+    Q_ASSERT(index <= uint(childCount()));
+    
+    QListViewItem* item = firstChild();
+    for (uint i = 0; i < index; ++i)
+    {
+        item = item->nextSibling();
+    }
+    
+    setSelected(item, true);
 }
 
 
@@ -210,8 +233,16 @@ void RightListView::setItem(QListViewItem* item)
 void RightListView::deleteCurrent()
 // -------------------------------------------------------------------------------------------------
 {
-    m_currentItem->deleteProperty(currentItem()->text(2).toInt(0));
-    emit itemDeleted();
+    QListViewItem* selected = selectedItem();
+    if (selected)
+    {
+        m_currentItem->deleteProperty(selected->text(2).toInt(0));
+        emit itemDeleted();
+    }
+    else
+    {
+        qpamat->message(tr("No item selected!"));
+    }
 }
 
 
@@ -239,4 +270,68 @@ bool RightListView::isFocusInside() const
 // -------------------------------------------------------------------------------------------------
 {
     return hasFocus();
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void RightListView::moveDown()
+// -------------------------------------------------------------------------------------------------
+{
+    QListViewItem* selected = selectedItem();
+    if (selected)
+    {
+        int index = selected->text(2).toInt(0);
+        // up in list terminology means greater index
+        m_currentItem->movePropertyOneUp(index);
+        updateView();
+        setSelectedIndex(index+1);
+        emit stateModified();
+    }
+    else
+    {
+        qpamat->message("No item selected");
+    }
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void RightListView::moveUp()
+// -------------------------------------------------------------------------------------------------
+{
+    QListViewItem* selected = selectedItem();
+    if (selected)
+    {
+        int index = selected->text(2).toInt(0);
+        // up in list terminology means greater index
+        m_currentItem->movePropertyOneDown(index);
+        updateView();
+        setSelectedIndex(index-1);
+        emit stateModified();
+    }
+    else
+    {
+        qpamat->message("No item selected");
+    }
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void RightListView::setMoveStateCorrect()
+// -------------------------------------------------------------------------------------------------
+{
+    bool up = false;
+    bool down = false;
+    QListViewItem* selected = selectedItem();
+    
+    if (selected)
+    {
+        int index = selected->text(2).toInt(0);
+        int number = childCount();
+        down = (index < number - 1);
+        up = (index > 0);
+    }
+#ifdef DEBUG
+    qDebug("RightListView::setMoveStateCorrect: Emitted enableMoving(%d, %d)", up, down);
+#endif
+    emit enableMoving(up, down);
 }

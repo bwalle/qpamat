@@ -1,5 +1,5 @@
 /*
- * Id: $Id: southpanel.cpp,v 1.4 2003/12/10 21:50:14 bwalle Exp $
+ * Id: $Id: southpanel.cpp,v 1.5 2003/12/11 22:02:09 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -19,22 +19,26 @@
 #include <qlayout.h>
 #include <qlabel.h>
 #include <qlineedit.h>
+#include <qvbox.h>
 #include <qvgroupbox.h>
+#include <qbuttongroup.h>
+#include <qtoolbutton.h>
 
 #include "southpanel.h"
 #include "settings.h"
-/* #include "../images/down_16x16.xpm"
+#include "../images/down_16x16.xpm"
 #include "../images/down_22x22.xpm"
 #include "../images/up_16x16.xpm"
 #include "../images/up_22x22.xpm"
- */
+
+
 // -------------------------------------------------------------------------------------------------
 SouthPanel::SouthPanel(QWidget* parent) 
 // -------------------------------------------------------------------------------------------------
     : QFrame(parent)
 {
-    QHBoxLayout* hLayout = new QHBoxLayout(this, 6, -1, "SouthPanel-QHBoxLayout");
-    QGroupBox* group = new QGroupBox(2, Horizontal, tr("Properties"), this, "SouthPanel-GroupBox");
+    QHBoxLayout* hLayout = new QHBoxLayout(this, 10, 10, "SouthPanel-QHBoxLayout");
+    QGroupBox* group = new QGroupBox(2, Horizontal, QString::null, this, "SouthPanel-GroupBox");
     
     // Type
     QLabel* typeLabel = new QLabel(tr("&Type"), group);
@@ -58,13 +62,40 @@ SouthPanel::SouthPanel(QWidget* parent)
     
     hLayout->addWidget(group);
     
+    // button group box
+    QWidget* vbox = new QWidget(this, "SouthPanel vertical box");
+    QVBoxLayout* vboxLayout = new QVBoxLayout(vbox, 0, 6, "Layout of vbox");
+    
+    // up button
+    m_upButton = new QToolButton(vbox, "SouthPanel up button");
+    m_upButton->setIconSet(QIconSet(up_16x16_xpm, up_22x22_xpm));
+    m_upButton->setUsesBigPixmap(true);
+    
+    // down button
+    m_downButton = new QToolButton(vbox, "SouthPanel down button");
+    m_downButton->setIconSet(QIconSet(down_16x16_xpm, down_22x22_xpm));
+    m_downButton->setUsesBigPixmap(true);
+    
+    // layout for the button group box
+    vboxLayout->addWidget(m_upButton);
+    vboxLayout->addWidget(m_downButton);
+    vboxLayout->addStretch(5);
+        
+    hLayout->addWidget(vbox);
+    
     setEnabled(false);
     setFocusPolicy(QWidget::NoFocus);
     
-    QObject::connect(m_typeCombo, SIGNAL(activated(int)), this, SLOT(updateData()));
-    QObject::connect(m_typeCombo, SIGNAL(activated(int)), this, SLOT(comboBoxChanged(int)));
-    QObject::connect(m_keyLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(updateData()));
-    QObject::connect(m_valueLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(updateData()));
+    // disable the two buttons
+    m_upButton->setEnabled(false);
+    m_downButton->setEnabled(false);
+    
+    connect(m_typeCombo, SIGNAL(activated(int)), SLOT(updateData()));
+    connect(m_typeCombo, SIGNAL(activated(int)), SLOT(comboBoxChanged(int)));
+    connect(m_keyLineEdit, SIGNAL(textChanged(const QString&)), SLOT(updateData()));
+    connect(m_valueLineEdit, SIGNAL(textChanged(const QString&)), SLOT(updateData()));
+    connect(m_upButton, SIGNAL(pressed()), SIGNAL(moveUp()));
+    connect(m_downButton, SIGNAL(pressed()), SIGNAL(moveDown()));
 }
 
 
@@ -182,4 +213,13 @@ bool SouthPanel::isFocusInside() const
 // -------------------------------------------------------------------------------------------------
 {
     return m_keyLineEdit->hasFocus() || m_typeCombo->hasFocus() || m_valueLineEdit->hasFocus();
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void SouthPanel::setMovingEnabled(bool up, bool down)
+// -------------------------------------------------------------------------------------------------
+{
+    m_upButton->setEnabled(up);
+    m_downButton->setEnabled(down);
 }

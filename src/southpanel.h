@@ -1,5 +1,5 @@
 /*
- * Id: $Id: southpanel.h,v 1.6 2003/12/10 21:50:14 bwalle Exp $
+ * Id: $Id: southpanel.h,v 1.7 2003/12/11 22:02:09 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -22,6 +22,7 @@
 #include <qcombobox.h>
 #include <qframe.h>
 #include <qevent.h>
+#include <qtoolbutton.h>
 
 #include "property.h"
 
@@ -29,8 +30,8 @@
  * \brief Represents the south panel.
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.6 $
- * \date $Date: 2003/12/10 21:50:14 $
+ * \version $Revision: 1.7 $
+ * \date $Date: 2003/12/11 22:02:09 $
  */
 class SouthPanel : public QFrame
 {
@@ -75,6 +76,27 @@ class SouthPanel : public QFrame
          * Clears the south panel.
          */
         void clear();
+        
+        /*!
+         * Enables or disables the moving buttons.
+         * \param up \c true if the up button should be enabled, \c false otherwise
+         * \param down \c true if the down button should be enabled, \c false otherwise
+         */
+        void setMovingEnabled(bool up, bool down);
+        
+    signals:
+        
+        /*!
+         * This signal is emitted if the user pressed the "Up" button to move an item one
+         * step up.
+         */
+        void moveUp();
+        
+        /*!
+         * This signal is emitted if the user pressed the "Down" button to move an item one
+         * step down.
+         */
+        void moveDown();
    
     protected:
         
@@ -88,6 +110,8 @@ class SouthPanel : public QFrame
         QLineEdit* m_keyLineEdit;
         QLineEdit* m_valueLineEdit;
         QComboBox* m_typeCombo;
+        QToolButton* m_upButton;
+        QToolButton* m_downButton;
         int m_oldComboValue;
 };
 

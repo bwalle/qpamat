@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.cpp,v 1.6 2003/12/10 21:50:11 bwalle Exp $
+ * Id: $Id: treeentry.cpp,v 1.7 2003/12/11 22:02:09 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -84,13 +84,12 @@ void TreeEntry::setText(int column, const QString& text)
 void TreeEntry::movePropertyOneUp(uint index)
 // -------------------------------------------------------------------------------------------------
 {
-#ifdef DEBUG 
-    Q_ASSERT( index > 0 && index < m_properties.count() );
-#endif
+    Q_ASSERT( index < m_properties.count() - 1);
+    
     m_properties.setAutoDelete(false);
-    Property* h = m_properties.at(index);
-    m_properties.insert(index, m_properties.at(index-1));
-    m_properties.insert(index-1, h);
+    Property* h = m_properties.at(index+1);
+    m_properties.insert(index, h);
+    m_properties.remove(index+2);
     m_properties.setAutoDelete(true);
 }
 
@@ -99,14 +98,17 @@ void TreeEntry::movePropertyOneUp(uint index)
 void TreeEntry::movePropertyOneDown(uint index)
 // -------------------------------------------------------------------------------------------------
 {
-#ifdef DEBUG 
-    Q_ASSERT( index < m_properties.count()-1 );
-#endif
+    Q_ASSERT( index > 0 && index < m_properties.count() );
+    
+    qDebug("Size before is %d\n", m_properties.count());
+    
     m_properties.setAutoDelete(false);
     Property* h = m_properties.at(index);
-    m_properties.insert(index, m_properties.at(index+1));
-    m_properties.insert(index+1, h);
+    m_properties.insert(index-1, h);
+    m_properties.remove(index+1);
     m_properties.setAutoDelete(true);
+    
+    qDebug("Size after is %d\n", m_properties.count());
 }
 
 

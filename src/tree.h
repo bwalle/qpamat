@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.h,v 1.9 2003/12/10 21:50:04 bwalle Exp $
+ * Id: $Id: tree.h,v 1.10 2003/12/11 22:02:09 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -40,8 +40,8 @@
  
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.9 $
- * \date $Date: 2003/12/10 21:50:04 $
+ * \version $Revision: 1.10 $
+ * \date $Date: 2003/12/11 22:02:09 $
  */
 class Tree : public QListView
 {
@@ -68,7 +68,7 @@ class Tree : public QListView
          * \param fileName the XML file from which the information should be read
          * \param password the password
          * \return \c true on success, \c false  otherwise
-         * @exception WrongPassword if the given password was wrong according to the XML file
+         * \exception WrongPassword if the given password was wrong according to the XML file
          */
         bool readFromXML(const QString& fileName, const QString& password) throw (WrongPassword);
         
@@ -79,8 +79,9 @@ class Tree : public QListView
          * \param fileName the file name where the tree should be written
          * \param password the password for encryption
          * \param algorithm the algorithm for encryption
+         * \return \c true on success, \c false  otherwise
          */
-        void writeToXML(const QString& fileName, const QString& password, const QString& algorithm);
+        bool writeToXML(const QString& fileName, const QString& password, const QString& algorithm);
         
         /*!
          * If the users presses a key.
@@ -93,13 +94,19 @@ class Tree : public QListView
          * \return the HTML string
          */
         QString toRichTextForPrint(); 
-    
+        
     signals:
         
         /*!
          * If the tree has a current item but no item is selected. 
          */
         void selectionCleared();
+        
+        /*!
+         *
+         * If something was modified, need to determine if saving is necessary.
+         */
+        void stateModified();
     
     public slots:
         

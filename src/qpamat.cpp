@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.11 2003/12/10 21:50:21 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.12 2003/12/11 22:01:59 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -106,11 +106,6 @@ Qpamat::Qpamat()
     initMenubar();
     initToolbar();
     
-    // signals and slots
-    connect(m_tree, SIGNAL(selectionChanged(QListViewItem*)),
-        m_rightPanel, SLOT(setItem(QListViewItem*)));
-    connect(m_tree, SIGNAL(selectionCleared()), m_rightPanel, SLOT(clear()));
-    
     // display statusbar
     statusBar();
     setLogin(false);
@@ -137,6 +132,19 @@ Qpamat::Qpamat()
             set.readNumEntry("Main Window/width", int(qApp->desktop()->width() * 0.6) ),
             set.readNumEntry("Main Window/height", int(qApp->desktop()->height() / 2.0) )
         );
+    }
+    
+    connectSignalsAndSlots();
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void Qpamat::message(const QString& message, bool warning)
+// -------------------------------------------------------------------------------------------------
+{
+    if (warning)
+    {
+        statusBar()->message(message, warning ? 3000 : 2000);
     }
 }
 
@@ -173,25 +181,24 @@ void Qpamat::initToolbar()
     // ----- Search --------------------------------------------------------------------------------
     m_searchToolbar = new QToolBar(this);
     m_searchToolbar->setLabel(tr("Search"));
-    
     new QLabel(tr("Search:"), m_searchToolbar);
+    
     m_searchCombo = new QComboBox(true, m_searchToolbar);
     m_searchCombo->setMinimumWidth(120);
     m_searchCombo->setDuplicatesEnabled(false);
     m_searchCombo->setSizeLimit(20);
     m_searchCombo->setFocusPolicy(QWidget::ClickFocus);
     
-    m_actions.searchAction->addTo(m_searchToolbar);
-    
-    connect(m_searchCombo, SIGNAL(activated(int)), this, SLOT(search()));
+    m_toolButtons.search = new QToolButton(
+        QIconSet(find_16x16_xpm, find_22x22_xpm), 0, 0, 0, 0, m_searchToolbar, "Search Toolbutton");
     
     // ---- Edit toolbar ---------------------------------------------------------------------------
     QToolBar* editToolbar = new QToolBar(this);
     editToolbar->setLabel(tr("Edit"));
-    
-    m_actions.addItemAction->addTo(editToolbar);
-    m_actions.removeItemAction->addTo(editToolbar);
-    
+    m_toolButtons.addItem = new QToolButton(QIconSet(edit_add_16x16_xpm, edit_add_22x22_xpm), 
+        tr("Add item"), 0, 0, 0, editToolbar, "Add Item Toolbutton");
+    m_toolButtons.removeItem = new QToolButton(QIconSet(edit_remove_16x16_xpm, 
+        edit_remove_22x22_xpm), tr("Remove item"), 0, 0, 0, editToolbar, "Remove Item Toolbutton");
 }
 
 
@@ -260,6 +267,15 @@ void Qpamat::closeEvent(QCloseEvent* e)
 }
 
 
+// -------------------------------------------------------------------------------------------------
+void Qpamat::setModified(bool modified)
+// -------------------------------------------------------------------------------------------------
+{
+    qDebug("Qpamat::setModified");
+    m_modified = modified;
+    m_actions.saveAction->setEnabled(modified);
+}
+
 
 // -------------------------------------------------------------------------------------------------
 void Qpamat::login()
@@ -311,17 +327,18 @@ void Qpamat::setLogin(bool loggedIn)
     m_actions.changePasswordAction->setEnabled(loggedIn);
     m_actions.printAction->setEnabled(loggedIn);
     m_searchToolbar->setEnabled(loggedIn);
-    m_actions.addItemAction->setEnabled(loggedIn);
-    m_actions.removeItemAction->setEnabled(loggedIn);
+    m_toolButtons.addItem->setEnabled(loggedIn);
+    m_toolButtons.removeItem->setEnabled(loggedIn);
     
     if (!loggedIn)
     {
+        
         m_tree->clear();
         m_rightPanel->clear();
         this->setFocus();
     }
     m_tree->setEnabled(loggedIn);
-    
+    setModified(false);
 }
 
 
@@ -332,9 +349,12 @@ void Qpamat::save()
     if (m_loggedIn)
     {
         QSettings& settings = Settings::getInstance().getSettings();
-        m_tree->writeToXML(settings.readEntry("/General/Datafile", Settings::QPAMAT_FILE_NAME), 
+        if (m_tree->writeToXML(settings.readEntry("/General/Datafile", Settings::QPAMAT_FILE_NAME), 
             m_password, settings.readEntry("/Security/CipherAlgorithm",
-                SymmetricEncryptor::getSuggestedAlgorithm()));
+                SymmetricEncryptor::getSuggestedAlgorithm())))
+        {
+            setModified(false);
+        }
     }
 }
 
@@ -479,65 +499,70 @@ void Qpamat::print()
 
 
 // -------------------------------------------------------------------------------------------------
+void Qpamat::connectSignalsAndSlots()
+// -------------------------------------------------------------------------------------------------
+{
+    connect(m_tree, SIGNAL(selectionChanged(QListViewItem*)),
+        m_rightPanel, SLOT(setItem(QListViewItem*)));
+    connect(m_tree, SIGNAL(selectionCleared()), m_rightPanel, SLOT(clear()));
+    
+    
+    // Actions
+    connect(m_actions.newAction, SIGNAL(activated()), this, SLOT(newFile()));
+    connect(m_actions.quitAction, SIGNAL(activated()), this, SLOT(close()));
+    connect(m_actions.loginAction, SIGNAL(activated()), this, SLOT(login()));
+    connect(m_actions.logoutAction, SIGNAL(activated()), this, SLOT(logout()));
+    connect(m_actions.printAction, SIGNAL(activated()), this, SLOT(print()));
+    connect(m_actions.saveAction, SIGNAL(activated()), this, SLOT(save()));
+    
+    connect(m_actions.changePasswordAction, SIGNAL(activated()), this, SLOT(changePassword()));
+    connect(m_actions.settingsAction, SIGNAL(activated()), this, SLOT(configure()));
+    
+    connect(m_actions.whatsThisAction, SIGNAL(activated()), this, SLOT(whatsThis()));
+    connect(m_actions.aboutAction, SIGNAL(activated()) , &m_help, SLOT(showAbout()));
+    connect(m_actions.aboutQtAction, SIGNAL(activated()), qApp, SLOT(aboutQt()));
+    
+    // edit toolbar
+    connect(m_toolButtons.addItem, SIGNAL(clicked()), m_tree, SLOT(insertAtCurrentPos()));
+    connect(m_toolButtons.addItem, SIGNAL(clicked()), m_rightPanel, SLOT(insertAtCurrentPos()));
+    connect(m_toolButtons.removeItem, SIGNAL(clicked()), m_tree, SLOT(deleteCurrent()));
+    connect(m_toolButtons.removeItem, SIGNAL(clicked()), m_rightPanel, SLOT(deleteCurrent()));
+    
+    // search function
+    connect(m_searchCombo, SIGNAL(activated(int)), this, SLOT(search()));
+    connect(m_toolButtons.search, SIGNAL(clicked()), this, SLOT(search()));
+    
+    // modified
+    connect(m_tree, SIGNAL(stateModified()), SLOT(setModified()));
+    connect(m_rightPanel, SIGNAL(stateModified()), SLOT(setModified()));
+}
+
+
+// -------------------------------------------------------------------------------------------------
 void Qpamat::initActions()
 // -------------------------------------------------------------------------------------------------
 {
     // ----- File ----------------------------------------------------------------------------------
     m_actions.newAction = new QAction(QIconSet(new_16x16_xpm, new_22x22_xpm), tr("&New"), 
         QKeySequence(CTRL|Key_N), this);
-    connect(m_actions.newAction, SIGNAL(activated()), this, SLOT(newFile()));
-    
     m_actions.quitAction = new QAction(QIconSet(exit_16x16_xpm, exit_22x22_xpm), tr("E&xit"),
         QKeySequence(CTRL|Key_Q), this);
-    connect(m_actions.quitAction, SIGNAL(activated()), this, SLOT(close()));
-    
     m_actions.loginAction = new QAction(tr("&Login"), QKeySequence(CTRL|Key_L), this);
-    connect(m_actions.loginAction, SIGNAL(activated()), this, SLOT(login()));
-    
     m_actions.logoutAction = new QAction(tr("&Logout"), QKeySequence(CTRL|Key_L), this);
-    connect(m_actions.logoutAction, SIGNAL(activated()), this, SLOT(logout()));
-    
     m_actions.printAction = new QAction(QIconSet(print_16x16_xpm, print_22x22_xpm),
         tr("&Print..."), QKeySequence(CTRL|Key_P), this);
-    connect(m_actions.printAction, SIGNAL(activated()), this, SLOT(print()));
-    
     m_actions.saveAction = new QAction(QIconSet(save_16x16_xpm, save_22x22_xpm), tr("&Save"), 
         QKeySequence(CTRL|Key_S), this);
-    connect(m_actions.saveAction, SIGNAL(activated()), this, SLOT(save()));
     
     // ----- Options -------------------------------------------------------------------------------
     m_actions.changePasswordAction = new QAction(tr("&Change Password..."), QKeySequence(), this);
-    connect(m_actions.changePasswordAction, SIGNAL(activated()), this, SLOT(changePassword()));
-    
     m_actions.settingsAction = new QAction(QIconSet(configure_16x16_xpm, configure_22x22_xpm), 
         tr("&Settings..."), QKeySequence(CTRL|Key_C), this);
-    connect(m_actions.settingsAction, SIGNAL(activated()), this, SLOT(configure()));
     
     // ----- Help ----------------------------------------------------------------------------------
     m_actions.whatsThisAction = new QAction(QPixmap(whats_this_xpm), tr("&What's this"), 
         QKeySequence(SHIFT|Key_F1), this);
-    connect(m_actions.whatsThisAction, SIGNAL(activated()), this, SLOT(whatsThis()));
-    
     m_actions.aboutAction = new QAction(tr("&About..."), QKeySequence(Key_F1), this);
-    connect(m_actions.aboutAction, SIGNAL(activated()) , &m_help, SLOT(showAbout()));
-    
     m_actions.aboutQtAction = new QAction(tr("About &Qt..."), QKeySequence(), this);
-    connect(m_actions.aboutQtAction, SIGNAL(activated()), qApp, SLOT(aboutQt()));
-    
-    // ----- Toolbar -------------------------------------------------------------------------------
-    m_actions.searchAction = new QAction(QIconSet(find_16x16_xpm, find_22x22_xpm), 
-        tr("&Search"), QKeySequence(), this);
-    connect(m_actions.searchAction, SIGNAL(activated()), this, SLOT(search()));
-    
-    // ------ Edit toolbar -------------------------------------------------------------------------
-    m_actions.addItemAction = new QAction(QIconSet(edit_add_16x16_xpm, edit_add_22x22_xpm),
-        tr("&Add Item"), QKeySequence(Key_Insert), this);
-    connect(m_actions.addItemAction, SIGNAL(activated()), m_tree, SLOT(insertAtCurrentPos()));
-    connect(m_actions.addItemAction, SIGNAL(activated()), m_rightPanel, SLOT(insertAtCurrentPos()));
-    
-    m_actions.removeItemAction = new QAction(QIconSet(edit_remove_16x16_xpm, edit_remove_22x22_xpm),
-        tr("&Remove Item"), QKeySequence(), this);
-    connect(m_actions.removeItemAction, SIGNAL(activated()), m_tree, SLOT(deleteCurrent()));
-    connect(m_actions.removeItemAction, SIGNAL(activated()), m_rightPanel, SLOT(deleteCurrent()));
 }
 

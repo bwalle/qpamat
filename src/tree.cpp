@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.11 2003/12/10 21:50:11 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.12 2003/12/11 22:02:09 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -17,6 +17,7 @@
  */
 #include <cstdlib>
 
+#include <qstatusbar.h>
 #include <qfile.h>
 #include <qdom.h>
 #include <qstring.h>
@@ -28,7 +29,7 @@
 #include <qcursor.h>
 #include <qprogressdialog.h>
 
-#include "../images/delete_16x16.xpm"
+#include "../images/edit_remove_16x16.xpm"
 #include "../images/rename_16x16.xpm"
 #include "../images/edit_add_16x16.xpm"
 
@@ -71,7 +72,7 @@ void Tree::keyPressEvent(QKeyEvent* evt)
     switch (evt->key())
     {
         case Key_Delete:
-            delete selectedItem();
+            deleteCurrent();
             break;
         default:
             evt->ignore();
@@ -194,12 +195,14 @@ bool Tree::readFromXML(const QString& fileName, const QString& password) throw (
         return false;
     }
     
+    qpamat->message(tr("Reading of data finished successfully."), false);
+    
     return true;
 }
 
 
 // -------------------------------------------------------------------------------------------------
-void Tree::writeToXML(const QString& fileName, const QString& password, const QString& algorithm)
+bool Tree::writeToXML(const QString& fileName, const QString& password, const QString& algorithm)
 // -------------------------------------------------------------------------------------------------
 {
     QSettings& set = Settings::getInstance().getSettings();
@@ -210,7 +213,7 @@ void Tree::writeToXML(const QString& fileName, const QString& password, const QS
         QMessageBox::critical(this, "QPaMaT", tr("The data could not be saved. There "
             "was an\nerror while creating the file:\n%1").arg( qApp->translate("QFile",
             file.errorString())), QMessageBox::Ok, QMessageBox::NoButton);
-        return;
+        return false;
     }
     QDomDocument doc;
     QDomElement root = doc.createElement("qpamat");
@@ -238,7 +241,7 @@ void Tree::writeToXML(const QString& fileName, const QString& password, const QS
         QMessageBox::critical(this, "QPaMaT", tr("The algorithm '%1' is not avaible on "
             "your system.\nChoose another crypto algorithm in the settings.\nThe data "
             "is not saved!").arg(algorithm), QMessageBox::Ok, QMessageBox::NoButton);
-        return;
+        return false;
     }
     
     // we have one child that contains all children. The root child is not appended to
@@ -274,13 +277,19 @@ void Tree::writeToXML(const QString& fileName, const QString& password, const QS
     
     if (!success)
     {
-        QMessageBox::critical(this, "QPaMaT", tr("No data was saved!"), QMessageBox::Ok, 
-            QMessageBox::NoButton);
+        qpamat->message(tr("No data was saved!"));
+        return false;
+    }
+    else
+    {
+        qpamat->message(tr("Data successfully written."), false);
     }
     
     QTextStream stream(&file);
     stream.setEncoding(QTextStream::UnicodeUTF8);
     stream << doc.toString();
+    
+    return true;
 }
 
 
@@ -381,7 +390,15 @@ void Tree::deleteCurrent()
 {
     if (hasFocus())
     {
-        delete currentItem();
+        QListViewItem* selected = selectedItem();
+        if (selected)
+        {
+            delete selected;
+        }
+        else
+        {
+            qpamat->message(tr("No item selected!"));
+        }
     }
 }
 
@@ -410,7 +427,7 @@ void Tree::initTreeContextMenu()
     
     m_contextMenu->insertItem(QIconSet(rename_16x16_xpm), 
         tr("&Rename") + "\t" + QString(QKeySequence(Key_F2)), RENAME_ITEM);
-    m_contextMenu->insertItem(QIconSet(delete_16x16_xpm), 
+    m_contextMenu->insertItem(QIconSet(edit_remove_16x16_xpm), 
         tr("Delete &Item") + "\t" + QString(QKeySequence(Key_Delete)), DELETE_ITEM);
     
 }
@@ -472,9 +489,7 @@ void Tree::searchFor(const QString& word)
     
     if (selectedItem() == selected)
     {
-        QMessageBox::warning(this, QObject::tr("QPaMaT"),
-               tr("No items found."),
-               QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
+        qpamat->message("No items found");
     }
 }
 
@@ -544,7 +559,7 @@ bool Tree::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& randomNumbe
             byteVector[0] = randomNumber;
             card.write(0, byteVector);
             
-            qDebug("Random = %d\n", byteVector[0]);
+            qDebug("Random = %d", byteVector[0]);
             
             // then write the number of bytes
             int numberOfBytes = bytes.size();
@@ -554,7 +569,7 @@ bool Tree::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& randomNumbe
             byteVector[2] = 0; // fillbyte
             card.write(1, byteVector);
             
-            qDebug("First = %d\nSecond = %d\n", byteVector[0], byteVector[1]);
+            qDebug("First = %d\nSecond = %d", byteVector[0], byteVector[1]);
             
             // and finally write the data
             card.write(4, bytes);
@@ -572,7 +587,7 @@ bool Tree::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& randomNumbe
             
 #ifdef DEBUG
             qDebug("Reading smartcard.");
-            qDebug("Read randomNumber = %d\n", randomNumber);
+            qDebug("Read randomNumber = %d", randomNumber);
 #endif
 
             // read the number
@@ -580,7 +595,7 @@ bool Tree::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& randomNumbe
             int numberOfBytes = (vec[0] << 8) + (vec[1]);
             
 #ifdef DEBUG
-            qDebug("Read numberOfBytes = %d\n", numberOfBytes);
+            qDebug("Read numberOfBytes = %d", numberOfBytes);
 #endif
 
             Q_ASSERT(numberOfBytes >= 0);

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightpanel.h,v 1.4 2003/12/10 21:50:21 bwalle Exp $
+ * Id: $Id: rightpanel.h,v 1.5 2003/12/11 22:02:03 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -29,8 +29,8 @@
  * \brief Represents the panel on the right which contains the entry list.
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.4 $
- * \date $Date: 2003/12/10 21:50:21 $
+ * \version $Revision: 1.5 $
+ * \date $Date: 2003/12/11 22:02:03 $
  */
 class RightPanel : public QFrame
 {
@@ -83,6 +83,13 @@ class RightPanel : public QFrame
          * Inserts an item at the current position if the widget has the focus.
          */
         void insertAtCurrentPos();
+        
+    signals:
+        
+        /*!
+         * If something was modified, need to determine if saving is necessary.
+         */
+        void stateModified();
         
     private slots:
         void selectionChangeHandler(QListViewItem* item);

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightpanel.cpp,v 1.2 2003/12/10 21:50:21 bwalle Exp $
+ * Id: $Id: rightpanel.cpp,v 1.3 2003/12/11 22:02:03 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -43,6 +43,11 @@ RightPanel::RightPanel(QWidget* parent) : QFrame(parent, "RightPanel")
     connect(m_listView, SIGNAL(selectionChanged(QListViewItem*)),
         this, SLOT(selectionChangeHandler(QListViewItem*)));
     connect(m_listView, SIGNAL(itemDeleted()), m_southPanel, SLOT(clear()));
+    connect(m_listView, SIGNAL(stateModified()), SIGNAL(stateModified()));
+    connect(m_southPanel, SIGNAL(moveUp()), m_listView, SLOT(moveUp()));
+    connect(m_southPanel, SIGNAL(moveDown()), m_listView, SLOT(moveDown()));
+    connect(m_listView, SIGNAL(enableMoving(bool, bool)), 
+        m_southPanel, SLOT(setMovingEnabled(bool, bool)));
 }
 
 
@@ -87,7 +92,7 @@ void RightPanel::setItem(QListViewItem* item)
 void RightPanel::selectionChangeHandler(QListViewItem* item)
 // -------------------------------------------------------------------------------------------------
 {
-    disconnect(this, SLOT(updateSelected(Property*)));
+    disconnect(m_listView, SLOT(updateSelected(Property*)));
     
     Property* currentProperty = m_currentItem->getProperty(item->text(2).toInt(0));
     m_southPanel->setItem(currentProperty);

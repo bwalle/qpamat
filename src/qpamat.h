@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.h,v 1.9 2003/12/10 21:50:21 bwalle Exp $
+ * Id: $Id: qpamat.h,v 1.10 2003/12/11 22:02:03 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -22,6 +22,7 @@
 #include <qaction.h>
 #include <qcombobox.h>
 #include <qevent.h>
+#include <qtoolbutton.h>
 
 #include "help.h"
 #include "tree.h"
@@ -33,8 +34,8 @@
  *
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.9 $
- * \date $Date: 2003/12/10 21:50:21 $
+ * \version $Revision: 1.10 $
+ * \date $Date: 2003/12/11 22:02:03 $
  */
 class Qpamat : public QMainWindow
 {
@@ -93,12 +94,22 @@ class Qpamat : public QMainWindow
          * Prints the current stuff.
          */
         void print();
+        
+        /*!
+         * Sets the application state to "modified".
+         */
+        void setModified(bool modified = true);
     
         
     public slots:
         
-        //void setAddItemEnabled(bool enabled);
-        //void setRemoveItemEnabled(bool enabled);
+        /*!
+         * Prints a message in the statusbar.
+         * \param message the message string
+         * \param warning \c true if it's a warning, \c false if it's just a information
+         *        Currently the time is determined by this argument.
+         */
+        void message(const QString& message, bool warning = TRUE);
         
     protected:
         
@@ -112,6 +123,7 @@ class Qpamat : public QMainWindow
         void initToolbar();
         void initMenubar();
         void initActions();
+        void connectSignalsAndSlots();
         void setLogin(bool login);
         
     private:
@@ -125,7 +137,15 @@ class Qpamat : public QMainWindow
         QToolBar* m_searchToolbar;
         bool m_loggedIn;
         bool m_first;
+        bool m_modified;
         
+        struct ToolButtons
+        {
+            QToolButton* addItem;
+            QToolButton* removeItem;
+            QToolButton* search;
+        };
+        ToolButtons m_toolButtons;
         struct Actions
         {
             QAction* newAction;
@@ -140,9 +160,6 @@ class Qpamat : public QMainWindow
             QAction* whatsThisAction;
             QAction* changePasswordAction;
             QAction* settingsAction;
-            QAction* searchAction;
-            QAction* addItemAction;
-            QAction* removeItemAction;
         };
         Actions m_actions;
 };

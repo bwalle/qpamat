@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightlistview.h,v 1.4 2003/12/10 21:50:21 bwalle Exp $
+ * Id: $Id: rightlistview.h,v 1.5 2003/12/11 22:02:03 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -30,8 +30,8 @@
  * \brief Represents the list view on the right where the key-value pairs are displayed.
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.4 $
- * \date $Date: 2003/12/10 21:50:21 $
+ * \version $Revision: 1.5 $
+ * \date $Date: 2003/12/11 22:02:03 $
  */
 class RightListView : public QListView
 {
@@ -73,6 +73,12 @@ class RightListView : public QListView
          */
         bool isFocusInside() const;
         
+        /*!
+         * Selects the specified item according to the index.
+         * \param index the index
+         */
+        void setSelectedIndex(uint index);
+        
     public slots:
         
         /*!
@@ -84,7 +90,17 @@ class RightListView : public QListView
          * Inserts an item at the current position.
          */
         void insertAtCurrentPos();
-    
+        
+        /*!
+         * Moves the selected item one step down.
+         */
+        void moveDown();
+        
+        /*!
+         * Moves the selected item one step up.
+         */
+        void moveUp();
+        
     private slots:
         void updateView();
         void updateSelected(Property* property);
@@ -92,6 +108,7 @@ class RightListView : public QListView
         void copyItem(QListViewItem* item);
         void doubleClickHandler(QListViewItem* item);
         void itemAppendedHandler();
+        void setMoveStateCorrect();
         
     signals:
         
@@ -104,6 +121,18 @@ class RightListView : public QListView
          * This signal is emitted if an item was deleted.
          */
         void itemDeleted();
+        
+        /*!
+         * If something was modified, need to determine if saving is necessary.
+         */
+        void stateModified();
+        
+        /*!
+         * This signal is emitted always if the selection changes.
+         * \param up if moving up is enabled
+         * \param down if moving down is enabled
+         */
+        void enableMoving(bool up, bool down);
         
     private:
         void initContextMenu();
