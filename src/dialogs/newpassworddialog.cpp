@@ -1,5 +1,5 @@
 /*
- * Id: $Id: newpassworddialog.cpp,v 1.9 2003/12/31 16:33:33 bwalle Exp $
+ * Id: $Id: newpassworddialog.cpp,v 1.10 2004/01/06 23:30:43 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -44,8 +44,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.9 $
-    \date $Date: 2003/12/31 16:33:33 $
+    \version $Revision: 1.10 $
+    \date $Date: 2004/01/06 23:30:43 $
 */
 
 
@@ -216,8 +216,8 @@ void NewPasswordDialog::accept()
     if (!ok)
     {
         QMessageBox::warning(this, "QPaMaT",
-               "<qt>"+tr("The passphrase is too simple. See the Security settings for details "
-               "about the conditions a valid password must met.")+"</qt>",
+               "<qt>"+tr("<nobr>The passphrase is too simple. See the</nobr> Security settings "
+               "for details about the conditions a valid password must met.")+"</qt>",
                QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
         m_firstPasswordEdit->setFocus();
         return;
@@ -313,8 +313,8 @@ void NewPasswordDialog::checkOkEnabled() const
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.9 $
-    \date $Date: 2003/12/31 16:33:33 $
+    \version $Revision: 1.10 $
+    \date $Date: 2004/01/06 23:30:43 $
 */
 
 /*!
