@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.h,v 1.7 2003/12/10 21:50:11 bwalle Exp $
+ * Id: $Id: treeentry.h,v 1.8 2003/12/13 22:33:44 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -21,6 +21,9 @@
 #include <qstring.h>
 #include <qptrlist.h>
 #include <qlistview.h>
+#include <qmime.h>
+#include <qevent.h>
+#include <qvaluelist.h>
 
 #include "property.h"
 #include "security/stringencryptor.h"
@@ -36,12 +39,14 @@ typedef QPtrList<Property> PropertyPtrList;
  *
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.7 $
- * \date $Date: 2003/12/10 21:50:11 $
+ * \version $Revision: 1.8 $
+ * \date $Date: 2003/12/13 22:33:44 $
  */
 class TreeEntry : public QObject, public QListViewItem
 {
     Q_OBJECT
+    
+    using QListViewItem::parent;
     
     public:
         
@@ -62,7 +67,7 @@ class TreeEntry : public QObject, public QListViewItem
         /*!
          * Deletes a property
          */
-        virtual ~TreeEntry();
+        virtual ~TreeEntry() { }
         
         /*!
          * Returns the name of the entry.
@@ -104,9 +109,10 @@ class TreeEntry : public QObject, public QListViewItem
          * \param parent the parent
          * \param element the \c property or \c element tag
          * \param enc the encryptor to use for decrypting passwords
+         * \return the appended value
          */
         template<class T>
-        static void appendFromXML(T* parent, QDomElement& element, StringEncryptor& enc);
+        static TreeEntry* appendFromXML(T* parent, QDomElement& element, StringEncryptor& enc);
         
         /*!
          * Returns the name of the entry.
@@ -129,6 +135,24 @@ class TreeEntry : public QObject, public QListViewItem
          * \return the RichText
          */
         QString toRichTextForPrint() const;
+        
+        /*!
+         * Converts this TreeEntry to XML. This XML is used for drag and drop. It contains one
+         * \<entry\> or \<category\> tag and this tag contains also an attribute named
+         * \c memoryAddress which holds the memory address for this item. This can be used
+         * for deleting the object or for determine whether the user is dragging to iself.
+         * \return the XML string
+         */
+        QString toXML() const;
+        
+        /*!
+         * Checks if the item can accept drops of the type QMimeSource. The MIME type accepted is
+         * <tt>application/x-qpamat</tt>. Only categories accept drops.
+         * \param mime the QMimeSource object
+         * \return \c true if the item can accept drops of type QMimeSource mime; otherwise 
+         *         \c false. 
+         */
+        bool acceptDrop(const QMimeSource* mime) const;
         
     public slots:
     
@@ -161,6 +185,15 @@ class TreeEntry : public QObject, public QListViewItem
          * Fired is a property was added.
          */
         void propertyAppended();
+        
+    protected:
+        
+        /*!
+         * Overwritten drop handler
+         * \param evt the event
+         */
+        void dropped(QDropEvent *evt);
+
         
     private:
         QString             m_name;

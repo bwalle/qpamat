@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.cpp,v 1.7 2003/12/11 22:02:09 bwalle Exp $
+ * Id: $Id: treeentry.cpp,v 1.8 2003/12/13 22:33:44 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -16,17 +16,12 @@
  * ------------------------------------------------------------------------------------------------- 
  */
 #include <qstring.h>
+#include <qdom.h>
 
+#include "qpamat.h"
 #include "treeentry.h"
 #include "settings.h"
-
-// -------------------------------------------------------------------------------------------------
-TreeEntry::~TreeEntry()
-// -------------------------------------------------------------------------------------------------
-{
-    // children are deleted automatically
-    // vector elements are deleted automatically by the vector
-}
+#include "security/notencryptor.h"
 
 // -------------------------------------------------------------------------------------------------
 QString TreeEntry::getName() const
@@ -211,4 +206,69 @@ void TreeEntry::appendXML(QDomDocument& document, QDomNode& parent, StringEncryp
     newElement.setAttribute("name", m_name);
     newElement.setAttribute("isSelected", isSelected());
     parent.appendChild(newElement);
+}
+
+
+// -------------------------------------------------------------------------------------------------
+QString TreeEntry::toXML() const
+// -------------------------------------------------------------------------------------------------
+{
+    QDomDocument doc;
+    NotEncryptor enc;
+    appendXML(doc, doc, enc);
+    doc.documentElement().setAttribute("memoryAddress", long(this));
+    
+    return doc.toString();
+}
+
+
+// -------------------------------------------------------------------------------------------------
+bool TreeEntry::acceptDrop(const QMimeSource* mime) const
+// -------------------------------------------------------------------------------------------------
+{
+    return mime->provides("application/x-qpamat");
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void TreeEntry::dropped(QDropEvent *evt)
+// -------------------------------------------------------------------------------------------------
+{
+    if (evt->provides("application/x-qpamat"))
+    {
+        evt->accept();
+        QString xml = QString::fromUtf8(evt->encodedData("application/x-qpamat"));
+        QDomDocument doc;
+        doc.setContent(xml);
+        QDomElement elem = doc.documentElement();
+        
+        QListViewItem* src = reinterpret_cast<TreeEntry*>(elem.attribute("memoryAddress").toLong());
+        
+        if (src == this)
+        {
+            qpamat->message(tr("Cannot dray to itself."));
+            return;
+        }
+        
+        NotEncryptor enc;
+        TreeEntry* item = m_isCategory ? this : dynamic_cast<TreeEntry*>(parent());
+        TreeEntry* appended = 0;
+        if (item)
+        {
+            appended = appendFromXML(item, elem, enc);
+        }
+        else
+        {
+            appended = appendFromXML(listView(), elem, enc);
+        }
+        
+        if (!isOpen())
+        {
+            setOpen(true);
+        }
+        
+        listView()->setSelected(appended, true);
+        
+        delete src;
+    }
 }

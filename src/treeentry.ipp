@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.ipp,v 1.2 2003/12/10 21:50:07 bwalle Exp $
+ * Id: $Id: treeentry.ipp,v 1.3 2003/12/13 22:33:44 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,18 +18,20 @@
 
 template<class T>
 // -------------------------------------------------------------------------------------------------
-TreeEntry::TreeEntry(T* parent, const QString& name, bool isCategroy)
+TreeEntry::TreeEntry(T* parent, const QString& name, bool isCategory)
 // -------------------------------------------------------------------------------------------------
-    : QListViewItem(parent), m_name(name), m_isCategory(isCategroy)
+    : QListViewItem(parent), m_name(name), m_isCategory(isCategory)
 {
     setRenameEnabled(0, true);
+    setDragEnabled(true);
+    setDropEnabled(true);
     m_properties.setAutoDelete(true);
 }
 
 
 template<class T>
 // -------------------------------------------------------------------------------------------------
-void TreeEntry::appendFromXML(T* parent, QDomElement& element, StringEncryptor& enc)
+TreeEntry* TreeEntry::appendFromXML(T* parent, QDomElement& element, StringEncryptor& enc)
 // -------------------------------------------------------------------------------------------------
 {
     QString name = element.attribute("name");
@@ -54,5 +56,6 @@ void TreeEntry::appendFromXML(T* parent, QDomElement& element, StringEncryptor& 
             node = node.nextSibling();
         }
     }
+    return returnvalue;
 }
 

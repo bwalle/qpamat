@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.12 2003/12/11 22:02:09 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.13 2003/12/13 22:33:40 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -41,6 +41,7 @@
 #include "security/stringencryptor.h"
 #include "security/symmetricencryptor.h"
 #include "security/collectencryptor.h"
+#include "security/notencryptor.h"
 #include "smartcard/memorycard.h"
 #include "settings.h"
 
@@ -56,12 +57,15 @@ Tree::Tree(QWidget* parent)
     setShowSortIndicator(true);
     
     setFocusPolicy(QWidget::StrongFocus);
+    viewport()->setAcceptDrops(true);
+    setAcceptDrops(true);
     
     initTreeContextMenu();
     connect(this, SIGNAL(contextMenuRequested(QListViewItem*, const QPoint&, int)),
-        this, SLOT(showContextMenu(QListViewItem*, const QPoint&)));
+        SLOT(showContextMenu(QListViewItem*, const QPoint&)));
     connect(this, SIGNAL(currentChanged(QListViewItem*)), 
         this, SLOT(currentChangedHandler(QListViewItem*)));
+    connect(this, SIGNAL(dropped(QDropEvent*)), SLOT(droppedHandler(QDropEvent*)));
 }
 
 
@@ -294,6 +298,23 @@ bool Tree::writeToXML(const QString& fileName, const QString& password, const QS
 
 
 // -------------------------------------------------------------------------------------------------
+QDragObject* Tree::dragObject()
+// -------------------------------------------------------------------------------------------------
+{
+    QListViewItem* current = currentItem();
+    emit stateModified();
+    if (current)
+    {
+        QString xml = dynamic_cast<TreeEntry*>(current)->toXML();
+        QStoredDrag* drag = new QStoredDrag("application/x-qpamat", this);
+        drag->setEncodedData(xml.utf8());
+        return drag;
+    }
+    return 0;
+}
+
+
+// -------------------------------------------------------------------------------------------------
 void Tree::showCurruptedMessage(const QString& fileName)
 // -------------------------------------------------------------------------------------------------
 {
@@ -326,15 +347,17 @@ void Tree::showContextMenu(QListViewItem* item, const QPoint& point)
     {
         case DELETE_ITEM:
             delete item;
+            emit stateModified();
             break;
         case INSERT_ITEM:
             insertItem(dynamic_cast<TreeEntry*>(item), false);
             break;
         case INSERT_CATEGORY:
-            insertItem(dynamic_cast<TreeEntry*>(item), false);
+            insertItem(dynamic_cast<TreeEntry*>(item), true);
             break;
         case RENAME_ITEM:
             dynamic_cast<TreeEntry*>(item)->startRename(0);
+            emit stateModified();
             break;
         case -1:
             break;
@@ -381,6 +404,7 @@ void Tree::insertItem(TreeEntry* item, bool category)
         newItem = new TreeEntry( this, name, category);
     }
     newItem->startRename(0);
+    emit stateModified();
 }
 
 
@@ -394,6 +418,7 @@ void Tree::deleteCurrent()
         if (selected)
         {
             delete selected;
+            emit stateModified();
         }
         else
         {
@@ -627,4 +652,23 @@ bool Tree::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& randomNumbe
     return true;
 }
 
+
+// -------------------------------------------------------------------------------------------------
+void Tree::droppedHandler(QDropEvent* evt)
+// -------------------------------------------------------------------------------------------------
+{
+    if (evt->provides("application/x-qpamat"))
+    {
+        evt->accept();
+        QString xml = QString::fromUtf8(evt->encodedData("application/x-qpamat"));
+        QDomDocument doc;
+        doc.setContent(xml);
+        QDomElement elem = doc.documentElement();
+        QListViewItem* src = reinterpret_cast<TreeEntry*>(elem.attribute("memoryAddress").toLong());
+        NotEncryptor enc;
+        QListViewItem* appended = TreeEntry::appendFromXML(this, elem, enc);
+        setSelected(appended, true);
+        delete src;
+    }
+}
 

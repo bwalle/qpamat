@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.h,v 1.10 2003/12/11 22:02:09 bwalle Exp $
+ * Id: $Id: tree.h,v 1.11 2003/12/13 22:33:44 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -21,6 +21,7 @@
 #include <qstring.h>
 #include <qlistview.h>
 #include <qpopupmenu.h>
+#include <qdragobject.h>
 
 #include "wrongpassword.h"
 #include "treeentry.h"
@@ -40,8 +41,8 @@
  
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.10 $
- * \date $Date: 2003/12/11 22:02:09 $
+ * \version $Revision: 1.11 $
+ * \date $Date: 2003/12/13 22:33:44 $
  */
 class Tree : public QListView
 {
@@ -107,6 +108,14 @@ class Tree : public QListView
          * If something was modified, need to determine if saving is necessary.
          */
         void stateModified();
+        
+    protected:
+        
+        /*!
+         * Returns the appropriage QDragObject for performing Drag and drop
+         * \return the object
+         */
+        QDragObject* dragObject();
     
     public slots:
         
@@ -130,6 +139,7 @@ class Tree : public QListView
         void showContextMenu(QListViewItem* item, const QPoint& point);
         void insertItem(TreeEntry* item, bool category = false);
         void currentChangedHandler(QListViewItem* item);
+        void droppedHandler(QDropEvent* e);
         
     private:
         void initTreeContextMenu();
