@@ -1,5 +1,5 @@
 /*
- * Id: $Id: cardexception.cpp,v 1.5 2003/12/28 23:49:49 bwalle Exp $
+ * Id: $Id: cardexception.cpp,v 1.6 2004/01/15 22:06:35 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -32,8 +32,8 @@
     
     \ingroup smartcard
     \author Bernhard Walle
-    \version $Revision: 1.5 $
-    \date $Date: 2003/12/28 23:49:49 $
+    \version $Revision: 1.6 $
+    \date $Date: 2004/01/15 22:06:35 $
 */
 
 /*!
@@ -85,6 +85,15 @@
     \var CardException::Error
     General error.
 */
+/*!
+    \var CardException::WrongVerification
+    The verification was wrong. You have to set the number of retries. Only a specified number
+    of retries are allowed, othwerwise the card is destroyed.
+*/
+/*!
+    \var CardException::VerificationBlocked
+    Verification method blocked
+*/
 
 /*!
     Creates a new instance of the exception and includes the error message. This message is 
@@ -92,7 +101,7 @@
     \param message the error message
 */
 CardException::CardException(const std::string& message)
-    : std::runtime_error(message), m_errorcode(NoError)
+    : std::runtime_error(message), m_errorcode(NoError), m_retryNumber(-1)
 {}
 
 
@@ -102,7 +111,7 @@ CardException::CardException(const std::string& message)
     \param errorcode the error code, see CardException::ErrorCode.
 */
 CardException::CardException(ErrorCode errorcode)
-    : std::runtime_error(""), m_errorcode(errorcode)
+    : std::runtime_error(""), m_errorcode(errorcode), m_retryNumber(-1)
 {}
 
 
@@ -139,6 +148,7 @@ const char* CardException::what() const throw ()
     }
 }
 
+
 /*!
     Returns the error code
     \return the error code or CardException::NoError if a error message but no error code was set
@@ -146,4 +156,24 @@ const char* CardException::what() const throw ()
 CardException::ErrorCode CardException::getErrorCode() const
 {
     return m_errorcode;
+}
+
+
+/*!
+    Sets the number of retries. You have to set the number of retries if the exception type
+    is CardException::WrongVerification. 
+*/
+void CardException::setRetryNumber(int num)
+{
+    m_retryNumber = num;
+}
+
+
+/*!
+    Returns the number of retries. This value should be set if the type of the exception is
+    CardException::WrongVerification. If it was not set, \c -1 is returned.
+*/
+int CardException::getRetryNumber() const
+{
+    return m_retryNumber;
 }

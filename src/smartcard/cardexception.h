@@ -1,5 +1,5 @@
 /*
- * Id: $Id: cardexception.h,v 1.5 2003/12/28 23:49:49 bwalle Exp $
+ * Id: $Id: cardexception.h,v 1.6 2004/01/15 22:06:35 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -28,16 +28,18 @@ class CardException : public std::runtime_error
     public:
         enum ErrorCode 
         {
-            NoError       = 0,
-            Invalid       = ERR_INVALID,
-            CardTerminal  = ERR_CT,
-            Transmission  = ERR_TRANS,
-            Memory        = ERR_MEMORY,
-            HTSI          = ERR_HTSI,
-            DataCorrupted = 0x6281,
-            EndReached    = 0x6282,
-            MemoryFailure = 0x6501,
-            Error         = 0x6200 
+            NoError             = 0,
+            Invalid             = ERR_INVALID,
+            CardTerminal        = ERR_CT,
+            Transmission        = ERR_TRANS,
+            Memory              = ERR_MEMORY,
+            HTSI                = ERR_HTSI,
+            DataCorrupted       = 0x6281,
+            EndReached          = 0x6282,
+            MemoryFailure       = 0x6501,
+            Error               = 0x6200,
+            WrongVerification   = 0x63C0,
+            VerificationBlocked = 0x6983
         };
     
     public:
@@ -46,9 +48,13 @@ class CardException : public std::runtime_error
         
         const char* what() const throw ();
         ErrorCode getErrorCode() const;
+        
+        void setRetryNumber(int num);
+        int getRetryNumber() const;
     
     private:
-        ErrorCode m_errorcode;
+        ErrorCode   m_errorcode;
+        int         m_retryNumber;
 };
 
 #endif // CARDEXCEPTION_H
