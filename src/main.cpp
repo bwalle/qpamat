@@ -1,5 +1,5 @@
 /*
- * Id: $Id: main.cpp,v 1.16 2004/01/02 12:19:50 bwalle Exp $
+ * Id: $Id: main.cpp,v 1.17 2004/01/06 23:33:01 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -33,6 +33,7 @@
 #include "settings.h"
 #include "main.h"
 #include "util/singleapplication.h"
+#include "security/passwordhash.h"
 
 #ifdef Q_WS_X11
 #include <unistd.h>
@@ -54,7 +55,7 @@ void printCommandlineOptions()
 {
     std::cerr 
         << "\n" 
-        << "This is QPaMaT " << VERSION << ", a password managing tool for Unix, MacOS X\n"
+        << "This is QPaMaT " << VERSION_STRING << ", a password managing tool for Unix, MacOS X\n"
         << "and Windows using the Qt programming library from Trolltech.\n\n"
         << "Options: -h            prints this help\n"
         << "         -style ...    specifies the Qt style, e.g. \"platinum\" or \"sgi\"\n"
@@ -76,7 +77,11 @@ void sighandler(int signal)
 {
     PRINT_DBG("Caught signal No. %d", signal);
     
-    qApp->quit();
+    single->shutdown();
+    
+    PRINT_TRACE("Shutting down");
+    
+    std::exit(1);
 }
 
 
@@ -93,7 +98,7 @@ void printVersion()
 #endif
 
     std::cerr 
-        << "QPaMaT version   " << VERSION << "\n"
+        << "QPaMaT version   " << VERSION_STRING << "\n"
         << "\nBased on software of this version: \n"
         << "  Qt version     " << QT_VERSION_STR << "\n"
 #ifdef Q_WS_X11
@@ -154,21 +159,21 @@ void getX11Version(QString& protocolVersion, QString& vendorVersion)
 #endif
 }
 
-// -------------------------------------------------------------------------------------------------
+SingleApplication* single_ptr;
+
 int main(int argc, char** argv)
-// -------------------------------------------------------------------------------------------------
 {
-    int returncode = 0;
-    
     QApplication app(argc, argv);
-    SingleApplication single(QDir::homeDirPath(), "QPaMaT");
     parseCommandLine(argc, argv);
+    
+    SingleApplication single(QDir::homeDirPath(), "QPaMaT");
     
     try
     {
         single.startup();
         
-        qpamat = new Qpamat();
+        Qpamat q;
+        qpamat = &q;
         app.setMainWidget(qpamat);
         
         // install signal handlers
@@ -181,9 +186,9 @@ int main(int argc, char** argv)
         
         qpamat->show();
         app.connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));
-        app.connect(&app, SIGNAL(aboutToQuit()), &single, SLOT(shutdown())); 
+        app.connect(&app, SIGNAL(aboutToQuit()), ::single, SLOT(shutdown())); 
         
-        returncode = app.exec(); 
+        return app.exec(); 
     }
     catch (const std::bad_alloc& e)
     {
@@ -198,9 +203,6 @@ int main(int argc, char** argv)
             .arg(e.what()),
             QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
     }
-    
-    delete qpamat;
-    return returncode;
 }
 
 
