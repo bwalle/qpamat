@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.7 2003/12/04 14:09:11 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.8 2003/12/04 14:51:36 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -308,6 +308,13 @@ void Tree::searchFor(const QString& word)
         if (current->text(0).contains(word, false))
         {
             setSelected(current, true);
+            // open all items
+            QListViewItem* loopItem = current;
+            while (loopItem->parent())
+            {
+                loopItem = loopItem->parent();
+                loopItem->setOpen(true);
+            }
             break;
         }
         ++(*it);
