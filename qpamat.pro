@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.48 2004/09/25 17:07:31 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.49 2004/12/26 17:45:12 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -17,10 +17,10 @@ BINDIR             = $${PREFIX}/bin
 
 ################################################################################
 
-VERSION_STRING     = 0.3.1
+VERSION_STRING     = 0.3.2
 MAJOR_VERSION      = 0
 MINOR_VERSION      = 3
-PATCH_VERSION      = 1
+PATCH_VERSION      = 2
 
 ################################################################################
 
@@ -188,11 +188,11 @@ IMAGES =                                        \
 # -----------------------------------------------------------------------------
 
 isEmpty(static) {
-  CONFIG     += warn_on qt exceptions
+  CONFIG     += warn_on qt exceptions thread
 } else {
   LIBS        += /usr/lib/qt3/lib/libqt-mt.a -lfreetype -lXft -lz -lpthread \
                  -lpng -lX11 -lXext -lXinerama -lXi -lSM -lXcursor -lXrandr -lGL
-  CONFIG      += x11 warn_on exceptions
+  CONFIG      += qt warn_on exceptions thread
 }
 
 # -----------------------------------------------------------------------------
