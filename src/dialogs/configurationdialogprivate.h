@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialogprivate.h,v 1.8 2004/07/23 08:47:31 bwalle Exp $
+ * Id: $Id: configurationdialogprivate.h,v 1.9 2005/02/12 10:52:07 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -119,10 +119,16 @@ class ConfDlgSecurityTab : public ListBoxDialogPage
     private:
         void createAndLayout();
         
+    protected:
+        static const int m_minuteMap[];
+        
     private:
         // algorithm
         QComboBox*      m_algorithmCombo;
         QLabel*         m_algorithmLabel;
+        // logout
+        QComboBox*      m_logoutCombo;
+        QLabel*         m_logoutLabel;
 };
 
 

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: main.cpp,v 1.24 2004/07/23 13:28:16 bwalle Exp $
+ * Id: $Id: main.cpp,v 1.25 2005/02/12 10:51:05 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -35,6 +35,7 @@
 #include "settings.h"
 #include "main.h"
 #include "util/singleapplication.h"
+#include "util/timeoutapplication.h"
 
 #ifdef Q_WS_X11
 #include <unistd.h>
@@ -146,7 +147,7 @@ void getX11Version(QString& protocolVersion, QString& vendorVersion)
 
 int main(int argc, char** argv)
 {
-    QApplication app(argc, argv);
+    TimeoutApplication app(argc, argv);
     parseCommandLine(argc, argv);
     
     // translation

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.cpp,v 1.26 2004/07/23 13:11:42 bwalle Exp $
+ * Id: $Id: configurationdialog.cpp,v 1.27 2005/02/12 10:52:07 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -83,8 +83,8 @@
     
     \ingroup dialogs
     \author Bernhard Walle
-    \version $Revision: 1.26 $
-    \date $Date: 2004/07/23 13:11:42 $
+    \version $Revision: 1.27 $
+    \date $Date: 2005/02/12 10:52:07 $
  */
 
 /*!
@@ -136,8 +136,8 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.26 $
-    \date $Date: 2004/07/23 13:11:42 $
+    \version $Revision: 1.27 $
+    \date $Date: 2005/02/12 10:52:07 $
 */
 
 /*!
@@ -178,8 +178,8 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.26 $
-    \date $Date: 2004/07/23 13:11:42 $
+    \version $Revision: 1.27 $
+    \date $Date: 2005/02/12 10:52:07 $
 */
 
 
@@ -299,8 +299,8 @@ void ConfDlgGeneralTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.26 $
-    \date $Date: 2004/07/23 13:11:42 $
+    \version $Revision: 1.27 $
+    \date $Date: 2005/02/12 10:52:07 $
 */
 
 
@@ -550,16 +550,26 @@ void ConfDlgPasswordTab::sortDictionary()
     
     This tab holds security general settings 
     
-     - settings for generated passwords
-     - password strength settings
      - cipher algorithm
+     - automatic logout
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.26 $
-    \date $Date: 2004/07/23 13:11:42 $
+    \version $Revision: 1.27 $
+    \date $Date: 2005/02/12 10:52:07 $
 */
 
+/*!
+    Maps combo box index to minutes.
+*/
+const int ConfDlgSecurityTab::m_minuteMap[] = 
+{
+    0,          /*!< disabled */
+    15,         /*!< 15 minutes */
+    30,         /*!< 30 minutes */
+    60,         /*!< 60 minutes */
+    120         /*!< 2 hours */
+};
 
 /*!
     Creates a new instance of an ConfDlgPasswordTab object.
@@ -580,29 +590,29 @@ void ConfDlgSecurityTab::createAndLayout()
     // create layouts
     QVBoxLayout* mainLayout = new QVBoxLayout(this, 0, 6);
     QGroupBox* encryptionGroup = new QGroupBox(1, Vertical, tr("Encryption"), this);
+    QGroupBox* logoutGroup = new QGroupBox(1, Vertical, tr("Logout"), this);
     
     // some settings
     encryptionGroup->setInsideSpacing(6);
     encryptionGroup->setFlat(true);
+    logoutGroup->setInsideSpacing(6);
+    logoutGroup->setFlat(true);
     
     // algorithm stuff
     m_algorithmLabel = new QLabel(tr("Cipher &algorithm:"), encryptionGroup);
-    m_algorithmCombo = new QComboBox(false, encryptionGroup); 
+    m_algorithmCombo = new QComboBox(false, encryptionGroup);
+    
+    // logout
+    m_logoutLabel = new QLabel(tr("Auto &logout after inactivity:"), logoutGroup);
+    m_logoutCombo = new QComboBox(false, logoutGroup);
     
     // buddys
     m_algorithmLabel->setBuddy(m_algorithmCombo);
+    m_logoutLabel->setBuddy(m_logoutCombo);
     
     mainLayout->addWidget(encryptionGroup);
+    mainLayout->addWidget(logoutGroup);
     mainLayout->addStretch(5);
-    
-    // help
-    QWhatsThis::add(m_algorithmCombo, tr("<qt>Only change this if you know what you do. The "
-        "algorithms are provided by the OpenSSL library and the availability is determined "
-        "at runtime. You can read a file encrypted with <i>X</i> only if the computer on which "
-        "you read it is able to handle algorithm <i>X</i>. <p>Blowfish is a good choise because "
-        "it's free and available everywhere. IDEA is patended (but secure, PGP uses it!) "
-        "and AES (the successor of DES) is only available at new versions of OpenSSL. "
-        "Read a book about cryptography if you're interested in this algorithms.</qt>"));
 }
 
 
@@ -614,6 +624,22 @@ void ConfDlgSecurityTab::fillSettings()
     PRINT_TRACE("Insert algorithm");
     m_algorithmCombo->insertStringList(SymmetricEncryptor::getAlgorithms());
     m_algorithmCombo->setCurrentText( qpamat->set().readEntry( "Security/CipherAlgorithm" ));
+    
+    // Combo box
+    m_logoutCombo->insertItem(tr("Disabled"));
+    m_logoutCombo->insertItem(tr("15 minutes"));
+    m_logoutCombo->insertItem(tr("30 minutes"));
+    m_logoutCombo->insertItem(tr("1 hour"));
+    m_logoutCombo->insertItem(tr("2 hours"));
+    
+    int logout = qpamat->set().readNumEntry( "Security/AutoLogout" );
+    int size = sizeof(ConfDlgSecurityTab::m_minuteMap)/sizeof(int);
+    const int* val = qFind(
+        ConfDlgSecurityTab::m_minuteMap, 
+        ConfDlgSecurityTab::m_minuteMap + size,
+        logout
+    );
+    m_logoutCombo->setCurrentItem(val - ConfDlgSecurityTab::m_minuteMap);
 }
 
 /*!
@@ -621,7 +647,9 @@ void ConfDlgSecurityTab::fillSettings()
 */
 void ConfDlgSecurityTab::applySettings()
 {
+    int min = ConfDlgSecurityTab::m_minuteMap[m_algorithmCombo->currentItem()];
     qpamat->set().writeEntry("Security/CipherAlgorithm", m_algorithmCombo->currentText() );
+    qpamat->set().writeEntry("Security/AutoLogout", min);
 }
 
 
@@ -642,8 +670,8 @@ void ConfDlgSecurityTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.26 $
-    \date $Date: 2004/07/23 13:11:42 $
+    \version $Revision: 1.27 $
+    \date $Date: 2005/02/12 10:52:07 $
 */
 
 
@@ -742,8 +770,8 @@ void ConfDlgPresentationTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.26 $
-    \date $Date: 2004/07/23 13:11:42 $
+    \version $Revision: 1.27 $
+    \date $Date: 2005/02/12 10:52:07 $
 */
 
 /*!
