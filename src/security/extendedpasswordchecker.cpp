@@ -1,5 +1,5 @@
 /*
- * Id: $Id: extendedpasswordchecker.cpp,v 1.1 2003/12/04 11:56:05 bwalle Exp $
+ * Id: $Id: extendedpasswordchecker.cpp,v 1.2 2003/12/16 22:54:04 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -32,7 +32,7 @@ bool ExtendedPasswordChecker::isPasswordOk(const QString& password) throw (Passw
     bool lowercase = false;
     bool digit = false;
     bool special = false;
-    int numOfPairs;
+    int numOfPairs = 0;
     for (uint i = 0; i < password.length(); ++i)
     {
         const QChar character = password[i];
