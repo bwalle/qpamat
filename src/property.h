@@ -1,5 +1,5 @@
 /*
- * Id: $Id: property.h,v 1.2 2003/10/20 20:56:20 bwalle Exp $
+ * Id: $Id: property.h,v 1.3 2003/11/28 18:42:34 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -22,7 +22,7 @@
 #include <qdom.h>
 #include <qobject.h>
 
-#include "cipher/encryptor.h"
+#include "security/encryptor.h"
 
 class TreeEntry;
 
@@ -30,8 +30,8 @@ class TreeEntry;
  * Represents one property
  * @ingroup gui
  * @author Bernhard Walle
- * @version $Revision: 1.2 $
- * @date $Date: 2003/10/20 20:56:20 $
+ * @version $Revision: 1.3 $
+ * @date $Date: 2003/11/28 18:42:34 $
  */
 class Property : public QObject
 {

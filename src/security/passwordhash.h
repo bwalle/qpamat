@@ -1,5 +1,5 @@
 /*
- * Id: $Id: passwordhash.h,v 1.1 2003/10/11 19:51:50 bwalle Exp $
+ * Id: $Id: passwordhash.h,v 1.2 2003/11/28 18:41:41 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,10 +24,10 @@
 
 /**
  * Helping functions for dealing with passwords and hashes.
- * @ingroup cipher
+ * @ingroup security
  * @author Bernhard Walle
- * @version $Revision: 1.1 $
- * @date $Date: 2003/10/11 19:51:50 $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2003/11/28 18:41:41 $
  */
 class PasswordHash
 {

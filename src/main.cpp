@@ -1,5 +1,5 @@
 /*
- * Id: $Id: main.cpp,v 1.4 2003/11/15 14:45:46 bwalle Exp $
+ * Id: $Id: main.cpp,v 1.5 2003/11/28 18:42:34 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -32,7 +32,7 @@
 int main(int argc, char** argv)
 {
 #ifdef DEBUG
-    mtrace();
+//    mtrace();
 #endif
     int returncode = 0;
     

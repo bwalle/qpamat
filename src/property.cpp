@@ -1,5 +1,5 @@
 /*
- * Id: $Id: property.cpp,v 1.2 2003/10/20 20:56:20 bwalle Exp $
+ * Id: $Id: property.cpp,v 1.3 2003/11/28 18:42:34 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -20,8 +20,8 @@
 #include <qlistview.h>
 
 #include "property.h"
-#include "cipher/encodinghelper.h"
-#include "cipher/encryptor.h"
+#include "security/encodinghelper.h"
+#include "security/encryptor.h"
 #include "treeentry.h"
 
 // -------------------------------------------------------------------------------------------------

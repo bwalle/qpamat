@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.cpp,v 1.1 2003/11/16 20:22:18 bwalle Exp $
+ * Id: $Id: configurationdialog.cpp,v 1.2 2003/11/28 18:42:25 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -32,7 +32,7 @@
 
 #include "configurationdialog.h"
 #include "../settings.h"
-#include "../cipher/encryptor.h"
+#include "../security/encryptor.h"
 #include "../smartcard/memorycard.h"
 
 using ConfigurationDialogLocal::GeneralTab;

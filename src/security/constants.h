@@ -1,5 +1,5 @@
 /*
- * Id: $Id: constants.h,v 1.2 2003/10/05 16:06:48 bwalle Exp $
+ * Id: $Id: constants.h,v 1.3 2003/11/28 18:41:41 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -21,7 +21,7 @@
 
 /**
  * @file constants.h
- * @ingroup cipher
+ * @ingroup security
  * This file contains some constants for the cryptographic algorithms used in this program.
  */
 

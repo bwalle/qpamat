@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.11 2003/11/16 20:22:04 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.12 2003/11/28 18:42:55 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -12,10 +12,10 @@ SOURCES     =                                   \
     src/dialogs/newpassworddialog.cpp           \
     src/dialogs/configurationdialog.cpp         \
     src/widgets/filelineedit.cpp                \
-    src/cipher/encodinghelper.cpp               \
-    src/cipher/passwordhash.cpp                 \
-    src/cipher/encryptor.cpp                    \
-    src/cipher/randompasswordgenerator.cpp      \
+    src/security/encodinghelper.cpp             \
+    src/security/passwordhash.cpp               \
+    src/security/encryptor.cpp                  \
+    src/security/randompasswordgenerator.cpp    \
     src/smartcard/cardexception.cpp             \
     src/smartcard/memorycard.cpp                \
     src/treeentry.cpp                           \
@@ -37,12 +37,12 @@ HEADERS     =                                   \
     src/dialogs/configurationdialog.h           \
     src/widgets/filelineedit.h                  \
     src/types.h                                 \
-    src/cipher/encodinghelper.h                 \
-    src/cipher/passwordhash.h                   \
-    src/cipher/nosuchalgorithmexception.h       \
-    src/cipher/notseededexception.h             \
-    src/cipher/encryptor.h                      \
-    src/cipher/randompasswordgenerator.h        \
+    src/security/encodinghelper.h               \
+    src/security/passwordhash.h                 \
+    src/security/nosuchalgorithmexception.h     \
+    src/security/notseededexception.h           \
+    src/security/encryptor.h                    \
+    src/security/randompasswordgenerator.h      \
     src/smartcard/cardexception.h               \
     src/smartcard/memorycard.h                  \
     src/treeentry.h                             \
@@ -68,6 +68,7 @@ isEmpty (debug) {
 } else {
   CONFIG   += debug
   DEFINES  += DEBUG
+ # LIBS     += -lefence
 }
 
 # -----------------------------------------------------------------------------

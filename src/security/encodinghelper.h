@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encodinghelper.h,v 1.5 2003/10/05 16:06:54 bwalle Exp $
+ * Id: $Id: encodinghelper.h,v 1.6 2003/11/28 18:41:41 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -23,7 +23,7 @@
 
 /**
  * @file encodinghelper.h
- * @ingroup cipher
+ * @ingroup security
  * This file contains helping functions for Encoding and Decoding of binary data.
  */
 
@@ -31,10 +31,10 @@
 
 /**
  * Helper class for dealing with encodings.
- * @ingroup cipher
+ * @ingroup security
  * @author Bernhard Walle
- * @version $Revision: 1.5 $
- * @date $Date: 2003/10/05 16:06:54 $
+ * @version $Revision: 1.6 $
+ * @date $Date: 2003/11/28 18:41:41 $
  */
 class EncodingHelper
 {

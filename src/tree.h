@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.h,v 1.5 2003/11/16 20:23:41 bwalle Exp $
+ * Id: $Id: tree.h,v 1.6 2003/11/28 18:42:43 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,15 +24,15 @@
 
 #include "wrongpassword.h"
 #include "treeentry.h"
-#include "cipher/nosuchalgorithmexception.h"
-#include "cipher/encryptor.h"
+#include "security/nosuchalgorithmexception.h"
+#include "security/encryptor.h"
 
 /**
  * Represents the tree that holds the password entries.
  * @ingroup gui
  * @author Bernhard Walle
- * @version $Revision: 1.5 $
- * @date $Date: 2003/11/16 20:23:41 $
+ * @version $Revision: 1.6 $
+ * @date $Date: 2003/11/28 18:42:43 $
  */
 class Tree : public QListView
 {

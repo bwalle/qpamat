@@ -1,5 +1,5 @@
 /*
- * Id: $Id: settings.cpp,v 1.2 2003/11/16 20:23:23 bwalle Exp $
+ * Id: $Id: settings.cpp,v 1.3 2003/11/28 18:42:37 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -19,7 +19,7 @@
 #include <qdir.h>
 
 #include "settings.h"
-#include "cipher/encryptor.h"
+#include "security/encryptor.h"
 
 // -------------------------------------------------------------------------------------------------
 // Defaults

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.4 2003/11/16 20:23:08 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.5 2003/11/28 18:42:34 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -92,24 +92,29 @@ Qpamat::Qpamat()
     
     // display statusbar
     statusBar();
-    
     setLogin(false);
     
+    // restore settings
+    QSettings& set = Settings::getInstance().getSettings();
+    
+    // restore history
+    QStringList list = QStringList::split (" | ", set.readEntry("Main Window/SearchHistory") );
+    m_searchCombo->insertStringList(list);
+    m_searchCombo->clearEdit();
+    
     // restore the layout
-    QString layout = Settings::getInstance().getSettings().readEntry("Main Window/layout");
+    QString layout = set.readEntry("Main Window/layout");
     QTextStream layoutStream(&layout, IO_ReadOnly);
     layoutStream >> *this;
-    if (Settings::getInstance().getSettings().readBoolEntry("Main Window/maximized", false))
+    if (set.readBoolEntry("Main Window/maximized", false))
     {
         showMaximized();
     }
     else
     {
         resize(
-        Settings::getInstance().getSettings().readNumEntry("Main Window/width", 
-            int(qApp->desktop()->width() * 0.6) ),
-        Settings::getInstance().getSettings().readNumEntry("Main Window/height", 
-            int(qApp->desktop()->height() / 2.0) )
+            set.readNumEntry("Main Window/width", int(qApp->desktop()->width() * 0.6) ),
+            set.readNumEntry("Main Window/height", int(qApp->desktop()->height() / 2.0) )
         );
     }
 }
@@ -134,6 +139,8 @@ void Qpamat::initToolbar()
     new QLabel(tr("Search:"), m_searchToolbar);
     m_searchCombo = new QComboBox(true, m_searchToolbar);
     m_searchCombo->setMinimumWidth(120);
+    m_searchCombo->setDuplicatesEnabled(false);
+    m_searchCombo->setSizeLimit(20);
     
     m_actions.searchAction->addTo(m_searchToolbar);
     
@@ -188,14 +195,24 @@ void Qpamat::closeEvent(QCloseEvent* e)
         save();
     }
     
+    QSettings& set = Settings::getInstance().getSettings();
+    
+    // write the history
+    QStringList list;
+    for (int i = 0; i < m_searchCombo->count(); ++i)
+    {
+        list.append(m_searchCombo->text(i));
+    }
+    set.writeEntry("Main Window/SearchHistory", list.join(" | "));
+    
     // write window layout
     QString layout;
     QTextStream layoutStream(&layout, IO_WriteOnly);
     layoutStream << *this;
-    Settings::getInstance().getSettings().writeEntry("Main Window/layout", layout);
-    Settings::getInstance().getSettings().writeEntry("Main Window/width", size().width());
-    Settings::getInstance().getSettings().writeEntry("Main Window/height", size().height());
-    Settings::getInstance().getSettings().writeEntry("Main Window/maximized", isMaximized());
+    set.writeEntry("Main Window/layout", layout);
+    set.writeEntry("Main Window/width", size().width());
+    set.writeEntry("Main Window/height", size().height());
+    set.writeEntry("Main Window/maximized", isMaximized());
     
     e->accept();
 }

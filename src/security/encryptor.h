@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encryptor.h,v 1.6 2003/10/05 16:07:21 bwalle Exp $
+ * Id: $Id: encryptor.h,v 1.7 2003/11/28 18:41:41 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -28,10 +28,10 @@
 
 /**
  * A object which encrypts bytes.
- * @ingroup cipher
+ * @ingroup security
  * @author Bernhard Walle
- * @version $Revision: 1.6 $
- * @date $Date: 2003/10/05 16:07:21 $
+ * @version $Revision: 1.7 $
+ * @date $Date: 2003/11/28 18:41:41 $
  */
 class Encryptor
 {

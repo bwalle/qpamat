@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.5 2003/11/16 20:23:34 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.6 2003/11/28 18:42:39 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -30,8 +30,8 @@
 #include "tree.h"
 #include "treeentry.h"
 #include "wrongpassword.h"
-#include "cipher/passwordhash.h"
-#include "cipher/encryptor.h"
+#include "security/passwordhash.h"
+#include "security/encryptor.h"
 
 // -------------------------------------------------------------------------------------------------
 Tree::Tree(QWidget* parent)
