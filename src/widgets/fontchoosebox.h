@@ -1,5 +1,5 @@
 /*
- * Id: $Id: fontchoosebox.h,v 1.1 2003/12/06 18:24:16 bwalle Exp $
+ * Id: $Id: fontchoosebox.h,v 1.2 2003/12/10 21:44:16 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -31,8 +31,8 @@
  *
  * \ingroup widgets
  * \author Bernhard Walle
- * \version $Revision: 1.1 $
- * \date $Date: 2003/12/06 18:24:16 $
+ * \version $Revision: 1.2 $
+ * \date $Date: 2003/12/10 21:44:16 $
  */
 class FontChooseBox : public QWidget
 {
@@ -50,7 +50,7 @@ class FontChooseBox : public QWidget
         
         /*!
          * Sets the font. The font is displayed in itself.
-         * \param content the content string
+         * \param font content the content string
          */
         void setFont(const QFont& font);
         
