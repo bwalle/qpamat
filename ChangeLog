@@ -1,3 +1,9 @@
+Sun Dec 26 18:42:00 2004  Bernhard Walle <bernhard@bwalle.de>
+
+	* Added "Cancel" in the dialog that appears if a user wants to 
+	  log out without saving.
+	* Released 0.3.2.
+
 Sat Sep 25 19:00:00 2004  Bernhard Walle <bernhard@bwalle.de>
 	
 	* Fixed compile error in help.cpp.
