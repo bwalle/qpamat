@@ -1,5 +1,5 @@
 /*
- * Id: $Id: passwordgenerator.h,v 1.1 2003/12/16 22:50:06 bwalle Exp $
+ * Id: $Id: passwordgenerator.h,v 1.2 2003/12/17 21:54:43 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -20,6 +20,8 @@
 
 #include <qstring.h>
 
+#include "passwordgenerateexception.h"
+
 /*!
  * \brief Interface to generate random passwords.
  *
@@ -27,8 +29,8 @@
  *
  * \ingroup security
  * \author Bernhard Walle
- * \version $Revision: 1.1 $
- * \date $Date: 2003/12/16 22:50:06 $
+ * \version $Revision: 1.2 $
+ * \date $Date: 2003/12/17 21:54:43 $
  */
 class PasswordGenerator
 {
@@ -45,9 +47,15 @@ class PasswordGenerator
          * the implementation crefully.
          * \param length the length of the password
          * \return the password
+         * \exception PasswordGenerateException if generation failed
          */
-        virtual QString getPassword(int length) = 0;
+        virtual QString getPassword(int length) throw (PasswordGenerateException) = 0;
         
+        /*!
+         * Indicates whether the password generator is slow.
+         * \return \c true if it is slow, \c false otherwise
+         */
+        virtual bool isSlow() const = 0;
 };
 
 #endif // PASSWORDGENERATOR_H
