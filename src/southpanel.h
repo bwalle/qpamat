@@ -1,5 +1,5 @@
 /*
- * Id: $Id: southpanel.h,v 1.3 2003/11/29 14:43:03 bwalle Exp $
+ * Id: $Id: southpanel.h,v 1.4 2003/12/04 11:59:06 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -29,8 +29,8 @@
  * \brief Represents the south panel.
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.3 $
- * \date $Date: 2003/11/29 14:43:03 $
+ * \version $Revision: 1.4 $
+ * \date $Date: 2003/12/04 11:59:06 $
  */
 class SouthPanel : public QFrame
 {
@@ -56,6 +56,11 @@ class SouthPanel : public QFrame
         void setItem (Property* property);
         
         /*!
+         * Choice of the combo changed.
+         */
+        void comboBoxChanged(int newChoice);
+        
+        /*!
          * Updates the data.
          */
         void updateData();
@@ -73,6 +78,7 @@ class SouthPanel : public QFrame
         QLineEdit* m_keyLineEdit;
         QLineEdit* m_valueLineEdit;
         QComboBox* m_typeCombo;
+        int m_oldComboValue;
 };
 
 #endif // SOUTHPANEL_H

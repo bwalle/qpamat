@@ -1,5 +1,5 @@
 /*
- * Id: $Id: southpanel.cpp,v 1.1 2003/10/20 20:55:13 bwalle Exp $
+ * Id: $Id: southpanel.cpp,v 1.2 2003/12/04 11:58:58 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -22,11 +22,11 @@
 #include <qvgroupbox.h>
 
 #include "southpanel.h"
-#include "../images/down_16x16.xpm"
+/* #include "../images/down_16x16.xpm"
 #include "../images/down_22x22.xpm"
 #include "../images/up_16x16.xpm"
 #include "../images/up_22x22.xpm"
-
+ */
 // -------------------------------------------------------------------------------------------------
 SouthPanel::SouthPanel(QWidget* parent) 
 // -------------------------------------------------------------------------------------------------
@@ -61,6 +61,7 @@ SouthPanel::SouthPanel(QWidget* parent)
     setFocusPolicy(QWidget::StrongFocus);
     
     QObject::connect(m_typeCombo, SIGNAL(activated(int)), this, SLOT(updateData()));
+    QObject::connect(m_typeCombo, SIGNAL(activated(int)), this, SLOT(comboBoxChanged(int)));
     QObject::connect(m_keyLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(updateData()));
     QObject::connect(m_valueLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(updateData()));
 }
@@ -76,6 +77,7 @@ void SouthPanel::clear()
     m_valueLineEdit->setText(QString::null);
     m_typeCombo->setCurrentItem(0);
     m_valueLineEdit->setEchoMode(QLineEdit::Normal);
+    m_oldComboValue = -1;
     setEnabled(false);
 }
 
@@ -91,7 +93,7 @@ void SouthPanel::setItem (Property* property)
         m_typeCombo->setCurrentItem(property->getType());
         m_valueLineEdit->setText(property->getValue());
         m_keyLineEdit->setText(property->getKey());
-        
+        m_oldComboValue = property->getType();
         if (property->isHidden())
         {
             m_valueLineEdit->setEchoMode(QLineEdit::Password);
@@ -120,3 +122,17 @@ void SouthPanel::updateData()
                 : QLineEdit::Normal );
     }
 }
+
+
+// -------------------------------------------------------------------------------------------------
+void SouthPanel::comboBoxChanged(int newChoice)
+// -------------------------------------------------------------------------------------------------
+{
+    if (m_oldComboValue == Property::PASSWORD && m_oldComboValue != newChoice)
+    {
+        m_currentProperty->setValue("");
+        m_valueLineEdit->setText("");
+    }
+    m_oldComboValue = newChoice;
+}
+
