@@ -1,5 +1,5 @@
 /*
- * Id: $Id: aboutdialog.cpp,v 1.2 2004/07/23 13:12:54 bwalle Exp $
+ * Id: $Id: aboutdialog.cpp,v 1.3 2004/07/23 13:37:05 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -33,8 +33,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.2 $
-    \date $Date: 2004/07/23 13:12:54 $
+    \version $Revision: 1.3 $
+    \date $Date: 2004/07/23 13:37:05 $
 */
 
 /*!
@@ -92,8 +92,8 @@ void AboutDialog::setupAboutTab()
     aboutTab->setMargin(15);
     
     (void)new QLabel(
-        tr("<p>This is a password managing tool for Unix, Windows and "
-            "MacOS X written in C++ using the Qt library.</p>"
+        tr("<p><nobr>This is a password managing tool for Unix, Windows and "
+            "MacOS X</nobr> written in C++ using the Qt library.</p>"
             "<p><b>Thanks to:</b>"
             "<ul><li>Trolltech for the Qt library</li>"
             "<li>OpenSSL team for the OpenSSL library</li>"

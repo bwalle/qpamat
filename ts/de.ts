@@ -18,8 +18,8 @@
         <translation>&amp;Lizenz</translation>
     </message>
     <message>
-        <source>&lt;p&gt;This is a password managing tool for Unix, Windows and MacOS X written in C++ using the Qt library.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Thanks to:&lt;/b&gt;&lt;ul&gt;&lt;li&gt;Trolltech for the Qt library&lt;/li&gt;&lt;li&gt;OpenSSL team for the OpenSSL library&lt;/li&gt;&lt;li&gt;Gtk+ artists for the nice stock icons&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Homepage:&lt;/b&gt; &lt;tt&gt;http://qpamat.berlios.de&lt;/tt&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Dies ist ein Passwort-Management-Tool für Unix, Windows und MacOS X. Es wurde in C++ mit Hilfe der Qt-Bibliothek geschrieben.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Danke an:&lt;/b&gt;&lt;ul&gt;&lt;li&gt;Trolltech für die Qt-Bibliothek&lt;/li&gt;&lt;li&gt;OpenSSL-Team für die OpenSSL-Bibliothek&lt;/li&gt;&lt;li&gt;Gtk+-Grafiker für die Stock-Icons&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Homepage:&lt;/b&gt; &lt;tt&gt;http://qpamat.berlios.de&lt;/tt&gt;&lt;/p&gt;</translation>
+        <source>&lt;p&gt;&lt;nobr&gt;This is a password managing tool for Unix, Windows and MacOS X&lt;/nobr&gt; written in C++ using the Qt library.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Thanks to:&lt;/b&gt;&lt;ul&gt;&lt;li&gt;Trolltech for the Qt library&lt;/li&gt;&lt;li&gt;OpenSSL team for the OpenSSL library&lt;/li&gt;&lt;li&gt;Gtk+ artists for the nice stock icons&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Homepage:&lt;/b&gt; &lt;tt&gt;http://qpamat.berlios.de&lt;/tt&gt;&lt;/p&gt;</source>
+        <translation>&lt;p&gt;&lt;nobr&gt;Dies ist ein Passwort-Management-Tool für Unix, Windows und MacOS X.&lt;/nobr&gt; Es wurde in C++ mit Hilfe der Qt-Bibliothek geschrieben.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Danke an:&lt;/b&gt;&lt;ul&gt;&lt;li&gt;Trolltech für die Qt-Bibliothek&lt;/li&gt;&lt;li&gt;OpenSSL-Team für die OpenSSL-Bibliothek&lt;/li&gt;&lt;li&gt;Gtk+-Grafiker für die Stock-Icons&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Homepage:&lt;/b&gt; &lt;tt&gt;http://qpamat.berlios.de&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
