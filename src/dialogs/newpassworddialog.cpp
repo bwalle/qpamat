@@ -1,5 +1,5 @@
 /*
- * Id: $Id: newpassworddialog.cpp,v 1.7 2003/12/29 11:00:00 bwalle Exp $
+ * Id: $Id: newpassworddialog.cpp,v 1.8 2003/12/29 14:06:31 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -44,8 +44,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.7 $
-    \date $Date: 2003/12/29 11:00:00 $
+    \version $Revision: 1.8 $
+    \date $Date: 2003/12/29 14:06:31 $
 */
 
 
@@ -256,8 +256,8 @@ void NewPasswordDialog::checkOkEnabled() const
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.7 $
-    \date $Date: 2003/12/29 11:00:00 $
+    \version $Revision: 1.8 $
+    \date $Date: 2003/12/29 14:06:31 $
 */
 
 /*!
@@ -276,7 +276,7 @@ PasswordValidator::PasswordValidator(QObject* parent, const char* name)
     \param input the input
     \param pos the position of the inserted stuff (unused here)
 */
-PasswordValidator::State PasswordValidator::validate(QString& input, int& UNUSED(pos)) const
+PasswordValidator::State PasswordValidator::validate(QString& input, int& pos) const
 {
     if (input.length() < 6)
     {
