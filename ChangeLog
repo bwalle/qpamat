@@ -3,6 +3,7 @@ Sat Feb 05 12:00:00 2005  Bernhard Walle <bernhard@bwalle.de>
 	* Implemented AutoLogout function.
 	* Icons for login/logout.
 	* Added login/logout to the toolbar.
+	* Added export icon.
 	* Released 0.3.4.
 
 Sat Jan 01 17:00:00 2005  Bernhard Walle <bernhard@bwalle.de>
