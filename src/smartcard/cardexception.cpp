@@ -1,5 +1,5 @@
 /*
- * Id: $Id: cardexception.cpp,v 1.1 2003/11/02 20:00:36 bwalle Exp $
+ * Id: $Id: cardexception.cpp,v 1.2 2003/11/12 22:17:57 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -49,6 +49,14 @@ const char* CardException::what() const throw ()
             return "Memory assignment error.";
         case HTSI:
             return "Host Transport Service Interface error.";
+        case DataCorrupted:
+            return "Data corrupted.";
+        case EndReached:
+            return "The specified data is not in the valid range for the chipcard.";
+        case MemoryFailure:
+            return "Memory failure.";
+        case Error:
+            return "Error";
         default:
             return std::runtime_error::what();
     }

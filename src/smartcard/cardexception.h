@@ -1,5 +1,5 @@
 /*
- * Id: $Id: cardexception.h,v 1.1 2003/11/02 20:00:36 bwalle Exp $
+ * Id: $Id: cardexception.h,v 1.2 2003/11/12 22:17:57 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -29,8 +29,8 @@
  * way.
  * @ingroup smartcard
  * @author Bernhard Walle
- * @version $Revision: 1.1 $
- * @date $Date: 2003/11/02 20:00:36 $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2003/11/12 22:17:57 $
  */
 class CardException : public std::runtime_error
 {
@@ -41,19 +41,24 @@ class CardException : public std::runtime_error
          */
         enum ErrorCode 
         {
-            NoError      = 0,           /*!< No error, used for passing a message. */
-            Invalid      = ERR_INVALID, /*!< Invalid parameter or value. */ 
-            CardTerminal = ERR_CT,      /*!< Cardterminal Error. The terminal is temporary not
-                                             accessible (busy with other or internal processes).
-                                             The problem can be resolved by the application. */
-            Transmission = ERR_TRANS,   /*!< Transmission error. Transmission error due to
-                                             mechanical, electrical or protocol failures. Reset of
-                                             of cardterminal is necessary. */
-            Memory       = ERR_MEMORY,  /*!< Memory assignment error. A memory error occured (the
-                                             allocated buffer is too small for the returned data).*/
-            HTSI         = ERR_HTSI     /*!< Host Transport Service Interface error. Commonly re-
-                                             turned if the error is produced by the software layer
-                                             and not in the communication with the hardware. */
+            NoError       = 0,           /*!< No error, used for passing a message. */
+            Invalid       = ERR_INVALID, /*!< Invalid parameter or value. */ 
+            CardTerminal  = ERR_CT,      /*!< Cardterminal Error. The terminal is temporary not
+                                            accessible (busy with other or internal processes).
+                                            The problem can be resolved by the application. */
+            Transmission  = ERR_TRANS,   /*!< Transmission error. Transmission error due to
+                                            mechanical, electrical or protocol failures. Reset of
+                                            of cardterminal is necessary. */
+            Memory        = ERR_MEMORY,  /*!< Memory assignment error. A memory error occured (the
+                                            allocated buffer is too small for the returned data).*/
+            HTSI          = ERR_HTSI,    /*!< Host Transport Service Interface error. Commonly re-
+                                            turned if the error is produced by the software layer
+                                            and not in the communication with the hardware. */
+            DataCorrupted = 0x6281,      /*!< Read Binary: Data corrupted. */
+            EndReached    = 0x6282,      /*!< Read Binary: The specified data is not in the valid
+                                            range for the chipcard. */
+            MemoryFailure = 0x6501,      /*!< Read Binary: Memory failure. */
+            Error         = 0x6200       /*!< General error. */
         };
             
         /**
