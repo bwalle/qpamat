@@ -13,9 +13,9 @@
 		</affiliation>
 	</author>
 
-	<pubdate>2005-02-27</pubdate>
+	<pubdate>2005-03-04</pubdate>
 	
-	<releaseinfo>Version 0.4.1</releaseinfo>   
+	<releaseinfo>Version 0.4.2</releaseinfo>   
 	
 	<copyright>
 		<year>2003-2005</year>
@@ -510,24 +510,17 @@
       <term>
         <menuchoice>
           <guimenu>File</guimenu>
-          <guimenuitem>Login</guimenuitem>
+          <guimenuitem>Login/Logout</guimenuitem>
         </menuchoice>
       </term>
       <listitem>
-        <para>Asks you for the password and opens the current set of
+        <para>If you are logged out, it offers the "Login" action:
+          Asks you for the password and opens the current set of
           stored passwords. The data file which will be opened is set in the
           configuration dialog.</para>
-      </listitem>
-    </varlistentry>
-    <varlistentry>
-      <term>
-        <menuchoice>
-          <guimenu>File</guimenu>
-          <guimenuitem>Logout</guimenuitem>
-        </menuchoice>
-      </term>
-      <listitem>
-        <para>Closes the current set of stored passwords. If you didn't save
+        
+        <para>Else, it offers the "Logout" action: 
+          Closes the current set of stored passwords. If you didn't save
           it and you made changes, QPaMaT will ask you to do so. After that,
           all passwords are delected from memory (not form disk where they
           are encrypted, of course), so you need to Login again if you
