@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.52 2005/02/15 02:03:55 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.53 2005/02/23 17:56:56 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -7,7 +7,7 @@
 #
 #  Adapt these variables to your system
 
-PREFIX             = /home/bwalle/test
+PREFIX             = /usr/local
 SHAREDIR           = $${PREFIX}/share
 DOCDIR             = $${SHAREDIR}/doc/packages
 BINDIR             = $${PREFIX}/bin
