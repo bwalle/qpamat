@@ -1,5 +1,5 @@
 /*
- * Id: $Id: passwordhash.cpp,v 1.1 2003/10/11 19:51:50 bwalle Exp $
+ * Id: $Id: passwordhash.cpp,v 1.2 2003/12/29 10:59:16 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -27,20 +27,37 @@
 #include "encodinghelper.h"
 
 // -------------------------------------------------------------------------------------------------
+//                                     Static data
+// -------------------------------------------------------------------------------------------------
+
 const int PasswordHash::numberOfRandomBits = 8;
-// -------------------------------------------------------------------------------------------------
 
+/*!
+    \class PasswordHash
+    
+    \brief Helping functions for dealing with passwords and hashes.
+    \ingroup security
+    \author Bernhard Walle
+    \version $Revision: 1.2 $
+    \date $Date: 2003/12/29 10:59:16 $
+*/
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Checks the given password if it is the same as the one stored in the hash.
+    (There's no way to re-construct the password from the hash. There's a hash
+    generated from the password and this one is compared to that which was
+    provided by \p hash.)
+    \param password the password
+    \param hash the hash object
+    \return \c true if the password is correct, \c false otherwise
+*/
 bool PasswordHash::isCorrect(QString password, QString hash)
-// -------------------------------------------------------------------------------------------------
 {
     ByteVector output(numberOfRandomBits);
     ByteVector input = EncodingHelper::fromBase64(hash);
-#ifdef QT_RANGE_CHECK
-    Q_ASSERT(input.size() > numberOfRandomBits);
-#endif
-
+    
+    Q_ASSERT(input.size() > uint(numberOfRandomBits));
+    
     for (int i = 0; i < numberOfRandomBits; ++i)
     {
         password.prepend(input[i]);
@@ -51,9 +68,13 @@ bool PasswordHash::isCorrect(QString password, QString hash)
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Generates a hash from the password. That hash contains a salt, too, which
+    makes storing and veryfiing hashes more secure. To be more precisely, a
+    so-called dictinoary attack is prepended which this method because the
+    dictionary would be very large.
+*/
 QString PasswordHash::generateHash(QString password)
-// -------------------------------------------------------------------------------------------------
 {
     ByteVector output(numberOfRandomBits);
     
@@ -70,9 +91,13 @@ QString PasswordHash::generateHash(QString password)
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Attaches hash without salt
+    \param output the output
+    \param password the password
+    \todo Find out what the function really does
+*/
 void PasswordHash::attachHashWithoutSalt(ByteVector& output, const QString& password)
-// -------------------------------------------------------------------------------------------------
 {
     EVP_MD_CTX mdctx;
     unsigned char md_value[EVP_MAX_MD_SIZE];

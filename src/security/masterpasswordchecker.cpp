@@ -1,5 +1,5 @@
 /*
- * Id: $Id: masterpasswordchecker.cpp,v 1.1 2003/12/18 21:57:53 bwalle Exp $
+ * Id: $Id: masterpasswordchecker.cpp,v 1.2 2003/12/29 10:59:16 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,16 +15,40 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
+#include <limits>
+
 #include <qstring.h>
 
-#include "../global.h"
+#include "global.h"
 #include "masterpasswordchecker.h"
 
-// -------------------------------------------------------------------------------------------------
-bool MasterPasswordChecker::isPasswordOk(const QString& password) throw (PasswordCheckException)
-// -------------------------------------------------------------------------------------------------
+
+/*!
+    \class MasterPasswordChecker
+    
+     \brief This is a simple password checker.
+
+    A password is valid according to this checker if the following conditions are met:
+    
+    - the password must have a minimum length of eight characters
+    - it must contain at least one special character or digit, one uppercase letter and one
+    lowercase letter
+    
+    \ingroup security
+    \author Bernhard Walle
+    \version $Revision: 1.2 $
+    \date $Date: 2003/12/29 10:59:16 $
+*/
+
+/*!
+    Returns the password quality. We don't calculate how long it takes to crack
+    the password etc. We have a fix policy here.
+    \param password the password to check
+    \return 0.0 if the password is bad, numeric_limits<double>::max() if it is good.
+*/
+double MasterPasswordChecker::passwordQuality(const QString& password) throw ()
 {
-    if (password.length() < minimalLength())
+    if (password.length() < 8)
     {
         return false;
     }
@@ -50,29 +74,7 @@ bool MasterPasswordChecker::isPasswordOk(const QString& password) throw (Passwor
         }
     }
     
-    return uppercase && lowercase && nonLetter;
+    return uppercase && lowercase && nonLetter ? std::numeric_limits<double>::max() : 0.0;
 }
 
 
-// -------------------------------------------------------------------------------------------------
-uint MasterPasswordChecker::minimalLength() const
-// -------------------------------------------------------------------------------------------------
-{
-    return 6;
-}
-
-
-// -------------------------------------------------------------------------------------------------
-bool MasterPasswordChecker::isSlow() const
-// -------------------------------------------------------------------------------------------------
-{
-    return false;
-}
-
-
-// -------------------------------------------------------------------------------------------------
-QCharVector MasterPasswordChecker::allowedCharacters() const
-// -------------------------------------------------------------------------------------------------
-{
-    return QCharVector();
-}

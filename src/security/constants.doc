@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encodinghelper.h,v 1.10 2003/12/29 10:59:16 bwalle Exp $
+ * Id: $Id: constants.doc,v 1.1 2003/12/29 10:59:16 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,29 +15,28 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#ifndef ENCODINGHELPER_H
-#define ENCODINGHELPER_H
 
-#include <iostream>
-
-#include <qmemarray.h>
-#include <qstring.h>
-#include <qvaluevector.h>
-
-#include "global.h"
-
-class EncodingHelper
-{
-    public:
-        static QString toBase64(const ByteVector& vector);
-        static ByteVector fromBase64(const QString& string);
-        
-        static const char base64Alphabet[];
-        static const char reverseBase64Alphabet[];
+/*!
+    \file constants.h
     
-    private:
-        EncodingHelper() {}
-        
-};
+    This file contains some constants for the cryptographic algorithms used in this program.
+    
+    \ingroup security
+*/
 
-#endif // ENCODINGHELPER_H
+/*!
+    \def HASH_ALGORITHM
+    
+    The hash algorithm used in this program. See also "Abenteuer Kryptologie", page 292
+    for a detailed description of the security of such algorithms. According to
+    this book and according to my interpretion this is the best one. If you change
+    this the password could not be read by a "normal" compiled program, so be careful.
+ */
+
+/*!
+    \def KEY_CREATION_COUNT
+    
+    A higher count makes the algorithm more secure but is slower.
+    See http://www.openssl.org/docs/crypto/EVP_BytesToKey.html.
+*/
+

@@ -1,0 +1,70 @@
+/*
+ * Id: $Id: encryptor.doc,v 1.1 2003/12/29 10:59:16 bwalle Exp $
+ * -------------------------------------------------------------------------------------------------
+ * 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the 
+ * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * version 2 of the License, you have no option to use any other version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if 
+ * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ * ------------------------------------------------------------------------------------------------- 
+ */
+
+/*!
+    \class Encryptor
+    
+    \brief An interface for an object that encrypts bytes.
+    
+    \ingroup security
+    \author Bernhard Walle
+    \version $Revision: 1.1 $
+    \date $Date: 2003/12/29 10:59:16 $
+*/
+
+/*!
+    \fn Encryptor::~Encryptor()
+    
+    Deletes a Encryptor object.
+*/
+
+/*!
+    \fn Encryptor::encrypt(const ByteVector&)
+    
+    Encrypts the given amount of bytes.
+    \param vector the bytes to encrypt
+    \return the encrypted bytes
+*/
+
+/*!
+    \fn Encryptor::encryptStrToBytes(const QString&)
+    
+    Encrypts the given string.
+    \param string string to enctrypt
+    \return the encrypted bytes
+*/
+
+/*!
+    \fn Encryptor::decrypt(const ByteVector&)
+    
+    Decrypts the given amount of bytes.
+    \param vector the bytes to decrypt
+    \return the decrypted bytes
+*/
+
+/*!
+    \fn Encryptor::decryptStrFromBytes(const ByteVector&)
+    
+    Decrypts the given amount of bytes. This method returns a String. 
+    Call this method only if you are sure that vector is the result of
+    an encryption with encryptStrToBytes().
+    \param vector the bytes to decrypt
+    \return the decrypted string
+*/
+
+

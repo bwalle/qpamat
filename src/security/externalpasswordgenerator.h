@@ -1,5 +1,5 @@
 /*
- * Id: $Id: externalpasswordgenerator.h,v 1.2 2003/12/18 22:00:06 bwalle Exp $
+ * Id: $Id: externalpasswordgenerator.h,v 1.3 2003/12/29 10:59:16 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -21,47 +21,18 @@
 #include <qstring.h>
 
 #include "passwordgenerator.h"
-#include "passwordgenerateexception.h"
 
-/*!
- * \brief Object to generate random passwords. 
- *
- * Generates passwords using a random application. The application gets the required length
- * as first argument. A shellscript wrapper may be used.
- *
- * \ingroup security
- * \author Bernhard Walle
- * \version $Revision: 1.2 $
- * \date $Date: 2003/12/18 22:00:06 $
- */
 class ExternalPasswordGenerator : public PasswordGenerator
 {
     public:
-        
-         /*! The timeout for the application call. */
         static const int TIMEOUT;
-        
-        /*!
-         * Creates a new instance of ExternalPasswordGenerator. 
-         * \param applicationName the name of the application which should be called to get
-         *        the password
-         */
+    
+    public:
         ExternalPasswordGenerator(const QString& applicationName);
         
-        /*!
-         * Generates a random password.
-         * \param length the length of the password
-         * \param allowedChars ignored
-         * \return the password
-         * \exception PasswordGenerateException if launching the external application failed
-         */
-        QString getPassword(uint length, QCharVector allowedChars = QCharVector()) 
+        QString getPassword(uint length, const QString& allowedChars = QString::null) 
             throw (PasswordGenerateException);
         
-        /*!
-         * Returns \c true
-         * \return \c true
-         */
         bool isSlow() const;
         
     private:

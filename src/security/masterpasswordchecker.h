@@ -1,5 +1,5 @@
 /*
- * Id: $Id: masterpasswordchecker.h,v 1.1 2003/12/18 21:57:53 bwalle Exp $
+ * Id: $Id: masterpasswordchecker.h,v 1.2 2003/12/29 10:59:16 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -21,46 +21,11 @@
 #include <qstring.h>
 
 #include "passwordchecker.h"
-#include "passwordcheckexception.h"
 
-/*!
- * \brief This is a simple password checker.
- *
- * A password is valid according to this checker if the following conditions are met:
- * 
- *  - the password must have a minimum length of six characters
- *  - it must contain at least one special character or digit, one uppercase letter and one
- *    lowercase letter
- *
- * \ingroup security
- * \author Bernhard Walle
- * \version $Revision: 1.1 $
- * \date $Date: 2003/12/18 21:57:53 $
- */
 class MasterPasswordChecker : public PasswordChecker
 {
     public:
-        
-        /*!
-         * \copydoc PasswordChecker::isPasswordOk()
-         */
-        bool isPasswordOk(const QString& password) throw (PasswordCheckException);
-        
-        /*!
-         * \copydoc PasswordChecker::minimalLength()
-         */
-        uint minimalLength() const;
-        
-        /*!
-         * Returns false.
-         * \return false
-         */
-        virtual bool isSlow() const;
-        
-        /*!
-         * \copydoc PasswordChecker::allowedCharacters()
-         */
-        QValueVector<QChar> allowedCharacters() const;
+        double passwordQuality(const QString& password) throw ();
 };
 
 #endif // MASTERPASSWORDCHECKER_H

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: passwordgenerator.h,v 1.3 2003/12/18 22:00:12 bwalle Exp $
+ * Id: $Id: passwordgenerator.h,v 1.4 2003/12/29 10:59:16 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,47 +18,27 @@
 #ifndef PASSWORDGENERATOR_H
 #define PASSWORDGENERATOR_H
 
+#include <stdexcept>
+
 #include <qstring.h>
 
-#include "../global.h"
-#include "passwordgenerateexception.h"
+#include "global.h"
 
-/*!
- * \brief Interface to generate random passwords.
- *
- * Any implementation of this interface generates passwords (normally random passwords).
- *
- * \ingroup security
- * \author Bernhard Walle
- * \version $Revision: 1.3 $
- * \date $Date: 2003/12/18 22:00:12 $
- */
+class PasswordGenerateException : public std::runtime_error
+{
+    public:
+        PasswordGenerateException(const std::string& error) : std::runtime_error(error) { }
+};
+
 class PasswordGenerator
 {
     public:
         
-        /*!
-         * Deletes a PasswordGenerator object.
-         */
         virtual ~PasswordGenerator() { }
         
-        /*!
-         * Generates a random password of the specified length. The method may throw any 
-         * arbitrary excepting, depending on the implementation. So read the documentation of
-         * the implementation crefully.
-         * \param length the length of the password
-         * \param allowedChars a vector of all allowed characters or a empty list if all characters
-         *                     are allowed
-         * \return the password
-         * \exception PasswordGenerateException if generation failed
-         */
-        virtual QString getPassword(uint length, QCharVector allowedChars = QCharVector()) 
+        virtual QString getPassword(uint length, const QString& allowedChars = QString::null) 
             throw (PasswordGenerateException) = 0;
         
-        /*!
-         * Indicates whether the password generator is slow.
-         * \return \c true if it is slow, \c false otherwise
-         */
         virtual bool isSlow() const = 0;
 };
 

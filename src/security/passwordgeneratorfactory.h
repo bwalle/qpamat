@@ -1,5 +1,5 @@
 /*
- * Id: $Id: passwordgeneratorfactory.h,v 1.3 2003/12/18 22:00:12 bwalle Exp $
+ * Id: $Id: passwordgeneratorfactory.h,v 1.4 2003/12/29 10:59:16 bwalle Exp $
  * ------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,83 +24,27 @@
 
 #include "passwordgenerator.h"
 
-/*!
- * \brief Factory for creating password checkers.
- *
- * This class contains a static method which is used to create instances of a
- * PasswordGenerator. The generators are created with a static method 
- * getChecker(). QPaMaT provides different password generators:
- *
- * - \c RANDOM: RandomPasswordGenerator
- * - \c EXTERNAL: ExternalPasswordGenerator
- *
- * The additional argument is passed to the constructor. For the ExternalPasswordGenerator
- * it's the program name. See the documentation of the classes for details.
- * 
- * \ingroup security
- * \author Bernhard Walle
- * \version $Revision: 1.3 $
- * \date $Date: 2003/12/18 22:00:12 $
- */
 class PasswordGeneratorFactory
 {
     public:
         
-        /*! Enumeration type for the password checker. */
         enum PasswordGeneratorType 
         { 
-            TRandomPasswordGenerator,         //!< Represents the RandomPasswordGenerator
-            TExternalPasswordGenerator        //!< Represents the ExternalPasswordGenerator
+            TRandomPasswordGenerator, TExternalPasswordGenerator
         };
         
-        /*! The default password checker */
         static const PasswordGeneratorType DEFAULT_GENERATOR;
-        
-        /*! The default password checker as string. */
         static const QString DEFAULT_GENERATOR_STRING;
-        
-        /*! Default length of a password. */
         static const int DEFAULT_LENGTH;
         
-        /*!
-         * Creates a new instance of a PasswordGenerator class. 
-         * \param type the type of the password generator
-         * \param additionalArgument see class documentation.
-         * \return a pointer to the creates PasswordChecker object. This object must be delected
-         *         by the caller.
-         * \exception std::invalid_argument if the additional argument is invalid
-         */
+    public:
         static PasswordGenerator* getGenerator(PasswordGeneratorType type, const QString& 
             additionalArgument = QString::null) throw (std::invalid_argument);
             
-        /*!
-         * This method is provided for convenience. It behaves exactly like the above function.
-         * It just calls fromString to get the type reperesentation of the string.
-         * \param type the type of the password generator
-         * \param additionalArgument see class documentation.
-         * \return a pointer to the created PasswordGenerator object. This object must be delected
-         *         by the caller.
-         * \exception std::invalid_argument if a wrong \p type is specified or if the argument 
-         *                                  is invalid
-         */
         static PasswordGenerator* getGenerator(const QString& type, const QString& 
             additionalArgument = QString::null) throw (std::invalid_argument);
         
-        /*!
-         * Converts the string representation which is one of \c RANDOM to a PasswordGeneratorType.
-         * \param type the string representation
-         * \return the enumeration type representation
-         * \exception std::invalid_argument if the string reperesentation is invalid
-         */
         static PasswordGeneratorType fromString(QString type) throw (std::invalid_argument);
-        
-        /*!
-         * Converts the PasswordGeneratorType to a string representation.
-         * \param type the password checker type
-         * \return the string representation, one of \c SIMPLE, \c EXTENDED or 
-         *         \c EXTERNAL
-         * \exception std::invalid_argument if the type is not a valid PasswordGeneratorType
-         */
         static QString toString(PasswordGeneratorType type) throw (std::invalid_argument);
 };
 

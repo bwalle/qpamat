@@ -1,5 +1,5 @@
 /*
- * Id: $Id: abstractencryptor.h,v 1.2 2003/12/10 21:47:39 bwalle Exp $
+ * Id: $Id: abstractencryptor.h,v 1.3 2003/12/29 10:59:16 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -21,44 +21,16 @@
 #include <qstring.h>
 #include <qstringlist.h>
 
-#include "nosuchalgorithmexception.h"
-#include "../global.h"
+#include "global.h"
 #include "encryptor.h"
 
-/*!
- * \brief Abstract base class for Encryptor objects.
- *
- * This class implements the Encryptor::encryptStrToBytes() and Encryptor::decryptStrFromBytes() 
- * methods by converting data and passing them to the Encryptor::encrypt() or Encryptor::decrypt()
- * methods.
- *
- * \ingroup security
- * \author Bernhard Walle
- * \version $Revision: 1.2 $
- * \date $Date: 2003/12/10 21:47:39 $
- */
 class AbstractEncryptor : public Encryptor
 {
     public:
-        
-        /*!
-         * \copydoc Encryptor::encryptStrToBytes()
-         */
         ByteVector encryptStrToBytes(const QString& string);
-        
-        /*!
-         * \copydoc StringEncryptor::encryptStrToStr()
-         */
         QString encryptStrToStr(const QString& string);
         
-        /*!
-         * \copydoc Encryptor::decryptStrFromBytes()
-         */
         QString decryptStrFromBytes(const ByteVector& vector);
-        
-        /*!
-         * \copydoc StringEncryptor::decryptStrFromStr()
-         */
         QString decryptStrFromStr(const QString& string);
 };
 

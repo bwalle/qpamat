@@ -1,5 +1,5 @@
 /*
- * Id: $Id: externalpasswordgenerator.cpp,v 1.2 2003/12/18 22:00:06 bwalle Exp $
+ * Id: $Id: externalpasswordgenerator.cpp,v 1.3 2003/12/29 10:59:16 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -21,22 +21,50 @@
 #include <qapplication.h>
 #include <qeventloop.h>
 
-#include "../global.h"
+#include "global.h"
 #include "externalpasswordgenerator.h"
 
 // -------------------------------------------------------------------------------------------------
-const int ExternalPasswordGenerator::TIMEOUT = 5*1000;
+//                                     Static data
 // -------------------------------------------------------------------------------------------------
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    The timeout for the application call.
+*/
+const int ExternalPasswordGenerator::TIMEOUT = 5*1000;
+
+
+/*!
+    \class ExternalPasswordGenerator
+    
+    \brief Object to generate random passwords. 
+
+    Generates passwords using a random application. The application gets the required length
+    as first argument. A shellscript wrapper may be used.
+    
+    \ingroup security
+    \author Bernhard Walle
+    \version $Revision: 1.3 $
+    \date $Date: 2003/12/29 10:59:16 $
+*/
+
+/*!
+    Creates a new instance of ExternalPasswordGenerator. 
+    \param applicationName the name of the application which should be called to get the password
+*/
 ExternalPasswordGenerator::ExternalPasswordGenerator(const QString& applicationName)
-// -------------------------------------------------------------------------------------------------
-        : m_applicationName(applicationName)
+    : m_applicationName(applicationName)
 {}
 
-// -------------------------------------------------------------------------------------------------
-QString ExternalPasswordGenerator::getPassword(uint length, QCharVector)
-// -------------------------------------------------------------------------------------------------
+
+/*!
+    Generates a random password.
+    \param length the length of the password
+    \param allowedChars ignored
+    \return the password
+    \exception PasswordGenerateException if launching the external application failed
+*/
+QString ExternalPasswordGenerator::getPassword(uint length, const QString&)
         throw (PasswordGenerateException)
 {
     if (m_applicationName.isNull())
@@ -69,9 +97,11 @@ QString ExternalPasswordGenerator::getPassword(uint length, QCharVector)
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Returns \c true
+    \return \c true
+*/
 bool ExternalPasswordGenerator::isSlow() const
-// -------------------------------------------------------------------------------------------------
 {
     return true;
 }

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: stringencryptor.h,v 1.1 2003/12/10 21:48:05 bwalle Exp $
+ * Id: $Id: stringencryptor.h,v 1.2 2003/12/29 10:59:16 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,42 +18,25 @@
 #ifndef STRINGENCRYPTOR_H
 #define STRINGENCRYPTOR_H
 
+#include <stdexcept>
+
 #include <qstring.h>
 #include <qstringlist.h>
 
-#include "nosuchalgorithmexception.h"
-#include "../global.h"
+#include "global.h"
 
-/*!
- * \brief An interface for an object that encrypts bytes.
- *
- * \ingroup security
- * \author Bernhard Walle
- * \version $Revision: 1.1 $
- * \date $Date: 2003/12/10 21:48:05 $
- */
+class NoSuchAlgorithmException : public std::runtime_error
+{
+    public:
+        NoSuchAlgorithmException(const std::string& error) : std::runtime_error(error) { }
+};
+
 class StringEncryptor
 {
     public:
-        
-        /*!
-         * Destroys a StringEncryptor object.
-         */
         virtual ~StringEncryptor() { }
         
-        /*!
-         * Encrypts the given string and returns a base 64 encoded string.
-         * \param string the string to encrypt
-         * \return the encrypted bytes
-         */
         virtual QString encryptStrToStr(const QString& string) = 0;
-        
-        /*!
-         * Decrypts the given Base 64 string. Call this method only if you are sure that
-         * the string is a result of Encryptor::encryptBase64()!
-         * \param string the encryted Base-64-encoded string
-         * \return the decrypted string
-         */
         virtual QString decryptStrFromStr(const QString& string) = 0;
 };
 

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: notencryptor.h,v 1.1 2003/12/13 22:34:01 bwalle Exp $
+ * Id: $Id: notencryptor.h,v 1.2 2003/12/29 10:59:16 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -21,33 +21,14 @@
 #include <qstring.h>
 #include <qstringlist.h>
 
-#include "../global.h"
+#include "global.h"
 #include "stringencryptor.h"
 
-/*!
- * \brief This encryptor does nothing.
- *
- * Yes, it's just a dummy object for writing the plain data into XML.
- *
- * \ingroup security
- * \author Bernhard Walle
- * \version $Revision: 1.1 $
- * \date $Date: 2003/12/13 22:34:01 $
- */
 class NotEncryptor : public StringEncryptor
 {
     public:
-        
-        /*!
-         * \copydoc StringEncryptor::encryptStrToStr()
-         */
         QString encryptStrToStr(const QString& string);
-        
-        /*!
-         * \copydoc StringEncryptor::decryptStrFromStr()
-         */
         QString decryptStrFromStr(const QString& string);
-        
 };
 
 #endif // NOTENCRYPTOR_H
