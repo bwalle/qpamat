@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encryptor.cpp,v 1.5 2003/10/03 19:44:33 bwalle Exp $
+ * Id: $Id: encryptor.cpp,v 1.6 2003/10/04 12:57:06 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -52,6 +52,7 @@ Encryptor::Encryptor(const QString& algorithm, const QString& password)
     
     // set the password
     setPassword(password);
+    m_currentAlgorithm = algorithm;
 }
 
 
@@ -210,7 +211,14 @@ void Encryptor::setPassword(const QString& password)
 
 
 // -------------------------------------------------------------------------------------------------
+QString Encryptor::getCurrentAlgorithm() const
+// -------------------------------------------------------------------------------------------------
+{
+    return m_currentAlgorithm;
+}
+
+
+// -------------------------------------------------------------------------------------------------
 Encryptor::~Encryptor()
 // -------------------------------------------------------------------------------------------------
 {}
-

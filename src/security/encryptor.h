@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encryptor.h,v 1.4 2003/10/03 19:44:33 bwalle Exp $
+ * Id: $Id: encryptor.h,v 1.5 2003/10/04 12:57:06 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -29,8 +29,8 @@
 /**
  * A object which encrypts bytes.
  * @author Bernhard Walle
- * @version $Revision: 1.4 $
- * @date $Date: 2003/10/03 19:44:33 $
+ * @version $Revision: 1.5 $
+ * @date $Date: 2003/10/04 12:57:06 $
  */
 class Encryptor
 {
@@ -55,6 +55,18 @@ class Encryptor
          */
         Encryptor(const QString& algorithm, const QString& password)
             throw (NoSuchAlgorithmException);
+        
+        
+        /**
+         * Destroys a Encryptor object.
+         */
+        virtual ~Encryptor();
+        
+        /**
+         * Returns the cipher algorithm of this encryptor.
+         * @return the algorithm as string as used by the constructor
+         */
+        virtual QString getCurrentAlgorithm() const;
         
         /**
          * Encrypts the given amount of bytes.
@@ -109,11 +121,6 @@ class Encryptor
          */
         static QString getSuggestedAlgorithm();
         
-        /**
-         * Deletes an Encryptor object. Nothing to do here but maybe needed for
-         * subclassing.
-         */
-        virtual ~Encryptor();
         
     protected:
         /**
@@ -133,6 +140,7 @@ class Encryptor
         const EVP_CIPHER*     m_cipher_algorithm;
         mutable byte          m_key[EVP_MAX_KEY_LENGTH];
         mutable byte          m_iv[EVP_MAX_IV_LENGTH];
+        QString               m_currentAlgorithm;
         
         static StringMap initAlgorithmsMap();
         static StringMap m_algorithms;
