@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.h,v 1.13 2003/12/29 15:12:27 bwalle Exp $
+ * Id: $Id: tree.h,v 1.14 2003/12/29 20:07:28 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -58,7 +58,7 @@ class Tree : public QListView
         void insertAtCurrentPos();
         void setShowPasswordStrength(bool show );
         void updatePasswordStrengthView();
-        void recomputePasswordStrength();
+        void recomputePasswordStrength(bool* error = 0);
         
     signals:
         void selectionCleared();

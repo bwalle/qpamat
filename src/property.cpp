@@ -1,5 +1,5 @@
 /*
- * Id: $Id: property.cpp,v 1.8 2003/12/29 15:12:27 bwalle Exp $
+ * Id: $Id: property.cpp,v 1.9 2003/12/29 20:07:04 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,6 +18,7 @@
 #include <qstring.h>
 #include <qdom.h>
 #include <qlistview.h>
+#include <qmessagebox.h>
 
 #include "qpamat.h"
 #include "security/hybridpasswordchecker.h"
@@ -33,8 +34,8 @@
 
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.8 $
-    \date $Date: 2003/12/29 15:12:27 $
+    \version $Revision: 1.9 $
+    \date $Date: 2003/12/29 20:07:04 $
 */
 
 /*!
@@ -144,8 +145,10 @@ void Property::setValue(const QString& value)
     is called and any thimes the updatePasswordStrength() function is called. There's no automatic
     recomputation because of performance reasons.
     \return the password strength which is \c PUndefined if it is no password
+    \exception PasswordCheckException if the strength is updated and a PasswordCheckException
+               is thrown
 */
-Property::PasswordStrength Property::getPasswordStrength()
+Property::PasswordStrength Property::getPasswordStrength() throw (PasswordCheckException)
 {
     if (m_passwordStrength == PUndefined)
     {
@@ -171,26 +174,16 @@ double Property::daysToCrack() const
 /*!
     Updates the password strength information. Because updating this information may
     be expensive, you sometimes manually must call this function.
+    \exception if the password checker threw a PasswordCheckException
 */
-void Property::updatePasswordStrength()
+void Property::updatePasswordStrength() throw (PasswordCheckException)
 {
     if (m_type == PASSWORD)
     {
         QString ensured = qpamat->set().readEntry("Security/EnsuredCharacters");
-        HybridPasswordChecker checker(qpamat->set().readEntry("Security/DictionaryFile"));
         double days = -1.0;
-        try
-        {
-            days = checker.passwordQuality(m_value);
-        }
-        catch (const std::invalid_argument& e)
-        {
-            qDebug("Checking password failed, value = %s", m_value.latin1());
-        }
-        catch (const PasswordCheckException& e)
-        {
-            qDebug("Checking password failed, value = %s", m_value.latin1());
-        }
+        HybridPasswordChecker checker(qpamat->set().readEntry("Security/DictionaryFile"));
+        days = checker.passwordQuality(m_value);
         m_daysToCrack = days;
         double weakLimit = qpamat->set().readDoubleEntry("Security/WeakPasswordLimit");
         double strongLimit = qpamat->set().readDoubleEntry("Security/StrongPasswordLimit");

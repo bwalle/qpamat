@@ -1,5 +1,5 @@
 /*
- * Id: $Id: randompassword.cpp,v 1.6 2003/12/29 15:12:27 bwalle Exp $
+ * Id: $Id: randompassword.cpp,v 1.7 2003/12/29 20:06:56 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -42,8 +42,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.6 $
-    \date $Date: 2003/12/29 15:12:27 $
+    \version $Revision: 1.7 $
+    \date $Date: 2003/12/29 20:06:56 $
 */
 
 /*!
@@ -83,10 +83,10 @@ void RandomPassword::requestPassword()
 {
     PasswordGenerator* passwordgen = 0;
     QString allowed = qpamat->set().readEntry("Security/AllowedCharacters");
-    HybridPasswordChecker checker(qpamat->set().readEntry("Security/DictionaryFile"));
-    
+    PasswordChecker* checker = 0;
     try
     {
+        checker = new HybridPasswordChecker(qpamat->set().readEntry("Security/DictionaryFile"));
         passwordgen = PasswordGeneratorFactory::getGenerator(
             qpamat->set().readEntry( "Security/PasswordGenerator" ),
             qpamat->set().readEntry( "Security/PasswordGenAdditional" ) 
@@ -95,9 +95,10 @@ void RandomPassword::requestPassword()
     catch (const std::exception& exc)
     {
         QMessageBox::warning(m_parent, "QPaMaT",
-                tr("<qt><nobr>Failed to create a password checker:</nobr><br>%1</qt>")
+                tr("Failed to create a password checker or generator:\n\n%1\n\nAdjust the settings!")
                 .arg(exc.what()), QMessageBox::Ok, QMessageBox::NoButton);
         delete passwordgen;
+        delete checker;
         return;
     }
     
@@ -116,7 +117,7 @@ void RandomPassword::requestPassword()
                 qpamat->set().readNumEntry("Security/Length"), 
                 qpamat->set().readEntry("Security/AllowedCharacters")
             );
-            double quality = checker.passwordQuality(password);
+            double quality = checker->passwordQuality(password);
             ok = quality > qpamat->set().readDoubleEntry("StrongPasswordLimit");
         }
         catch (const std::exception& exc)
@@ -155,5 +156,7 @@ void RandomPassword::requestPassword()
             "Adjust the settings!"), QMessageBox::Ok, QMessageBox::NoButton);
     }
     delete dlg;
+    delete passwordgen;
+    delete checker;
 }
 

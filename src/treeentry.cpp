@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.cpp,v 1.11 2003/12/29 15:12:27 bwalle Exp $
+ * Id: $Id: treeentry.cpp,v 1.12 2003/12/29 20:07:31 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -32,8 +32,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.11 $
-    \date $Date: 2003/12/29 15:12:27 $
+    \version $Revision: 1.12 $
+    \date $Date: 2003/12/29 20:07:31 $
 */
 
 /*!
@@ -53,8 +53,10 @@
     strength should be computed because of speed issues (in other words, no wait cursor
     or something else is displayed in this function).
     \return the password strength, Property::PUndefined should be never returned
+    \exception PasswordCheckException if recomputing is necessary and the PasswordChecker
+               threw a PasswordCheckException
 */
-Property::PasswordStrength TreeEntry::weakestChildrenPassword() const
+Property::PasswordStrength TreeEntry::weakestChildrenPassword() const throw (PasswordCheckException)
 {
     Property::PasswordStrength lowest = Property::PUndefined;
     if (m_isCategory)

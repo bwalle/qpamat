@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.h,v 1.10 2003/12/29 15:12:27 bwalle Exp $
+ * Id: $Id: treeentry.h,v 1.11 2003/12/29 20:07:31 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -50,7 +50,7 @@ class TreeEntry : public QObject, public QListViewItem
         void appendProperty(Property* property);
         PropertyIterator propertyIterator() const;
         
-        Property::PasswordStrength weakestChildrenPassword() const;
+        Property::PasswordStrength weakestChildrenPassword() const throw (PasswordCheckException);
         
         void appendXML(QDomDocument& document, QDomNode& parent, StringEncryptor& enc) const;
         

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: southpanel.cpp,v 1.12 2003/12/29 15:12:27 bwalle Exp $
+ * Id: $Id: southpanel.cpp,v 1.13 2003/12/29 20:07:18 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,6 +24,7 @@
 #include <qbuttongroup.h>
 #include <qtooltip.h>
 #include <qtoolbutton.h>
+#include <qmessagebox.h>
 
 #include "qpamat.h"
 #include "southpanel.h"
@@ -46,8 +47,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.12 $
-    \date $Date: 2003/12/29 15:12:27 $
+    \version $Revision: 1.13 $
+    \date $Date: 2003/12/29 20:07:18 $
 */
 
 /*!
@@ -223,34 +224,50 @@ void SouthPanel::updateIndicatorLabel(bool recompute)
 {
     if (m_currentProperty && m_currentProperty->getType() == Property::PASSWORD)
     {
-        if (recompute)
+        try
         {
-            m_currentProperty->updatePasswordStrength();
-        }
-        if (m_currentProperty->getPasswordStrength() != m_lastStrength)
-        {
-            emit passwordStrengthUpdated();
-            m_lastStrength = m_currentProperty->getPasswordStrength();
-            switch (m_lastStrength)
+            if (recompute)
             {
-                case Property::PWeak:
-                    m_indicatorLabel->setPixmap(traffic_red_22x22_xpm);
-                    break;
-                case Property::PAcceptable:
-                    m_indicatorLabel->setPixmap(traffic_yellow_22x22_xpm);
-                    break;
-                case Property::PStrong:
-                    m_indicatorLabel->setPixmap(traffic_green_22x22_xpm);
-                    break;
-                case Property::PUndefined:
-                    m_indicatorLabel->setPixmap(traffic_out_22x22_xpm);
-                    break;
+                m_currentProperty->updatePasswordStrength();
             }
-        }
+            if (m_currentProperty->getPasswordStrength() != m_lastStrength)
+            {
+                emit passwordStrengthUpdated();
+                m_lastStrength = m_currentProperty->getPasswordStrength();
+                switch (m_lastStrength)
+                {
+                    case Property::PWeak:
+                        m_indicatorLabel->setPixmap(traffic_red_22x22_xpm);
+                        break;
+                    case Property::PAcceptable:
+                        m_indicatorLabel->setPixmap(traffic_yellow_22x22_xpm);
+                        break;
+                    case Property::PStrong:
+                        m_indicatorLabel->setPixmap(traffic_green_22x22_xpm);
+                        break;
+                    case Property::PUndefined:
+                        m_indicatorLabel->setPixmap(traffic_out_22x22_xpm);
+                        break;
+                }
+            }
         
-        QString timeString = StringDisplay::displayTimeSuitable(m_currentProperty->daysToCrack());
-        QString tooltipString = QString("Crack time: %1").arg(timeString);
-        QToolTip::add(m_indicatorLabel, tooltipString);
+            QString timeString = StringDisplay::displayTimeSuitable(m_currentProperty->daysToCrack());
+            QString tooltipString = QString("Crack time: %1").arg(timeString);
+            QToolTip::add(m_indicatorLabel, tooltipString);
+        }
+        catch (const PasswordCheckException& e)
+        {
+            // possible workaround to prevent multiple selection in the list this time
+            // A bit unclean ???
+            /* QMessageBox* mb = new QMessageBox("QPaMaT", tr("<qt><nobr>Failed to calculate the password "
+                "strength. The error message</nobr> was:<p>%1<p>Check your configuration!</qt>")
+                .arg(e.what()), QMessageBox::Warning, QMessageBox::Ok, QMessageBox::NoButton, 
+                QMessageBox::NoButton, this, 0, true, WDestructiveClose);
+            mb->show(); */
+            QMessageBox::warning(this, "QPaMaT", tr("<qt><nobr>Failed to calculate the password "
+                "strength. The error message</nobr> was:<p>%1<p>Check your configuration!</qt>")
+                .arg(e.what()), QMessageBox::Ok, QMessageBox::NoButton);
+        }
     }
     else
     {

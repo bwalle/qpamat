@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.21 2003/12/29 15:12:27 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.22 2003/12/29 20:07:23 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -69,8 +69,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.21 $
-    \date $Date: 2003/12/29 15:12:27 $
+    \version $Revision: 1.22 $
+    \date $Date: 2003/12/29 20:07:23 $
 */
 
 /*!
@@ -659,12 +659,18 @@ void Tree::droppedHandler(QDropEvent* evt)
     Recomputes the password strength. This function should be called before showing the password
     strength in the tree and it must be called after changing the configuration related to
     password strength. It shows a progress dialog.
+    \param error is set to \c true if an error occured and if \p error is not \c NULL
 */
-void Tree::recomputePasswordStrength()
+void Tree::recomputePasswordStrength(bool* error)
 {
     if (!m_showPasswordStrength)
     {
         return;
+    }
+    
+    if (error)
+    {
+        *error = true;
     }
     
     QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
@@ -687,35 +693,50 @@ void Tree::recomputePasswordStrength()
         }
     }
     
-    QProgressDialog progress( tr("Updating password strength..."), 0, num, this, "progress", false);
-    progress.setMinimumDuration(200);
-    progress.setCaption("QPaMaT");
-    int progr = 0;
-    
-    qDebug("num = %d", num);
-    QListViewItemIterator it(this);
-    while (it.current()) 
+    try
     {
-        TreeEntry* current = dynamic_cast<TreeEntry*>(it.current());
-        TreeEntry::PropertyIterator propIt = current->propertyIterator();
-        while (propIt.current())
-        {
-            if (propIt.current()->getType() == Property::PASSWORD)
-            {
-                propIt.current()->updatePasswordStrength();
-                progress.setProgress(progr++);
-                qDebug("progr = %d", progr);
-                qApp->processEvents();
-            }
-            ++propIt;
-        }
-        ++it;
-    }
-    progress.setProgress(num);
-    qApp->processEvents();
-    QApplication::restoreOverrideCursor();
+        QProgressDialog progress( tr("Updating password strength..."), 0, num, this, "progress", false);
+        progress.setMinimumDuration(200);
+        progress.setCaption("QPaMaT");
+        int progr = 0;
     
-    updatePasswordStrengthView();
+        QListViewItemIterator it(this);
+        while (it.current()) 
+        {
+            TreeEntry* current = dynamic_cast<TreeEntry*>(it.current());
+            TreeEntry::PropertyIterator propIt = current->propertyIterator();
+            while (propIt.current())
+            {
+                if (propIt.current()->getType() == Property::PASSWORD)
+                {
+                    propIt.current()->updatePasswordStrength();
+                    progress.setProgress(progr++);
+                    qDebug("progr = %d", progr);
+                    qApp->processEvents();
+                }
+                ++propIt;
+            }
+            ++it;
+        }
+        
+        progress.setProgress(num);
+        qApp->processEvents();
+        QApplication::restoreOverrideCursor();
+        
+        updatePasswordStrengthView();
+        
+        if (error)
+        {
+            *error = false;
+        }
+    }
+    catch (const PasswordCheckException& e)
+    {
+        QApplication::restoreOverrideCursor();
+        QMessageBox::warning(this, "QPaMaT", tr("<qt><nobr>Failed to calculate the password "
+                "strength. The error message</nobr> was:<p>%1<p>Check your configuration!</qt>")
+                .arg(e.what()), QMessageBox::Ok, QMessageBox::NoButton);
+    }
 }
 
 
@@ -734,42 +755,51 @@ void Tree::setShowPasswordStrength(bool enabled)
 */
 void Tree::updatePasswordStrengthView()
 {
-    if (m_showPasswordStrength)
+    try
     {
-        QListViewItemIterator it(this);
-        while (it.current()) 
+        if (m_showPasswordStrength)
         {
-            Property::PasswordStrength strength = 
-                dynamic_cast<TreeEntry*>(it.current())->weakestChildrenPassword();
-            switch (strength)
+            QListViewItemIterator it(this);
+            while (it.current()) 
             {
-                case Property::PWeak:
-                    it.current()->setPixmap(0, traffic_red_16x16_xpm);
-                    break;
-                case Property::PAcceptable:
-                    it.current()->setPixmap(0, traffic_yellow_16x16_xpm);
-                    break;
-                case Property::PStrong:
-                    it.current()->setPixmap(0, traffic_green_16x16_xpm);
-                    break;
-                case Property::PUndefined:
-                    it.current()->setPixmap(0, traffic_gray_16x16_xpm);
-                    break;
-                default:
-                    qDebug("Tree::showWeakPasswordMarkers out of range");
-                    break;
+                Property::PasswordStrength strength = 
+                    dynamic_cast<TreeEntry*>(it.current())->weakestChildrenPassword();
+                switch (strength)
+                {
+                    case Property::PWeak:
+                        it.current()->setPixmap(0, traffic_red_16x16_xpm);
+                        break;
+                    case Property::PAcceptable:
+                        it.current()->setPixmap(0, traffic_yellow_16x16_xpm);
+                        break;
+                    case Property::PStrong:
+                        it.current()->setPixmap(0, traffic_green_16x16_xpm);
+                        break;
+                    case Property::PUndefined:
+                        it.current()->setPixmap(0, traffic_gray_16x16_xpm);
+                        break;
+                    default:
+                        qDebug("Tree::showWeakPasswordMarkers out of range");
+                        break;
+                }
+                ++it;
             }
-            ++it;
+        }
+        else
+        {
+            QListViewItemIterator it(this);
+            while (it.current()) 
+            {
+                it.current()->setPixmap(0, 0);
+                ++it;
+            }
         }
     }
-    else
+    catch (const PasswordCheckException& e)
     {
-        QListViewItemIterator it(this);
-        while (it.current()) 
-        {
-            it.current()->setPixmap(0, 0);
-            ++it;
-        }
+        QMessageBox::warning(this, "QPaMaT", tr("<qt><nobr>Failed to calculate the password "
+            "strength. The error message</nobr> was:<p>%1<p>Check your configuration!</qt>")
+            .arg(e.what()), QMessageBox::Ok, QMessageBox::NoButton);
     }
 }
 
@@ -1020,8 +1050,8 @@ bool Tree::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& randomNumbe
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.21 $
-    \date $Date: 2003/12/29 15:12:27 $
+    \version $Revision: 1.22 $
+    \date $Date: 2003/12/29 20:07:23 $
 */
 
 /*!

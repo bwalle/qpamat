@@ -1,5 +1,5 @@
 /*
- * Id: $Id: property.h,v 1.9 2003/12/29 15:12:27 bwalle Exp $
+ * Id: $Id: property.h,v 1.10 2003/12/29 20:07:04 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -22,6 +22,7 @@
 #include <qdom.h>
 #include <qobject.h>
 
+#include "security/passwordchecker.h"
 #include "security/stringencryptor.h"
 
 class TreeEntry;
@@ -54,8 +55,8 @@ class Property : public QObject
         void setValue(const QString& value);
         QString getVisibleValue() const;
         
-        PasswordStrength getPasswordStrength();
-        void updatePasswordStrength();
+        PasswordStrength getPasswordStrength() throw (PasswordCheckException);
+        void updatePasswordStrength() throw (PasswordCheckException);
         double daysToCrack() const;
         
         Type getType() const;
