@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.22 2003/12/29 20:07:23 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.23 2003/12/30 19:45:31 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -40,6 +40,7 @@
 #include "images/traffic_red_16x16.xpm"
 #include "images/traffic_green_16x16.xpm"
 #include "images/traffic_gray_16x16.xpm"
+#include "images/smartcard_24x24.xpm"
 
 #include "qpamat.h"
 #include "tree.h"
@@ -69,8 +70,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.22 $
-    \date $Date: 2003/12/29 20:07:23 $
+    \version $Revision: 1.23 $
+    \date $Date: 2003/12/30 19:45:31 $
 */
 
 /*!
@@ -1002,7 +1003,7 @@ bool Tree::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& randomNumbe
         QString dlgText = write 
             ? tr("<b>Writing</b> to the smartcard...") 
             : tr("<b>Reading</b> from the smartcard..."); 
-        msg = new WaitDialog(QPixmap(), dlgText, "QPaMaT", this, "Wait dialog");
+        msg = new WaitDialog(QPixmap(smartcard_24x24_xpm), dlgText, "QPaMaT", this, "Wait dialog");
         msg->show();
         
         // loop while the thread has finished
@@ -1050,8 +1051,8 @@ bool Tree::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& randomNumbe
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.22 $
-    \date $Date: 2003/12/29 20:07:23 $
+    \version $Revision: 1.23 $
+    \date $Date: 2003/12/30 19:45:31 $
 */
 
 /*!
