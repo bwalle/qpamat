@@ -1,5 +1,5 @@
 /*
- * Id: $Id: settings.h,v 1.6 2003/12/04 20:31:04 bwalle Exp $
+ * Id: $Id: settings.h,v 1.7 2003/12/06 18:23:07 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,8 +24,8 @@
  * \brief Singleton for storing settings in registry (MS Windows) or ini-file (Unix).
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.6 $
- * \date $Date: 2003/12/04 20:31:04 $
+ * \version $Revision: 1.7 $
+ * \date $Date: 2003/12/06 18:23:07 $
  */
 class Settings
 {
@@ -56,10 +56,10 @@ class Settings
         static const QString DEFAULT_AUTOTEXT_URL;
         
         /*! default sans-serif font */
-        static const QString DEFAULT_SANSSERIF_FONT;
+        static const QString DEFAULT_NORMAL_FONT;
         
         /*! default serif font */
-        static const QString DEFAULT_SERIF_FONT;
+        static const QString DEFAULT_FOOTER_FONT;
         
         /*!
          * Destructor

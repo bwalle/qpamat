@@ -1,5 +1,5 @@
 /*
- * Id: $Id: settings.cpp,v 1.5 2003/12/04 20:31:01 bwalle Exp $
+ * Id: $Id: settings.cpp,v 1.6 2003/12/06 18:23:04 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -33,11 +33,11 @@ const QString Settings::DEFAULT_AUTOTEXT_USERNAME   = "Username";
 const QString Settings::DEFAULT_AUTOTEXT_PASSWORD   = "Password";
 const QString Settings::DEFAULT_AUTOTEXT_URL        = "URL";
 #ifdef Q_WS_WIN
-const QString Settings::DEFAULT_SANSSERIF_FONT      = "Arial";
-const QString Settings::DEFAULT_SERIF_FONT          = "Times New Roman";
+const QString Settings::DEFAULT_NORMAL_FONT         = "Times New Roman,10";
+const QString Settings::DEFAULT_FOOTER_FONT         = "Arial,9";
 #else
-const QString Settings::DEFAULT_SANSSERIF_FONT      = "Helvetica";
-const QString Settings::DEFAULT_SERIF_FONT          = "Times";
+const QString Settings::DEFAULT_NORMAL_FONT         = "Times,10";
+const QString Settings::DEFAULT_FOOTER_FONT         = "Helvetica,9";
 #endif
 
 // -------------------------------------------------------------------------------------------------
