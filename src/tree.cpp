@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.15 2003/12/15 21:19:36 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.16 2003/12/16 12:30:24 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -129,7 +129,14 @@ bool Tree::readFromXML(const QString& fileName, const QString& password) throw (
         return false;
     }
     
-    smartcard = !root.attribute("card-id").isNull();
+    if (root.attribute("card-id") && !smartcard)
+    {
+        QMessageBox::warning(this, "QPaMaT", tr("<qt><nobr>The passwords of the current data file"
+            " are stored</nobr> on a smartcard but you did not configure QPaMaT for reading "
+            "smartcards.<p>Change the settings and try again!</qt>"), QMessageBox::Ok,
+            QMessageBox::NoButton);
+        return false;
+    }
     
     try
     {
@@ -265,12 +272,12 @@ bool Tree::writeToXML(const QString& fileName, const QString& password, const QS
         {
             ByteVector vec = dynamic_cast<CollectEncryptor*>(enc)->getBytes();
             success = writeOrReadSmartcard(vec, true, id);
+            root.setAttribute("card-id", id);
         }
         else
         {
             success = true;
         }
-        root.setAttribute("card-id", id);
         
         if (!success && QMessageBox::question(this, "QPaMaT", tr("Writing to the smartcard was not"
             " successful.\nDo you want to try again?"), QMessageBox::Yes | QMessageBox::Default, 
