@@ -1,5 +1,5 @@
 /*
- * Id: $Id: memorycard.cpp,v 1.4 2003/12/10 21:47:01 bwalle Exp $
+ * Id: $Id: memorycard.cpp,v 1.5 2003/12/21 20:29:29 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -32,10 +32,18 @@
 int MemoryCard::m_lastNumber = 1;
 // -------------------------------------------------------------------------------------------------
 
+
+// -------------------------------------------------------------------------------------------------
+void MemoryCard::setCallback(progress_callback callback)
+// -------------------------------------------------------------------------------------------------
+{
+    m_progressCallback = callback;
+}
+
 // -------------------------------------------------------------------------------------------------
 MemoryCard::MemoryCard(QString library) throw (NoSuchLibraryException)
 // -------------------------------------------------------------------------------------------------
-        : m_library(library), m_initialized(false), m_waitTime(0)
+        : m_library(library), m_initialized(false), m_waitTime(0), m_progressCallback(0)
 {
     if (! m_library.load())
     {
@@ -91,7 +99,7 @@ void MemoryCard::init(int portNumber) throw (CardException)
 {
     if (m_initialized)
     {
-        qDebug("init() before close()");
+        qWarning("init() before close()");
     }
     
     char ret = m_CT_init_function(m_lastNumber, portNumber);
@@ -153,6 +161,8 @@ MemoryCard::CardType MemoryCard::getType() const
     byte response[100];
     ushort lenr = sizeof(response);
     
+    callCallback(0, 1);
+    
     char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(REQUEST_ICC), 
         REQUEST_ICC, &lenr, response);
     
@@ -160,6 +170,8 @@ MemoryCard::CardType MemoryCard::getType() const
     {
         throw CardException(CardException::ErrorCode(ret));
     }
+    
+    callCallback(1, 1);
     
     ushort sw1sw2 = (response[0] << 8) + response[1];
     
@@ -187,6 +199,8 @@ void MemoryCard::resetCard(int* capacity, ProtocolType* protocolType) const
     
     byte response[100];
     ushort lenr = sizeof(response);
+    
+    callCallback(0, 1);
     
     char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(RESET_CT), 
         RESET_CT, &lenr, response);
@@ -240,6 +254,8 @@ void MemoryCard::resetCard(int* capacity, ProtocolType* protocolType) const
         };
     }
     
+    callCallback(1, 1);
+    
     if (capacity != 0)
     {
         byte h2 = response[1]; // size
@@ -273,6 +289,8 @@ void MemoryCard::getStatusInformation(QString* manufacturer, QString* terminalTy
     byte response[100];
     ushort lenr = sizeof(response);
     
+    callCallback(0, 1);
+    
     char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(REQUEST_STATUS), 
         REQUEST_STATUS, &lenr, response);
     
@@ -280,6 +298,8 @@ void MemoryCard::getStatusInformation(QString* manufacturer, QString* terminalTy
     {
         throw CardException(CardException::ErrorCode(ret));
     }
+    
+    callCallback(1, 1);
     
     QString resp = QString::fromLatin1(reinterpret_cast<char*>(response), lenr);
     
@@ -322,6 +342,8 @@ bool MemoryCard::selectFile() const
     byte response[2];
     ushort lenr = sizeof(response);
     
+    callCallback(0, 1);
+    
     char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(SELECT_FILE), 
         SELECT_FILE, &lenr, response);
     
@@ -329,6 +351,8 @@ bool MemoryCard::selectFile() const
     {
         throw CardException(CardException::ErrorCode(ret));
     }
+    
+    callCallback(1, 1);
     
     ushort sw1sw2 = (response[0] << 8) + response[1];
     
@@ -354,8 +378,13 @@ ByteVector MemoryCard::read(ushort offset, ushort length)
     int stillToRead = length;
     const int max = 255;
     
+    int total = length / max + 1;
+    int stepNumber = 0;
+    
     while (stillToRead > 0)
     {
+        callCallback(stepNumber++, total);
+        
         int dataToRead = std::min(stillToRead, max);
         
         read_binary[2] = (offset + dataOffset) >> 8;
@@ -394,9 +423,10 @@ ByteVector MemoryCard::read(ushort offset, ushort length)
     vec.resize(readBytes);
     if (readBytes != length)
     {
-        qDebug("Could not read all requested data. Maybe problem?"); // TODO: remove this
         throw CardException(CardException::EndReached);
     }
+    
+    callCallback(total, total);
     
     return vec;
 }
@@ -421,9 +451,7 @@ void MemoryCard::write(ushort offset, const ByteVector& data)
         
     while (len > 0)
     {
-        emit progressed(stepNumber++, total);
-
-        qApp->processEvents();
+        callCallback(stepNumber++, total);
         
         int written_bytes = std::min(len, max);
         
@@ -461,8 +489,7 @@ void MemoryCard::write(ushort offset, const ByteVector& data)
         dataOffset += max;
     }
     
-    // finishing
-    emit progressed(total, total);
+    callCallback(total, total);
 }
 
 
@@ -475,5 +502,16 @@ void MemoryCard::checkInitialzed(const QString& functionName) const
     {
         throw NotInitializedException("The function " + functionName + " was called even though "
             "the class was not initalized.");
+    }
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void MemoryCard::callCallback(int step, int total) const
+// -------------------------------------------------------------------------------------------------
+{
+    if (m_progressCallback)
+    {
+        m_progressCallback(step, total);
     }
 }

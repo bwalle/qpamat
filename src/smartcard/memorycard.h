@@ -1,5 +1,5 @@
 /*
- * Id: $Id: memorycard.h,v 1.6 2003/12/10 21:46:58 bwalle Exp $
+ * Id: $Id: memorycard.h,v 1.7 2003/12/21 20:29:29 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -77,14 +77,20 @@ typedef char (*CT_close_ptr) (ushort ctn);
  * 
  * \ingroup smartcard
  * \author Bernhard Walle
- * \version $Revision: 1.6 $
- * \date $Date: 2003/12/10 21:46:58 $
+ * \version $Revision: 1.7 $
+ * \date $Date: 2003/12/21 20:29:29 $
  */
-class MemoryCard : public QObject
+class MemoryCard
 {
-    Q_OBJECT
-    
     public:
+        
+        /*!
+         * Callback function that is called in operations inside this class mainly to display
+         * a progress bar in an user interface. The first call is always 0/n, the last call n/n.
+         * \param step the step number
+         * \param total the total number
+         */
+        typedef void (*progress_callback)(int step, int total);
         
         /*!
          * The cards in slot 1 to slot 14, used for destination adresses. If the destination is
@@ -119,7 +125,7 @@ class MemoryCard : public QObject
         /*!
          * Creates a new instance of MemoryCard.
          * \param library path to the CT-API library
-         * @exception NoSuchLibraryException if the loading of the library failed
+         * \exception NoSuchLibraryException if the loading of the library failed
          */
         MemoryCard(QString library) throw (NoSuchLibraryException);
         
@@ -143,6 +149,13 @@ class MemoryCard : public QObject
         uchar getWaitTime() const;
         
         /*!
+         * Sets the callback function that is called. To reset, set a null pointer.
+         * \param callback a function pointer to a callback function or 0 if you want to reset
+         *        the callback
+         */
+        void setCallback(progress_callback callback);
+        
+        /*!
          * Initializes the MemoryCard object for reading from or writing to a smart card
          * reader. You \b must call this function before accessing any other operations.
          * \param portNumber the port number. According to CT-API the mapping between
@@ -151,28 +164,29 @@ class MemoryCard : public QObject
          *                   may not work. On Unix often 1 is mapped to COM1 (/dev/ttyS0), on 
          *                   Windows it is COM2. For USB or PS/2 there's no rule at all. Just
          *                   let the user test all possibilities. :-)
-         * @exception CardException if an exception occurred
+         * \exception CardException if an exception occurred
          */
         void init(int portNumber) throw (CardException);
         
         /*!
          * Closes the MemoryCard communtion. This method must be called after the communction.
-         * @exception CardException if an exception occurred
-         * @exception NotInitializedException if the object was not initialized
+         * \exception CardException if an exception occurred
+         * \exception NotInitializedException if the object was not initialized
          */
         void close() throw (CardException, NotInitializedException);
         
         /*!
          * Returns the type of the smartcard in the reader. Even though the name of the class is
          * "MemoryCard", this method can also return another type. It was programmed for checking
-         * the type before doing anything other.
+         * the type before doing anything other. This function calls the callback function twice.
          */
         CardType getType() const throw (CardException, NotInitializedException);
         
         /*!
          * Reads some status information from the chipcard terminal. This information is not
-         * card dependand but depends on the terminal.
-         * The information is returned by setting the 
+         * card dependand but depends on the terminal. The information is returned by setting 
+         * the paramters to a sensible value.
+         * This function calls the callback function twice.
          * \param manufacturer 5 characters, the first two are the country code and the following
          *                     3 are the manufacturer acronym
          * \param terminalType the terminal type which is manufacturer dependant
@@ -185,63 +199,61 @@ class MemoryCard : public QObject
         
         /*!
          * Resets the card in slot 1 and returns some information that is returned by the CT-API
-         * as response to this action (so-called ATR).
+         * as response to this action (so-called ATR). This function calls the callback function
+         * twice.
          * \param capacity a pointer to a integer variable where the capacity is stored. If it's
          *                 0, then no value is stored
          * \param protocolType a pointer to a ProtocolType enumeration value where the protocol
          *                     type is stored. If it's 0, then no value is stored
-         * @exception CardException if an exception occurred while resetting the card
-         * @exception NotInitializedException if the object was not initialized*
+         * \exception CardException if an exception occurred while resetting the card
+         * \exception NotInitializedException if the object was not initialized*
          */
         void resetCard(int* capacity = 0, ProtocolType* protocolType = 0) const
             throw (NotInitializedException, CardException);;
         
         /*!
          * This selects a file on the chipcard. It is implemented in a way that selects the whole
-         * data area on the chipcard. The return value of this function indicates the success.
+         * data area on the chipcard. The return value of this function indicates the success. 
+         * This function calls the callback function twice.
          * \return \c true if the command was successfull, \c false otherwise.
-         * @exception CardException if an exception occurred while selecting the file
-         * @exception NotInitializedException if the object was not initialized
+         * \exception CardException if an exception occurred while selecting the file
+         * \exception NotInitializedException if the object was not initialized
          */
         bool selectFile() const throw (NotInitializedException, CardException);
         
         /*!
-         * Reads the specified number of bytes from the chipcard.
+         * Reads the specified number of bytes from the chipcard. This function calls the callback
+         * function as often as needed, at least twice.
          * \param offset the offset
          * \param length the number of bytes that should be read
          * \return the read bytes
-         * @exception CardException if an exception occurred while reading
-         * @exception NotInitializedException if the object was not initialized
+         * \exception CardException if an exception occurred while reading
+         * \exception NotInitializedException if the object was not initialized
          */
         ByteVector read(ushort offset, ushort length)
             throw (CardException, NotInitializedException);
         
         /*!
-         * Writes the specified data to the smartcard. The data must fit on the card.
+         * Writes the specified data to the smartcard. The data must fit on the card. This function
+         * calls the callback function as often as needed, at least twice.
          * \param offset the offset where the data should be written
          * \param data the data that should be written
-         * @exception CardException if an exception occurred while writing
-         * @exception NotInitializedException if the object was not initialized
+         * \exception CardException if an exception occurred while writing
+         * \exception NotInitializedException if the object was not initialized
          */
         void write(ushort offset, const ByteVector& data) 
             throw (CardException, NotInitializedException);
     
-    signals:
-        
-        /*!
-         * This signal is emited as progress indicator while wrinting to the smartcard.
-         * \param progress the number of the step, i.e. 1 for the first progress emission
-         * \param total the prognosticated number of steps
-         */
-        void progressed(int progress, int total);
-        
     protected:
         
         /*!
          * Checks if the class was initilized. If not a NotInitializedException is thrown.
-         * @exception NotInitializedException if the class was not initialized
+         * \exception NotInitializedException if the class was not initialized
          */
         void checkInitialzed(const QString& = QString::null) const throw (NotInitializedException);
+        
+    private:
+        void callCallback(int step, int total) const;
         
     private:
         QLibrary m_library;
@@ -253,6 +265,7 @@ class MemoryCard : public QObject
         bool m_initialized;
         uchar m_waitTime;
         static int m_lastNumber;
+        progress_callback m_progressCallback;
 };
 
 #endif // MEMORYCARD_H
