@@ -1,5 +1,5 @@
 /*
- * Id: $Id: randompassword.h,v 1.1 2003/12/16 22:51:51 bwalle Exp $
+ * Id: $Id: randompassword.h,v 1.2 2003/12/17 21:57:28 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -21,6 +21,8 @@
 #include <qobject.h>
 #include <qstring.h>
 
+class Qpamat;
+
 /**
  * \brief This class handles RandomPasswords in the QPaMaT application.
  *
@@ -29,8 +31,8 @@
  *
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.1 $
- * \date $Date: 2003/12/16 22:51:51 $
+ * \version $Revision: 1.2 $
+ * \date $Date: 2003/12/17 21:57:28 $
  */
 class RandomPassword : public QObject
 {
@@ -43,7 +45,7 @@ class RandomPassword : public QObject
          * \param parent the parent object
          * \param name the name of the object
          */
-        RandomPassword(QWidget* parent, const char* name = 0);
+        RandomPassword(Qpamat* parent, const char* name = 0);
     
     public slots:
         
@@ -71,6 +73,7 @@ class RandomPassword : public QObject
         
     private:
         bool m_insertEnabled;
+        Qpamat* m_parent;
 };
 
 #endif // RANDOMPASSWORD_H

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: randompassword.cpp,v 1.1 2003/12/16 22:51:51 bwalle Exp $
+ * Id: $Id: randompassword.cpp,v 1.2 2003/12/17 21:57:28 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -17,16 +17,22 @@
  */
 #include <qobject.h>
 #include <qstring.h>
+#include <qmessagebox.h>
+#include <qapplication.h>
+#include <qcursor.h>
 
+#include "qpamat.h"
+#include "settings.h"
+#include "security/passwordcheckerfactory.h"
 #include "dialogs/randompassworddialog.h"
 #include "randompassword.h"
 #include "security/passwordgeneratorfactory.h"
 
 
 // -------------------------------------------------------------------------------------------------
-RandomPassword::RandomPassword(QWidget* parent, const char* name)
+RandomPassword::RandomPassword(Qpamat* parent, const char* name)
 // -------------------------------------------------------------------------------------------------
-            : QObject(parent, name), m_insertEnabled(false)
+            : QObject(parent, name), m_insertEnabled(false), m_parent(parent)
 {
 }
 
@@ -43,13 +49,86 @@ void RandomPassword::setInsertEnabled(bool enabled)
 void RandomPassword::requestPassword()
 // -------------------------------------------------------------------------------------------------
 {
+    QSettings& set = Settings::getInstance().getSettings();
     RandomPasswordDialog* dlg = new RandomPasswordDialog(
-        dynamic_cast<QWidget*>(parent()), m_insertEnabled, "RandomPwDialog");
+        m_parent, m_insertEnabled, "RandomPwDialog");
     
-    PasswordGenerator* passwordgen = PasswordGeneratorFactory::getGenerator("RANDOM");
-    dlg->setPassword(passwordgen->getPassword(8));
-    connect(dlg, SIGNAL(insertPassword(const QString&)), SIGNAL(insertPassword(const QString&)));
-    dlg->exec();
+    PasswordChecker* checker = 0;
+    PasswordGenerator* passwordgen = 0;
+    
+    try
+    {
+        passwordgen = PasswordGeneratorFactory::getGenerator(
+            set.readEntry( "Security/PasswordGenerator", 
+                PasswordGeneratorFactory::DEFAULT_GENERATOR_STRING ),
+            set.readEntry( "Security/PasswordGeneratorAdditional" ) 
+        );
+        checker = PasswordCheckerFactory::getChecker(
+            set.readEntry( "Security/PasswordChecker", 
+                PasswordCheckerFactory::DEFAULT_CHECKER_STRING),
+            set.readEntry( "Security/PasswordCheckerAdditional" )
+        );
+    }
+    catch (const std::exception& exc)
+    {
+        QMessageBox::warning(m_parent, "QPaMaT",
+                tr("<qt><nobr>Failed to create a password checker:</nobr><br>%1</qt>")
+                .arg(exc.what()), QMessageBox::Ok, QMessageBox::NoButton);
+        delete passwordgen;
+        delete checker;
+        delete dlg;
+        return;
+    }
+    bool slow = checker->isSlow() || passwordgen->isSlow();
+    
+    if (slow)
+    {
+        QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
+    }
+    
+    bool ok = false;
+    QString password;
+    for (int i = 0; !ok && i < 200; ++i)
+    {
+        try
+        {
+            password = passwordgen->getPassword( 
+                set.readNumEntry("Security/GeneratedPasswordLength", 
+                PasswordGeneratorFactory::DEFAULT_LENGTH )
+            );
+            ok = checker->isPasswordOk(password);
+        }
+        catch (const std::exception& exc)
+        {
+            if (slow)
+            {
+                QApplication::restoreOverrideCursor();
+            }
+            QMessageBox::warning(m_parent, "QPaMaT",
+                tr("<qt><nobr>An error occurred while generating the password:</nobr><br>%1</qt>")
+                .arg(exc.what()), QMessageBox::Ok, QMessageBox::NoButton);
+            break;
+        }
+    }
+    
+    if (slow)
+    {
+        QApplication::restoreOverrideCursor();
+    }
+    delete checker;
+    
+    if (ok)
+    {
+        dlg->setPassword(password);
+        connect(dlg, SIGNAL(insertPassword(const QString&)), SIGNAL(insertPassword(const QString&)));
+        dlg->exec();
+    }
+    else
+    {
+        QMessageBox::information(m_parent, "QPaMaT", tr("<qt><nobr>Failed to create a random "
+            "password with the current</nobr> generator and the current password checker. "
+            "Adjust the settings!"), QMessageBox::Ok, QMessageBox::NoButton);
+    }
     delete dlg;
 }
 
