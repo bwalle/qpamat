@@ -1,5 +1,5 @@
 /*
- * Id: $Id: settings.cpp,v 1.15 2005/02/12 10:50:19 bwalle Exp $
+ * Id: $Id: settings.cpp,v 1.16 2005/02/15 02:03:11 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -32,8 +32,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.15 $
-    \date $Date: 2005/02/12 10:50:19 $
+    \version $Revision: 1.16 $
+    \date $Date: 2005/02/15 02:03:11 $
 */
 
 /*!
@@ -83,6 +83,7 @@ Settings::Settings()
     DEF_STRING("Presentation/FooterFont",        "Helvetica,9");
 #endif
     DEF_BOOLEA("Presentation/HideRandomPass",    false);
+    DEF_BOOLEA("Presentation/SystemTrayIcon",    false);
     
     
 #undef DEF_STRING
