@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.h,v 1.7 2003/12/04 14:51:51 bwalle Exp $
+ * Id: $Id: qpamat.h,v 1.8 2003/12/04 20:30:48 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -33,8 +33,8 @@
  *
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.7 $
- * \date $Date: 2003/12/04 14:51:51 $
+ * \version $Revision: 1.8 $
+ * \date $Date: 2003/12/04 20:30:48 $
  */
 class Qpamat : public QMainWindow
 {
@@ -84,6 +84,11 @@ class Qpamat : public QMainWindow
          */
         void search();
         
+        /*!
+         * Prints the current stuff.
+         */
+        void print();
+        
     
     protected:
         
@@ -125,6 +130,7 @@ class Qpamat : public QMainWindow
             QAction* saveAction;
             QAction* viewTreeAction;
             QAction* quitAction;
+            QAction* printAction;
             QAction* aboutAction;
             QAction* aboutQtAction;
             QAction* whatsThisAction;

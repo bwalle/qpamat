@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.8 2003/12/04 14:51:51 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.9 2003/12/04 20:30:45 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -35,6 +35,14 @@
 #include <qlabel.h>
 #include <qsettings.h>
 #include <qscrollview.h>
+#include <qprinter.h>
+#include <qpainter.h>
+#include <qfont.h>
+#include <qcursor.h>
+#include <qeventloop.h>
+#include <qpaintdevicemetrics.h>
+#include <qsimplerichtext.h> 
+#include <qdatetime.h>
 
 #include "../images/new_16x16.xpm"
 #include "../images/new_22x22.xpm"
@@ -48,6 +56,8 @@
 #include "../images/configure_22x22.xpm"
 #include "../images/find_16x16.xpm"
 #include "../images/find_22x22.xpm"
+#include "../images/print_16x16.xpm"
+#include "../images/print_22x22.xpm"
 
 #include "dialogs/passworddialog.h"
 #include "dialogs/newpassworddialog.h"
@@ -93,6 +103,7 @@ Qpamat::Qpamat()
     
     QObject::connect(m_tree, SIGNAL(selectionChanged(QListViewItem*)),
         m_rightPanel, SLOT(setItem(QListViewItem*)));
+    connect(m_tree, SIGNAL(selectionCleared()), m_rightPanel, SLOT(clear()));
     
     // display statusbar
     statusBar();
@@ -149,6 +160,7 @@ void Qpamat::initToolbar()
     
     m_actions.newAction->addTo(applicationToolbar);
     m_actions.saveAction->addTo(applicationToolbar);
+    m_actions.printAction->addTo(applicationToolbar);
     m_actions.settingsAction->addTo(applicationToolbar);
     
     // ----- Search --------------------------------------------------------------------------------
@@ -180,6 +192,7 @@ void Qpamat::initMenubar()
      m_actions.loginAction->addTo(fileMenu);
      m_actions.logoutAction->addTo(fileMenu);
      m_actions.saveAction->addTo(fileMenu);
+     m_actions.printAction->addTo(fileMenu);
      fileMenu->insertSeparator();
      m_actions.quitAction->addTo(fileMenu);
      
@@ -286,6 +299,7 @@ void Qpamat::setLogin(bool loggedIn)
     m_actions.logoutAction->setEnabled(loggedIn);
     m_actions.saveAction->setEnabled(loggedIn);
     m_actions.changePasswordAction->setEnabled(loggedIn);
+    m_actions.printAction->setEnabled(loggedIn);
     m_searchToolbar->setEnabled(loggedIn);
     
     if (!loggedIn)
@@ -384,6 +398,74 @@ void Qpamat::search()
     }
 }
 
+// -------------------------------------------------------------------------------------------------
+void Qpamat::print()
+// -------------------------------------------------------------------------------------------------
+{
+    QSettings& set = Settings::getInstance().getSettings(); 
+    QPrinter printer( QPrinter::HighResolution );
+    printer.setFullPage( TRUE );
+    if ( printer.setup( this ) ) 
+    {
+        QPainter p;
+        if ( !p.begin( &printer ) )
+        {
+            return;
+        }
+        
+        QString ssfName = set.readEntry("Printing/SansSerifFont", Settings::DEFAULT_SANSSERIF_FONT);
+        QString sfName  = set.readEntry("Printing/SerifFont", Settings::DEFAULT_SERIF_FONT);
+        QFont serifFont(sfName, 10, QFont::Normal);
+        QFont sansSerifFont(ssfName, 9, QFont::Normal);
+        p.setFont(sansSerifFont);
+        
+        qApp->setOverrideCursor( QCursor( Qt::WaitCursor ) );
+        qApp->eventLoop()->processEvents( QEventLoop::ExcludeUserInput );
+        
+        QPaintDeviceMetrics metrics(p.device());
+        int dpiy = metrics.logicalDpiY();
+#define CON_MM(x)( int( ( (x)/25.4)*dpiy ) )
+        int margin = CON_MM(20);
+        QRect body( margin, margin, metrics.width() - 2 * margin, 
+            metrics.height() - 2 * margin - CON_MM(8) );
+        QSimpleRichText richText(m_tree->toRichTextForPrint(), serifFont, QString::null, 0, 
+                QMimeSourceFactory::defaultFactory(), body.height(), Qt::black, false );
+        richText.setWidth( &p, body.width() );
+        QRect view( body );
+        QString programString = tr("QPaMaT - Password managing tool for Unix, Windows and MacOS X");
+        QString dateString = QDate::currentDate().toString(Qt::ISODate) + " / " +
+            QTime::currentTime().toString("hh:mm");
+        
+        for (int page = 1; ; ++page)
+        {
+            qApp->eventLoop()->processEvents( QEventLoop::ExcludeUserInput );
+            QString pageS = tr("page") + " " + QString::number(page);
+            
+            richText.draw( &p, body.left(), body.top(), view, colorGroup() );
+            view.moveBy(0, body.height() );
+            p.translate(0 , -body.height() );
+            
+            int x_pos = int(( view.left() + p.fontMetrics().width(programString)
+                + view.right() - p.fontMetrics().width( pageS ) ) / 2.0
+                - p.fontMetrics().width( dateString ) / 2.0 );
+            int y_pos = view.bottom() + p.fontMetrics().ascent() + CON_MM(3);
+            p.drawLine(view.left(), view.bottom()+CON_MM(3), view.right(), view.bottom()+CON_MM(3));
+            p.drawText( view.left(), y_pos, programString);
+            p.drawText( x_pos, y_pos, dateString );
+            p.drawText( view.right() - p.fontMetrics().width(pageS), y_pos, pageS);
+            if ( view.top() >= richText.height() )
+            {
+                break;
+            }
+            printer.newPage();
+        }
+#undef CONVERT_MM
+        
+        qApp->eventLoop()->processEvents( QEventLoop::ExcludeUserInput );
+        qApp->restoreOverrideCursor();
+    }
+}
+
 
 // -------------------------------------------------------------------------------------------------
 void Qpamat::initActions()
@@ -403,6 +485,10 @@ void Qpamat::initActions()
     
     m_actions.logoutAction = new QAction(tr("&Logout"), QKeySequence(CTRL|Key_L), this);
     connect(m_actions.logoutAction, SIGNAL(activated()), this, SLOT(logout()));
+    
+    m_actions.printAction = new QAction(QIconSet(print_16x16_xpm, print_22x22_xpm),
+        tr("&Print..."), QKeySequence(CTRL|Key_P), this);
+    connect(m_actions.printAction, SIGNAL(activated()), this, SLOT(print()));
     
     m_actions.saveAction = new QAction(QIconSet(save_16x16_xpm, save_22x22_xpm), tr("&Save"), 
         QKeySequence(CTRL|Key_S), this);
