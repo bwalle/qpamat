@@ -1,5 +1,5 @@
 /*
- * Id: $Id: passworddialog.h,v 1.4 2003/12/28 22:08:15 bwalle Exp $
+ * Id: $Id: passworddialog.h,v 1.5 2003/12/31 16:33:33 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -21,6 +21,9 @@
 #include <qdialog.h>
 #include <qlineedit.h>
 #include <qwidget.h>
+#include <qevent.h>
+
+#include "widgets/focuslineedit.h"
 
 class PasswordDialog : public QDialog 
 {
@@ -30,8 +33,12 @@ class PasswordDialog : public QDialog
         PasswordDialog(QWidget* parent, const char* name = 0);
         QString getPassword() const;
         
+    private slots:
+        void grab();
+        void release();
+        
     private:
-        QLineEdit* m_passwordEdit;
+        FocusLineEdit* m_passwordEdit;
 };
 
 #endif // PASSWORDDIALOG_H

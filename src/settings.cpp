@@ -1,5 +1,5 @@
 /*
- * Id: $Id: settings.cpp,v 1.9 2003/12/29 15:12:27 bwalle Exp $
+ * Id: $Id: settings.cpp,v 1.10 2003/12/31 16:33:38 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -31,8 +31,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.9 $
-    \date $Date: 2003/12/29 15:12:27 $
+    \version $Revision: 1.10 $
+    \date $Date: 2003/12/31 16:33:38 $
 */
 
 /*!
@@ -66,6 +66,7 @@ Settings::Settings()
     DEF_STRING("Security/DictionaryFile",        "");
     DEF_STRING("Security/PasswordGenerator",     PasswordGeneratorFactory::DEFAULT_GENERATOR_STRING);
     DEF_STRING("Security/PasswordGenAdditional", "");
+    DEF_BOOLEA("Password/NoGrabbing",            false);
 #ifdef Q_WS_WIN                                       
     DEF_STRING("Presentation/NormalFont",        "Times New Roman,10");
     DEF_STRING("Presentation/FooterFont",        "Arial,9");

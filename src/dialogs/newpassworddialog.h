@@ -1,5 +1,5 @@
 /*
- * Id: $Id: newpassworddialog.h,v 1.5 2003/12/28 22:08:15 bwalle Exp $
+ * Id: $Id: newpassworddialog.h,v 1.6 2003/12/31 16:33:33 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -19,8 +19,9 @@
 #define NEWPASSWORDDIALOG_H
 
 #include <qdialog.h>
-#include <qlineedit.h>
 #include <qwidget.h>
+
+#include "widgets/focuslineedit.h"
 
 class NewPasswordDialog : public QDialog 
 {
@@ -35,6 +36,10 @@ class NewPasswordDialog : public QDialog
         
     private slots:
         void checkOkEnabled() const;
+        void grabOldPassword();
+        void grabFirstPassword();
+        void grabSecondPassword();
+        void release();
         
     private:
         void createAndLayout();
@@ -43,9 +48,9 @@ class NewPasswordDialog : public QDialog
         QString         m_oldPassword;
         QPushButton*    m_okButton;
         QPushButton*    m_cancelButton;
-        QLineEdit*      m_firstPasswordEdit;
-        QLineEdit*      m_secondPasswordEdit;
-        QLineEdit*      m_oldPasswordEdit;
+        FocusLineEdit*  m_firstPasswordEdit;
+        FocusLineEdit*  m_secondPasswordEdit;
+        FocusLineEdit*  m_oldPasswordEdit;
 };
 
 #endif // NEWPASSWORDDIALOG_H

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.cpp,v 1.16 2003/12/30 22:58:50 bwalle Exp $
+ * Id: $Id: configurationdialog.cpp,v 1.17 2003/12/31 16:33:33 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -79,8 +79,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.16 $
-    \date $Date: 2003/12/30 22:58:50 $
+    \version $Revision: 1.17 $
+    \date $Date: 2003/12/31 16:33:33 $
  */
 
 /*!
@@ -205,8 +205,8 @@ void ConfigurationDialog::aboutToShowHandler(QWidget* w)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.16 $
-    \date $Date: 2003/12/30 22:58:50 $
+    \version $Revision: 1.17 $
+    \date $Date: 2003/12/31 16:33:33 $
 */
 
 /*!
@@ -247,8 +247,8 @@ void ConfigurationDialog::aboutToShowHandler(QWidget* w)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.16 $
-    \date $Date: 2003/12/30 22:58:50 $
+    \version $Revision: 1.17 $
+    \date $Date: 2003/12/31 16:33:33 $
 */
 
 
@@ -368,8 +368,8 @@ void ConfDlgGeneralTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.16 $
-    \date $Date: 2003/12/30 22:58:50 $
+    \version $Revision: 1.17 $
+    \date $Date: 2003/12/31 16:33:33 $
 */
 
 
@@ -624,8 +624,8 @@ void ConfDlgPasswordTab::sortDictionary()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.16 $
-    \date $Date: 2003/12/30 22:58:50 $
+    \version $Revision: 1.17 $
+    \date $Date: 2003/12/31 16:33:33 $
 */
 
 
@@ -650,7 +650,7 @@ void ConfDlgSecurityTab::createAndLayout()
     QGroupBox* encryptionGroup = new QGroupBox(1, Vertical, tr("Encryption"), this);
     
     // some settings
-    encryptionGroup->setInsideSpacing(12);
+    encryptionGroup->setInsideSpacing(6);
     encryptionGroup->setFlat(true);
     
     // algorithm stuff
@@ -709,8 +709,8 @@ void ConfDlgSecurityTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.16 $
-    \date $Date: 2003/12/30 22:58:50 $
+    \version $Revision: 1.17 $
+    \date $Date: 2003/12/31 16:33:33 $
 */
 
 
@@ -719,7 +719,7 @@ void ConfDlgSecurityTab::applySettings()
     \param parent the parent widget
 */
 ConfDlgPresentationTab::ConfDlgPresentationTab(QWidget* parent)
-    : ConfDlgTab(parent)
+    : ConfDlgTab(parent), m_nograbCB(0)
 {
     createAndLayout();
 }
@@ -732,7 +732,7 @@ void ConfDlgPresentationTab::createAndLayout()
 {
     // create layouts
     QVBoxLayout* mainLayout = new QVBoxLayout(this, 0, 6);
-    QGroupBox* passwordGroup = new QGroupBox(1, Vertical, tr("Passwords"), this);
+    QGroupBox* passwordGroup = new QGroupBox(2, Vertical, tr("Passwords"), this);
     QGroupBox* fontGroup = new QGroupBox(4, Vertical, tr("Printing Fonts"), this);
     
     
@@ -749,6 +749,8 @@ void ConfDlgPresentationTab::createAndLayout()
     
     m_hidePasswordCB = new QCheckBox(tr("Hide passwords in Random Password Dialog"), 
         passwordGroup, "HidePasswords");
+    m_nograbCB = new QCheckBox(tr("Don't &grab keyboard focus in the password dialog"),
+        passwordGroup, "Nograb");
     
     // buddys
     normalLabel->setBuddy(m_normalFontEdit);
@@ -773,6 +775,7 @@ void ConfDlgPresentationTab::fillSettings()
     font.fromString(qpamat->set().readEntry( "Presentation/FooterFont"));
     m_footerFontEdit->setFont(font);
     m_hidePasswordCB->setChecked(qpamat->set().readBoolEntry("Presentation/HideRandomPass"));
+    m_nograbCB->setChecked(qpamat->set().readBoolEntry("Password/NoGrabbing"));
 }
 
 
@@ -782,6 +785,7 @@ void ConfDlgPresentationTab::fillSettings()
 void ConfDlgPresentationTab::applySettings()
 {
     qpamat->set().writeEntry("Presentation/HideRandomPass", m_hidePasswordCB->isChecked());
+    qpamat->set().writeEntry("Password/NoGrabbing", m_nograbCB->isChecked());
     qpamat->set().writeEntry("Presentation/NormalFont", m_normalFontEdit->getFont().toString());
     qpamat->set().writeEntry("Presentation/FooterFont", m_footerFontEdit->getFont().toString());
 }
@@ -805,8 +809,8 @@ void ConfDlgPresentationTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.16 $
-    \date $Date: 2003/12/30 22:58:50 $
+    \version $Revision: 1.17 $
+    \date $Date: 2003/12/31 16:33:33 $
 */
 
 /*!

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialogprivate.h,v 1.4 2003/12/30 22:58:50 bwalle Exp $
+ * Id: $Id: configurationdialogprivate.h,v 1.5 2003/12/31 16:33:33 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -192,6 +192,7 @@ class ConfDlgPresentationTab : public ConfDlgTab
         FontChooseBox*  m_normalFontEdit;
         FontChooseBox*  m_footerFontEdit;
         QCheckBox*      m_hidePasswordCB;
+        QCheckBox*      m_nograbCB;
 };
 
 

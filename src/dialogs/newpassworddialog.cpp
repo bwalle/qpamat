@@ -1,5 +1,5 @@
 /*
- * Id: $Id: newpassworddialog.cpp,v 1.8 2003/12/29 14:06:31 bwalle Exp $
+ * Id: $Id: newpassworddialog.cpp,v 1.9 2003/12/31 16:33:33 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -44,8 +44,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.8 $
-    \date $Date: 2003/12/29 14:06:31 $
+    \version $Revision: 1.9 $
+    \date $Date: 2003/12/31 16:33:33 $
 */
 
 
@@ -73,6 +73,20 @@ NewPasswordDialog::NewPasswordDialog(QWidget* parent, const QString& oldPassword
     connect(m_cancelButton, SIGNAL(clicked()), SLOT(reject()));
     connect(m_firstPasswordEdit, SIGNAL(textChanged(const QString&)), SLOT(checkOkEnabled()));
     connect(m_secondPasswordEdit, SIGNAL(textChanged(const QString&)), SLOT(checkOkEnabled()));
+    
+    if (!qpamat->set().readBoolEntry("Password/NoGrabbing"))
+    {
+        if (m_oldPassword)
+        {
+            connect(m_oldPasswordEdit, SIGNAL(gotFocus()), SLOT(grabOldPassword()));
+            connect(m_oldPasswordEdit, SIGNAL(lostFocus()), SLOT(release()));
+        }
+        
+        connect(m_firstPasswordEdit, SIGNAL(gotFocus()), SLOT(grabFirstPassword()));
+        connect(m_firstPasswordEdit, SIGNAL(lostFocus()), SLOT(release()));
+        connect(m_secondPasswordEdit, SIGNAL(gotFocus()), SLOT(grabSecondPassword()));
+        connect(m_secondPasswordEdit, SIGNAL(lostFocus()), SLOT(release()));
+    }
 }
 
 /*!
@@ -83,16 +97,16 @@ void NewPasswordDialog::createAndLayout()
     // text fields
     if (m_oldPassword)
     {
-        m_oldPasswordEdit = new QLineEdit(this);
+        m_oldPasswordEdit = new FocusLineEdit(this);
         m_oldPasswordEdit->setEchoMode(QLineEdit::Password);
         m_oldPasswordEdit->setMinimumWidth(250);
     }
     
-    m_firstPasswordEdit = new QLineEdit(this);
+    m_firstPasswordEdit = new FocusLineEdit(this);
     m_firstPasswordEdit->setEchoMode(QLineEdit::Password);
     m_firstPasswordEdit->setMinimumWidth(250);
     
-    m_secondPasswordEdit = new QLineEdit(this);
+    m_secondPasswordEdit = new FocusLineEdit(this);
     m_secondPasswordEdit->setEchoMode(QLineEdit::Password);
     m_secondPasswordEdit->setMinimumWidth(250);
     
@@ -212,6 +226,49 @@ void NewPasswordDialog::accept()
     QDialog::accept();
 }
 
+/*!
+    Grabs the old password edit. Should be connected to the gotFocus() signal of the password
+    lineedit widget.
+*/
+void NewPasswordDialog::grabOldPassword()
+{
+    m_oldPasswordEdit->grabKeyboard();
+}
+
+
+/*!
+    Grabs the first password edit. Should be connected to the gotFocus() signal of the password
+    lineedit widget.
+*/
+void NewPasswordDialog::grabFirstPassword()
+{
+    m_firstPasswordEdit->grabKeyboard();
+}
+
+
+/*!
+    Grabs the second password edit. Should be connected to the gotFocus() signal of the password
+    lineedit widget.
+*/
+void NewPasswordDialog::grabSecondPassword()
+{
+    m_secondPasswordEdit->grabKeyboard();
+}
+
+
+/*!
+    Releases the password edit. Should be connected to the lostFocus() signal of the password
+    lineedit widget
+*/
+void NewPasswordDialog::release()
+{
+    QWidget* widget = keyboardGrabber();
+    if (widget)
+    {
+        widget->releaseKeyboard();
+    }
+}
+
 
 /*!
     Returns the (new) password the user has entered.
@@ -256,8 +313,8 @@ void NewPasswordDialog::checkOkEnabled() const
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.8 $
-    \date $Date: 2003/12/29 14:06:31 $
+    \version $Revision: 1.9 $
+    \date $Date: 2003/12/31 16:33:33 $
 */
 
 /*!

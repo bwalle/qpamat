@@ -1,5 +1,5 @@
 /*
- * Id: $Id: passworddialog.cpp,v 1.4 2003/12/28 22:08:15 bwalle Exp $
+ * Id: $Id: passworddialog.cpp,v 1.5 2003/12/31 16:33:33 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -23,6 +23,7 @@
 #include <qpushbutton.h>
 
 #include "passworddialog.h"
+#include "qpamat.h"
 
 /*!
     \class PasswordDialog
@@ -32,10 +33,13 @@
     This dialog is just used to enter a password. It's the dialog that is shown on startup and
     lets the user type-in the password. No checking is done here.
     
+    It grabs the keyboard unless the user turned it off with the global setting 
+    <tt>Password/NoGrabbing</tt>.
+    
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.4 $
-    \date $Date: 2003/12/28 22:08:15 $
+    \version $Revision: 1.5 $
+    \date $Date: 2003/12/31 16:33:33 $
 */
 
 /*!
@@ -51,7 +55,7 @@ PasswordDialog::PasswordDialog(QWidget* parent, const char* name)
     // create elements
     QLabel* label = new QLabel(tr("Enter the passprase:"), this);
     
-    m_passwordEdit = new QLineEdit(this);
+    m_passwordEdit = new FocusLineEdit(this);
     m_passwordEdit->setEchoMode(QLineEdit::Password);
     m_passwordEdit->setMinimumWidth(250);
     
@@ -78,6 +82,35 @@ PasswordDialog::PasswordDialog(QWidget* parent, const char* name)
     // communication
     connect(okButton, SIGNAL(clicked()), SLOT(accept()));
     connect(cancelButton, SIGNAL(clicked()), SLOT(reject()));
+    
+    if (!qpamat->set().readBoolEntry("Password/NoGrabbing"))
+    {
+        connect(m_passwordEdit, SIGNAL(gotFocus()), SLOT(grab()));
+        connect(m_passwordEdit, SIGNAL(lostFocus()), SLOT(release()));
+    }
+}
+
+
+/*!
+    Grabs the password edit. Should be connected to the gotFocus() signal of the password
+    lineedit widget.
+*/
+void PasswordDialog::grab()
+{
+    m_passwordEdit->grabKeyboard();
+}
+
+
+/*!
+    Releases the password edit. Should be connected to the lostFocus() signal of the password
+    lineedit widget.
+*/
+void PasswordDialog::release()
+{
+    if (QWidget* widget = keyboardGrabber())
+    {
+        widget->releaseKeyboard();
+    }
 }
 
 
