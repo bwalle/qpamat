@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.h,v 1.18 2004/01/11 23:20:36 bwalle Exp $
+ * Id: $Id: qpamat.h,v 1.19 2004/02/07 00:11:14 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -56,6 +56,8 @@ class Qpamat : public QMainWindow
         void clearClipboard();
         void setModified(bool modified = true);
         void passwordStrengthHandler(bool enabled);
+        void exportData();
+        bool exportOrSave();
         
     signals:
         void insertPassword(const QString& password);
@@ -82,6 +84,7 @@ class Qpamat : public QMainWindow
             QAction* loginAction;
             QAction* logoutAction;
             QAction* saveAction;
+            QAction* exportAction;
             QAction* viewTreeAction;
             QAction* quitAction;
             QAction* printAction;

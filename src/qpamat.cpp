@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.35 2004/01/22 12:12:43 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.36 2004/02/07 00:11:14 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -38,6 +38,7 @@
 #include <qpaintdevicemetrics.h>
 #include <qcursor.h>
 #include <qerrormessage.h>
+#include <qfiledialog.h>
 #include <qsimplerichtext.h> 
 
 #include "images/new_16x16.xpm"
@@ -90,8 +91,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.35 $
-    \date $Date: 2004/01/22 12:12:43 $
+    \version $Revision: 1.36 $
+    \date $Date: 2004/02/07 00:11:14 $
  */
 
 /*! 
@@ -286,6 +287,7 @@ void Qpamat::initMenubar()
      m_actions.loginAction->addTo(fileMenu);
      m_actions.logoutAction->addTo(fileMenu);
      m_actions.saveAction->addTo(fileMenu);
+     m_actions.exportAction->addTo(fileMenu);
      m_actions.printAction->addTo(fileMenu);
      fileMenu->insertSeparator();
      m_actions.quitAction->addTo(fileMenu);
@@ -453,6 +455,7 @@ void Qpamat::setLogin(bool loggedIn)
     m_actions.addItemAction->setEnabled(loggedIn);
     m_actions.removeItemAction->setEnabled(loggedIn);
     m_actions.passwordStrengthAction->setEnabled(loggedIn);
+    m_actions.exportAction->setEnabled(loggedIn);
     
     if (!loggedIn)
     {
@@ -471,41 +474,72 @@ void Qpamat::setLogin(bool loggedIn)
  */
 void Qpamat::save()
 {
-    if (m_loggedIn)
+    if (m_loggedIn && exportOrSave())
     {
-        DataReadWriter writer(this);
-        QDomDocument doc = writer.createSkeletonDocument();
-        m_tree->appendXML(doc);
-        bool success = false;
-        while (!success)
+        setModified(false);
+        message("Wrote data successfully.");
+    }
+}
+
+
+/*!
+    df
+*/
+bool Qpamat::exportOrSave()
+{
+    DataReadWriter writer(this);
+    QDomDocument doc = writer.createSkeletonDocument();
+    m_tree->appendXML(doc);
+    bool success = false;
+    while (!success)
+    {
+        try
         {
-            try
-            {
-                writer.writeXML(doc, m_password);
-                success = true;
-            }
-            catch (const ReadWriteException& e)
-            {   
-                QMessageBox::Icon icon = e.getSeverity() == ReadWriteException::WARNING
-                    ? QMessageBox::Warning
-                    : QMessageBox::Critical;
-                bool retry = e.retryMakesSense();
-                QMessageBox *mb = new QMessageBox( "QPaMaT", e.getMessage(), icon, 
-                    (retry ? QMessageBox::Retry : QMessageBox::Ok) | QMessageBox::Default, 
-                    (retry ? QMessageBox::Abort : QMessageBox::NoButton),     
-                    QMessageBox::NoButton, this, "qt_msgbox_information", true, WDestructiveClose);
-                if (mb->exec() != QMessageBox::Retry)
-                {
-                    break;
-                }
-            }
+            writer.writeXML(doc, m_password);
+            success = true;
         }
-        if (success)
-        {
-            setModified(false);
-            message("Wrote data successfully.");
+        catch (const ReadWriteException& e)
+        {   
+            QMessageBox::Icon icon = e.getSeverity() == ReadWriteException::WARNING
+                ? QMessageBox::Warning
+                : QMessageBox::Critical;
+            bool retry = e.retryMakesSense();
+            QMessageBox *mb = new QMessageBox( "QPaMaT", e.getMessage(), icon, 
+                (retry ? QMessageBox::Retry : QMessageBox::Ok) | QMessageBox::Default, 
+                (retry ? QMessageBox::Abort : QMessageBox::NoButton),     
+                QMessageBox::NoButton, this, "qt_msgbox_information", true, WDestructiveClose);
+            if (mb->exec() != QMessageBox::Retry)
+            {
+                break;
+            }
         }
     }
+    return success;
+}
+
+
+/*!
+    Exports the data.
+*/
+void Qpamat::exportData()
+{
+    QString oldFilename = set().readEntry("General/Datafile");
+    QString file = QFileDialog::getSaveFileName(
+        QDir::homeDirPath(), 0, this, "file dialog", tr("QPaMaT") );
+    bool oldCard = set().readBoolEntry("Smartcard/UseCard");
+    if (!file)
+    {
+        return;
+    }
+    
+    set().writeEntry("General/Datafile", file);
+    set().writeEntry("Smartcard/UseCard", false);
+    if (m_loggedIn && exportOrSave())
+    {
+        message("Wrote data successfully.");
+    }
+    set().writeEntry("General/Datafile", oldFilename);
+    set().writeEntry("Smartcard/UseCard", oldCard);
 }
 
 
@@ -718,6 +752,7 @@ void Qpamat::connectSignalsAndSlots()
     connect(m_actions.logoutAction, SIGNAL(activated()), this, SLOT(logout()));
     connect(m_actions.printAction, SIGNAL(activated()), this, SLOT(print()));
     connect(m_actions.saveAction, SIGNAL(activated()), this, SLOT(save()));
+    connect(m_actions.exportAction, SIGNAL(activated()), this, SLOT(exportData()));
     
     connect(m_actions.changePasswordAction, SIGNAL(activated()), this, SLOT(changePassword()));
     connect(m_actions.settingsAction, SIGNAL(activated()), this, SLOT(configure()));
@@ -770,10 +805,11 @@ void Qpamat::initActions()
         QKeySequence(CTRL|Key_Q), this);
     m_actions.loginAction = new QAction(tr("&Login"), QKeySequence(CTRL|Key_L), this);
     m_actions.logoutAction = new QAction(tr("&Logout"), QKeySequence(CTRL|Key_L), this);
-    m_actions.printAction = new QAction(QIconSet(print_16x16_xpm, print_22x22_xpm),
-        tr("&Print..."), QKeySequence(CTRL|Key_P), this);
     m_actions.saveAction = new QAction(QIconSet(save_16x16_xpm, save_22x22_xpm), tr("&Save"), 
         QKeySequence(CTRL|Key_S), this);
+    m_actions.exportAction = new QAction(tr("&Export..."), QKeySequence(), this);
+    m_actions.printAction = new QAction(QIconSet(print_16x16_xpm, print_22x22_xpm),
+        tr("&Print..."), QKeySequence(CTRL|Key_P), this);
     
     // ----- Options -------------------------------------------------------------------------------
     m_actions.changePasswordAction = new QAction(tr("&Change Password..."), QKeySequence(), this);
