@@ -2,5 +2,4 @@ TODO
 ================================================================================
 
 
- * Correct sorting of top-level nodes after renaming
-
+ * Assignment operators for the data elements (copying)
