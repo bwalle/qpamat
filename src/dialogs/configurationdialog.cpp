@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.cpp,v 1.23 2004/01/21 20:57:43 bwalle Exp $
+ * Id: $Id: configurationdialog.cpp,v 1.24 2004/02/07 00:10:53 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -89,8 +89,8 @@
     
     \ingroup dialogs
     \author Bernhard Walle
-    \version $Revision: 1.23 $
-    \date $Date: 2004/01/21 20:57:43 $
+    \version $Revision: 1.24 $
+    \date $Date: 2004/02/07 00:10:53 $
  */
 
 /*!
@@ -142,8 +142,8 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.23 $
-    \date $Date: 2004/01/21 20:57:43 $
+    \version $Revision: 1.24 $
+    \date $Date: 2004/02/07 00:10:53 $
 */
 
 /*!
@@ -184,8 +184,8 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.23 $
-    \date $Date: 2004/01/21 20:57:43 $
+    \version $Revision: 1.24 $
+    \date $Date: 2004/02/07 00:10:53 $
 */
 
 
@@ -225,10 +225,10 @@ void ConfDlgGeneralTab::createAndLayout()
     // labels  & edit fields
     QLabel* browserLabel = new QLabel(tr("&Web Browser (full path if not in PATH environment):"), 
         locationsGroup);
-    m_browserEdit = new FileLineEdit(locationsGroup);
+    m_browserEdit = new FileLineEdit(locationsGroup, false);
     
     QLabel* datafileLabel = new QLabel(tr("&Data File:"), locationsGroup);
-    m_datafileEdit = new FileLineEdit(locationsGroup);
+    m_datafileEdit = new FileLineEdit(locationsGroup, true);
     
     // auto text
     QLabel* miscLabel = new QLabel(tr("&Misc"), autoTextGroup);
@@ -305,8 +305,8 @@ void ConfDlgGeneralTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.23 $
-    \date $Date: 2004/01/21 20:57:43 $
+    \version $Revision: 1.24 $
+    \date $Date: 2004/02/07 00:10:53 $
 */
 
 
@@ -383,7 +383,7 @@ void ConfDlgPasswordTab::createAndLayout()
     
     QLabel* dictLabel = new QLabel(tr("&Dictionary file (must be sorted once):"), 
             checkerGroup, "DictLabel");
-    m_dictionaryEdit = new FileLineEdit(checkerGroup, "DictEdit");
+    m_dictionaryEdit = new FileLineEdit(checkerGroup, false, "DictEdit");
 
     // sort button
     QHBox* box = new QHBox(checkerGroup, "Hbox");
@@ -561,8 +561,8 @@ void ConfDlgPasswordTab::sortDictionary()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.23 $
-    \date $Date: 2004/01/21 20:57:43 $
+    \version $Revision: 1.24 $
+    \date $Date: 2004/02/07 00:10:53 $
 */
 
 
@@ -647,8 +647,8 @@ void ConfDlgSecurityTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.23 $
-    \date $Date: 2004/01/21 20:57:43 $
+    \version $Revision: 1.24 $
+    \date $Date: 2004/02/07 00:10:53 $
 */
 
 
@@ -747,8 +747,8 @@ void ConfDlgPresentationTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.23 $
-    \date $Date: 2004/01/21 20:57:43 $
+    \version $Revision: 1.24 $
+    \date $Date: 2004/02/07 00:10:53 $
 */
 
 /*!
@@ -791,7 +791,7 @@ void ConfDlgSmartcardTab::createAndLayout()
     m_usePinCB = new QCheckBox(tr("Card has &write-protection"), smartCardGroup);;
     
     QLabel* libraryLabel = new QLabel(tr("CT-&API Chipcard Driver:"), m_settingsGroup);
-    m_libraryEdit = new FileLineEdit(m_settingsGroup);
+    m_libraryEdit = new FileLineEdit(m_settingsGroup, false);
     
     QLabel* portLabel = new QLabel(tr("Chipcard Terminal &Port:"), m_settingsGroup);
     m_portCombo = new QComboBox(false, m_settingsGroup);

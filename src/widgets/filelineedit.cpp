@@ -1,5 +1,5 @@
 /*
- * Id: $Id: filelineedit.cpp,v 1.6 2003/12/29 00:37:11 bwalle Exp $
+ * Id: $Id: filelineedit.cpp,v 1.7 2004/02/07 00:11:01 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -34,17 +34,19 @@
     
     \ingroup widgets
     \author Bernhard Walle
-    \version $Revision: 1.6 $
-    \date $Date: 2003/12/29 00:37:11 $
+    \version $Revision: 1.7 $
+    \date $Date: 2004/02/07 00:11:01 $
 */
 
 /*!
     Creates a new instance of a FileLineEdit widget.
     \param parent the parent widget
+    \param save \c true if the file dialog should be a "save dialog" (file must not exist),
+                \c false if it should be a "open dialog" (file must exist)
     \param name the name of the widget which can be NULL.
 */
-FileLineEdit::FileLineEdit(QWidget* parent, const char* name)
-    : QWidget(parent, name)
+FileLineEdit::FileLineEdit(QWidget* parent, bool save, const char* name)
+    : QWidget(parent, name), m_save(save)
 {
     QHBoxLayout* boxLayout = new QHBoxLayout(this, 0, 2);
     m_lineEdit = new QLineEdit(this);
@@ -117,8 +119,17 @@ void FileLineEdit::chooseFile()
         startWith = QDir::homeDirPath();
     }
     
-    QString selected = QFileDialog::getOpenFileName (startWith, m_filter, this, "File Dialog",
-        tr("QPaMaT"));
+    QString selected;
+    if (m_save)
+    {
+        selected = QFileDialog::getSaveFileName (startWith, m_filter, this, "File Dialog",
+            tr("QPaMaT"));
+    }
+    else
+    {
+        selected = QFileDialog::getOpenFileName (startWith, m_filter, this, "File Dialog",
+            tr("QPaMaT"));
+    }
         
     if (selected != QString::null)
     {

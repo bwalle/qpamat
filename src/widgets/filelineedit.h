@@ -1,5 +1,5 @@
 /*
- * Id: $Id: filelineedit.h,v 1.5 2003/12/29 00:37:11 bwalle Exp $
+ * Id: $Id: filelineedit.h,v 1.6 2004/02/07 00:11:04 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -30,7 +30,7 @@ class FileLineEdit : public QWidget
     Q_PROPERTY( QString content READ getContent WRITE setContent )
     
     public:
-        FileLineEdit(QWidget* parent, const char* name = 0);
+        FileLineEdit(QWidget* parent, bool save, const char* name = 0);
         
         void setContent(const QString& content);
         QString getContent() const;
@@ -45,6 +45,7 @@ class FileLineEdit : public QWidget
         QLineEdit*      m_lineEdit;
         QString         m_filter;
         QToolButton*    m_fileDialogButton;
+        bool            m_save;
 };
 
 #endif // FILELINEEDIT_H
