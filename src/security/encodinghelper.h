@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encodinghelper.h,v 1.8 2003/12/10 21:48:32 bwalle Exp $
+ * Id: $Id: encodinghelper.h,v 1.9 2003/12/17 21:53:24 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -17,6 +17,8 @@
  */
 #ifndef ENCODINGHELPER_H
 #define ENCODINGHELPER_H
+
+#include <iostream>
 
 #include <qmemarray.h>
 #include <qstring.h>
@@ -37,8 +39,8 @@
  *
  * \ingroup security
  * \author Bernhard Walle
- * \version $Revision: 1.8 $
- * \date $Date: 2003/12/10 21:48:32 $
+ * \version $Revision: 1.9 $
+ * \date $Date: 2003/12/17 21:53:24 $
  */
 class EncodingHelper
 {
