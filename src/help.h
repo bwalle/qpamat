@@ -1,5 +1,5 @@
 /*
- * Id: $Id: help.h,v 1.4 2003/12/29 15:12:26 bwalle Exp $
+ * Id: $Id: help.h,v 1.5 2004/07/23 22:05:28 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -27,6 +27,7 @@ class Help : public QObject
     
     public slots:
         void showAbout();
+        void showHelp();
         
     public:
         static void openURL(QWidget* parent, const QString& url);

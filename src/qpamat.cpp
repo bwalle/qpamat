@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.43 2004/07/23 13:13:26 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.44 2004/07/23 22:05:28 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -70,8 +70,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.43 $
-    \date $Date: 2004/07/23 13:13:26 $
+    \version $Revision: 1.44 $
+    \date $Date: 2004/07/23 22:05:28 $
  */
 
 /*! 
@@ -244,7 +244,6 @@ void Qpamat::initToolbar()
     m_searchCombo = new QComboBox(true, m_searchToolbar);
     m_searchCombo->setMinimumWidth(120);
     m_searchCombo->setDuplicatesEnabled(false);
-    m_searchCombo->setSizeLimit(10);
     m_searchCombo->setFocusPolicy(QWidget::ClickFocus);
     m_searchCombo->setInsertionPolicy(QComboBox::AtTop);
     m_searchCombo->setAutoCompletion(true);
@@ -303,6 +302,7 @@ void Qpamat::initMenubar()
      QPopupMenu* helpMenu = new QPopupMenu(this);
      menuBar()->insertItem(tr("&Help"), helpMenu);
      
+     m_actions.helpAction->addTo(helpMenu);
      m_actions.whatsThisAction->addTo(helpMenu);
      helpMenu->insertSeparator();
      m_actions.aboutQtAction->addTo(helpMenu);
@@ -319,7 +319,8 @@ void Qpamat::closeEvent(QCloseEvent* e)
     
     // write the history
     QStringList list;
-    for (int i = 0; i < m_searchCombo->count(); ++i)
+    int max = QMIN(m_searchCombo->count(), 10);
+    for (int i = 0; i < max; ++i)
     {
         list.append(m_searchCombo->text(i));
     }
@@ -752,6 +753,7 @@ void Qpamat::connectSignalsAndSlots()
     connect(m_actions.changePasswordAction, SIGNAL(activated()), this, SLOT(changePassword()));
     connect(m_actions.settingsAction, SIGNAL(activated()), this, SLOT(configure()));
     
+    connect(m_actions.helpAction, SIGNAL(activated()), &m_help, SLOT(showHelp()));
     connect(m_actions.whatsThisAction, SIGNAL(activated()), this, SLOT(whatsThis()));
     connect(m_actions.aboutAction, SIGNAL(activated()) , &m_help, SLOT(showAbout()));
     connect(m_actions.aboutQtAction, SIGNAL(activated()), qApp, SLOT(aboutQt()));
@@ -829,6 +831,8 @@ void Qpamat::initActions()
         tr("&Clear clipboard"), QKeySequence(CTRL|Key_E), this);
     
     // ----- Help ----------------------------------------------------------------------------------
+    m_actions.helpAction = new QAction(QIconSet(QPixmap::fromMimeSource("stock_help_16.png"),
+        QPixmap::fromMimeSource("stock_help_24.png")), tr("&Help"), QKeySequence(Key_F1), this);
     m_actions.whatsThisAction = new QAction(QPixmap(QPixmap::fromMimeSource("whats_this.png")), 
         tr("&What's this"), QKeySequence(SHIFT|Key_F1), this);
     m_actions.aboutAction = new QAction(tr("&About..."), 0, this);

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: help.cpp,v 1.7 2004/07/23 08:47:58 bwalle Exp $
+ * Id: $Id: help.cpp,v 1.8 2004/07/23 22:05:28 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -20,7 +20,10 @@
 #include <qmessagebox.h>
 #include <qwidget.h>
 #include <qprocess.h>
+#include <qtextcodec.h>
+#include <qfile.h>
 
+#include "global.h"
 #include "qpamat.h"
 #include "help.h"
 #include "settings.h"
@@ -33,8 +36,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.7 $
-    \date $Date: 2004/07/23 08:47:58 $
+    \version $Revision: 1.8 $
+    \date $Date: 2004/07/23 22:05:28 $
 */
 
 /*!
@@ -45,6 +48,33 @@ void Help::showAbout()
     std::auto_ptr<AboutDialog> dlg(new AboutDialog(qApp->mainWidget(), "About Dialog"));
     
     dlg->exec();
+}
+
+/*!
+    Shows the documentation in the browser specified by the user.
+*/
+void Help::showHelp()
+{
+    QString base = QDir(qApp->applicationDirPath() + "/../share/qpamat/doc/").canonicalPath();
+    QString loc = QString(QTextCodec::locale()).section("_", 0, 0);
+    
+    if (QFile::exists(base + "/" + loc + "/manual/index.html"))
+    {
+        openURL(qApp->mainWidget(), "file:///" + base + "/" + loc + "/manual/index.html");
+    }
+    else if (QFile::exists(base + "/en/manual/index.html"))
+    {
+        openURL(qApp->mainWidget(), "file:///" + base + "/en/manual/index.html");
+    }
+    else
+    {
+        QMessageBox::critical(qApp->mainWidget(), tr("QPaMaT"), 
+            tr("The QPaMaT documentation is not installed."), QMessageBox::Ok, 
+            QMessageBox::NoButton );
+        return;
+    }
+    
+    qpamat->message(tr("Help started in web browser."));
 }
 
 

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.h,v 1.19 2004/02/07 00:11:14 bwalle Exp $
+ * Id: $Id: qpamat.h,v 1.20 2004/07/23 22:05:28 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -88,6 +88,7 @@ class Qpamat : public QMainWindow
             QAction* viewTreeAction;
             QAction* quitAction;
             QAction* printAction;
+            QAction* helpAction;
             QAction* aboutAction;
             QAction* aboutQtAction;
             QAction* whatsThisAction;
