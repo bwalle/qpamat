@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.24 2003/12/29 15:12:50 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.25 2004/01/02 12:21:36 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -122,6 +122,7 @@ isEmpty (debug) {
 } else {
   CONFIG   += debug
   DEFINES  += DEBUG
+  DEFINES  += TRACE
 }
 
 QMAKE_CXXFLAGS_WARN_ON 	+= -Wno-unused-parameter
