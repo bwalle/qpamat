@@ -1,5 +1,5 @@
 /*
- * Id: $Id: passwordhash.cpp,v 1.3 2004/01/06 23:31:39 bwalle Exp $
+ * Id: $Id: passwordhash.cpp,v 1.4 2004/01/06 23:31:51 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -19,7 +19,6 @@
 #include <algorithm>
 #include <limits>
 #include <iterator>
-#include <iostream>
 
 #include <openssl/evp.h>
 
@@ -56,8 +55,8 @@ const uint PasswordHash::MAX_HASH_LENGTH = 40;
     \brief Helping functions for dealing with passwords and hashes.
     \ingroup security
     \author Bernhard Walle
-    \version $Revision: 1.3 $
-    \date $Date: 2004/01/06 23:31:39 $
+    \version $Revision: 1.4 $
+    \date $Date: 2004/01/06 23:31:51 $
 */
 
 /*!
