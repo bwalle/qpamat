@@ -1,5 +1,5 @@
 /*
- * Id: $Id: randompassworddialog.cpp,v 1.5 2003/12/20 15:58:12 bwalle Exp $
+ * Id: $Id: showpassworddialog.cpp,v 1.1 2003/12/21 20:29:07 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -26,17 +26,21 @@
 #include <qpushbutton.h>
 
 #include "../qpamat.h"
-#include "randompassworddialog.h"
+#include "showpassworddialog.h"
 
 // -------------------------------------------------------------------------------------------------
-RandomPasswordDialog::RandomPasswordDialog(QWidget* parent, bool showInsertButton, const char* name)
+ShowPasswordDialog::ShowPasswordDialog(QWidget* parent, DialogType type, const char* name)
 // -------------------------------------------------------------------------------------------------
     : QDialog(parent, name)
 {
     setCaption("QPaMaT");
     
     // create elements
-    QLabel* label = new QLabel(tr("The random password is:"), this);
+    QString labelText = type == TNormalPasswordDlg 
+        ? tr("The password is:") 
+        : tr("The random password is:");
+    
+    QLabel* label = new QLabel(labelText, this);
     
     m_passwordEdit = new CopyLabel(qpamat->set().readBoolEntry("Presentation/HideRandomPass"), 
         this);
@@ -48,7 +52,7 @@ RandomPasswordDialog::RandomPasswordDialog(QWidget* parent, bool showInsertButto
     
     QPushButton* insertButton = 0;
     
-    if (showInsertButton)
+    if (type == TRandomPasswordDlgInsert)
     {
         insertButton = new QPushButton(tr("&Insert"), this);
     }
@@ -82,7 +86,7 @@ RandomPasswordDialog::RandomPasswordDialog(QWidget* parent, bool showInsertButto
 
 
 // -------------------------------------------------------------------------------------------------
-QString RandomPasswordDialog::getPassword() const
+QString ShowPasswordDialog::getPassword() const
 // -------------------------------------------------------------------------------------------------
 {
     return m_passwordEdit->getContent();
@@ -90,7 +94,7 @@ QString RandomPasswordDialog::getPassword() const
 
 
 // -------------------------------------------------------------------------------------------------
-void RandomPasswordDialog::setPassword(const QString& newPassword)
+void ShowPasswordDialog::setPassword(const QString& newPassword)
 // -------------------------------------------------------------------------------------------------
 {
     m_passwordEdit->setContent(newPassword);
@@ -98,7 +102,7 @@ void RandomPasswordDialog::setPassword(const QString& newPassword)
 
 
 // -------------------------------------------------------------------------------------------------
-void RandomPasswordDialog::insertButtonHandler()
+void ShowPasswordDialog::insertButtonHandler()
 // -------------------------------------------------------------------------------------------------
 {
     emit insertPassword(m_passwordEdit->getContent());
@@ -106,7 +110,7 @@ void RandomPasswordDialog::insertButtonHandler()
 
 
 // -------------------------------------------------------------------------------------------------
-void RandomPasswordDialog::copyPassword()
+void ShowPasswordDialog::copyPassword()
 // -------------------------------------------------------------------------------------------------
 {
     QClipboard* cb = QApplication::clipboard();

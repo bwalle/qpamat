@@ -1,5 +1,5 @@
 /*
- * Id: $Id: randompassworddialog.h,v 1.2 2003/12/18 22:00:02 bwalle Exp $
+ * Id: $Id: showpassworddialog.h,v 1.1 2003/12/21 20:29:07 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,8 +15,8 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#ifndef RANDOMPASSWORDDIALOG_H
-#define RANDOMPASSWORDDIALOG_H
+#ifndef SHOWPASSWORDDIALOG_H
+#define SHOWPASSWORDDIALOG_H
 
 #include <qdialog.h>
 #include <qlineedit.h>
@@ -25,27 +25,38 @@
 #include "../widgets/copylabel.h"
 
 /*!
- * \brief Dialog which displayes a random password.
+ * \brief Dialog which displayes a password.
  *
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.2 $
- * \date $Date: 2003/12/18 22:00:02 $
+ * \version $Revision: 1.1 $
+ * \date $Date: 2003/12/21 20:29:07 $
  */
-class RandomPasswordDialog : public QDialog 
+class ShowPasswordDialog : public QDialog 
 {
     Q_OBJECT
     
     public:
         
+        /*! 
+         * Datatype for the type of the dialog. A RandomPasswordDialog shows the another description
+         * than a normal password dialog. Normal Password dialogs always show the password as
+         * cleartext and have no insert button.
+         */
+        enum DialogType
+        {
+            TRandomPasswordDlg,       //!< Dialog for showing random passwords with no insert button
+            TRandomPasswordDlgInsert, //!< Dialgo for showing random passwords with insert button
+            TNormalPasswordDlg        //!< Dialog for showing other passwords (always cleartext)
+        };
+        
         /*!
          * Creates a new instance of the password dialog.
          * \param parent the parent widget
-         * \param showInsertButton whether there should be displayed a insert button. If so, it 
-         *        makes sense that the user connects to the insertPassword() slot.
+         * \param type the type of the dialog
          * \param name the name of the object
          */
-        RandomPasswordDialog(QWidget* parent, bool showInsertButton, const char* name = 0);
+        ShowPasswordDialog(QWidget* parent, DialogType type,  const char* name = 0);
         
     public slots:
         
@@ -85,4 +96,4 @@ class RandomPasswordDialog : public QDialog
         CopyLabel* m_passwordEdit;
 };
 
-#endif // RANDOMPASSWORDDIALOG_H
+#endif // SHOWPASSWORDDIALOG_H

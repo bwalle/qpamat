@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.22 2003/12/20 15:59:05 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.23 2003/12/21 20:31:14 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -16,7 +16,7 @@ SOURCES     =                                   \
     src/dialogs/passworddialog.cpp              \
     src/dialogs/newpassworddialog.cpp           \
     src/dialogs/configurationdialog.cpp         \
-    src/dialogs/randompassworddialog.cpp        \
+    src/dialogs/showpassworddialog.cpp          \
     src/widgets/filelineedit.cpp                \
     src/widgets/fontchoosebox.cpp               \
     src/widgets/copylabel.cpp                   \
@@ -54,7 +54,7 @@ HEADERS     =                                   \
     src/dialogs/passworddialog.h                \
     src/dialogs/newpassworddialog.h             \
     src/dialogs/configurationdialog.h           \
-    src/dialogs/randompassworddialog.h          \
+    src/dialogs/showpassworddialog.h            \
     src/widgets/filelineedit.h                  \
     src/widgets/fontchoosebox.h                 \
     src/widgets/copylabel.h                     \
