@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.43 2004/06/05 13:25:58 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.44 2004/07/23 08:48:14 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -34,6 +34,7 @@ SOURCES     =                                   \
     src/dialogs/waitdialog.cpp                  \
     src/dialogs/insertcarddialog.cpp            \
     src/dialogs/cardpinvalidator.cpp            \
+    src/dialogs/aboutdialog.cpp                 \
     src/widgets/filelineedit.cpp                \
     src/widgets/fontchoosebox.cpp               \
     src/widgets/copylabel.cpp                   \
@@ -84,6 +85,7 @@ HEADERS     =                                   \
     src/dialogs/waitdialog.h                    \
     src/dialogs/insertcarddialog.h              \
     src/dialogs/cardpinvalidator.h              \
+    src/dialogs/aboutdialog.h                   \
     src/widgets/filelineedit.h                  \
     src/widgets/fontchoosebox.h                 \
     src/widgets/copylabel.h                     \
@@ -124,6 +126,11 @@ HEADERS     =                                   \
     src/rightlistview.h                         \
     src/southpanel.h                            \
     src/help.h
+
+# -----------------------------------------------------------------------------
+
+TRANSLATIONS =                                  \
+    ts/de.ts
 
 # -----------------------------------------------------------------------------
 
