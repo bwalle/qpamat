@@ -1,5 +1,5 @@
 /*
- * Id: $Id: passworddialog.cpp,v 1.2 2003/10/12 15:10:33 bwalle Exp $
+ * Id: $Id: passworddialog.cpp,v 1.3 2003/10/20 20:53:49 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -22,7 +22,6 @@
 #include <qlabel.h>
 #include <qpushbutton.h>
 
-#include "../globals.h"
 #include "passworddialog.h"
 
 // -------------------------------------------------------------------------------------------------
@@ -30,7 +29,7 @@ PasswordDialog::PasswordDialog(QWidget* parent)
 // -------------------------------------------------------------------------------------------------
     : QDialog(parent)
 {
-    setCaption(QPAMAT_USERVISIBLE);
+    setCaption("QPaMaT");
     
     // create elements
     QLabel* label = new QLabel(tr("Enter the passprase:"), this);

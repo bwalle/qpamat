@@ -1,5 +1,5 @@
 /*
- * Id: $Id: newpassworddialog.cpp,v 1.1 2003/10/12 15:10:39 bwalle Exp $
+ * Id: $Id: newpassworddialog.cpp,v 1.2 2003/10/20 20:53:46 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -23,7 +23,6 @@
 #include <qmessagebox.h>
 #include <qpushbutton.h>
 
-#include "../globals.h"
 #include "newpassworddialog.h"
 
 // -------------------------------------------------------------------------------------------------
@@ -31,7 +30,7 @@ NewPasswordDialog::NewPasswordDialog(QWidget* parent, const QString& oldPassword
 // -------------------------------------------------------------------------------------------------
     : QDialog(parent), m_oldPassword(oldPassword)
 {
-    setCaption(QPAMAT_USERVISIBLE);
+    setCaption("QPaMaT");
     
     createAndLayout();
     
@@ -135,7 +134,7 @@ void NewPasswordDialog::accept()
 {
     if (m_secondPasswordEdit->text()!= m_secondPasswordEdit->text())
     {
-        QMessageBox::warning(this, QPAMAT_USERVISIBLE,
+        QMessageBox::warning(this, "QPaMaT",
                "<qt>"+tr("The confirmation passphrase was not the same as the first one. "
                "Re-enter the confirmation or both.")+"</qt>",
                QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
@@ -143,7 +142,7 @@ void NewPasswordDialog::accept()
     }
     if (m_oldPassword && m_oldPassword != m_oldPasswordEdit->text())
     {
-        QMessageBox::warning(this, QPAMAT_USERVISIBLE,
+        QMessageBox::warning(this, "QPaMaT",
                "<qt>"+tr("The old password was incorrect. Without the old password "
                "the password cannot be changed.")+"</qt>",
                QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
@@ -176,7 +175,7 @@ void NewPasswordDialog::accept()
     
     if (!( uppercase && lowercase && nonLetter))
     {
-        QMessageBox::warning(this, QPAMAT_USERVISIBLE,
+        QMessageBox::warning(this, "QPaMaT",
                "<qt>"+tr("The passphrase is too simple. It must contain at least one uppercase "
                "character, one lowercase character and one non-letter character.")+"</qt>",
                QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
