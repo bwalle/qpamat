@@ -1,4 +1,12 @@
-Fri Jul 23 14:56:00 2003  Bernhard Walle <bernhard@bwalle.de>
+Sat Jul 24 15:51:00 2004  Bernhard Walle bernhard@bwalle.de
+
+	* Bufix: If a new document is created, it's now in "modified" state
+
+Sat Jul 24 11:00:00 2004  Bernhard Walle <bernhard@bwalle.de>
+ 	
+	* Released 0.3.0
+
+Fri Jul 23 14:56:00 2004  Bernhard Walle <bernhard@bwalle.de>
 	
 	* Changed icons to PNG format.
 	* Using stock icons from Gtk+.
@@ -7,8 +15,7 @@ Fri Jul 23 14:56:00 2003  Bernhard Walle <bernhard@bwalle.de>
 	* Added German translation.
 	* Added documentation.
 
-
-Sat Jun  5 15:24:54 2003  Bernhard Walle <bernhard@bwalle.de>
+Sat Jun  5 15:24:54 2004  Bernhard Walle <bernhard@bwalle.de>
         
 	* Beginning with logging the changes. 
 
