@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.47 2004/12/26 17:44:38 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.48 2005/02/12 10:50:55 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -48,6 +48,7 @@
 #include "dialogs/passworddialog.h"
 #include "dialogs/newpassworddialog.h"
 #include "dialogs/configurationdialog.h"
+#include "util/timeoutapplication.h"
 #include "tree.h"
 #include "rightpanel.h"
 
@@ -69,8 +70,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.47 $
-    \date $Date: 2004/12/26 17:44:38 $
+    \version $Revision: 1.48 $
+    \date $Date: 2005/02/12 10:50:55 $
  */
 
 /*! 
@@ -216,6 +217,8 @@ void Qpamat::initToolbar()
     
     m_actions.newAction->addTo(applicationToolbar);
     m_actions.saveAction->addTo(applicationToolbar);
+    m_actions.loginAction->addTo(applicationToolbar);
+    m_actions.logoutAction->addTo(applicationToolbar);
     m_actions.printAction->addTo(applicationToolbar);
     m_actions.settingsAction->addTo(applicationToolbar);
     
@@ -433,7 +436,11 @@ void Qpamat::setLogin(bool loggedIn)
     m_actions.passwordStrengthAction->setEnabled(loggedIn);
     m_actions.exportAction->setEnabled(loggedIn);
     
-    if (!loggedIn)
+    if (loggedIn)
+    {
+        dynamic_cast<TimeoutApplication*>(qApp)->setTimeout(set().readNumEntry("Security/AutoLogout"));
+    }
+    else
     {
         m_actions.passwordStrengthAction->setOn(false);
         m_tree->clear();
@@ -788,6 +795,9 @@ void Qpamat::connectSignalsAndSlots()
         SLOT(setInsertEnabled(bool)));
     connect(m_randomPassword, SIGNAL(insertPassword(const QString&)), 
         SIGNAL(insertPassword(const QString&)));
+        
+    // auto logout
+    connect(dynamic_cast<TimeoutApplication*>(qApp), SIGNAL(timedOut()), SLOT(logout()));
 }
 
 
@@ -803,12 +813,18 @@ void Qpamat::initActions()
     m_actions.quitAction = new QAction(QIconSet( QPixmap::fromMimeSource("stock_exit_16.png"),
         QPixmap::fromMimeSource("stock_exit_24.png") ), tr("E&xit"),
         QKeySequence(CTRL|Key_Q), this);
-    m_actions.loginAction = new QAction(tr("&Login"), QKeySequence(CTRL|Key_L), this);
-    m_actions.logoutAction = new QAction(tr("&Logout"), QKeySequence(CTRL|Key_L), this);
+    m_actions.loginAction = new QAction(QIconSet(QPixmap::fromMimeSource("login_16.png"),
+        QPixmap::fromMimeSource("login_24.png")), tr("&Login"), 
+        QKeySequence(CTRL|Key_L), this);
+    m_actions.logoutAction = new QAction(QIconSet(QPixmap::fromMimeSource("logout_16.png"),
+        QPixmap::fromMimeSource("logout_24.png")), tr("&Logout"), 
+        QKeySequence(CTRL|Key_L), this);
     m_actions.saveAction = new QAction(QIconSet(QPixmap::fromMimeSource("stock_save_16.png"),
         QPixmap::fromMimeSource("stock_save_24.png")), tr("&Save"), 
         QKeySequence(CTRL|Key_S), this);
-    m_actions.exportAction = new QAction(tr("&Export..."), QKeySequence(), this);
+    m_actions.exportAction = new QAction(QIconSet(QPixmap::fromMimeSource("export_16.png"),
+        QPixmap::fromMimeSource("export_24.png")), tr("&Export..."), 
+        QKeySequence(), this);
     m_actions.printAction = new QAction(QIconSet(
         QPixmap::fromMimeSource("stock_print_16.png"), 
         QPixmap::fromMimeSource("stock_print_24.png")),
@@ -836,7 +852,8 @@ void Qpamat::initActions()
         QPixmap::fromMimeSource("stock_help_24.png")), tr("&Help"), QKeySequence(Key_F1), this);
     m_actions.whatsThisAction = new QAction(QPixmap(QPixmap::fromMimeSource("whats_this.png")), 
         tr("&What's this"), QKeySequence(SHIFT|Key_F1), this);
-    m_actions.aboutAction = new QAction(tr("&About..."), 0, this);
+    m_actions.aboutAction = new QAction(QIconSet(QPixmap::fromMimeSource("info_16.png"),
+        QPixmap::fromMimeSource("info_24.png")), tr("&About..."), 0, this);
     m_actions.aboutQtAction = new QAction(QPixmap::fromMimeSource("qt_16.png"), 
         tr("About &Qt..."), QKeySequence(), this);
     
