@@ -1,10 +1,16 @@
-Mon Feb 14 03:00:00 2005  Bernhard Walle <bernhard@bwalle.de>
+Wed Feb 23 19:00:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
+
+	* Changed email address in this changelog
+	* Don't use qt.h any more (build problems on Debian)
+	* Filled README file.
+
+Mon Feb 14 03:00:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Implemented systray support.
 	* Added "start hidden" option.
 	* Released 0.4.0.
 
-Sat Feb 12 12:00:00 2005  Bernhard Walle <bernhard@bwalle.de>
+Sat Feb 12 12:00:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Implemented AutoLogout function.
 	* Icons for login/logout.
@@ -12,36 +18,36 @@ Sat Feb 12 12:00:00 2005  Bernhard Walle <bernhard@bwalle.de>
 	* Added export icon.
 	* Released 0.3.4.
 
-Sat Jan 01 17:00:00 2005  Bernhard Walle <bernhard@bwalle.de>
+Sat Jan 01 17:00:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Fixed missing documentation.
 	* Released 0.3.3.
 
-Sun Dec 26 18:42:00 2004  Bernhard Walle <bernhard@bwalle.de>
+Sun Dec 26 18:42:00 2004  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Added "Cancel" in the dialog that appears if a user wants to 
 	  log out without saving.
 	* Released 0.3.2.
 
-Sat Sep 25 19:00:00 2004  Bernhard Walle <bernhard@bwalle.de>
+Sat Sep 25 19:00:00 2004  Bernhard Walle <bernhard.walle@gmx.de>
 	
 	* Fixed compile error in help.cpp.
 	* Released 0.3.1.
 
-Fri Sep 03 16:41:00 2004  Bernhard Walle <bernhard@bwalle.de>
+Fri Sep 03 16:41:00 2004  Bernhard Walle <bernhard.walle@gmx.de>
 	
 	* Removed superflous code (QErrorMessage) in qpamat.cpp.
 	* Improved AboutDialog (increased border).
 
-Sat Jul 24 15:51:00 2004  Bernhard Walle <bernhard@bwalle.de>
+Sat Jul 24 15:51:00 2004  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Bufix: If a new document is created, it's now in "modified" state
 
-Sat Jul 24 11:00:00 2004  Bernhard Walle <bernhard@bwalle.de>
+Sat Jul 24 11:00:00 2004  Bernhard Walle <bernhard.walle@gmx.de>
  	
 	* Released 0.3.0
 
-Fri Jul 23 14:56:00 2004  Bernhard Walle <bernhard@bwalle.de>
+Fri Jul 23 14:56:00 2004  Bernhard Walle <bernhard.walle@gmx.de>
 	
 	* Changed icons to PNG format.
 	* Using stock icons from Gtk+.
@@ -50,7 +56,7 @@ Fri Jul 23 14:56:00 2004  Bernhard Walle <bernhard@bwalle.de>
 	* Added German translation.
 	* Added documentation.
 
-Sat Jun  5 15:24:54 2004  Bernhard Walle <bernhard@bwalle.de>
+Sat Jun  5 15:24:54 2004  Bernhard Walle <bernhard.walle@gmx.de>
         
 	* Beginning with logging the changes. 
 
