@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.39 2004/03/30 15:42:43 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.40 2004/04/21 18:51:56 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -91,8 +91,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.39 $
-    \date $Date: 2004/03/30 15:42:43 $
+    \version $Revision: 1.40 $
+    \date $Date: 2004/04/21 18:51:56 $
  */
 
 /*! 
@@ -511,7 +511,10 @@ bool Qpamat::exportOrSave()
                 (retry ? QMessageBox::Retry : QMessageBox::Ok) | QMessageBox::Default, 
                 (retry ? QMessageBox::Abort : QMessageBox::NoButton),     
                 QMessageBox::NoButton, this, "qt_msgbox_information", true, WDestructiveClose);
-            if (mb->exec() != QMessageBox::Retry)
+
+            // ask the user if the exception type is not "abort"
+            if (e.getCategory() == ReadWriteException::CAbort 
+                    || mb->exec() != QMessageBox::Retry)
             {
                 break;
             }
