@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.cpp,v 1.13 2003/12/28 22:08:15 bwalle Exp $
+ * Id: $Id: configurationdialog.cpp,v 1.14 2003/12/30 00:28:22 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -36,6 +36,8 @@
 #include <qcheckbox.h>
 #include <qspinbox.h>
 #include <qlcdnumber.h>
+#include <qwidgetstack.h>
+#include <qlistbox.h>
 
 #include "configurationdialog.h"
 #include "configurationdialogprivate.h"
@@ -54,6 +56,7 @@
     dialog has four tabs:
     
      - \b General which describes general display options
+     - \b Password which does the password settings
      - \b Security which does the security settings
      - \b SmartCard which controls all stuff about smartcards
      - \b Presenstation which holds all about printing and some other things
@@ -72,41 +75,156 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.13 $
-    \date $Date: 2003/12/28 22:08:15 $
+    \version $Revision: 1.14 $
+    \date $Date: 2003/12/30 00:28:22 $
  */
 
 /*!
     Creates a new instance of a ConfigurationDialog.
 */
 ConfigurationDialog::ConfigurationDialog(QWidget* parent)
-    : QTabDialog(parent)
+    : QDialog(parent), m_listBox(0), m_widgetStack(0)
 {
     setCaption("QPaMaT");
     
+    QVBoxLayout* vboxLayout = new QVBoxLayout(this, 8, 2, "ConfDlg-Vbox");
+    QHBox* mainHBox = new QHBox(this, "ConfDlg-MainHBox");
+    QHBox* buttonHBox = new QHBox(this, "ConfDlg-ButtonHBox");
+    
+    m_listBox = new QListBox(mainHBox, "ConfDlg-Listbox");
+    m_widgetStack = new QWidgetStack(mainHBox, "ConfDlg-Widget");
+    
+    // buttons
+    QWidget* filler = new QWidget(buttonHBox);
+    buttonHBox->setSpacing(7);
+    QPushButton* okButton = new QPushButton(tr("Ok"), buttonHBox, "OkButton");
+    QPushButton* cancelButton = new QPushButton(tr("Cancel"), buttonHBox, "CancelButton");
+    okButton->setDefault(true);
+    buttonHBox->setStretchFactor(filler, 2);
+    buttonHBox->setStretchFactor(okButton, 0);
+    buttonHBox->setStretchFactor(cancelButton, 0);
+    
+    // horizontal line
+    QLabel* horizontalLine = new QLabel(this, "ConfDlg-Hline");
+    horizontalLine->setFrameStyle(QFrame::HLine | QFrame::Sunken);
+    
+    // layout
+    mainHBox->setStretchFactor(m_listBox, 0);
+    mainHBox->setStretchFactor(m_widgetStack, 2);
+    mainHBox->setSpacing(7);
+    vboxLayout->addWidget(mainHBox);
+    vboxLayout->addWidget(horizontalLine);
+    vboxLayout->addWidget(buttonHBox);
+    vboxLayout->setStretchFactor(mainHBox, 2);
+    vboxLayout->setStretchFactor(buttonHBox, 0);
+    
+    // Add the general tab
     ConfDlgGeneralTab* generalTab = new ConfDlgGeneralTab(this);
-    ConfDlgSmartcardTab* smartCardTab = new ConfDlgSmartcardTab(this);
+    m_widgetStack->addWidget(generalTab, 0);
+    m_listBox->insertItem(tr("General"));
+    
+    // Add the password tab
+    ConfDlgPasswordTab* passwordTab = new ConfDlgPasswordTab(this);
+    m_widgetStack->addWidget(passwordTab, 1);
+    m_listBox->insertItem(tr("Password"));
+    
+    // Add the security tab
     ConfDlgSecurityTab* securityTab = new ConfDlgSecurityTab(this);
+    m_widgetStack->addWidget(securityTab, 2);
+    m_listBox->insertItem(tr("Security"));
+    
+    // Add the smartcard tab
+    ConfDlgSmartcardTab* smartCardTab = new ConfDlgSmartcardTab(this);
+    m_widgetStack->addWidget(smartCardTab, 3);
+    m_listBox->insertItem(tr("Smart Card"));
+    
+    // Add the presentation tab
     ConfDlgPresentationTab* presentationTab = new ConfDlgPresentationTab(this);
+    m_widgetStack->addWidget(presentationTab, 4);
+    m_listBox->insertItem(tr("Presenstation"));
     
-    addTab(generalTab, "&General");
-    addTab(securityTab, "&Security"); 
-    addTab(smartCardTab, "Smart &Card");
-    addTab(presentationTab, "&Presentation");
-    
-    setCancelButton(tr("Cancel"));
-    connect(this, SIGNAL(applyButtonPressed()), generalTab, SLOT(applySettings()));
-    connect(this, SIGNAL(applyButtonPressed()), smartCardTab, SLOT(applySettings()));
-    connect(this, SIGNAL(applyButtonPressed()), securityTab, SLOT(applySettings()));
-    connect(this, SIGNAL(applyButtonPressed()), presentationTab, SLOT(applySettings()));
+    // signals & slots
+    connect(okButton, SIGNAL(clicked()), SLOT(accept()));
+    connect(cancelButton, SIGNAL(clicked()), SLOT(reject())); 
+    connect(m_listBox, SIGNAL(highlighted(int)), m_widgetStack, SLOT(raiseWidget(int)));
+    connect(m_widgetStack, SIGNAL(aboutToShow(QWidget*)), SLOT(aboutToShowHandler(QWidget*)));
     
     QAction* whatsThis = new QAction("What's this", QKeySequence(Key_F1), this);
     connect(whatsThis, SIGNAL(activated()), qpamat, SLOT(whatsThis()));
     
+    aboutToShowHandler(generalTab);
+    m_listBox->setSelected(0, true);
     adjustSize();
 }
 
+/*!
+    Method is called after the Ok button is pressed, i.e. if the accept() signal is emitted.
+*/
+void ConfigurationDialog::accept()
+{
+    // apply the settings
+    for (std::set<ConfDlgTab*>::iterator it = m_filledTabs.begin(); it != m_filledTabs.end(); ++it)
+    {
+        qDebug("Apply called");
+        (*it)->applySettings();
+    }
+    QDialog::accept();
+}
+
+/*!
+    Is called if the QWidgetStack sends an aboutToShow signal. This function calls the 
+    fillSettings() function from the tab and adds it to the lists that must be written if
+    apply is pressed.
+    \param w the widget
+*/
+void ConfigurationDialog::aboutToShowHandler(QWidget* w)
+{
+    if (ConfDlgTab* t = dynamic_cast<ConfDlgTab*>(w))
+    {
+        t->fillSettings();
+        m_filledTabs.insert(t);
+    }
+}
+
 #ifndef DOXYGEN
+
+// -------------------------------------------------------------------------------------------------
+//                                     Configuration dialog tab
+// -------------------------------------------------------------------------------------------------
+
+/*!
+    \class ConfDlgTab
+    
+    \brief Base class for all tabs displayed in the configuration dialog
+    
+    This is a interface that all tabs in the configuration dialog must implement.
+    
+    \ingroup gui
+    \author Bernhard Walle
+    \version $Revision: 1.14 $
+    \date $Date: 2003/12/30 00:28:22 $
+*/
+
+/*!
+    \fn ConfDlgTab::ConfDlgTab(QWidget*, const char*)
+    
+    Creates a new instance of a ConfDlgTab
+    \param parent the parent widget
+    \param name the name of the widget
+*/
+
+/*!
+    \fn ConfDlgTab::fillSettings()
+    
+    This function reads all settings from the global Settings object and fills the GUI with
+    this values.
+*/
+
+/*!
+    \fn ConfDlgTab::applySettings()
+    
+    This function stores all settings made in the GUI to the global Settings object.
+*/
 
 // -------------------------------------------------------------------------------------------------
 //                                     General tab
@@ -125,8 +243,8 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.13 $
-    \date $Date: 2003/12/28 22:08:15 $
+    \version $Revision: 1.14 $
+    \date $Date: 2003/12/30 00:28:22 $
 */
 
 
@@ -135,12 +253,9 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     \param parent the parent widget
 */
 ConfDlgGeneralTab::ConfDlgGeneralTab(QWidget* parent)
-    : QWidget(parent)
+    : ConfDlgTab(parent)
 {
     createAndLayout();
-    
-    // init contents
-    fillSettings();
 }
 
 
@@ -234,40 +349,35 @@ void ConfDlgGeneralTab::applySettings()
 
 
 // -------------------------------------------------------------------------------------------------
-//                                     Security tab
+//                                     Password tab
 // -------------------------------------------------------------------------------------------------
 
 /*!
-    \class ConfDlgSecurityTab
+    \class ConfDlgPasswordTab
     
-    \brief Represents security settings in the configuration dialog
+    \brief Represents password settings in the configuration dialog
     
     This tab holds security general settings 
     
      - settings for generated passwords
      - password strength settings
-     - cipher algorithm
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.13 $
-    \date $Date: 2003/12/28 22:08:15 $
+    \version $Revision: 1.14 $
+    \date $Date: 2003/12/30 00:28:22 $
 */
 
 
 /*!
-    Creates a new instance of an ConfDlgSecurityTab object.
+    Creates a new instance of an ConfDlgPasswordTab object.
     \param parent the parent widget
 */
-ConfDlgSecurityTab::ConfDlgSecurityTab(QWidget* parent)
-    : QWidget(parent), m_lengthSpinner(0), m_externalEdit(0), m_allowedCharsEdit(0), 
-      m_useExternalCB(0), m_weakSlider(0), m_strongSlider(0), m_weakLabel(0), m_strongLabel(0),
-      m_algorithmCombo(0)
+ConfDlgPasswordTab::ConfDlgPasswordTab(QWidget* parent)
+    : ConfDlgTab(parent), m_lengthSpinner(0), m_externalEdit(0), m_allowedCharsEdit(0), 
+      m_useExternalCB(0), m_weakSlider(0), m_strongSlider(0), m_weakLabel(0), m_strongLabel(0)
 {
     createAndLayout();
-    
-    // init contents
-    fillSettings();
     
     connect(m_useExternalCB, SIGNAL(toggled(bool)), SLOT(checkboxHandler(bool)));
     connect(m_weakSlider, SIGNAL(valueChanged(int)), SLOT(weakSliderHandler(int)));
@@ -278,17 +388,14 @@ ConfDlgSecurityTab::ConfDlgSecurityTab(QWidget* parent)
 /*!
     Does creating of subwidgets and layout of the GeneralTab.
 */
-void ConfDlgSecurityTab::createAndLayout()
+void ConfDlgPasswordTab::createAndLayout()
 {
     // create layouts
     QVBoxLayout* mainLayout = new QVBoxLayout(this, 6, 6);
     QGroupBox* passwordGroup = new QGroupBox(5, Vertical, tr("Generated Passwords"), this);
     QGroupBox* checkerGroup = new QGroupBox(5, Vertical, tr("Password checker"), this);
-    QGroupBox* encryptionGroup = new QGroupBox(1, Vertical, tr("Encryption"), this);
     
     // some settings
-    encryptionGroup->setInsideSpacing(12);
-    encryptionGroup->setFlat(true);
     passwordGroup->setInsideSpacing(6);
     passwordGroup->setFlat(true);
     checkerGroup->setInsideSpacing(6);
@@ -334,19 +441,13 @@ void ConfDlgSecurityTab::createAndLayout()
     QLabel* dictLabel = new QLabel(tr("&Dictionary file (sorted!):"), checkerGroup, "DictLabel");
     m_dictionaryEdit = new FileLineEdit(checkerGroup, "DictEdit");
     
-    // algorithm stuff
-    m_algorithmLabel = new QLabel(tr("Cipher &algorithm:"), encryptionGroup);
-    m_algorithmCombo = new QComboBox(false, encryptionGroup); 
-    
     // buddys
-    m_algorithmLabel->setBuddy(m_algorithmCombo);
     lengthLabel->setBuddy(m_lengthSpinner);
     allowedLabel->setBuddy(m_allowedCharsEdit);
     dictLabel->setBuddy(m_dictionaryEdit);
     
     mainLayout->addWidget(passwordGroup);
     mainLayout->addWidget(checkerGroup);
-    mainLayout->addWidget(encryptionGroup);
     mainLayout->addSpacing(10);
     mainLayout->addStretch(5);
     
@@ -354,33 +455,13 @@ void ConfDlgSecurityTab::createAndLayout()
     /* QWhatsThis::add(m_radioGroup, tr("<qt>Password checkers are used to check the initial password "
         "and the random password. That means that a random password has always the security of the "
         "password checker.<p>Using an external password checker may be slow.</qt>")); */
-    QWhatsThis::add(m_algorithmCombo, tr("<qt>Only change this if you know what you do. The "
-        "algorithms are provided by the OpenSSL library and the availability is determined "
-        "at runtime. You can read a file encrypted with <i>X</i> only if the computer on which "
-        "you read it is able to handle algorithm <i>X</i>. <p>Blowfish is a good choise because "
-        "it's free and available everywhere. IDEA is patended (but secure, PGP uses it!) "
-        "and AES (the successor of DES) is only available at new versions of OpenSSL."
-        "Read a book about cryptography if you're interested in this algorithms.</qt>"));
-}
-
-
-/*!
-    Polishes the dialog, i.e. does some layout settings after the dialog is fully created.
-*/
-void ConfDlgSecurityTab::polish()
-{
-    QWidget::polish();
-    QFontMetrics fm = fontMetrics();
-    int width = fm.boundingRect(m_algorithmLabel->text().replace('&', "")).width();
-    m_algorithmLabel->setFixedWidth(width);
-    m_lengthSpinner->setFixedWidth(width);
 }
 
 
 /*!
     Applys the settings. This method is called by if the user presses the Ok button.
 */
-void ConfDlgSecurityTab::checkboxHandler(bool on)
+void ConfDlgPasswordTab::checkboxHandler(bool on)
 {
     m_externalEdit->setEnabled(on);
     if (!on)
@@ -393,7 +474,7 @@ void ConfDlgSecurityTab::checkboxHandler(bool on)
 /*!
     Fills the settings. This method is called from the dialog's constructor.
 */
-void ConfDlgSecurityTab::fillSettings()
+void ConfDlgPasswordTab::fillSettings()
 {
     m_lengthSpinner->setValue(qpamat->set().readNumEntry("Security/Length"));
     m_allowedCharsEdit->setText(qpamat->set().readEntry("Security/AllowedCharacters"));
@@ -406,15 +487,12 @@ void ConfDlgSecurityTab::fillSettings()
     checkboxHandler(m_useExternalCB->isChecked());
     weakSliderHandler(m_weakSlider->value());
     strongSliderHandler(m_strongSlider->value());
-    
-    m_algorithmCombo->insertStringList(SymmetricEncryptor::getAlgorithms());
-    m_algorithmCombo->setCurrentText( qpamat->set().readEntry( "Security/CipherAlgorithm" ));
 }
 
 /*!
     Applys the settings. This method is called by if the user presses the Ok button.
 */
-void ConfDlgSecurityTab::applySettings()
+void ConfDlgPasswordTab::applySettings()
 {
     QString passGen = m_useExternalCB->isChecked() ? "EXTERNAL" : "RANDOM";
     qpamat->set().writeEntry("Security/PasswordGenerator", passGen);
@@ -423,7 +501,6 @@ void ConfDlgSecurityTab::applySettings()
     qpamat->set().writeEntry("Security/StrongPasswordLimit", m_strongSlider->value()/2.0);
     qpamat->set().writeEntry("Security/Length", m_lengthSpinner->value());
     qpamat->set().writeEntry("Security/AllowedCharacters", m_allowedCharsEdit->text());
-    qpamat->set().writeEntry("Security/CipherAlgorithm", m_algorithmCombo->currentText() );
     qpamat->set().writeEntry("Security/DictionaryFile", m_dictionaryEdit->getContent());
 }
 
@@ -433,7 +510,7 @@ void ConfDlgSecurityTab::applySettings()
     strong slider if necessary and to update the LCD on the right.
     \param value the new value
  */
-void ConfDlgSecurityTab::weakSliderHandler(int value)
+void ConfDlgPasswordTab::weakSliderHandler(int value)
 {
     if (m_strongSlider->value() < value)
     {
@@ -448,13 +525,99 @@ void ConfDlgSecurityTab::weakSliderHandler(int value)
     weak slider if necessary and to update the LCD on the right.
     \param value the new value
 */
-void ConfDlgSecurityTab::strongSliderHandler(int value)
+void ConfDlgPasswordTab::strongSliderHandler(int value)
 {
     if (m_weakSlider->value() > value)
     {
         m_weakSlider->setValue(value);
     }
     m_strongLabel->display(QString::number(value/2.0, 'f', 1));
+}
+
+
+// -------------------------------------------------------------------------------------------------
+//                                     Security tab
+// -------------------------------------------------------------------------------------------------
+
+/*!
+    \class ConfDlgPasswordTab
+    
+    \brief Represents security settings in the configuration dialog
+    
+    This tab holds security general settings 
+    
+     - settings for generated passwords
+     - password strength settings
+     - cipher algorithm
+    
+    \ingroup gui
+    \author Bernhard Walle
+    \version $Revision: 1.14 $
+    \date $Date: 2003/12/30 00:28:22 $
+*/
+
+
+/*!
+    Creates a new instance of an ConfDlgPasswordTab object.
+    \param parent the parent widget
+*/
+ConfDlgSecurityTab::ConfDlgSecurityTab(QWidget* parent)
+    : ConfDlgTab(parent), m_algorithmCombo(0)
+{
+    createAndLayout();
+}
+
+
+/*!
+    Does creating of subwidgets and layout of the GeneralTab.
+*/
+void ConfDlgSecurityTab::createAndLayout()
+{
+    // create layouts
+    QVBoxLayout* mainLayout = new QVBoxLayout(this, 6, 6);
+    QGroupBox* encryptionGroup = new QGroupBox(1, Vertical, tr("Encryption"), this);
+    
+    // some settings
+    encryptionGroup->setInsideSpacing(12);
+    encryptionGroup->setFlat(true);
+    
+    // algorithm stuff
+    m_algorithmLabel = new QLabel(tr("Cipher &algorithm:"), encryptionGroup);
+    m_algorithmCombo = new QComboBox(false, encryptionGroup); 
+    
+    // buddys
+    m_algorithmLabel->setBuddy(m_algorithmCombo);
+    
+    mainLayout->addWidget(encryptionGroup);
+    mainLayout->addSpacing(10);
+    mainLayout->addStretch(5);
+    
+    // help
+    QWhatsThis::add(m_algorithmCombo, tr("<qt>Only change this if you know what you do. The "
+        "algorithms are provided by the OpenSSL library and the availability is determined "
+        "at runtime. You can read a file encrypted with <i>X</i> only if the computer on which "
+        "you read it is able to handle algorithm <i>X</i>. <p>Blowfish is a good choise because "
+        "it's free and available everywhere. IDEA is patended (but secure, PGP uses it!) "
+        "and AES (the successor of DES) is only available at new versions of OpenSSL."
+        "Read a book about cryptography if you're interested in this algorithms.</qt>"));
+}
+
+
+/*!
+    Fills the settings. This method is called from the dialog's constructor.
+*/
+void ConfDlgSecurityTab::fillSettings()
+{
+    m_algorithmCombo->insertStringList(SymmetricEncryptor::getAlgorithms());
+    m_algorithmCombo->setCurrentText( qpamat->set().readEntry( "Security/CipherAlgorithm" ));
+}
+
+/*!
+    Applys the settings. This method is called by if the user presses the Ok button.
+*/
+void ConfDlgSecurityTab::applySettings()
+{
+    qpamat->set().writeEntry("Security/CipherAlgorithm", m_algorithmCombo->currentText() );
 }
 
 
@@ -475,8 +638,8 @@ void ConfDlgSecurityTab::strongSliderHandler(int value)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.13 $
-    \date $Date: 2003/12/28 22:08:15 $
+    \version $Revision: 1.14 $
+    \date $Date: 2003/12/30 00:28:22 $
 */
 
 
@@ -485,13 +648,9 @@ void ConfDlgSecurityTab::strongSliderHandler(int value)
     \param parent the parent widget
 */
 ConfDlgPresentationTab::ConfDlgPresentationTab(QWidget* parent)
-    : QWidget(parent)
+    : ConfDlgTab(parent)
 {
     createAndLayout();
-    
-    // init contents
-    fillSettings();
-    
 }
 
 
@@ -575,8 +734,8 @@ void ConfDlgPresentationTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.13 $
-    \date $Date: 2003/12/28 22:08:15 $
+    \version $Revision: 1.14 $
+    \date $Date: 2003/12/30 00:28:22 $
 */
 
 /*!
@@ -590,12 +749,9 @@ void ConfDlgPresentationTab::applySettings()
     \param parent the parent widget
 */
 ConfDlgSmartcardTab::ConfDlgSmartcardTab(QWidget* parent)
-        : QWidget(parent)
+        : ConfDlgTab(parent)
 {
     createAndLayout();
-    
-    // init contents
-    fillSettings();
     
     connect(m_radioGroup, SIGNAL(clicked(int)), this, SLOT(radioButtonHandler(int)));
     connect(m_testButton, SIGNAL(clicked()), this, SLOT(testSmartCard()));

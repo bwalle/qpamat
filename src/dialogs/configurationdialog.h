@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.h,v 1.11 2003/12/28 22:08:15 bwalle Exp $
+ * Id: $Id: configurationdialog.h,v 1.12 2003/12/30 00:28:22 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,9 +18,15 @@
 #ifndef CONFIGURATIONDIALOG_H
 #define CONFIGURATIONDIALOG_H
 
-#include <qtabdialog.h>
+#include <set>
 
-class ConfigurationDialog : public QTabDialog
+#include <qdialog.h>
+#include <qlistbox.h>
+#include <qwidgetstack.h>
+
+class ConfDlgTab;
+
+class ConfigurationDialog : public QDialog
 {
     Q_OBJECT
     
@@ -30,6 +36,15 @@ class ConfigurationDialog : public QTabDialog
     private:
         ConfigurationDialog(const ConfigurationDialog&);
         ConfigurationDialog& operator=(const ConfigurationDialog&);
+        
+    protected slots:
+        void accept();
+        void aboutToShowHandler(QWidget*);
+        
+    private:
+        QListBox*               m_listBox;
+        QWidgetStack*           m_widgetStack;
+        std::set<ConfDlgTab*>   m_filledTabs;
 };
 
 #endif // CONFIGURATIONDIALOG_H

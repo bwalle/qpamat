@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialogprivate.h,v 1.2 2003/12/29 10:59:47 bwalle Exp $
+ * Id: $Id: configurationdialogprivate.h,v 1.3 2003/12/30 00:28:22 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -32,19 +32,36 @@
 #include "widgets/filelineedit.h"
 #include "widgets/fontchoosebox.h"
 
-class ConfDlgGeneralTab : public QWidget
+
+// -------------------------------------------------------------------------------------------------
+
+class ConfDlgTab : public QWidget
 {
-    Q_OBJECT
+    friend class ConfigurationDialog;
+    
+    public:
+        ConfDlgTab(QWidget* parent, const char* name = 0) : QWidget(parent, name) { }
+        
+    protected:
+        virtual void fillSettings() = 0;
+        virtual void applySettings() = 0;
+};
+
+// -------------------------------------------------------------------------------------------------
+
+class ConfDlgGeneralTab : public ConfDlgTab
+{
+    friend class ConfigurationDialog;
     
     public:
         ConfDlgGeneralTab (QWidget* parent);
         
-    public slots:
+    protected:
+        void fillSettings();
         void applySettings();
         
     private:
         void createAndLayout();
-        void fillSettings();
         
     private:
         QCheckBox*      m_autoLoginCheckbox;
@@ -58,29 +75,28 @@ class ConfDlgGeneralTab : public QWidget
 
 // -------------------------------------------------------------------------------------------------
 
-class ConfDlgSecurityTab : public QWidget
+class ConfDlgPasswordTab : public ConfDlgTab
 {
     Q_OBJECT
     
     friend class ConfigurationDialog;
     
     public:
-        ConfDlgSecurityTab(QWidget* parent);
-    
-    protected:
-        void polish();
+        ConfDlgPasswordTab(QWidget* parent);
         
     protected slots:
-        void applySettings();
         void checkboxHandler(bool on);
         
+    protected:
+        void fillSettings();
+        void applySettings();
+         
     private slots:
         void weakSliderHandler(int value);
         void strongSliderHandler(int value);
         
     private:
         void createAndLayout();
-        void fillSettings();
         
     private:
         // passwords
@@ -94,14 +110,34 @@ class ConfDlgSecurityTab : public QWidget
         QLCDNumber*     m_weakLabel;
         QLCDNumber*     m_strongLabel;
         FileLineEdit*   m_dictionaryEdit;
+};
+
+// -------------------------------------------------------------------------------------------------
+
+class ConfDlgSecurityTab : public ConfDlgTab
+{
+    friend class ConfigurationDialog;
+    
+    public:
+        ConfDlgSecurityTab(QWidget* parent);
+    
+    protected:
+        void fillSettings();
+        void applySettings();
+        
+    private:
+        void createAndLayout();
+        
+    private:
         // algorithm
         QComboBox*      m_algorithmCombo;
         QLabel*         m_algorithmLabel;
 };
 
+
 // -------------------------------------------------------------------------------------------------
 
-class ConfDlgSmartcardTab : public QWidget
+class ConfDlgSmartcardTab : public ConfDlgTab
 {
     Q_OBJECT
     
@@ -114,15 +150,17 @@ class ConfDlgSmartcardTab : public QWidget
         ConfDlgSmartcardTab(QWidget* parent);
     
     protected slots:
-        void applySettings();
         void testSmartCard();
+        
+    protected:
+        void fillSettings();
+        void applySettings();
         
     private slots:
         void radioButtonHandler(int buttonId);
         
     private:
         void createAndLayout();
-        void fillSettings();
         void setUseSmartcardEnabled(bool enabled);
         
     private:
@@ -136,19 +174,17 @@ class ConfDlgSmartcardTab : public QWidget
 
 // -------------------------------------------------------------------------------------------------
 
-class ConfDlgPresentationTab : public QWidget
+class ConfDlgPresentationTab : public ConfDlgTab
 {
-    Q_OBJECT
-    
     public:
         ConfDlgPresentationTab(QWidget* parent);
     
-    protected slots:
+    protected:
+        void fillSettings();
         void applySettings();
         
     private:
         void createAndLayout();
-        void fillSettings();
         
     private:
         FontChooseBox*  m_normalFontEdit;
