@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.cpp,v 1.15 2003/12/30 15:23:23 bwalle Exp $
+ * Id: $Id: configurationdialog.cpp,v 1.16 2003/12/30 22:58:50 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -38,6 +38,9 @@
 #include <qlcdnumber.h>
 #include <qwidgetstack.h>
 #include <qlistbox.h>
+#include <qfile.h>
+#include <qtextstream.h>
+#include <qdir.h>
 
 #include "configurationdialog.h"
 #include "configurationdialogprivate.h"
@@ -45,6 +48,7 @@
 #include "widgets/filelineedit.h"
 #include "security/passwordgeneratorfactory.h"
 #include "security/symmetricencryptor.h"
+#include "security/hybridpasswordchecker.h"
 #include "smartcard/memorycard.h"
 
 /*!
@@ -75,8 +79,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.15 $
-    \date $Date: 2003/12/30 15:23:23 $
+    \version $Revision: 1.16 $
+    \date $Date: 2003/12/30 22:58:50 $
  */
 
 /*!
@@ -201,8 +205,8 @@ void ConfigurationDialog::aboutToShowHandler(QWidget* w)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.15 $
-    \date $Date: 2003/12/30 15:23:23 $
+    \version $Revision: 1.16 $
+    \date $Date: 2003/12/30 22:58:50 $
 */
 
 /*!
@@ -243,8 +247,8 @@ void ConfigurationDialog::aboutToShowHandler(QWidget* w)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.15 $
-    \date $Date: 2003/12/30 15:23:23 $
+    \version $Revision: 1.16 $
+    \date $Date: 2003/12/30 22:58:50 $
 */
 
 
@@ -364,8 +368,8 @@ void ConfDlgGeneralTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.15 $
-    \date $Date: 2003/12/30 15:23:23 $
+    \version $Revision: 1.16 $
+    \date $Date: 2003/12/30 22:58:50 $
 */
 
 
@@ -375,13 +379,15 @@ void ConfDlgGeneralTab::applySettings()
 */
 ConfDlgPasswordTab::ConfDlgPasswordTab(QWidget* parent)
     : ConfDlgTab(parent), m_lengthSpinner(0), m_externalEdit(0), m_allowedCharsEdit(0), 
-      m_useExternalCB(0), m_weakSlider(0), m_strongSlider(0), m_weakLabel(0), m_strongLabel(0)
+      m_useExternalCB(0), m_weakSlider(0), m_strongSlider(0), m_weakLabel(0), m_strongLabel(0),
+      m_sortButton(0)
 {
     createAndLayout();
     
     connect(m_useExternalCB, SIGNAL(toggled(bool)), SLOT(checkboxHandler(bool)));
     connect(m_weakSlider, SIGNAL(valueChanged(int)), SLOT(weakSliderHandler(int)));
     connect(m_strongSlider, SIGNAL(valueChanged(int)), SLOT(strongSliderHandler(int)));
+    connect(m_sortButton, SIGNAL(clicked()), SLOT(sortDictionary()));
 }
 
 
@@ -393,7 +399,7 @@ void ConfDlgPasswordTab::createAndLayout()
     // create layouts
     QVBoxLayout* mainLayout = new QVBoxLayout(this, 0, 6);
     QGroupBox* passwordGroup = new QGroupBox(5, Vertical, tr("Generated Passwords"), this);
-    QGroupBox* checkerGroup = new QGroupBox(5, Vertical, tr("Password checker"), this);
+    QGroupBox* checkerGroup = new QGroupBox(6, Vertical, tr("Password checker"), this);
     
     // some settings
     passwordGroup->setInsideSpacing(6);
@@ -438,8 +444,17 @@ void ConfDlgPasswordTab::createAndLayout()
     m_strongLabel->setSmallDecimalPoint(true);
     m_strongLabel->setLineWidth(0);
     
-    QLabel* dictLabel = new QLabel(tr("&Dictionary file (sorted!):"), checkerGroup, "DictLabel");
+    QLabel* dictLabel = new QLabel(tr("&Dictionary file (must be sorted once):"), 
+            checkerGroup, "DictLabel");
     m_dictionaryEdit = new FileLineEdit(checkerGroup, "DictEdit");
+
+    // sort button
+    QHBox* box = new QHBox(checkerGroup, "Hbox");
+    m_sortButton = new QPushButton(tr("&Sort dictionary"), box, "SortBtn");
+    m_sortButton->setAutoDefault(false);
+    
+    QWidget* dummy = new QWidget(box);
+    box->setStretchFactor(dummy, 10);
     
     // buddys
     lengthLabel->setBuddy(m_lengthSpinner);
@@ -448,13 +463,12 @@ void ConfDlgPasswordTab::createAndLayout()
     
     mainLayout->addWidget(passwordGroup);
     mainLayout->addWidget(checkerGroup);
-    mainLayout->addSpacing(10);
     mainLayout->addStretch(5);
     
     // help
-    /* QWhatsThis::add(m_radioGroup, tr("<qt>Password checkers are used to check the initial password "
-        "and the random password. That means that a random password has always the security of the "
-        "password checker.<p>Using an external password checker may be slow.</qt>")); */
+    QWhatsThis::add(m_sortButton, tr("<qt>For performance reasons, the dictionary file needs "
+        "to be sorted by the length of the words. This function does that!<p>It saves also a "
+        "copy of the old file by <i>filename.old</i>.</qt>"));
 }
 
 
@@ -535,6 +549,64 @@ void ConfDlgPasswordTab::strongSliderHandler(int value)
 }
 
 
+/*!
+    Sorts the dictionary that was specified in the dictionary line edit. Stores a backup
+    copy of the file in filename.bak. 
+*/
+void ConfDlgPasswordTab::sortDictionary()
+{
+    StringVector words;
+    QFile file(m_dictionaryEdit->getContent());
+    if (!file.open(IO_ReadOnly)) 
+    {
+        QMessageBox::warning(this, "QPaMaT", tr("The file you wanted to sort does not exist!"),
+            QMessageBox::Ok, QMessageBox::NoButton);
+        return;
+    }
+    
+    QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
+    
+    QTextStream stream(&file);
+    QString line;
+    while (QString line = stream.readLine()) 
+    {
+        words.append(line);
+    }
+    file.close();
+    
+    std::sort(words.begin(), words.end(), std::ptr_fun(string_length_greater));
+    
+    // save the old file
+    if (!QDir::root().rename(file.name(), file.name() + ".bak"))
+    {
+        QApplication::restoreOverrideCursor();
+        if (!QMessageBox::question(this, "QPaMaT", tr("Failed to create a backup file. Do you want\n"
+            "to continue without a backup?"), QMessageBox::Yes, 
+            QMessageBox::No | QMessageBox::Default))
+        {
+            return;
+        }
+        QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
+    }
+    
+    if (!file.open(IO_WriteOnly))
+    {
+        QMessageBox::warning(this, "QPaMaT", tr("Could not open the file for writing!"),
+            QMessageBox::Ok, QMessageBox::NoButton);
+        return;
+    }
+    
+    QTextStream writestream(&file);
+    
+    for (StringVector::iterator it = words.begin(); it != words.end(); ++it)
+    {
+        writestream << *it << endl;
+    }
+    
+    QApplication::restoreOverrideCursor();
+}
+
+
 // -------------------------------------------------------------------------------------------------
 //                                     Security tab
 // -------------------------------------------------------------------------------------------------
@@ -552,8 +624,8 @@ void ConfDlgPasswordTab::strongSliderHandler(int value)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.15 $
-    \date $Date: 2003/12/30 15:23:23 $
+    \version $Revision: 1.16 $
+    \date $Date: 2003/12/30 22:58:50 $
 */
 
 
@@ -589,7 +661,6 @@ void ConfDlgSecurityTab::createAndLayout()
     m_algorithmLabel->setBuddy(m_algorithmCombo);
     
     mainLayout->addWidget(encryptionGroup);
-    mainLayout->addSpacing(10);
     mainLayout->addStretch(5);
     
     // help
@@ -598,7 +669,7 @@ void ConfDlgSecurityTab::createAndLayout()
         "at runtime. You can read a file encrypted with <i>X</i> only if the computer on which "
         "you read it is able to handle algorithm <i>X</i>. <p>Blowfish is a good choise because "
         "it's free and available everywhere. IDEA is patended (but secure, PGP uses it!) "
-        "and AES (the successor of DES) is only available at new versions of OpenSSL."
+        "and AES (the successor of DES) is only available at new versions of OpenSSL. "
         "Read a book about cryptography if you're interested in this algorithms.</qt>"));
 }
 
@@ -638,8 +709,8 @@ void ConfDlgSecurityTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.15 $
-    \date $Date: 2003/12/30 15:23:23 $
+    \version $Revision: 1.16 $
+    \date $Date: 2003/12/30 22:58:50 $
 */
 
 
@@ -734,8 +805,8 @@ void ConfDlgPresentationTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.15 $
-    \date $Date: 2003/12/30 15:23:23 $
+    \version $Revision: 1.16 $
+    \date $Date: 2003/12/30 22:58:50 $
 */
 
 /*!

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialogprivate.h,v 1.3 2003/12/30 00:28:22 bwalle Exp $
+ * Id: $Id: configurationdialogprivate.h,v 1.4 2003/12/30 22:58:50 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -94,6 +94,7 @@ class ConfDlgPasswordTab : public ConfDlgTab
     private slots:
         void weakSliderHandler(int value);
         void strongSliderHandler(int value);
+        void sortDictionary();
         
     private:
         void createAndLayout();
@@ -110,6 +111,7 @@ class ConfDlgPasswordTab : public ConfDlgTab
         QLCDNumber*     m_weakLabel;
         QLCDNumber*     m_strongLabel;
         FileLineEdit*   m_dictionaryEdit;
+        QPushButton*    m_sortButton;
 };
 
 // -------------------------------------------------------------------------------------------------
