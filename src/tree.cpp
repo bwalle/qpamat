@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.6 2003/11/28 18:42:39 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.7 2003/12/04 14:09:11 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -207,6 +207,7 @@ void Tree::showContextMenu(QListViewItem* item, const QPoint& point)
 // -------------------------------------------------------------------------------------------------
 {
     m_contextMenu->setItemEnabled(DELETE_ITEM, item != 0);
+    m_contextMenu->setItemEnabled(RENAME_ITEM, item != 0);
     int id = m_contextMenu->exec(point);
     
     switch (id)
