@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encryptor.h,v 1.11 2003/12/29 10:59:16 bwalle Exp $
+ * Id: $Id: encryptor.h,v 1.12 2004/01/13 23:20:12 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,7 +24,23 @@
 #include <qstringlist.h>
 
 #include "global.h"
-#include "stringencryptor.h"
+#include "encryptor.h"
+
+
+class NoSuchAlgorithmException : public std::runtime_error
+{
+    public:
+        NoSuchAlgorithmException(const std::string& error) : std::runtime_error(error) { }
+};
+
+class StringEncryptor
+{
+    public:
+        virtual ~StringEncryptor() { }
+        
+        virtual QString encryptStrToStr(const QString& string) = 0;
+        virtual QString decryptStrFromStr(const QString& string) = 0;
+};
 
 class Encryptor : public StringEncryptor
 {

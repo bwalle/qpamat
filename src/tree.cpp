@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.27 2004/01/07 00:13:55 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.28 2004/01/13 23:20:46 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -45,7 +45,7 @@
 #include "tree.h"
 #include "treeentry.h"
 #include "security/passwordhash.h"
-#include "security/stringencryptor.h"
+#include "security/encryptor.h"
 #include "security/symmetricencryptor.h"
 #include "security/collectencryptor.h"
 #include "dialogs/waitdialog.h"
@@ -68,8 +68,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.27 $
-    \date $Date: 2004/01/07 00:13:55 $
+    \version $Revision: 1.28 $
+    \date $Date: 2004/01/13 23:20:46 $
 */
 
 /*!

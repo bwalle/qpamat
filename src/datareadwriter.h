@@ -1,5 +1,5 @@
 /*
- * Id: $Id: datareadwriter.h,v 1.1 2004/01/06 23:39:35 bwalle Exp $
+ * Id: $Id: datareadwriter.h,v 1.2 2004/01/13 23:20:46 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -26,7 +26,7 @@
 #include <qdom.h>
 
 #include "global.h"
-#include "security/stringencryptor.h"
+#include "security/encryptor.h"
 
 class ReadWriteException : public std::runtime_error
 {

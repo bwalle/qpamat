@@ -1,5 +1,5 @@
 /*
- * Id: $Id: collectencryptor.h,v 1.3 2003/12/29 10:59:16 bwalle Exp $
+ * Id: $Id: collectencryptor.h,v 1.4 2004/01/13 23:20:17 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,7 +24,6 @@
 #include <qstringlist.h>
 
 #include "global.h"
-#include "stringencryptor.h"
 #include "encryptor.h"
 
 class CollectEncryptor : public StringEncryptor
