@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.cpp,v 1.11 2003/12/20 15:58:12 bwalle Exp $
+ * Id: $Id: configurationdialog.cpp,v 1.12 2003/12/21 20:29:19 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -173,9 +173,9 @@ void GeneralTab::applySettings()
 // -------------------------------------------------------------------------------------------------
 SecurityTab::SecurityTab(QWidget* parent)
 // -------------------------------------------------------------------------------------------------
-        : QWidget(parent), m_lengthSpinner(0), m_externalEdit(0), m_allowedCharsEdit(0), 
-          m_useExternalCB(0), m_uppercaseCB(0), m_lowercaseCB(0), m_digitsCB(0), m_specialCB(0), 
-          m_algorithmCombo(0)
+        : QWidget(parent), m_lengthSpinner(0), m_minLengthSpinner(0), m_externalEdit(0), 
+          m_allowedCharsEdit(0), m_useExternalCB(0), m_uppercaseCB(0), m_lowercaseCB(0), 
+          m_digitsCB(0), m_specialCB(0), m_algorithmCombo(0)
 {
     createAndLayout();
     
@@ -183,6 +183,7 @@ SecurityTab::SecurityTab(QWidget* parent)
     fillSettings();
     
     connect(m_useExternalCB, SIGNAL(toggled(bool)), SLOT(checkboxHandler(bool)));
+    connect(m_minLengthSpinner, SIGNAL(valueChanged(int)), SLOT(spinValueChangeHandler(int)));
 }
 
 
@@ -209,12 +210,18 @@ void SecurityTab::createAndLayout()
     m_lowercaseCB = new QCheckBox(tr("&Lowercase letters"), ensureGrid);
     m_digitsCB    = new QCheckBox(tr("&Digits"), ensureGrid);
     m_specialCB   = new QCheckBox(tr("&Special characters"), ensureGrid);
-    QLabel* lengthLabel = new QLabel(tr("L&ength:"), ensureGrid);
+    QLabel* lengthLabel = new QLabel(tr("L&ength (min./pref.):"), ensureGrid);
     QLabel* allowedLabel = new QLabel(tr("&Allowed characters:"), ensureGrid);
-    m_lengthSpinner = new QSpinBox(6, 20, 1, ensureGrid, "LengthSpinner");
+    QHBox* spinnerBox = new QHBox(ensureGrid, "SpinnerBox");
+    spinnerBox->setSpacing(2);
+    m_minLengthSpinner = new QSpinBox(6, 20, 1, spinnerBox, "MinLength");
+    m_lengthSpinner = new QSpinBox(6, 20, 1, spinnerBox, "LengthSpinner");
     m_allowedCharsEdit = new QLineEdit(ensureGrid, "AllowedLineEdit");
     
     // layout the grid
+    ensureGridLayout->setColStretch(0, 4);
+    ensureGridLayout->setColStretch(1, 0);
+    ensureGridLayout->setColStretch(2, 5);
     ensureGridLayout->setColSpacing(1, 6);
     ensureGridLayout->addMultiCellWidget(ensureLabel, 0, 0, 0, 2);
     ensureGridLayout->addWidget(m_uppercaseCB,        1, 0);
@@ -223,7 +230,7 @@ void SecurityTab::createAndLayout()
     ensureGridLayout->addWidget(m_specialCB,          2, 2);
     ensureGridLayout->addWidget(lengthLabel,          3, 0);
     ensureGridLayout->addWidget(allowedLabel,         3, 2);
-    ensureGridLayout->addWidget(m_lengthSpinner,      4, 0);
+    ensureGridLayout->addWidget(spinnerBox,           4, 0);
     ensureGridLayout->addWidget(m_allowedCharsEdit,   4, 2);
     
     m_useExternalCB = new QCheckBox(tr("Use external application for generation:"), passwordGroup,
@@ -280,6 +287,7 @@ void SecurityTab::fillSettings()
     m_lowercaseCB->setChecked(ensuredString.contains("L"));
     m_specialCB->setChecked(ensuredString.contains("S"));
     m_digitsCB->setChecked(ensuredString.contains("D"));
+    m_minLengthSpinner->setValue(qpamat->set().readNumEntry("Security/MinLength"));
     m_lengthSpinner->setValue(qpamat->set().readNumEntry("Security/Length"));
     m_allowedCharsEdit->setText(qpamat->set().readEntry("Security/AllowedCharacters"));
     m_useExternalCB->setChecked(qpamat->set().readEntry("Security/PasswordGenerator") =="EXTERNAL");
@@ -302,13 +310,22 @@ void SecurityTab::applySettings()
     ensuredString += m_specialCB->isChecked()   ? "S" : "s";
     ensuredString += m_digitsCB->isChecked()    ? "D" : "d";
     
-    qpamat->set().writeEntry("Security/PasswordGenerator", m_useExternalCB->isChecked() 
-        ? "EXTERNAL" : "RANDOM" );
+    QString passGen = m_useExternalCB->isChecked() ? "EXTERNAL" : "RANDOM";
+    qpamat->set().writeEntry("Security/PasswordGenerator", passGen);
     qpamat->set().writeEntry("Security/PasswordGenAdditional", m_externalEdit->getContent());
     qpamat->set().writeEntry("Security/EnsuredCharacters", ensuredString);
+    qpamat->set().writeEntry("Security/MinLength", m_minLengthSpinner->value());
     qpamat->set().writeEntry("Security/Length", m_lengthSpinner->value());
     qpamat->set().writeEntry("Security/AllowedCharacters", m_allowedCharsEdit->text());
     qpamat->set().writeEntry("Security/CipherAlgorithm", m_algorithmCombo->currentText() );
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void SecurityTab::spinValueChangeHandler(int value)
+// -------------------------------------------------------------------------------------------------
+{
+    m_lengthSpinner->setMinValue(value);
 }
 
 
