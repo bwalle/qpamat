@@ -1,5 +1,5 @@
 /*
- * Id: $Id: property.h,v 1.5 2003/12/04 11:57:09 bwalle Exp $
+ * Id: $Id: property.h,v 1.6 2003/12/04 20:30:27 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -31,8 +31,8 @@ class TreeEntry;
  *
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.5 $
- * \date $Date: 2003/12/04 11:57:09 $
+ * \version $Revision: 1.6 $
+ * \date $Date: 2003/12/04 20:30:27 $
  */
 class Property : public QObject
 {
@@ -123,6 +123,13 @@ class Property : public QObject
          * \param encrypted \c true if the code should be stored encrypted, \c false otherwise
          */
         void setEncrypted(bool encrypted);
+        
+        /*!
+         * Converts the property to rich text which is used to printing. One property represents
+         * a row in a table, so it begins with an \c \<tr\> tag end ends with an \c \</tr\> tag.
+         * \return the rich text
+         */
+        QString toRichTextForPrint() const;
         
         /*!
          * Appends the property as \c property tag in the XML structure.
