@@ -1,5 +1,5 @@
 /*
- * Id: $Id: datareadwriter.cpp,v 1.4 2004/02/09 19:31:39 bwalle Exp $
+ * Id: $Id: datareadwriter.cpp,v 1.5 2004/04/21 22:22:43 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -57,8 +57,8 @@
 
     \ingroup gui
     \author $Author: bwalle $
-    \version $Revision: 1.4 $
-    \date $Date: 2004/02/09 19:31:39 $
+    \version $Revision: 1.5 $
+    \date $Date: 2004/04/21 22:22:43 $
     
 */
 
@@ -194,8 +194,8 @@
 
     \ingroup gui
     \author $Author: bwalle $
-    \version $Revision: 1.4 $
-    \date $Date: 2004/02/09 19:31:39 $
+    \version $Revision: 1.5 $
+    \date $Date: 2004/04/21 22:22:43 $
 */
 
 /*!
@@ -611,7 +611,7 @@ QDomDocument DataReadWriter::readXML(const QString& password)
         ByteVector vec;
         byte id = byte(appData.namedItem("smartcard").toElement().attribute("card-id").toShort());
 
-        // wirft ebenfalls exception
+        // also throws exception
         writeOrReadSmartcard(vec, false, id, password);
         dynamic_cast<CollectEncryptor*>(enc.get())->setBytes(vec);
     }
@@ -658,7 +658,16 @@ void DataReadWriter::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& r
             ReadWriteException::CConfigurationError);
     }
     
-    card->init(qpamat->set().readNumEntry("Smartcard/Port"));
+    try
+    {
+        card->init(qpamat->set().readNumEntry("Smartcard/Port"));
+    }
+    catch (const CardException& e)
+    {
+        QApplication::restoreOverrideCursor();
+        throw ReadWriteException(qApp->tr("Error in initializing the smart card reader:\n"
+             "%1").arg(e.what()), ReadWriteException::CSmartcardError);
+    }
     
     // ask the user to insert the smartcard
     QApplication::restoreOverrideCursor();
