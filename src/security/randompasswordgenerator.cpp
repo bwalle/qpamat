@@ -1,5 +1,5 @@
 /*
- * Id: $Id: randompasswordgenerator.cpp,v 1.3 2003/10/03 13:04:58 bwalle Exp $
+ * Id: $Id: randompasswordgenerator.cpp,v 1.4 2003/10/04 20:48:02 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -19,9 +19,9 @@
 
 #include <openssl/rand.h>
 
-#include "notseededexception.h"
 #include "../types.h"
-#include "../encodinghelper.h"
+#include "notseededexception.h"
+#include "encodinghelper.h"
 #include "randompasswordgenerator.h"
 
 // -------------------------------------------------------------------------------------------------

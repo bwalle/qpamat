@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encryptor.cpp,v 1.6 2003/10/04 12:57:06 bwalle Exp $
+ * Id: $Id: encryptor.cpp,v 1.7 2003/10/04 20:48:02 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -25,7 +25,7 @@
 #include "encryptor.h"
 #include "constants.h"
 #include "nosuchalgorithmexception.h"
-#include "../encodinghelper.h"
+#include "encodinghelper.h"
 
 #ifndef BUFLEN
 #define BUFLEN 512

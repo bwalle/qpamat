@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encodinghelper.h,v 1.3 2003/09/21 15:59:45 bwalle Exp $
+ * Id: $Id: encodinghelper.h,v 1.4 2003/10/04 20:47:56 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -19,7 +19,7 @@
 #include <qstring.h>
 #include <qvaluevector.h>
 
-#include "types.h"
+#include "../types.h"
 
 /**
  * @file encodinghelper.h
@@ -31,8 +31,8 @@
 /**
  * Helper class for dealing with encodings.
  * @author Bernhard Walle
- * @version $Revision: 1.3 $
- * @date $Date: 2003/09/21 15:59:45 $
+ * @version $Revision: 1.4 $
+ * @date $Date: 2003/10/04 20:47:56 $
  */
 class EncodingHelper
 {
