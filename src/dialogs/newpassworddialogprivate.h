@@ -1,5 +1,5 @@
 /*
- * Id: $Id: passworddialog.h,v 1.4 2003/12/28 22:08:15 bwalle Exp $
+ * Id: $Id: newpassworddialogprivate.h,v 1.1 2003/12/28 22:08:15 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,23 +15,17 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#ifndef PASSWORDDIALOG_H
-#define PASSWORDDIALOG_H
+#ifndef NEWPASSWORDDIALOGPRIVATE_H
+#define NEWPASSWORDDIALOGPRIVATE_H
 
-#include <qdialog.h>
-#include <qlineedit.h>
-#include <qwidget.h>
+#include <qvalidator.h>
+#include <qstring.h>
 
-class PasswordDialog : public QDialog 
+class PasswordValidator : public QValidator
 {
-    Q_OBJECT
-    
     public:
-        PasswordDialog(QWidget* parent, const char* name = 0);
-        QString getPassword() const;
-        
-    private:
-        QLineEdit* m_passwordEdit;
+        PasswordValidator(QObject* parent = 0, const char* name = 0);
+        State validate(QString& input, int& pos) const;
 };
 
-#endif // PASSWORDDIALOG_H
+#endif // NEWPASSWORDDIALOGPRIVATE_H

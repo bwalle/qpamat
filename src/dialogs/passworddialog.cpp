@@ -1,5 +1,5 @@
 /*
- * Id: $Id: passworddialog.cpp,v 1.3 2003/10/20 20:53:49 bwalle Exp $
+ * Id: $Id: passworddialog.cpp,v 1.4 2003/12/28 22:08:15 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,10 +24,27 @@
 
 #include "passworddialog.h"
 
-// -------------------------------------------------------------------------------------------------
-PasswordDialog::PasswordDialog(QWidget* parent)
-// -------------------------------------------------------------------------------------------------
-    : QDialog(parent)
+/*!
+    \class PasswordDialog
+    
+    \brief Dialog to enter the password
+    
+    This dialog is just used to enter a password. It's the dialog that is shown on startup and
+    lets the user type-in the password. No checking is done here.
+    
+    \ingroup gui
+    \author Bernhard Walle
+    \version $Revision: 1.4 $
+    \date $Date: 2003/12/28 22:08:15 $
+*/
+
+/*!
+    Creates a new instance of a PasswordDialog.
+    \param parent the parent widget
+    \param name the name of the widget
+*/
+PasswordDialog::PasswordDialog(QWidget* parent, const char* name)
+    : QDialog(parent, name)
 {
     setCaption("QPaMaT");
     
@@ -43,11 +60,9 @@ PasswordDialog::PasswordDialog(QWidget* parent)
     
     QPushButton* cancelButton = new QPushButton(tr("Cancel"), this);
     
-    
     // create layouts
     QVBoxLayout* layout = new QVBoxLayout(this, 6, 6);
     QHBoxLayout* buttonLayout = new QHBoxLayout(0, 0, 6);
-    
     
     // layout elements
     buttonLayout->addStretch(10);
@@ -60,16 +75,17 @@ PasswordDialog::PasswordDialog(QWidget* parent)
     layout->addSpacing(7);
     layout->addLayout(buttonLayout);
     
-    
     // communication
-    QObject::connect(okButton, SIGNAL(clicked()), this, SLOT(accept()));
-    QObject::connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
+    connect(okButton, SIGNAL(clicked()), SLOT(accept()));
+    connect(cancelButton, SIGNAL(clicked()), SLOT(reject()));
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Returns the password the user has entered.
+    \return the password
+*/
 QString PasswordDialog::getPassword() const
-// -------------------------------------------------------------------------------------------------
 {
     return m_passwordEdit->text();
 }

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: newpassworddialog.cpp,v 1.5 2003/12/18 21:59:57 bwalle Exp $
+ * Id: $Id: newpassworddialog.cpp,v 1.6 2003/12/28 22:08:15 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -23,15 +23,39 @@
 #include <qmessagebox.h>
 #include <qpushbutton.h>
 
+#include "newpassworddialogprivate.h"
 #include "newpassworddialog.h"
-#include "../security/masterpasswordchecker.h"
-#include "../settings.h"
+#include "qpamat.h"
+#include "security/masterpasswordchecker.h"
+#include "settings.h"
 
-using NewPasswordDialogLocal::PasswordValidator;
+/*!
+    \class NewPasswordDialog
+    
+    \brief Password to enter a new password for new files.
+    
+    This dialog was made to enter a new password or to change the existing password. The
+    mode depends on the argument \p oldPassword of the constructor. If it is QString::null,
+    a new password can be made.
+    
+    This class uses not the dictionary-based checker but the MasterPasswordChecker. This is
+    because maybe the user has not setup a dictionary at this time and because here the
+    user cannot use a random password but must memorize the password.
+    
+    \ingroup gui
+    \author Bernhard Walle
+    \version $Revision: 1.6 $
+    \date $Date: 2003/12/28 22:08:15 $
+*/
 
-// -------------------------------------------------------------------------------------------------
+
+/*!
+    Creates a new instance of a NewPasswordDialog.
+    \param parent the parent widget
+    \param oldPassword the old password (the user has to enter it and it must be right) or
+                       QString::null if a new password should be entered.
+*/
 NewPasswordDialog::NewPasswordDialog(QWidget* parent, const QString& oldPassword)
-// -------------------------------------------------------------------------------------------------
     : QDialog(parent), m_oldPassword(oldPassword)
 {
     setCaption("QPaMaT");
@@ -45,17 +69,16 @@ NewPasswordDialog::NewPasswordDialog(QWidget* parent, const QString& oldPassword
     
     
     // communication
-    QObject::connect(m_okButton, SIGNAL(clicked()), this, SLOT(accept()));
-    QObject::connect(m_cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
-    QObject::connect(m_firstPasswordEdit, SIGNAL(textChanged(const QString&)), 
-        this, SLOT(checkOkEnabled()));
-    QObject::connect(m_secondPasswordEdit, SIGNAL(textChanged(const QString&)), 
-        this, SLOT(checkOkEnabled()));
+    connect(m_okButton, SIGNAL(clicked()), SLOT(accept()));
+    connect(m_cancelButton, SIGNAL(clicked()), SLOT(reject()));
+    connect(m_firstPasswordEdit, SIGNAL(textChanged(const QString&)), SLOT(checkOkEnabled()));
+    connect(m_secondPasswordEdit, SIGNAL(textChanged(const QString&)), SLOT(checkOkEnabled()));
 }
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Creates and layout the widgets of the dialog.
+*/
 void NewPasswordDialog::createAndLayout()
-// -------------------------------------------------------------------------------------------------
 {
     // text fields
     if (m_oldPassword)
@@ -132,9 +155,12 @@ void NewPasswordDialog::createAndLayout()
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Method that is called if the user presses Ok.
+    It checks the password for quality and if the old password was right. If not, it displays
+    a message box and the user has the chance to try again.
+*/
 void NewPasswordDialog::accept()
-// -------------------------------------------------------------------------------------------------
 {
     if (m_secondPasswordEdit->text()!= m_secondPasswordEdit->text())
     {
@@ -161,7 +187,8 @@ void NewPasswordDialog::accept()
     
     try
     {
-        ok = checker.isPasswordOk(password);
+        double quality = checker.passwordQuality(password);
+        ok = quality > qpamat->set().readDoubleEntry("Security/StrongPasswordLimit");
     }
     catch (const std::exception& exc)
     {
@@ -185,17 +212,22 @@ void NewPasswordDialog::accept()
     QDialog::accept();
 }
 
-// -------------------------------------------------------------------------------------------------
+
+/*!
+    Returns the (new) password the user has entered.
+    \return the password
+*/
 QString NewPasswordDialog::getPassword() const
-// -------------------------------------------------------------------------------------------------
 {
     return m_firstPasswordEdit->text();
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Checks the user's input and enables the Ok button if necessary. This slot is called always
+    if the users changes the input.
+*/
 void NewPasswordDialog::checkOkEnabled() const
-// -------------------------------------------------------------------------------------------------
 {
     if (m_firstPasswordEdit->hasAcceptableInput() && m_secondPasswordEdit->hasAcceptableInput()
             && m_firstPasswordEdit->text().length() == m_secondPasswordEdit->text().length())
@@ -208,16 +240,43 @@ void NewPasswordDialog::checkOkEnabled() const
     } 
 }
 
+#ifndef DOXYGEN
+
 // -------------------------------------------------------------------------------------------------
+//                                     Validator
+// -------------------------------------------------------------------------------------------------
+
+/*!
+    \class PasswordValidator
+    
+    \brief Validator for the passwords in the NewPasswordDialog dialog.
+    
+    The validator simply checks if the password has less than six characters. It is used to
+    enable or disable the Ok button.
+    
+    \ingroup gui
+    \author Bernhard Walle
+    \version $Revision: 1.6 $
+    \date $Date: 2003/12/28 22:08:15 $
+*/
+
+/*!
+    Creates a new instance of a PasswordValidator.
+    \param parent the parent widget
+    \param name the name of the widget
+*/
 PasswordValidator::PasswordValidator(QObject* parent, const char* name)
-// -------------------------------------------------------------------------------------------------
-        : QValidator(parent, name)
+    : QValidator(parent, name)
 {}
 
 
-// -------------------------------------------------------------------------------------------------
-PasswordValidator::State PasswordValidator::validate(QString& input, int&) const
-// -------------------------------------------------------------------------------------------------
+/*!
+    Does the validation. It returns QValidator::Intermediate if the password has less than
+    six characters and QValidator::Acceptable if it has equal or more than six.
+    \param input the input
+    \param pos the position of the inserted stuff (unused here)
+*/
+PasswordValidator::State PasswordValidator::validate(QString& input, int& pos) const
 {
     if (input.length() < 6)
     {
@@ -229,3 +288,4 @@ PasswordValidator::State PasswordValidator::validate(QString& input, int&) const
     }
 }
 
+#endif // DOXYGEN

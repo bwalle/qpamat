@@ -1,5 +1,5 @@
 /*
- * Id: $Id: showpassworddialog.cpp,v 1.1 2003/12/21 20:29:07 bwalle Exp $
+ * Id: $Id: showpassworddialog.cpp,v 1.2 2003/12/28 22:08:15 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -28,9 +28,48 @@
 #include "../qpamat.h"
 #include "showpassworddialog.h"
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    \class ShowPasswordDialog
+    
+    \brief Dialog which displayes a password.
+    
+    This dialog displays a password. It can display the password as cleartext and with stars.
+    The user has the ability to copy it using a special button. He can also insert the password
+    at the current position. For this, the dialog can show a Insert button and the dialog 
+    emits the insertPassword() signal.
+    
+    It depends on the global property <tt>Presentation/HideRandomPass</tt> and on the constructor
+    parameter if the dialog shows the insert button or not. 
+    
+    \ingroup gui
+    \author Bernhard Walle
+    \version $Revision: 1.2 $
+    \date $Date: 2003/12/28 22:08:15 $
+*/
+
+/*!
+    \enum ShowPasswordDialog::DialogType
+    
+    Specifies the type of the dialog. Use \c TRandomPasswordDlg if the dialog should show
+    a random password, \c TRandomPasswordDlg if it should show a random password with an insert
+    button or \c TNormalPasswordDlg if it should show a normal password. The message text changes
+    between random password and normal password.
+*/
+
+/*!
+    \fn ShowPasswordDialog::insertPassword(const QString&)
+    
+    Signal that is emitted if the user wants to insert a password.
+    \param password the password the user wants to insert 
+*/
+
+/*!
+    Creates a new instance of the password dialog.
+    \param parent the parent widget
+    \param type the type of the dialog
+    \param name the name of the object
+*/
 ShowPasswordDialog::ShowPasswordDialog(QWidget* parent, DialogType type, const char* name)
-// -------------------------------------------------------------------------------------------------
     : QDialog(parent, name)
 {
     setCaption("QPaMaT");
@@ -85,36 +124,31 @@ ShowPasswordDialog::ShowPasswordDialog(QWidget* parent, DialogType type, const c
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Returns the password which the user entered.
+    \return the password
+*/
 QString ShowPasswordDialog::getPassword() const
-// -------------------------------------------------------------------------------------------------
 {
     return m_passwordEdit->getContent();
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Sets the displayed password.
+    \param newPassword the new password
+*/
 void ShowPasswordDialog::setPassword(const QString& newPassword)
-// -------------------------------------------------------------------------------------------------
 {
     m_passwordEdit->setContent(newPassword);
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Slot that is called if the user pressed the Insert button.
+*/
 void ShowPasswordDialog::insertButtonHandler()
-// -------------------------------------------------------------------------------------------------
 {
     emit insertPassword(m_passwordEdit->getContent());
-}
-
-
-// -------------------------------------------------------------------------------------------------
-void ShowPasswordDialog::copyPassword()
-// -------------------------------------------------------------------------------------------------
-{
-    QClipboard* cb = QApplication::clipboard();
-    cb->setText(m_passwordEdit->getContent(), QClipboard::Clipboard);
-    cb->setText(m_passwordEdit->getContent(), QClipboard::Selection);
 }
 

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: newpassworddialog.h,v 1.4 2003/12/03 22:33:53 bwalle Exp $
+ * Id: $Id: newpassworddialog.h,v 1.5 2003/12/28 22:08:15 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -21,99 +21,31 @@
 #include <qdialog.h>
 #include <qlineedit.h>
 #include <qwidget.h>
-#include <qvalidator.h>
 
-namespace NewPasswordDialogLocal
-{
-    class NewPasswordDialog;
-}
-
-/*!
- * \brief Dialog which is used to create a new file with a password or to change the password.
- *
- * \ingroup gui
- * \author Bernhard Walle
- * \version $Revision: 1.4 $
- * \date $Date: 2003/12/03 22:33:53 $
- */
 class NewPasswordDialog : public QDialog 
 {
     Q_OBJECT
     
     public:
-        
-        /*!
-         * Creates a new instance of the password dialog.
-         * \param parent the parent widget
-         * \param oldPassword the old password if the password should be changed
-         */
         NewPasswordDialog(QWidget* parent, const QString& oldPassword = QString::null);
-        
-        /*!
-         * Returns the password which the user entered.
-         * \return the password
-         */
         QString getPassword() const;
         
     protected slots:
-    
-        /*!
-         * Overwritten accept() method. The method is called if Ok is pressed.
-         */
         void accept();
         
     private slots:
         void checkOkEnabled() const;
-    
+        
     private:
         void createAndLayout();
         
     private:
-        QString m_oldPassword;
-        QPushButton* m_okButton;
-        QPushButton* m_cancelButton;
-        QLineEdit* m_firstPasswordEdit;
-        QLineEdit* m_secondPasswordEdit;
-        QLineEdit* m_oldPasswordEdit;
+        QString         m_oldPassword;
+        QPushButton*    m_okButton;
+        QPushButton*    m_cancelButton;
+        QLineEdit*      m_firstPasswordEdit;
+        QLineEdit*      m_secondPasswordEdit;
+        QLineEdit*      m_oldPasswordEdit;
 };
 
-/*!
- * \brief This namespace contains implementation details of the NewPasswordDialog. 
- *
- * I didn't want to waste the global namespace with this.
- */
-namespace NewPasswordDialogLocal
-{
-    
-    /*!
-     * \brief Simple password validator. 
-     * 
-     * The validator checks if the password is longer than six characters.
-     *
-     * \ingroup gui
-     * \author Bernhard Walle
-     * \version $Revision: 1.4 $
-     * \date $Date: 2003/12/03 22:33:53 $
-     */
-    class PasswordValidator : public QValidator
-    {
-        public:
-            
-            /*!
-             * Creates a new validator. 
-             * \param parent the parent
-             * \param name the object name
-             */
-            PasswordValidator(QObject* parent = 0, const char* name = 0);
-            
-            /*!
-             * Does the validating.
-             * \param input the input
-             * \param pos the position of the new character
-             * \return the result of validation
-             */
-            State validate(QString& input, int& pos) const;
-    };
-}
-    
 #endif // NEWPASSWORDDIALOG_H

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: passworddialog.h,v 1.4 2003/12/28 22:08:15 bwalle Exp $
+ * Id: $Id: waitdialog.h,v 1.1 2003/12/28 22:08:15 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,23 +15,20 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#ifndef PASSWORDDIALOG_H
-#define PASSWORDDIALOG_H
+#ifndef WAITDIALOG_H
+#define WAITDIALOG_H
 
-#include <qdialog.h>
-#include <qlineedit.h>
+#include <qstring.h>
 #include <qwidget.h>
+#include <qdialog.h>
+#include <qpixmap.h>
 
-class PasswordDialog : public QDialog 
+class WaitDialog : public QDialog
 {
-    Q_OBJECT
-    
     public:
-        PasswordDialog(QWidget* parent, const char* name = 0);
-        QString getPassword() const;
+        WaitDialog(const QPixmap& icon, const QString& message, const QString& title, 
+            QWidget* parent, const char* name);
         
-    private:
-        QLineEdit* m_passwordEdit;
 };
 
-#endif // PASSWORDDIALOG_H
+#endif // WAITDIALOG_H
