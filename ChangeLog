@@ -1,3 +1,12 @@
+Fri Jul 23 14:56:00 2003  Bernhard Walle <bernhard@bwalle.de>
+	
+	* Changed icons to PNG format.
+	* Using stock icons from Gtk+.
+	* Changed "About" dialog.
+	* Added multi-language support.
+	* Added German translation.
+
+
 Sat Jun  5 15:24:54 2003  Bernhard Walle <bernhard@bwalle.de>
         
 	* Beginning with logging the changes. 
