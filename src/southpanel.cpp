@@ -1,5 +1,5 @@
 /*
- * Id: $Id: southpanel.cpp,v 1.13 2003/12/29 20:07:18 bwalle Exp $
+ * Id: $Id: southpanel.cpp,v 1.14 2004/01/02 12:20:21 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -47,8 +47,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.13 $
-    \date $Date: 2003/12/29 20:07:18 $
+    \version $Revision: 1.14 $
+    \date $Date: 2004/01/02 12:20:21 $
 */
 
 /*!
@@ -344,7 +344,7 @@ void SouthPanel::insertAutoText()
                 newTxt = qpamat->set().readEntry("AutoText/URL");
                 break;
             default:
-                qDebug("SouthPanel::comboBoxChanged: newChoice is out of range\n");
+                PRINT_DBG("Value is out of range: %d", m_typeCombo->currentItem() );
                 break;
         }
         m_keyLineEdit->setText(newTxt);

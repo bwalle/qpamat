@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.23 2003/12/30 19:45:31 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.24 2004/01/02 12:20:29 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -70,8 +70,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.23 $
-    \date $Date: 2003/12/30 19:45:31 $
+    \version $Revision: 1.24 $
+    \date $Date: 2004/01/02 12:20:29 $
 */
 
 /*!
@@ -203,7 +203,7 @@ bool Tree::readFromXML(const QString& fileName, const QString& password) throw (
     }
     catch (const std::invalid_argument& ex)
     {
-        qDebug(ex.what());
+        PRINT_DBG("Caught invalid_argument: %s", ex.what());
         showCurruptedMessage(fileName);
         return false;
     }
@@ -477,7 +477,7 @@ void Tree::showContextMenu(QListViewItem* item, const QPoint& point)
         case -1:
             break;
         default: 
-            qDebug("Error in showContextMenu\n");
+            PRINT_DBG("Error in showContextMenu\n");
             break;
     }
 }
@@ -712,7 +712,7 @@ void Tree::recomputePasswordStrength(bool* error)
                 {
                     propIt.current()->updatePasswordStrength();
                     progress.setProgress(progr++);
-                    qDebug("progr = %d", progr);
+                    PRINT_DBG("progr = %d", progr);
                     qApp->processEvents();
                 }
                 ++propIt;
@@ -780,7 +780,7 @@ void Tree::updatePasswordStrengthView()
                         it.current()->setPixmap(0, traffic_gray_16x16_xpm);
                         break;
                     default:
-                        qDebug("Tree::showWeakPasswordMarkers out of range");
+                        PRINT_DBG("Value out of range: %d", strength);
                         break;
                 }
                 ++it;
@@ -886,9 +886,7 @@ void ReadWriteThread::run()
             byteVector[0] = m_randomNumber;
             m_card.write(0, byteVector);
             
-#ifdef DEBUG
-            qDebug("Random = %d", byteVector[0]);
-#endif
+            PRINT_DBG("Random = %d", byteVector[0])
             
             // then write the number of bytes
             int numberOfBytes = m_bytes.size();
@@ -911,18 +909,13 @@ void ReadWriteThread::run()
                 return;
             }
             
-#ifdef DEBUG
-            qDebug("Reading smartcard.");
-            qDebug("Read randomNumber = %d", m_randomNumber);
-#endif
+            PRINT_DBG("Read randomNumber = %d", m_randomNumber)
 
             // read the number
             ByteVector vec = m_card.read(1, 2);
             int numberOfBytes = (vec[0] << 8) + (vec[1]);
             
-#ifdef DEBUG
-            qDebug("Read numberOfBytes = %d", numberOfBytes);
-#endif
+            PRINT_DBG("Read numberOfBytes = %d", numberOfBytes);
 
             Q_ASSERT(numberOfBytes >= 0);
             
@@ -1051,8 +1044,8 @@ bool Tree::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& randomNumbe
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.23 $
-    \date $Date: 2003/12/30 19:45:31 $
+    \version $Revision: 1.24 $
+    \date $Date: 2004/01/02 12:20:29 $
 */
 
 /*!

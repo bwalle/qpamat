@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightlistview.cpp,v 1.9 2003/12/29 15:12:27 bwalle Exp $
+ * Id: $Id: rightlistview.cpp,v 1.10 2004/01/02 12:20:10 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -41,8 +41,8 @@
     \brief Represents the list view on the right where the key-value pairs are displayed.
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.9 $
-    \date $Date: 2003/12/29 15:12:27 $
+    \version $Revision: 1.10 $
+    \date $Date: 2004/01/02 12:20:10 $
 */
 
 /*!
@@ -470,8 +470,7 @@ QTextStream& operator>>(QTextStream& ts, RightListView& listview)
     QStringList list = rx.capturedTexts();
     if (list.size() != 3)
     {
-        qDebug("QTextStream& operator>>(QTextStream& ts, RightListView& listview): wrong input\n%s",
-            text.latin1());
+        PRINT_DBG("Wrong input\n%s", text.latin1());
     }
     else
     {

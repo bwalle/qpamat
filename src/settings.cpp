@@ -1,5 +1,5 @@
 /*
- * Id: $Id: settings.cpp,v 1.10 2003/12/31 16:33:38 bwalle Exp $
+ * Id: $Id: settings.cpp,v 1.11 2004/01/02 12:20:17 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -31,8 +31,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.10 $
-    \date $Date: 2003/12/31 16:33:38 $
+    \version $Revision: 1.11 $
+    \date $Date: 2004/01/02 12:20:17 $
 */
 
 /*!
@@ -154,7 +154,7 @@ QString Settings::readEntry(const QString & key, const QString& def)
 #ifdef DEBUG
     else if (!read && def.isNull())
     {
-        qDebug("Implicit default returned, key = %s", key.latin1());
+        PRINT_DBG("Implicit default returned, key = %s", key.latin1());
     }
 #endif
     return string;
@@ -177,7 +177,7 @@ int Settings::readNumEntry (const QString & key, int def)
 #ifdef DEBUG
     else if (!read && def == 0)
     {
-        qDebug("Implicit default returned, key = %s", key.latin1());
+        PRINT_TRACE("Implicit default returned, key = %s", key.latin1());
     }
 #endif
     return number;
@@ -200,7 +200,7 @@ double Settings::readDoubleEntry(const QString & key, double def) const
 #ifdef DEBUG
     else if (!read && def == 0.0)
     {
-        qDebug("Implicit default returned, key = %s", key.latin1());
+        PRINT_TRACE("Implicit default returned, key = %s", key.latin1());
     }
 #endif
     return number;
@@ -223,7 +223,7 @@ bool Settings::readBoolEntry(const QString & key, bool def) const
 #ifdef DEBUG
     else if (!read && !def)
     {
-        qDebug("Implicit default returned, key = %s", key.latin1());
+        PRINT_TRACE("Implicit default returned, key = %s", key.latin1());
     }
 #endif
     return res;

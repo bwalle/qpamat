@@ -1,5 +1,5 @@
 /*
- * Id: $Id: main.cpp,v 1.15 2003/12/30 23:06:20 bwalle Exp $
+ * Id: $Id: main.cpp,v 1.16 2004/01/02 12:19:50 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -29,6 +29,7 @@
 #include <qdir.h>
 
 #include "qpamat.h"
+#include "global.h"
 #include "settings.h"
 #include "main.h"
 #include "util/singleapplication.h"
@@ -73,9 +74,8 @@ void printCommandlineOptions()
 */
 void sighandler(int signal)
 {
-#ifdef DEBUG
-    qDebug("Caught signal No. %d", signal);
-#endif
+    PRINT_DBG("Caught signal No. %d", signal);
+    
     qApp->quit();
 }
 

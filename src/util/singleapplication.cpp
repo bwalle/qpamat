@@ -1,5 +1,5 @@
 /*
- * Id: $Id: singleapplication.cpp,v 1.1 2003/12/29 00:13:48 bwalle Exp $
+ * Id: $Id: singleapplication.cpp,v 1.2 2004/01/02 12:21:22 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -25,6 +25,7 @@
 #include <qdir.h>
 #include <qmessagebox.h>
 
+#include "global.h"
 #include "singleapplication.h"
 
 /*!
@@ -38,8 +39,8 @@
     
     \ingroup misc
     \author Bernhard Walle
-    \version $Revision: 1.1 $
-    \date $Date: 2003/12/29 00:13:48 $
+    \version $Revision: 1.2 $
+    \date $Date: 2004/01/02 12:21:22 $
 */
 
 /*!
@@ -96,7 +97,7 @@ void SingleApplication::startup()
     
     if (!file.open(IO_WriteOnly))
     {
-        qDebug("Could not open the file %s for writing.", m_lockfile.latin1());
+        PRINT_DBG("Could not open the file %s for writing.", m_lockfile.latin1());
         return;
     }
     QTextStream textstream(&file);
@@ -118,7 +119,7 @@ void SingleApplication::shutdown()
     {
         if (!QFile::remove(m_lockfile))
         {
-            qDebug("Could not remove the lockfile %s", m_lockfile.latin1());
+            PRINT_DBG("Could not remove the lockfile %s", m_lockfile.latin1());
         }
         m_shutdown = true;
     }

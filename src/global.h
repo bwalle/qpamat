@@ -1,5 +1,5 @@
 /*
- * Id: $Id: global.h,v 1.4 2003/12/29 15:12:26 bwalle Exp $
+ * Id: $Id: global.h,v 1.5 2004/01/02 12:19:40 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -29,4 +29,48 @@ typedef QValueVector<int>       IntVector;
 typedef QMap<QString, QString>  StringMap;
 typedef QValueVector<QChar>     QCharVector;
 
+
+// Copyright (c) 2003 Benedikt Meurer (benedikt.meurer@unix-ag.uni-siegen.de)
+// xfwm4: debug.h
+
+
+#if !defined(DOXYGEN) && (defined(DEBUG) || defined(TRACE))
+
+#if defined(__NetBSD__) || (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L)
+#define __DBG_FUNC__    __func__
+#elif defined(__GNUC__) && __GNUC__ >= 3
+#define __DBG_FUNC__	__FUNCTION__
+#else
+#define __DBG_FUNC__    "??"
+#endif
+
+#endif // !defined(DOXYGEN) && (defined(DEBUG) || defined(TRACE))
+
+
+#ifdef DEBUG
+
+#define PRINT_DBG(fmt, args...)                                                  \
+{                                                                                \
+    qDebug("DEBUG[%s:%d] %s(): \n   "fmt, __FILE__, __LINE__, __DBG_FUNC__, ##args);  \
+}
+
+#else
+
+#define PRINT_DBG(fmt, args...)   { do {} while(0); }
+
+#endif
+
+
+#ifdef TRACE
+
+#define PRINT_TRACE(fmt, args...)                                                 \
+{                                                                                 \
+    qDebug("TRACE[%s:%d] %s(): \n   "fmt, __FILE__, __LINE__, __DBG_FUNC__, ##args);   \
+}
+
+#else
+
+#define PRINT_TRACE(fmt, args...)   { do {} while(0); }
+
+#endif // TRACE
 
