@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.h,v 1.5 2003/12/04 14:52:01 bwalle Exp $
+ * Id: $Id: configurationdialog.h,v 1.6 2003/12/06 18:24:55 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -25,12 +25,14 @@
 #include <qpushbutton.h>
 
 #include "../widgets/filelineedit.h"
+#include "../widgets/fontchoosebox.h"
 
 namespace ConfigurationDialogLocal
 {
     class GeneralTab;
     class SecurityTab;
     class SmartcardTab;
+    class PrintingTab;
 }
 
 /*!
@@ -38,8 +40,8 @@ namespace ConfigurationDialogLocal
  * 
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.5 $
- * \date $Date: 2003/12/04 14:52:01 $
+ * \version $Revision: 1.6 $
+ * \date $Date: 2003/12/06 18:24:55 $
  */
 class ConfigurationDialog : public QTabDialog
 {
@@ -57,6 +59,7 @@ class ConfigurationDialog : public QTabDialog
         ConfigurationDialogLocal::GeneralTab* m_generalTab;
         ConfigurationDialogLocal::SecurityTab* m_securityTab;
         ConfigurationDialogLocal::SmartcardTab* m_smartCardTab;
+        ConfigurationDialogLocal::PrintingTab* m_printingTab;
 };
 
 /*!
@@ -71,8 +74,8 @@ namespace ConfigurationDialogLocal
      *
      * \ingroup gui
      * \author Bernhard Walle
-     * \version $Revision: 1.5 $
-     * \date $Date: 2003/12/04 14:52:01 $
+     * \version $Revision: 1.6 $
+     * \date $Date: 2003/12/06 18:24:55 $
      */
     class GeneralTab : public QWidget
     {
@@ -113,8 +116,8 @@ namespace ConfigurationDialogLocal
      *
      * \ingroup gui
      * \author Bernhard Walle
-     * \version $Revision: 1.5 $
-     * \date $Date: 2003/12/04 14:52:01 $
+     * \version $Revision: 1.6 $
+     * \date $Date: 2003/12/06 18:24:55 $
      */
     class SecurityTab : public QWidget
     {
@@ -160,8 +163,8 @@ namespace ConfigurationDialogLocal
      *
      * \ingroup gui
      * \author Bernhard Walle
-     * \version $Revision: 1.5 $
-     * \date $Date: 2003/12/04 14:52:01 $
+     * \version $Revision: 1.6 $
+     * \date $Date: 2003/12/06 18:24:55 $
      */
     class SmartcardTab : public QWidget
     {
@@ -209,6 +212,42 @@ namespace ConfigurationDialogLocal
             FileLineEdit* m_libraryEdit;
             QComboBox* m_portCombo;
             QPushButton* m_testButton;
+    };
+    
+    /*! 
+     * \brief This class represents the Priting tab of the configuration dialog.
+     *
+     * \ingroup gui
+     * \author Bernhard Walle
+     * \version $Revision: 1.6 $
+     * \date $Date: 2003/12/06 18:24:55 $
+     */
+    class PrintingTab : public QWidget
+    {
+        Q_OBJECT
+        
+        public:
+            
+            /*!
+             * Creates a new instance of the widget.
+             * \param parent the parent widget
+             */
+            PrintingTab(QWidget* parent);
+        
+        public slots:
+            
+            /*!
+             * Stores the settings.
+             */
+            void applySettings();
+            
+        private:
+            void createAndLayout();
+            void fillSettings();
+            
+        private:
+            FontChooseBox* m_normalFontEdit;
+            FontChooseBox* m_footerFontEdit;
     };
 }
 

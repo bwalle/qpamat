@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.cpp,v 1.5 2003/12/04 14:52:01 bwalle Exp $
+ * Id: $Id: configurationdialog.cpp,v 1.6 2003/12/06 18:24:50 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -33,13 +33,14 @@
 #include "configurationdialog.h"
 #include "../settings.h"
 #include "../security/passwordcheckerfactory.h"
-#include "../security/encryptor.h"
+#include "../security/symmetricencryptor.h"
 #include "../smartcard/memorycard.h"
 
 
 using ConfigurationDialogLocal::GeneralTab;
 using ConfigurationDialogLocal::SmartcardTab;
 using ConfigurationDialogLocal::SecurityTab;
+using ConfigurationDialogLocal::PrintingTab;
 
 // -------------------------------------------------------------------------------------------------
 ConfigurationDialog::ConfigurationDialog(QWidget* parent)
@@ -51,15 +52,18 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     m_generalTab = new GeneralTab(this);
     m_smartCardTab = new SmartcardTab(this);
     m_securityTab = new SecurityTab(this);
+    m_printingTab = new PrintingTab(this);
     
     addTab(m_generalTab, "&General");
     addTab(m_securityTab, "&Security");
     addTab(m_smartCardTab, "Smart &Card");
+    addTab(m_printingTab, "&Printing");
     
     setCancelButton(tr("Cancel"));
     connect(this, SIGNAL(applyButtonPressed()), m_generalTab, SLOT(applySettings()));
     connect(this, SIGNAL(applyButtonPressed()), m_securityTab, SLOT(applySettings()));
     connect(this, SIGNAL(applyButtonPressed()), m_smartCardTab, SLOT(applySettings()));
+    connect(this, SIGNAL(applyButtonPressed()), m_printingTab, SLOT(applySettings()));
 }
 
 
@@ -161,6 +165,20 @@ void GeneralTab::applySettings()
 
 
 // -------------------------------------------------------------------------------------------------
+SecurityTab::SecurityTab(QWidget* parent)
+// -------------------------------------------------------------------------------------------------
+        : QWidget(parent)
+{
+    createAndLayout();
+    
+    // init contents
+    fillSettings();
+    
+    connect(m_radioGroup, SIGNAL(clicked(int)), this, SLOT(radioButtonHandler(int)));
+}
+
+
+// -------------------------------------------------------------------------------------------------
 void SecurityTab::createAndLayout()
 // -------------------------------------------------------------------------------------------------
 {
@@ -223,7 +241,7 @@ void SecurityTab::fillSettings()
 {
     QSettings& set = Settings::getInstance().getSettings();
     
-    m_algorithmCombo->insertStringList(Encryptor::getAlgorithms());
+    m_algorithmCombo->insertStringList(SymmetricEncryptor::getAlgorithms());
     m_radioGroup->setButton( PasswordCheckerFactory::fromString( 
         set.readEntry( "Security/PasswordChecker", PasswordCheckerFactory::DEFAULT_CHECKER_STRING))
         );
@@ -231,7 +249,7 @@ void SecurityTab::fillSettings()
     m_externalEdit->setContent(set.readEntry( "Security/ExternalProgram"));
     radioButtonHandler(m_radioGroup->selectedId());
     m_algorithmCombo->setCurrentText( set.readEntry( "Security/CipherAlgorithm",
-        Encryptor::getSuggestedAlgorithm()) );
+        SymmetricEncryptor::getSuggestedAlgorithm()) );
 }
 
 
@@ -262,6 +280,71 @@ void SecurityTab::applySettings()
     set.writeEntry("Security/DictionaryFile", m_dictionaryEdit->getContent() );
     set.writeEntry("Security/ExternalProgram", m_externalEdit->getContent() );
     set.writeEntry("Security/CipherAlgorithm", m_algorithmCombo->currentText() );
+}
+
+
+// -------------------------------------------------------------------------------------------------
+PrintingTab::PrintingTab(QWidget* parent)
+// -------------------------------------------------------------------------------------------------
+        : QWidget(parent)
+{
+    createAndLayout();
+    
+    // init contents
+    fillSettings();
+    
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void PrintingTab::createAndLayout()
+// -------------------------------------------------------------------------------------------------
+{
+    // create layouts
+    QVBoxLayout* mainLayout = new QVBoxLayout(this, 6, 6);
+    QGroupBox* fontGroup = new QGroupBox(4, Vertical, tr("Fonts"), this);
+    
+    // some settings
+    fontGroup->setInsideSpacing(6);
+    fontGroup->setFlat(true);
+    
+    QLabel* normalLabel = new QLabel("&Normal font:", fontGroup);
+    m_normalFontEdit = new FontChooseBox(fontGroup);
+    QLabel* footerLabel = new QLabel("&Footer font:", fontGroup);
+    m_footerFontEdit = new FontChooseBox(fontGroup);
+    
+    // buddys
+    normalLabel->setBuddy(m_normalFontEdit);
+    footerLabel->setBuddy(m_footerFontEdit);
+    
+    mainLayout->addWidget(fontGroup);
+    mainLayout->addStretch(5);
+    
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void PrintingTab::fillSettings()
+// -------------------------------------------------------------------------------------------------
+{
+    QSettings& set = Settings::getInstance().getSettings();
+    QFont font;
+    
+    font.fromString(set.readEntry( "Printing/NormalFont", Settings::DEFAULT_NORMAL_FONT));
+    m_normalFontEdit->setFont(font);
+    font.fromString(set.readEntry( "Printing/FooterFont", Settings::DEFAULT_FOOTER_FONT));
+    m_footerFontEdit->setFont(font);
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void PrintingTab::applySettings()
+// -------------------------------------------------------------------------------------------------
+{
+    QSettings& set = Settings::getInstance().getSettings();
+    
+    set.writeEntry("Printing/NormalFont", m_normalFontEdit->getFont().toString());
+    set.writeEntry("Printing/FooterFont", m_footerFontEdit->getFont().toString());
 }
 
 
@@ -439,17 +522,6 @@ void SmartcardTab::testSmartCard()
 }
 
 
-// -------------------------------------------------------------------------------------------------
-SecurityTab::SecurityTab(QWidget* parent)
-// -------------------------------------------------------------------------------------------------
-        : QWidget(parent)
-{
-    createAndLayout();
-    
-    // init contents
-    fillSettings();
-    
-    connect(m_radioGroup, SIGNAL(clicked(int)), this, SLOT(radioButtonHandler(int)));
-}
+
 
 
