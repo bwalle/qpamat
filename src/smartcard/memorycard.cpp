@@ -1,5 +1,5 @@
 /*
- * Id: $Id: memorycard.cpp,v 1.6 2003/12/28 23:49:49 bwalle Exp $
+ * Id: $Id: memorycard.cpp,v 1.7 2003/12/28 23:57:48 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -70,8 +70,8 @@ int MemoryCard::m_lastNumber = 1;
     
     \ingroup smartcard
     \author Bernhard Walle
-    \version $Revision: 1.6 $
-    \date $Date: 2003/12/28 23:49:49 $
+    \version $Revision: 1.7 $
+    \date $Date: 2003/12/28 23:57:48 $
 */
 
 /*!
@@ -557,7 +557,6 @@ void MemoryCard::write(ushort offset, const ByteVector& data)
     int dataOffset = 0;
     int len = data.size();
     const int max = 255;
-    int stepNumber = 0;
     
     byte update_binary[max+5];
     update_binary[0] = 0x00; // CLA
