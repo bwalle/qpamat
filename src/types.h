@@ -1,5 +1,5 @@
 /*
- * Id: $Id: types.h,v 1.1 2003/09/21 16:00:26 bwalle Exp $
+ * Id: $Id: types.h,v 1.2 2003/10/03 19:45:21 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -42,3 +42,15 @@ typedef QValueVector<QString> StringVector;
  * This is a Map which has keys and values of the type QString.
  */
 typedef QMap<QString, QString> StringMap;
+
+/**
+ * Vector for unsigned integer.
+ */
+typedef QValueVector<uint> UIntVector;
+
+/**
+ * Vector for integer.
+ */
+typedef QValueVector<int> IntVector;
+
+
