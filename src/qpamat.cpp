@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.24 2003/12/29 19:58:34 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.25 2003/12/30 00:29:03 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -86,8 +86,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.24 $
-    \date $Date: 2003/12/29 19:58:34 $
+    \version $Revision: 1.25 $
+    \date $Date: 2003/12/30 00:29:03 $
  */
 
 /*! 
@@ -222,7 +222,7 @@ void Qpamat::message(const QString& message, bool)
 /*!
     Displays a message dialog. If the message was displayed previously and the user choosed not
     to display the message again, this does nothing.
-    \param the message
+    \param message the message
     \sa QErrorMessage
 */
 void Qpamat::messageOnceDialog(const QString& message)
