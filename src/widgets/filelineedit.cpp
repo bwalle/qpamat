@@ -1,5 +1,5 @@
 /*
- * Id: $Id: filelineedit.cpp,v 1.4 2003/12/10 21:44:02 bwalle Exp $
+ * Id: $Id: filelineedit.cpp,v 1.5 2003/12/17 21:56:27 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -41,7 +41,7 @@ FileLineEdit::FileLineEdit(QWidget* parent, const char* name)
     boxLayout->addWidget(m_fileDialogButton);
     
     connect(m_fileDialogButton, SIGNAL(clicked()), this, SLOT(chooseFile()));
-    m_fileDialogButton->setFocusPolicy(QWidget::StrongFocus);
+    m_fileDialogButton->setFocusPolicy(QWidget::TabFocus);
     
     setFocusProxy(m_lineEdit);
     

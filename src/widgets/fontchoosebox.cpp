@@ -1,5 +1,5 @@
 /*
- * Id: $Id: fontchoosebox.cpp,v 1.2 2003/12/10 21:44:26 bwalle Exp $
+ * Id: $Id: fontchoosebox.cpp,v 1.3 2003/12/17 21:56:22 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -49,7 +49,7 @@ FontChooseBox::FontChooseBox(QWidget* parent, const char* name)
     // make it read-only
     m_lineEdit->setReadOnly(true);
     
-    m_fileDialogButton->setFocusPolicy(QWidget::StrongFocus);
+    m_fileDialogButton->setFocusPolicy(QWidget::TabFocus);
     
     // connect
     connect(this, SIGNAL(fontChanged(const QFont&)), this, SLOT(setDisplayFont(const QFont&)));
