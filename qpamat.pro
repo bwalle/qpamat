@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.19 2003/12/17 21:57:43 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.20 2003/12/17 22:21:35 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -7,6 +7,7 @@
 #
 ################################################################################
 
+VERSION     = 0.1
 
 # set this if you installed OpenSSL in a non-standard place
 # INCLUDEPATH += /usr/local/ssl/include
@@ -103,7 +104,7 @@ CONFIG     += warn_on qt exceptions
 
 # -----------------------------------------------------------------------------
 
-DEFINES    += VERSION=\"0.1\"
+DEFINES    += VERSION=\"$$VERSION\"
 
 isEmpty (debug) {
   DEFINES  += QT_NO_CHECK
@@ -129,4 +130,15 @@ OBJECTS_DIR = out/
 documentation.target        = doc
 documentation.commands      = doxygen qpamat.doxy
 QMAKE_EXTRA_UNIX_TARGETS   += documentation
+
+#
+# make a tarball on Unix with "make release"
+maketarball.target 		    = tarball
+maketarball.commands        = cd .. &&
+maketarball.commands       += cp -r qpamat qpamat-$$VERSION &&
+maketarball.commands       += tar cvfz qpamat-$${VERSION}.tar.gz qpamat-$$VERSION &&
+maketarball.commands       += cd - &&
+maketarball.commands       += mv ../qpamat-$${VERSION}.tar.gz . &&
+maketarball.commands       += rm -r ../qpamat-$$VERSION
+QMAKE_EXTRA_UNIX_TARGETS   += maketarball
 
