@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.cpp,v 1.19 2004/01/03 23:39:43 bwalle Exp $
+ * Id: $Id: configurationdialog.cpp,v 1.20 2004/01/07 23:54:55 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -86,121 +86,42 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.19 $
-    \date $Date: 2004/01/03 23:39:43 $
+    \version $Revision: 1.20 $
+    \date $Date: 2004/01/07 23:54:55 $
  */
 
 /*!
     Creates a new instance of a ConfigurationDialog.
 */
 ConfigurationDialog::ConfigurationDialog(QWidget* parent)
-    : QDialog(parent), m_listBox(0), m_widgetStack(0)
+    : ListBoxDialog(parent)
 {
     setCaption("QPaMaT");
     
-    QVBoxLayout* vboxLayout = new QVBoxLayout(this, 8, 2, "ConfDlg-Vbox");
-    QHBox* mainHBox = new QHBox(this, "ConfDlg-MainHBox");
-    QHBox* buttonHBox = new QHBox(this, "ConfDlg-ButtonHBox");
-    
-    m_listBox = new QListBox(mainHBox, "ConfDlg-Listbox");
-    QFont f = m_listBox->font();
-    f.setBold(true);
-    m_listBox->setFont(f);
-    m_listBox->setCursor(PointingHandCursor);
-    m_widgetStack = new QWidgetStack(mainHBox, "ConfDlg-Widget");
-    
-    // buttons
-    QWidget* filler = new QWidget(buttonHBox);
-    buttonHBox->setSpacing(7);
-    QPushButton* okButton = new QPushButton(tr("OK"), buttonHBox, "OkButton");
-    QPushButton* cancelButton = new QPushButton(tr("Cancel"), buttonHBox, "CancelButton");
-    okButton->setDefault(true);
-    buttonHBox->setStretchFactor(filler, 2);
-    buttonHBox->setStretchFactor(okButton, 0);
-    buttonHBox->setStretchFactor(cancelButton, 0);
-    
-    // horizontal line
-    QLabel* horizontalLine = new QLabel(this, "ConfDlg-Hline");
-    horizontalLine->setFrameStyle(QFrame::HLine | QFrame::Sunken);
-
-    // layout
-    mainHBox->setStretchFactor(m_listBox, 0);
-    mainHBox->setStretchFactor(m_widgetStack, 2);
-    mainHBox->setSpacing(12);
-    vboxLayout->addWidget(mainHBox);
-    vboxLayout->addWidget(horizontalLine);
-    vboxLayout->addWidget(buttonHBox);
-    vboxLayout->setStretchFactor(mainHBox, 2);
-    vboxLayout->setStretchFactor(buttonHBox, 0);
-    
     // Add the general tab
-    ConfDlgGeneralTab* generalTab = new ConfDlgGeneralTab(this);
-    m_widgetStack->addWidget(generalTab, 0);
-    new ListBoxLabeledPict(m_listBox, general_34x34_xpm, tr("General"));
+    ConfDlgGeneralTab* generalTab = new ConfDlgGeneralTab(this, "GeneralTab");
+    addPage(generalTab, general_34x34_xpm, tr("General"));
     
     // Add the password tab
-    ConfDlgPasswordTab* passwordTab = new ConfDlgPasswordTab(this);
-    m_widgetStack->addWidget(passwordTab, 1);
-    new ListBoxLabeledPict(m_listBox, password_34x34_xpm, tr("Password"));
+    ConfDlgPasswordTab* passwordTab = new ConfDlgPasswordTab(this, "PasswordTab");
+    addPage(passwordTab, password_34x34_xpm, tr("Password"));
     
     // Add the security tab
-    ConfDlgSecurityTab* securityTab = new ConfDlgSecurityTab(this);
-    m_widgetStack->addWidget(securityTab, 2);
-    new ListBoxLabeledPict(m_listBox, lock_big_xpm, tr("Security"));
+    ConfDlgSecurityTab* securityTab = new ConfDlgSecurityTab(this, "SecurityTab");
+    addPage(securityTab, lock_big_xpm, tr("Security"));
     
     // Add the smartcard tab
-    ConfDlgSmartcardTab* smartCardTab = new ConfDlgSmartcardTab(this);
-    m_widgetStack->addWidget(smartCardTab, 3);
-    new ListBoxLabeledPict(m_listBox, smartcard_34x34_xpm, tr("Smart Card"));
+    ConfDlgSmartcardTab* smartCardTab = new ConfDlgSmartcardTab(this, "SmartCardTab");
+    addPage(smartCardTab, smartcard_34x34_xpm, tr("Smart Card"));
     
     // Add the presentation tab
-    ConfDlgPresentationTab* presentationTab = new ConfDlgPresentationTab(this);
-    m_widgetStack->addWidget(presentationTab, 4);
-    new ListBoxLabeledPict(m_listBox, presentation_34x34_xpm, tr("Presenstation"));
-    
-    // signals & slots
-    connect(okButton, SIGNAL(clicked()), SLOT(accept()));
-    connect(cancelButton, SIGNAL(clicked()), SLOT(reject())); 
-    connect(m_listBox, SIGNAL(highlighted(int)), m_widgetStack, SLOT(raiseWidget(int)));
-    connect(m_widgetStack, SIGNAL(aboutToShow(QWidget*)), SLOT(aboutToShowHandler(QWidget*)));
+    ConfDlgPresentationTab* presentationTab = new ConfDlgPresentationTab(this, "PresTab");
+    addPage(presentationTab, presentation_34x34_xpm, tr("Presenstation"));
     
     QAction* whatsThis = new QAction("What's this", QKeySequence(SHIFT|Key_F1), this);
     connect(whatsThis, SIGNAL(activated()), qpamat, SLOT(whatsThis()));
     
-    aboutToShowHandler(generalTab);
-    m_listBox->setSelected(0, true);
     adjustSize();
-}
-
-/*!
-    Method is called after the Ok button is pressed, i.e. if the accept() signal is emitted.
-*/
-void ConfigurationDialog::accept()
-{
-    // apply the settings
-    for (std::set<ConfDlgTab*>::iterator it = m_filledTabs.begin(); it != m_filledTabs.end(); ++it)
-    {
-        (*it)->applySettings();
-    }
-    QDialog::accept();
-}
-
-/*!
-    Is called if the QWidgetStack sends an aboutToShow signal. This function calls the 
-    fillSettings() function from the tab and adds it to the lists that must be written if
-    apply is pressed.
-    \param w the widget
-*/
-void ConfigurationDialog::aboutToShowHandler(QWidget* w)
-{
-    if (ConfDlgTab* t = dynamic_cast<ConfDlgTab*>(w))
-    {
-        if ( m_filledTabs.find(t) == m_filledTabs.end() )
-        {
-            t->fillSettings();
-            m_filledTabs.insert(t);
-        }
-    }
 }
 
 #ifndef DOXYGEN
@@ -218,8 +139,8 @@ void ConfigurationDialog::aboutToShowHandler(QWidget* w)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.19 $
-    \date $Date: 2004/01/03 23:39:43 $
+    \version $Revision: 1.20 $
+    \date $Date: 2004/01/07 23:54:55 $
 */
 
 /*!
@@ -260,8 +181,8 @@ void ConfigurationDialog::aboutToShowHandler(QWidget* w)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.19 $
-    \date $Date: 2004/01/03 23:39:43 $
+    \version $Revision: 1.20 $
+    \date $Date: 2004/01/07 23:54:55 $
 */
 
 
@@ -269,8 +190,8 @@ void ConfigurationDialog::aboutToShowHandler(QWidget* w)
     Creates a new instance of an ConfDlgGeneralTab object.
     \param parent the parent widget
 */
-ConfDlgGeneralTab::ConfDlgGeneralTab(QWidget* parent)
-    : ConfDlgTab(parent)
+ConfDlgGeneralTab::ConfDlgGeneralTab(QWidget* parent, const char* name)
+    : ListBoxDialogPage(parent, name)
 {
     createAndLayout();
 }
@@ -381,8 +302,8 @@ void ConfDlgGeneralTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.19 $
-    \date $Date: 2004/01/03 23:39:43 $
+    \version $Revision: 1.20 $
+    \date $Date: 2004/01/07 23:54:55 $
 */
 
 
@@ -390,8 +311,8 @@ void ConfDlgGeneralTab::applySettings()
     Creates a new instance of an ConfDlgPasswordTab object.
     \param parent the parent widget
 */
-ConfDlgPasswordTab::ConfDlgPasswordTab(QWidget* parent)
-    : ConfDlgTab(parent), m_lengthSpinner(0), m_externalEdit(0), m_allowedCharsEdit(0), 
+ConfDlgPasswordTab::ConfDlgPasswordTab(QWidget* parent, const char* name)
+    : ListBoxDialogPage(parent, name), m_lengthSpinner(0), m_externalEdit(0), m_allowedCharsEdit(0), 
       m_useExternalCB(0), m_weakSlider(0), m_strongSlider(0), m_weakLabel(0), m_strongLabel(0),
       m_sortButton(0)
 {
@@ -637,8 +558,8 @@ void ConfDlgPasswordTab::sortDictionary()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.19 $
-    \date $Date: 2004/01/03 23:39:43 $
+    \version $Revision: 1.20 $
+    \date $Date: 2004/01/07 23:54:55 $
 */
 
 
@@ -646,8 +567,8 @@ void ConfDlgPasswordTab::sortDictionary()
     Creates a new instance of an ConfDlgPasswordTab object.
     \param parent the parent widget
 */
-ConfDlgSecurityTab::ConfDlgSecurityTab(QWidget* parent)
-    : ConfDlgTab(parent), m_algorithmCombo(0)
+ConfDlgSecurityTab::ConfDlgSecurityTab(QWidget* parent, const char* name)
+    : ListBoxDialogPage(parent, name), m_algorithmCombo(0)
 {
     createAndLayout();
 }
@@ -723,8 +644,8 @@ void ConfDlgSecurityTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.19 $
-    \date $Date: 2004/01/03 23:39:43 $
+    \version $Revision: 1.20 $
+    \date $Date: 2004/01/07 23:54:55 $
 */
 
 
@@ -732,8 +653,8 @@ void ConfDlgSecurityTab::applySettings()
     Creates a new instance of an ConfDlgPresentationTab object.
     \param parent the parent widget
 */
-ConfDlgPresentationTab::ConfDlgPresentationTab(QWidget* parent)
-    : ConfDlgTab(parent), m_nograbCB(0)
+ConfDlgPresentationTab::ConfDlgPresentationTab(QWidget* parent, const char* name)
+    : ListBoxDialogPage(parent, name), m_nograbCB(0)
 {
     createAndLayout();
 }
@@ -823,8 +744,8 @@ void ConfDlgPresentationTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.19 $
-    \date $Date: 2004/01/03 23:39:43 $
+    \version $Revision: 1.20 $
+    \date $Date: 2004/01/07 23:54:55 $
 */
 
 /*!
@@ -837,8 +758,8 @@ void ConfDlgPresentationTab::applySettings()
     Creates a new instance of an ConfDlgSmartcardTab object.
     \param parent the parent widget
 */
-ConfDlgSmartcardTab::ConfDlgSmartcardTab(QWidget* parent)
-        : ConfDlgTab(parent)
+ConfDlgSmartcardTab::ConfDlgSmartcardTab(QWidget* parent, const char* name)
+        : ListBoxDialogPage(parent, name)
 {
     createAndLayout();
     

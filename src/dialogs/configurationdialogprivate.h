@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialogprivate.h,v 1.5 2003/12/31 16:33:33 bwalle Exp $
+ * Id: $Id: configurationdialogprivate.h,v 1.6 2004/01/07 23:54:55 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -31,30 +31,15 @@
 
 #include "widgets/filelineedit.h"
 #include "widgets/fontchoosebox.h"
+#include "widgets/listboxdialog.h"
 
 
-// -------------------------------------------------------------------------------------------------
-
-class ConfDlgTab : public QWidget
+class ConfDlgGeneralTab : public ListBoxDialogPage
 {
     friend class ConfigurationDialog;
     
     public:
-        ConfDlgTab(QWidget* parent, const char* name = 0) : QWidget(parent, name) { }
-        
-    protected:
-        virtual void fillSettings() = 0;
-        virtual void applySettings() = 0;
-};
-
-// -------------------------------------------------------------------------------------------------
-
-class ConfDlgGeneralTab : public ConfDlgTab
-{
-    friend class ConfigurationDialog;
-    
-    public:
-        ConfDlgGeneralTab (QWidget* parent);
+        ConfDlgGeneralTab (QWidget* parent, const char* name);
         
     protected:
         void fillSettings();
@@ -75,14 +60,14 @@ class ConfDlgGeneralTab : public ConfDlgTab
 
 // -------------------------------------------------------------------------------------------------
 
-class ConfDlgPasswordTab : public ConfDlgTab
+class ConfDlgPasswordTab : public ListBoxDialogPage
 {
     Q_OBJECT
     
     friend class ConfigurationDialog;
     
     public:
-        ConfDlgPasswordTab(QWidget* parent);
+        ConfDlgPasswordTab(QWidget* parent, const char* name = 0);
         
     protected slots:
         void checkboxHandler(bool on);
@@ -116,12 +101,12 @@ class ConfDlgPasswordTab : public ConfDlgTab
 
 // -------------------------------------------------------------------------------------------------
 
-class ConfDlgSecurityTab : public ConfDlgTab
+class ConfDlgSecurityTab : public ListBoxDialogPage
 {
     friend class ConfigurationDialog;
     
     public:
-        ConfDlgSecurityTab(QWidget* parent);
+        ConfDlgSecurityTab(QWidget* parent, const char* name = 0);
     
     protected:
         void fillSettings();
@@ -139,7 +124,7 @@ class ConfDlgSecurityTab : public ConfDlgTab
 
 // -------------------------------------------------------------------------------------------------
 
-class ConfDlgSmartcardTab : public ConfDlgTab
+class ConfDlgSmartcardTab : public ListBoxDialogPage
 {
     Q_OBJECT
     
@@ -149,7 +134,7 @@ class ConfDlgSmartcardTab : public ConfDlgTab
         enum SmartcardEnabled { NotEnabled = 0, Enabled = 1 };
     
     public:
-        ConfDlgSmartcardTab(QWidget* parent);
+        ConfDlgSmartcardTab(QWidget* parent, const char* name = 0);
     
     protected slots:
         void testSmartCard();
@@ -176,10 +161,10 @@ class ConfDlgSmartcardTab : public ConfDlgTab
 
 // -------------------------------------------------------------------------------------------------
 
-class ConfDlgPresentationTab : public ConfDlgTab
+class ConfDlgPresentationTab : public ListBoxDialogPage
 {
     public:
-        ConfDlgPresentationTab(QWidget* parent);
+        ConfDlgPresentationTab(QWidget* parent, const char* name = 0);
     
     protected:
         void fillSettings();
