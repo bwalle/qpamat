@@ -1,5 +1,5 @@
 /*
- * Id: $Id: main.cpp,v 1.9 2003/12/14 16:54:47 bwalle Exp $
+ * Id: $Id: main.cpp,v 1.10 2003/12/14 19:19:50 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -27,15 +27,17 @@
 #include <qfile.h>
 #include <qdir.h>
 
+#include "qpamat.h"
+#include "settings.h"
+#include "main.h"
+
 #ifdef Q_WS_X11
 #include <unistd.h>
 #include <sys/utsname.h>
 #include <sys/types.h>
+#include <X11/Xlib.h>
 #endif
 
-#include "qpamat.h"
-#include "settings.h"
-#include "main.h"
 
 Qpamat* qpamat;
 
@@ -67,16 +69,21 @@ void qpamatNS::printVersion()
 #ifdef Q_WS_X11
     struct utsname uname_struct;
     bool nameAvailable = (uname(&uname_struct) == 0);
+    QString X11protocolVersion, X11vendorVersion;
+    getX11Version(X11protocolVersion, X11vendorVersion);
 #endif
 
     std::cerr 
         << "QPaMaT version   " << VERSION << "\n"
-        << "Qt version       " << QT_VERSION_STR << "\n"
+        << "\nBased on software of this version: \n"
+        << "  Qt version     " << QT_VERSION_STR << "\n"
 #ifdef Q_WS_X11
-        << "OS name          " << (nameAvailable ? uname_struct.sysname : "unknown") << "\n"
-        << "OS release       " << (nameAvailable ? uname_struct.release : "unknown") << "\n"
-        << "OS version       " << (nameAvailable ? uname_struct.version : "unknown") << "\n"
-        << "OS machine       " << (nameAvailable ? uname_struct.machine : "unknown")
+        << "  OS name        " << (nameAvailable ? uname_struct.sysname : "unknown") << "\n"
+        << "  OS release     " << (nameAvailable ? uname_struct.release : "unknown") << "\n"
+        << "  OS version     " << (nameAvailable ? uname_struct.version : "unknown") << "\n"
+        << "  OS machine     " << (nameAvailable ? uname_struct.machine : "unknown") << "\n"
+        << "  X11 Protocol   " << X11protocolVersion << "\n"
+        << "  X11 Release    " << X11vendorVersion
 #endif
         << std::endl;
 }
@@ -160,6 +167,22 @@ void qpamatNS::singleAppEnd()
     }
 }
 
+
+// -------------------------------------------------------------------------------------------------
+void qpamatNS::getX11Version(QString& protocolVersion, QString& vendorVersion)
+// -------------------------------------------------------------------------------------------------
+{
+#ifdef Q_WS_X11
+    Display* dpy = XOpenDisplay(0);
+    if (dpy)
+    {
+        protocolVersion = QString("%1.%2").arg(QString::number(ProtocolVersion (dpy))).
+            arg(ProtocolRevision (dpy));
+        vendorVersion = QString::number(VendorRelease (dpy));
+        XCloseDisplay(dpy);
+    }
+#endif
+}
 
 
 // -------------------------------------------------------------------------------------------------

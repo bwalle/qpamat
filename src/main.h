@@ -1,5 +1,5 @@
 /*
- * Id: $Id: main.h,v 1.1 2003/12/14 16:54:24 bwalle Exp $
+ * Id: $Id: main.h,v 1.2 2003/12/14 19:19:50 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -26,8 +26,8 @@
  *
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.1 $
- * \date $Date: 2003/12/14 16:54:24 $
+ * \version $Revision: 1.2 $
+ * \date $Date: 2003/12/14 19:19:50 $
  */
 namespace qpamatNS
 {
@@ -60,6 +60,14 @@ namespace qpamatNS
      * This function is to delete the lockfile.
      */
     void singleAppEnd();
+    
+    /*!
+     * Returns the X11 version if the code is compiled on a system with X11. If not,
+     * the strings are not changed.
+     * \param protocolVersion the version of the X11 protocol, normally 11
+     * \param vendorVersion the version of the implementation e.g. of XFree86 on Linux
+     */
+    void getX11Version(QString& protocolVersion, QString& vendorVersion);
 };
 
 
