@@ -1,5 +1,5 @@
 /*
- * Id: $Id: memorycard.cpp,v 1.9 2004/01/13 23:48:54 bwalle Exp $
+ * Id: $Id: memorycard.cpp,v 1.10 2004/01/15 22:06:08 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -70,8 +70,8 @@ int MemoryCard::m_lastNumber = 1;
     
     \ingroup smartcard
     \author Bernhard Walle
-    \version $Revision: 1.9 $
-    \date $Date: 2004/01/13 23:48:54 $
+    \version $Revision: 1.10 $
+    \date $Date: 2004/01/15 22:06:08 $
 */
 
 /*!
@@ -607,6 +607,161 @@ void MemoryCard::write(ushort offset, const ByteVector& data)
 
 
 /*!
+    This command verifies the PIN stored on the smartcard. It must be called before writing
+    to a protected smartcard. A exception is thrown if the verfification was unsuccessfull.
+    The command is only sensible with protected smartcards but it is always successful on
+    "normal" memory cards, so there's no problem if you call it in this case.
+    
+    Be careful: The memory card contains a counter, normally beginning with 8. If a verification
+    was unsuccessful, the counter is decreased by one. If the counter is zero, the card is 
+    de-facto \b waste!
+    
+    \param pin the PIN as string with a hexadecimal number of six (or less) characters. If the
+           length is less than six, "F"s are appended
+    \exception std::invalid_argument if the \p pin contains invalid characters or if it is too
+               long (more than six characters). Allowed are \c 0-9, \c A-F and \c a-f.
+    
+*/
+void MemoryCard::verify(const QString& pin) const 
+    throw (std::invalid_argument, NotInitializedException, CardException)
+{
+    checkInitialzed();
+    
+    //                CLA   INS   P1    P2    LEN -- PIN --
+    byte VERIFY[] = { 0x00, 0x20, 0x00, 0x00, 3,  0x00, 0x00, 0x00 };
+    
+    createPIN(pin, VERIFY + 5);
+    
+    byte sad = HOST;      // source
+    byte dad = ICC1;      // destination
+    
+    byte response[2];
+    ushort lenr = sizeof(response);
+    
+    char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(VERIFY), 
+        VERIFY, &lenr, response);
+    
+    if (ret != OK)
+    {
+        throw CardException(CardException::ErrorCode(ret));
+    }
+    
+    ushort sw1sw2 = (response[0] << 8) + response[1];
+    
+    PRINT_TRACE("Verfiy repsonse %X", sw1sw2)
+    
+    if (sw1sw2 != 0x9000)
+    {
+        if (sw1sw2 >= 0x63C0 && sw1sw2 <= 0x63CF)
+        {
+            CardException ex(CardException::WrongVerification);
+            ex.setRetryNumber( sw1sw2 & 0x000F );
+            throw ex;
+        }
+        else 
+        {
+            throw CardException(CardException::ErrorCode(sw1sw2));
+        }
+    }
+}
+
+
+/*!
+    Changes the verification data on the smartcard. This is only possible with memory cards
+    that have a write protection, see MemoryCard::verify().
+    
+    A exception is thrown if the change was unsuccessfull, i.e. if \p oldPin was wrong.
+    Be careful: The memory card contains a counter, normally beginning with 8. If a verification
+    was unsuccessful, the counter is decreased by one. If the counter is zero, the card is 
+    de-facto \b waste!
+    
+    \param oldPin the old PIN as string with a hexadecimal number of six (or less) characters. 
+                  If the length is less than six, "F"s are appended
+    \param newPin the new PIN, the same rules as for the \p oldPin are valid here
+    \exception std::invalid_argument if the \p pin contains invalid characters or if it is too
+               long (more than six characters). Allowed are \c 0-9, \c A-F and \c a-f.
+    
+*/
+void MemoryCard::changeVerificationData(const QString& oldPin, const QString& newPin) 
+    throw (NotInitializedException, CardException)
+{
+     checkInitialzed();
+    
+    //                CLA   INS   P1    P2    LEN -- old PIN -----  -- new PIN -----
+    byte VERIFY[] = { 0x00, 0x24, 0x00, 0x00, 6,  0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+    
+    createPIN(oldPin, VERIFY + 5);
+    createPIN(newPin, VERIFY + 8);
+    
+    byte sad = HOST;      // source
+    byte dad = ICC1;      // destination
+    
+    byte response[2];
+    ushort lenr = sizeof(response);
+    
+    char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(VERIFY), 
+        VERIFY, &lenr, response);
+    
+    if (ret != OK)
+    {
+        throw CardException(CardException::ErrorCode(ret));
+    }
+    
+    ushort sw1sw2 = (response[0] << 8) + response[1];
+    
+    PRINT_TRACE("Verfiy repsonse %X", sw1sw2)
+    
+    if (sw1sw2 != 0x9000)
+    {
+        if (sw1sw2 >= 0x63C0 && sw1sw2 <= 0x63CF)
+        {
+            CardException ex(CardException::WrongVerification);
+            ex.setRetryNumber( sw1sw2 & 0x000F );
+            throw ex;
+        }
+        else 
+        {
+            throw CardException(CardException::ErrorCode(sw1sw2));
+        }
+    }
+}
+
+
+/*!
+    Savely copies a PIN of six characters which was specified as hexadecimal string into a 
+    byte array of exactly three bytes three bytes. If the pin is too long, a std::invalid_argument 
+    exception is thrown. If it is to short, 'F' is appended.    
+    \param pin the pin as string
+    \param std::invalid_argument if the string contains illegal characters or has not the right
+           length
+*/
+void MemoryCard::createPIN(QString pin, byte* pinBytes) const throw (std::invalid_argument)
+{
+    if (pin.length() > 6)
+    {
+        throw std::invalid_argument("Length of PIN must be less than characters");
+    }
+    
+    // make six characters out of the PIN
+    while (pin.length() != 6)
+    {
+        pin.append('F');
+    }
+    
+    bool ok;
+    for (int i = 0; i < 3; ++i)
+    {
+        pinBytes[i] = pin.mid(2*i, 2).toShort(&ok, 16);
+        if (!ok)
+        {
+            throw std::invalid_argument("The PIN string contains wrong characteds that "
+                "don't represent a hexadecimal number.");
+        }
+    }
+}
+
+
+/*!
     Checks if the class was initilized. If not a NotInitializedException is thrown.
     \exception NotInitializedException if the class was not initialized
 */
@@ -619,4 +774,6 @@ void MemoryCard::checkInitialzed(const QString& functionName) const
             "the class was not initalized.");
     }
 }
+
+
 

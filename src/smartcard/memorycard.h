@@ -1,5 +1,5 @@
 /*
- * Id: $Id: memorycard.h,v 1.8 2003/12/28 23:49:49 bwalle Exp $
+ * Id: $Id: memorycard.h,v 1.9 2004/01/15 22:06:08 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -17,6 +17,8 @@
  */
 #ifndef MEMORYCARD_H
 #define MEMORYCARD_H
+
+#include <stdexcept>
 
 #include <qstring.h>
 #include <qlibrary.h>
@@ -68,7 +70,14 @@ class MemoryCard
         void resetCard(int* capacity = 0, ProtocolType* protocolType = 0) const
             throw (NotInitializedException, CardException);;
         
-        bool selectFile() const throw (NotInitializedException, CardException);
+        bool selectFile() const 
+            throw (NotInitializedException, CardException);
+        
+        void verify(const QString& pin) const 
+            throw (std::invalid_argument, NotInitializedException, CardException);
+        
+        void changeVerificationData(const QString& oldPin, const QString& newPin)
+            throw (NotInitializedException, CardException);
         
         ByteVector read(ushort offset, ushort length)
             throw (CardException, NotInitializedException);
@@ -78,7 +87,8 @@ class MemoryCard
     
     private:
         void checkInitialzed(const QString& = QString::null) const throw (NotInitializedException);
-        
+        void createPIN(QString pin, byte* pinBytes) const throw (std::invalid_argument);
+
     private:
         QLibrary        m_library;
         CT_init_ptr     m_CT_init_function;
