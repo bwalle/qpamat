@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.46 2004/07/23 15:11:22 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.47 2004/07/23 22:05:43 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -7,7 +7,7 @@
 #
 #  Adapt these variables to your system
 
-PREFIX             = /usr/local/
+PREFIX             = /home/bwalle/test
 SHAREDIR           = $${PREFIX}/share
 DOCDIR             = $${SHAREDIR}/doc/packages
 BINDIR             = $${PREFIX}/bin
@@ -259,12 +259,20 @@ QMAKE_EXTRA_UNIX_TARGETS   += tags
 #
 # Installation
 i_documentation.path        = $$DOCDIR
-i_documentation.files      += doc/qpamat.dtd README COPYING
+i_documentation.files      += doc/qpamat.dtd README COPYING 
 INSTALLS                   += i_documentation
 
 i_dictionary.path           = $$SHAREDIR/qpamat
 i_dictionary.files         += share/dicts
 INSTALLS                   += i_dictionary
+
+i_share_doc.path            = $$SHAREDIR/qpamat/doc
+i_share_doc.files          += doc/user/en
+INSTALLS                   += i_share_doc
+
+i_share.path                = $$SHAREDIR/qpamat
+i_share.files              += COPYING
+INSTALLS                   += i_share
 
 i_messages.path             = $$SHAREDIR/qpamat/translations
 i_messages.files           += ts/*.qm
