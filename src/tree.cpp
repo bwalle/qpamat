@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.3 2003/10/12 15:11:52 bwalle Exp $
+ * Id: $Id: tree.cpp,v 1.4 2003/10/20 20:55:03 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -21,6 +21,11 @@
 #include <qmessagebox.h>
 #include <qapplication.h>
 #include <qheader.h>
+#include <qiconset.h>
+#include <qevent.h>
+
+#include "../images/delete_16x16.xpm"
+#include "../images/rename_16x16.xpm"
 
 #include "tree.h"
 #include "treeentry.h"
@@ -38,8 +43,30 @@ Tree::Tree(QWidget* parent)
     header()->hide();
     setRootIsDecorated(true);
     setShowSortIndicator(true);
+    
+    setFocusPolicy(QWidget::StrongFocus );
+    
+    initTreeContextMenu();
+    QObject::connect(this, SIGNAL(contextMenuRequested(QListViewItem*, const QPoint&, int)),
+        this, SLOT(showContextMenu(QListViewItem*, const QPoint&)));
 }
 
+
+// -------------------------------------------------------------------------------------------------
+void Tree::keyPressEvent(QKeyEvent* evt)
+// -------------------------------------------------------------------------------------------------
+{
+    switch (evt->key())
+    {
+        case Key_Delete:
+            delete selectedItem();
+            break;
+        default:
+            evt->ignore();
+            QListView::keyPressEvent(evt);
+            break;
+    }
+}
 
 // -------------------------------------------------------------------------------------------------
 bool Tree::readFromXML(const QString& fileName, const QString& password) throw (WrongPassword)
@@ -56,7 +83,7 @@ bool Tree::readFromXML(const QString& fileName, const QString& password) throw (
     QFile file(fileName);
     if (!file.open(IO_ReadOnly))
     {
-        QMessageBox::critical(this, QPAMAT_USERVISIBLE, tr("The file %1 could not be opened:\n%2.").
+        QMessageBox::critical(this, "QPaMaT", tr("The file %1 could not be opened:\n%2.").
             arg(fileName).arg(qApp->translate("QFile", file.errorString())), QMessageBox::Ok, 
             QMessageBox::NoButton);
         return false;
@@ -94,7 +121,7 @@ bool Tree::readFromXML(const QString& fileName, const QString& password) throw (
     }
     catch (const NoSuchAlgorithmException& ex)
     {
-        QMessageBox::critical(this, QPAMAT_USERVISIBLE, tr("The algorithm '%1' is not avaible on "
+        QMessageBox::critical(this, "QPaMaT", tr("The algorithm '%1' is not avaible on "
             "your system.\nIt is impossible to read the file. Try to recompile or\n",
             "update your OpenSSL library.").arg(algorithm), QMessageBox::Ok, QMessageBox::NoButton);
         return false;
@@ -124,7 +151,7 @@ void Tree::writeToXML(const QString& fileName, const QString& password, const QS
     QFile file(fileName);
     if (!file.open(IO_WriteOnly))
     {
-        QMessageBox::critical(this, QPAMAT_USERVISIBLE, tr("The data could not be saved. There "
+        QMessageBox::critical(this, "QPaMaT", tr("The data could not be saved. There "
             "was an\nerror while creating the file:\n%1").arg( qApp->translate("QFile",
             file.errorString())), QMessageBox::Ok, QMessageBox::NoButton);
         return;
@@ -143,7 +170,7 @@ void Tree::writeToXML(const QString& fileName, const QString& password, const QS
     }
     catch (const NoSuchAlgorithmException& e)
     {
-        QMessageBox::critical(this, QPAMAT_USERVISIBLE, tr("The algorithm '%1' is not avaible on "
+        QMessageBox::critical(this, "QPaMaT", tr("The algorithm '%1' is not avaible on "
             "your system.\nChoose another crypto algorithm in the settings.\nThe data "
             "is not saved!").arg(algorithm), QMessageBox::Ok, QMessageBox::NoButton);
         return;
@@ -169,9 +196,89 @@ void Tree::writeToXML(const QString& fileName, const QString& password, const QS
 void Tree::showCurruptedMessage(const QString& fileName)
 // -------------------------------------------------------------------------------------------------
 {
-    QMessageBox::critical(this, QPAMAT_USERVISIBLE, tr("The XML file (%1) may be corrupted "
+    QMessageBox::critical(this, "QPaMaT", tr("The XML file (%1) may be corrupted "
             "and\ncould not be read. Check the file with a text editor.").arg(fileName), 
             QMessageBox::Ok, QMessageBox::NoButton);
 }
 
 
+// -------------------------------------------------------------------------------------------------
+void Tree::showContextMenu(QListViewItem* item, const QPoint& point) 
+// -------------------------------------------------------------------------------------------------
+{
+    m_contextMenu->setItemEnabled(DELETE_ITEM, item != 0);
+    int id = m_contextMenu->exec(point);
+    
+    switch (id)
+    {
+        case DELETE_ITEM:
+            delete item;
+            break;
+        case INSERT_ITEM:
+            insertItem(false, dynamic_cast<TreeEntry*>(item));
+            break;
+        case INSERT_CATEGORY:
+            insertItem(true, dynamic_cast<TreeEntry*>(item));
+            break;
+        case RENAME_ITEM:
+            dynamic_cast<TreeEntry*>(item)->startRename(0);
+            break;
+        case -1:
+            break;
+        default: 
+            qDebug("Error in showContextMenu\n");
+            break;
+    }
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void Tree::insertItem(bool category, TreeEntry* item)
+// -------------------------------------------------------------------------------------------------
+{
+    const QString name = category
+        ? tr("New category")
+        : tr("New Item");
+    QListViewItem* newItem = 0;
+    if (item)
+    {
+        if (! item->isCategory())
+        {
+            if (currentItem()->parent())
+            {
+                newItem = new TreeEntry( item->QListViewItem::parent(), name, category);
+            }
+            else
+            {
+                newItem = new TreeEntry(this, name, category);
+            }
+        }
+        else
+        {
+            newItem = new TreeEntry( item, name, category);
+        }
+    }
+    else
+    {
+        newItem = new TreeEntry( this, name, category);
+    }
+    newItem->startRename(0);
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void Tree::initTreeContextMenu()
+// -------------------------------------------------------------------------------------------------
+{
+    m_contextMenu = new QPopupMenu(this);
+    m_contextMenu->insertItem(tr("Insert &Item"), INSERT_ITEM);
+    m_contextMenu->insertItem(tr("Insert &Category"), INSERT_CATEGORY);
+    
+    m_contextMenu->insertSeparator();
+    
+    m_contextMenu->insertItem(QIconSet(rename_16x16_xpm), 
+        tr("&Rename") + "\t" + QString(QKeySequence(Key_F2)), RENAME_ITEM);
+    m_contextMenu->insertItem(QIconSet(delete_16x16_xpm), 
+        tr("Delete &Item") + "\t" + QString(QKeySequence(Key_Delete)), DELETE_ITEM);
+    
+}

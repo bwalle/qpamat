@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.7 2003/10/11 19:52:34 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.8 2003/10/20 20:56:58 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -9,6 +9,7 @@
 
 SOURCES     =                                   \
     src/dialogs/passworddialog.cpp              \
+    src/dialogs/newpassworddialog.cpp           \
     src/cipher/encodinghelper.cpp               \
     src/cipher/passwordhash.cpp                 \
     src/cipher/encryptor.cpp                    \
@@ -16,14 +17,19 @@ SOURCES     =                                   \
     src/treeentry.cpp                           \
     src/property.cpp                            \
     src/tree.cpp                                \
+    src/settings.cpp                            \
     src/qpamat.cpp                              \
     src/help.cpp                                \
+    src/rightpanel.cpp                          \
+    src/rightlistview.cpp                       \
+    src/southpanel.cpp                          \
     src/main.cpp                                
 
 # -----------------------------------------------------------------------------
 
 HEADERS     =                                   \
     src/dialogs/passworddialog.h                \
+    src/dialogs/newpassworddialog.h             \
     src/types.h                                 \
     src/cipher/encodinghelper.h                 \
     src/cipher/passwordhash.h                   \
@@ -33,8 +39,12 @@ HEADERS     =                                   \
     src/cipher/randompasswordgenerator.h        \
     src/treeentry.h                             \
     src/property.h                              \
-    src/tree.h                                  \
+    src/settings.h                              \
     src/qpamat.h                                \
+    src/tree.h                                  \
+    src/rightpanel.h                            \
+    src/rightlistview.h                         \
+    src/southpanel.h                            \
     src/help.h
 
 # -----------------------------------------------------------------------------

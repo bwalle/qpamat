@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.h,v 1.1 2003/10/11 19:51:15 bwalle Exp $
+ * Id: $Id: qpamat.h,v 1.2 2003/10/20 20:56:30 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,13 +24,15 @@
 
 #include "help.h"
 #include "tree.h"
+#include "rightpanel.h"
+
 
 /**
  * The main application window.
  * @ingroup gui
  * @author Bernhard Walle
- * @version $Revision: 1.1 $
- * @date $Date: 2003/10/11 19:51:15 $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2003/10/20 20:56:30 $
  */
 class Qpamat : public QMainWindow
 {
@@ -39,43 +41,45 @@ class Qpamat : public QMainWindow
     public:
         
         /**
-         * Constans for menus and menu entries.
+         * Creates a new instance of the application.
          */
-        enum MenuID {
-            // menus 
-            FILE_MENU, HELP_MENU,
-            
-            // entries in the file menu
-            NEW_FILE,
-            
-            // entries in the help menu
-            ABOUT_QT, ABOUT, WHATS_THIS
-        };
-        
         Qpamat();
         
     protected slots:
-        void openFile();
+        void login();
+        void logout();
+        void newFile();
+        void save();
     
     protected:
         void closeEvent(QCloseEvent* evt);
 
     private:
+        void initToolbar();
         void initMenubar();
         void initActions();
+        void setLogin(bool login);
         
     private:
         // the tree
         Tree* m_tree;
-        
-        // objects
+        QString m_password;
         Help m_help;
+        QPopupMenu* m_treeContextMenu;
+        RightPanel* m_rightPanel;
+        bool m_loggedIn;
         
-        // actions
-        QAction* m_openAction;
-        QAction* m_quitAction;
-        QAction* m_aboutAction;
-        QAction* m_aboutQtAction;
-        QAction* m_whatsThisAction;
+        struct Actions
+        {
+            QAction* newAction;
+            QAction* loginAction;
+            QAction* logoutAction;
+            QAction* saveAction;
+            QAction* quitAction;
+            QAction* aboutAction;
+            QAction* aboutQtAction;
+            QAction* whatsThisAction;
+        };
+        Actions m_actions;
 };
 #endif // QPAMAT_H
