@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.h,v 1.7 2003/12/17 21:53:11 bwalle Exp $
+ * Id: $Id: configurationdialog.h,v 1.8 2003/12/17 23:05:16 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -42,8 +42,8 @@ namespace ConfigurationDialogLocal
  * 
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.7 $
- * \date $Date: 2003/12/17 21:53:11 $
+ * \version $Revision: 1.8 $
+ * \date $Date: 2003/12/17 23:05:16 $
  */
 class ConfigurationDialog : public QTabDialog
 {
@@ -77,8 +77,8 @@ namespace ConfigurationDialogLocal
      *
      * \ingroup gui
      * \author Bernhard Walle
-     * \version $Revision: 1.7 $
-     * \date $Date: 2003/12/17 21:53:11 $
+     * \version $Revision: 1.8 $
+     * \date $Date: 2003/12/17 23:05:16 $
      */
     class GeneralTab : public QWidget
     {
@@ -119,8 +119,8 @@ namespace ConfigurationDialogLocal
      *
      * \ingroup gui
      * \author Bernhard Walle
-     * \version $Revision: 1.7 $
-     * \date $Date: 2003/12/17 21:53:11 $
+     * \version $Revision: 1.8 $
+     * \date $Date: 2003/12/17 23:05:16 $
      */
     class SecurityTab : public QWidget
     {
@@ -164,8 +164,8 @@ namespace ConfigurationDialogLocal
      *
      * \ingroup gui
      * \author Bernhard Walle
-     * \version $Revision: 1.7 $
-     * \date $Date: 2003/12/17 21:53:11 $
+     * \version $Revision: 1.8 $
+     * \date $Date: 2003/12/17 23:05:16 $
      */
     class SecurityTab2 : public QWidget
     {
@@ -206,6 +206,7 @@ namespace ConfigurationDialogLocal
             QButtonGroup* m_radioGroup;
             FileLineEdit* m_externalEdit;
             QSpinBox* m_lengthSpinner;
+            QCheckBox* m_displayPasswordCheckbox;
     };
     
     
@@ -214,8 +215,8 @@ namespace ConfigurationDialogLocal
      *
      * \ingroup gui
      * \author Bernhard Walle
-     * \version $Revision: 1.7 $
-     * \date $Date: 2003/12/17 21:53:11 $
+     * \version $Revision: 1.8 $
+     * \date $Date: 2003/12/17 23:05:16 $
      */
     class SmartcardTab : public QWidget
     {
@@ -270,8 +271,8 @@ namespace ConfigurationDialogLocal
      *
      * \ingroup gui
      * \author Bernhard Walle
-     * \version $Revision: 1.7 $
-     * \date $Date: 2003/12/17 21:53:11 $
+     * \version $Revision: 1.8 $
+     * \date $Date: 2003/12/17 23:05:16 $
      */
     class PrintingTab : public QWidget
     {

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.cpp,v 1.8 2003/12/17 21:53:11 bwalle Exp $
+ * Id: $Id: configurationdialog.cpp,v 1.9 2003/12/17 23:05:16 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -351,12 +351,13 @@ void SecurityTab2::createAndLayout()
 {
     // create layouts
     QVBoxLayout* mainLayout = new QVBoxLayout(this, 6, 6);
-    QGroupBox* passwordGeneratorGroup = new QGroupBox(7, Vertical,tr("Password Generator"), this);
+    QGroupBox* passwordGeneratorGroup = new QGroupBox(4, Vertical,tr("Password Generator"), this);
+    QGroupBox* displayGroup = new QGroupBox(1, Vertical, tr("Displaying"), this);
     m_radioGroup = new QButtonGroup(0, "SecurityTab2 Radio Group");
     
     // some settings
-    ///passwordGeneratorGroup->setInsideSpacing(6);
     passwordGeneratorGroup->setFlat(true);
+    displayGroup->setFlat(true);
     
     QHBox* hbox = new QHBox(passwordGeneratorGroup, "SecurityTab2 hbox");
     QLabel* lengthLabel = new QLabel(tr("Length of the generated password:"), 
@@ -382,13 +383,12 @@ void SecurityTab2::createAndLayout()
     m_radioGroup->insert(internalRadioButton);
     m_radioGroup->insert(externalRadioButton);
     
-    // buddys
-    //algorithmLabel->setBuddy(m_algorithmCombo);
+    m_displayPasswordCheckbox = new QCheckBox(tr("&Hide password in random "
+        "password dialog"), displayGroup);
     
     mainLayout->addWidget(passwordGeneratorGroup);
+    mainLayout->addWidget(displayGroup);
     mainLayout->addStretch(5);
-    
-    
 }
 
 
@@ -419,6 +419,8 @@ void SecurityTab2::fillSettings()
         PasswordGeneratorFactory::DEFAULT_GENERATOR_STRING)) );
     m_externalEdit->setContent(set.readEntry( "Security/ExternalGeneratorProgram"));
     radioButtonHandler(m_radioGroup->selectedId());
+    m_displayPasswordCheckbox->setChecked(set.readBoolEntry("Security/DisplayRandomPassword",
+        false));
 }
 
 
@@ -445,6 +447,7 @@ void SecurityTab2::applySettings()
     set.writeEntry("Security/PasswordGeneratorAdditional", additional);
     set.writeEntry("Security/ExternalGeneratorProgram", m_externalEdit->getContent() );
     set.writeEntry("Security/GeneratedPasswordLength", m_lengthSpinner->value() );
+    set.writeEntry("Security/DisplayRandomPassword", m_displayPasswordCheckbox->isChecked() );
 }
 
 

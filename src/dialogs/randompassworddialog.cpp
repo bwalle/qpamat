@@ -1,5 +1,5 @@
 /*
- * Id: $Id: randompassworddialog.cpp,v 1.1 2003/12/16 22:49:55 bwalle Exp $
+ * Id: $Id: randompassworddialog.cpp,v 1.2 2003/12/17 23:05:13 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -22,6 +22,7 @@
 #include <qlabel.h>
 #include <qpushbutton.h>
 
+#include "../settings.h"
 #include "randompassworddialog.h"
 
 // -------------------------------------------------------------------------------------------------
@@ -29,13 +30,17 @@ RandomPasswordDialog::RandomPasswordDialog(QWidget* parent, bool showInsertButto
 // -------------------------------------------------------------------------------------------------
     : QDialog(parent, name)
 {
+    QSettings& set = Settings::getInstance().getSettings();
     setCaption("QPaMaT");
     
     // create elements
     QLabel* label = new QLabel(tr("The random password is:"), this);
     
-    m_passwordEdit = new CopyLineEdit(this);
-    //m_passwordEdit->setEchoMode(QLineEdit::Password);
+    m_passwordEdit = new CopyLineEdit(false, this);
+    if (set.readBoolEntry("Security/DisplayRandomPassword", false))
+    {
+        m_passwordEdit->setHidden(true);
+    }
     m_passwordEdit->setMinimumWidth(250);
     
     QPushButton* closeButton = new QPushButton(tr("&Close"), this);

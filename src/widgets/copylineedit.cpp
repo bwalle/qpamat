@@ -1,5 +1,5 @@
 /*
- * Id: $Id: copylineedit.cpp,v 1.1 2003/12/17 21:56:35 bwalle Exp $
+ * Id: $Id: copylineedit.cpp,v 1.2 2003/12/17 23:05:05 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -25,14 +25,36 @@
 #include "copylineedit.h"
 #include "../../images/copy_16x16.xpm"
 
+
 // -------------------------------------------------------------------------------------------------
 CopyLineEdit::CopyLineEdit(QWidget* parent, const char* name)
 // -------------------------------------------------------------------------------------------------
         : QWidget(parent, name)
 {
+    init(false);
+}
+
+
+// -------------------------------------------------------------------------------------------------
+CopyLineEdit::CopyLineEdit(bool hidden, QWidget* parent, const char* name)
+// -------------------------------------------------------------------------------------------------
+        : QWidget(parent, name)
+{
+    init(hidden);
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void CopyLineEdit::init(bool hidden)
+// -------------------------------------------------------------------------------------------------
+{
     QHBoxLayout* boxLayout = new QHBoxLayout(this, 0, 2);
     m_lineEdit = new QLineEdit(this);
     m_lineEdit->setReadOnly(true);
+    if (hidden)
+    {
+        m_lineEdit->setEchoMode(QLineEdit::Password);
+    }
     
     // we need a tool button because it has no border and it looks better in this size
     // in Platin style
@@ -62,6 +84,22 @@ QString CopyLineEdit::getContent() const
 // -------------------------------------------------------------------------------------------------
 {
     return m_lineEdit->text();
+}
+
+
+// -------------------------------------------------------------------------------------------------
+bool CopyLineEdit::isHidden() const
+// -------------------------------------------------------------------------------------------------
+{
+    return m_lineEdit->echoMode() == QLineEdit::Password;
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void CopyLineEdit::setHidden(bool hidden)
+// -------------------------------------------------------------------------------------------------
+{
+    m_lineEdit->setEchoMode(hidden ? QLineEdit::Password : QLineEdit::Normal);
 }
 
 
