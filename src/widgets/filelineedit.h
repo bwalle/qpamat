@@ -1,5 +1,5 @@
 /*
- * Id: $Id: filelineedit.h,v 1.1 2003/11/16 12:10:28 bwalle Exp $
+ * Id: $Id: filelineedit.h,v 1.2 2003/11/16 20:22:40 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -20,7 +20,7 @@
 
 #include <qwidget.h>
 #include <qlineedit.h>
-#include <qpushbutton.h>
+#include <qtoolbutton.h>
 #include <qevent.h>
 
 /**
@@ -28,8 +28,8 @@
  * a file on the hard disk with the file chooser dialog of Qt.
  * @ingroup gui
  * @author Bernhard Walle
- * @version $Revision: 1.1 $
- * @date $Date: 2003/11/16 12:10:28 $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2003/11/16 20:22:40 $
  */
 class FileLineEdit : public QWidget
 {
@@ -73,7 +73,7 @@ class FileLineEdit : public QWidget
     private:
         QLineEdit* m_lineEdit;
         QString m_filter;
-        QPushButton* m_fileDialogButton;
+        QToolButton* m_fileDialogButton;
 };
 
 #endif // FILELINEEDIT_H
