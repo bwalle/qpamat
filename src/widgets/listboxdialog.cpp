@@ -1,5 +1,5 @@
 /*
- * Id: $Id: listboxdialog.cpp,v 1.2 2004/01/08 23:09:00 bwalle Exp $
+ * Id: $Id: listboxdialog.cpp,v 1.3 2004/01/09 23:38:49 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -25,6 +25,7 @@
 #include "global.h"
 #include "listboxdialog.h"
 #include "widgets/listboxlabeledpict.h"
+#include "widgets/cursor.h"
 
 /*!
     \class ListBoxDialogPage
@@ -36,8 +37,8 @@
     
     \ingroup widgets
     \author $Author: bwalle $
-    \version $Revision: 1.2 $
-    \date $Date: 2004/01/08 23:09:00 $
+    \version $Revision: 1.3 $
+    \date $Date: 2004/01/09 23:38:49 $
 */
 
 /*!
@@ -78,8 +79,8 @@
     
     \ingroup widgets
     \author $Author: bwalle $
-    \version $Revision: 1.2 $
-    \date $Date: 2004/01/08 23:09:00 $
+    \version $Revision: 1.3 $
+    \date $Date: 2004/01/09 23:38:49 $
     
 */
 
@@ -99,7 +100,7 @@ ListBoxDialog::ListBoxDialog(QWidget* parent, const char* name)
     QFont f = m_listBox->font();
     f.setBold(true);
     m_listBox->setFont(f);
-    m_listBox->setCursor(PointingHandCursor);
+    m_listBox->setCursor(Cursor::handCursorWindows());
     m_widgetStack = new QWidgetStack(mainHBox, "ConfDlg-Widget");
     
     // buttons
