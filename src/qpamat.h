@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.h,v 1.22 2004/12/26 17:44:38 bwalle Exp $
+ * Id: $Id: qpamat.h,v 1.23 2005/02/15 02:03:27 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -27,6 +27,7 @@
 #include "settings.h"
 #include "randompassword.h"
 #include "help.h"
+#include "ext/trayicon.h"
 
 // forward declarations
 class Tree;
@@ -57,10 +58,13 @@ class Qpamat : public QMainWindow
         void passwordStrengthHandler(bool enabled);
         void exportData();
         bool exportOrSave();
+        void handleTrayiconClick();
+        void exitHandler();
         
     signals:
         void insertPassword(const QString& password);
         void settingsChanged();
+        void quit();
         
     public slots:
         void message(const QString& message, bool warning = TRUE);
@@ -119,6 +123,7 @@ class Qpamat : public QMainWindow
         bool                m_modified;
         ToolButtons         m_toolButtons;
         Actions             m_actions;
+        TrayIcon*           m_trayIcon;
     
     private:
         Qpamat(const Qpamat&);

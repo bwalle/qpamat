@@ -1,5 +1,5 @@
 /*
- * Id: $Id: main.cpp,v 1.25 2005/02/12 10:51:05 bwalle Exp $
+ * Id: $Id: main.cpp,v 1.26 2005/02/15 02:03:27 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -170,8 +170,8 @@ int main(int argc, char** argv)
         qpamat = qp.get();
         app.setMainWidget(qpamat);
         
+        QObject::connect(qpamat, SIGNAL(quit()), &app, SLOT(quit()));
         qpamat->show();
-        app.connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));
         
         return app.exec();
     }

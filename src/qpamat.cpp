@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.48 2005/02/12 10:50:55 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.49 2005/02/15 02:03:27 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -49,6 +49,7 @@
 #include "dialogs/newpassworddialog.h"
 #include "dialogs/configurationdialog.h"
 #include "util/timeoutapplication.h"
+#include "util/windowfunctions.h"
 #include "tree.h"
 #include "rightpanel.h"
 
@@ -70,8 +71,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.48 $
-    \date $Date: 2005/02/12 10:50:55 $
+    \version $Revision: 1.49 $
+    \date $Date: 2005/02/15 02:03:27 $
  */
 
 /*! 
@@ -86,6 +87,13 @@
     This signals is emitted if the settings have changed.
 */
 
+
+/*!
+    \fn Qpamat::quit()
+    
+    If the application should quit.
+*/
+
 // -------------------------------------------------------------------------------------------------
 
 /*! 
@@ -93,7 +101,7 @@
  */
 Qpamat::Qpamat()
     : QMainWindow(0, "qpamat main window"), m_tree(0), m_treeContextMenu(0), m_message(0), m_rightPanel(0), m_searchCombo(0), 
-      m_searchToolbar(0), m_randomPassword(0)
+      m_searchToolbar(0), m_randomPassword(0), m_trayIcon(0)
 {
     // Title and Icon
     setIcon(QPixmap::fromMimeSource("stock_dialog_authentication_48.png"));
@@ -157,6 +165,13 @@ Qpamat::Qpamat()
     {
         QTextStream rightpanelStream(&rightpanel, IO_ReadOnly);
         rightpanelStream >> *m_rightPanel;
+    }
+    
+    // tray icon
+    if (set().readBoolEntry("Presentation/SystemTrayIcon"))
+    {
+        m_trayIcon = new TrayIcon(QPixmap::fromMimeSource("trayicon_22.png"), QString::null);
+        m_trayIcon->show();
     }
     
     connectSignalsAndSlots();
@@ -299,7 +314,7 @@ void Qpamat::initMenubar()
 /*!
     Saves the data if the application is closes.
  */
-void Qpamat::closeEvent(QCloseEvent* e)
+void Qpamat::exitHandler()
 {
     if (!logout())
     {
@@ -328,7 +343,26 @@ void Qpamat::closeEvent(QCloseEvent* e)
     set().writeEntry("Main Window/maximized", isMaximized());
     set().writeEntry("Main Window/rightpanelLayout", rightpanelLayout);
     
-    e->accept();
+    emit quit();
+}
+
+
+/*!
+    Handles a closeEvent of the main window. If the tray icon is visible, the application
+    is just hidden. If no tray icon is used, the application is exited.
+    
+    \param e the QCloseEvent object
+*/
+void Qpamat::closeEvent(QCloseEvent* e)
+{
+    if (m_trayIcon)
+    {
+        handleTrayiconClick();
+    }
+    else
+    {
+        exitHandler();
+    }
 }
 
 
@@ -342,6 +376,21 @@ void Qpamat::setModified(bool modified)
     m_actions.saveAction->setEnabled(modified);
 }
 
+/*!
+    Handles single click on the tray icon. If the window is shown, it is hidden. Else, it is
+    shown again.
+*/
+void Qpamat::handleTrayiconClick()
+{
+    if (isShown())
+    {
+        hide();
+    }
+    else
+    {
+        WindowFunctions::bringToFront(this);
+    }
+}
 
 /*!
     Does the login.
@@ -751,7 +800,7 @@ void Qpamat::connectSignalsAndSlots()
     
     // Actions
     connect(m_actions.newAction, SIGNAL(activated()), this, SLOT(newFile()));
-    connect(m_actions.quitAction, SIGNAL(activated()), this, SLOT(close()));
+    connect(m_actions.quitAction, SIGNAL(activated()), this, SLOT(exitHandler()));
     connect(m_actions.loginAction, SIGNAL(activated()), this, SLOT(login()));
     connect(m_actions.logoutAction, SIGNAL(activated()), this, SLOT(logout()));
     connect(m_actions.printAction, SIGNAL(activated()), this, SLOT(print()));
@@ -798,6 +847,12 @@ void Qpamat::connectSignalsAndSlots()
         
     // auto logout
     connect(dynamic_cast<TimeoutApplication*>(qApp), SIGNAL(timedOut()), SLOT(logout()));
+    
+    // tray icon
+    if (m_trayIcon)
+    {
+        connect(m_trayIcon, SIGNAL(clicked( const QPoint&, int)), SLOT(handleTrayiconClick()));
+    }
 }
 
 
