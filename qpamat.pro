@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.49 2004/12/26 17:45:12 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.50 2005/01/01 19:42:23 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -17,10 +17,10 @@ BINDIR             = $${PREFIX}/bin
 
 ################################################################################
 
-VERSION_STRING     = 0.3.2
+VERSION_STRING     = 0.3.3
 MAJOR_VERSION      = 0
 MINOR_VERSION      = 3
-PATCH_VERSION      = 2
+PATCH_VERSION      = 3
 
 ################################################################################
 
@@ -227,7 +227,8 @@ OBJECTS_DIR = out/
 # build the documentation with "make doc"
 # (Unix only, run "doxygen qpamant.doxy" on Microsoft Windows)
 documentation.target        = documentation
-documentation.commands      = doxygen qpamat.doxy
+documentation.commands      = doxygen qpamat.doxy ;
+documentation.commands     += cd doc/user/en && rm -rf manual && db2html manual.sgml && cd - 
 QMAKE_EXTRA_UNIX_TARGETS   += documentation
 
 #
