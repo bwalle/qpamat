@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.2 2003/10/20 20:56:30 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.3 2003/11/02 20:01:16 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -71,7 +71,7 @@ Qpamat::Qpamat()
     dock->setResizeEnabled(true);
     dock->setCloseMode(QDockWindow::Never);
     dock->setCaption(tr("Tree"));
-    dock->setFixedExtentWidth(qApp->desktop()->width() * 0.15);
+    dock->setFixedExtentWidth(int(qApp->desktop()->width() * 0.15));
     addDockWindow(dock, Qt::DockLeft);
     
     m_tree = new Tree(dock);
@@ -101,9 +101,9 @@ Qpamat::Qpamat()
     {
         resize(
         Settings::getInstance().getSettings().readNumEntry("Main Window/width", 
-            qApp->desktop()->width() * 0.6 ),
+            int(qApp->desktop()->width() * 0.6) ),
         Settings::getInstance().getSettings().readNumEntry("Main Window/height", 
-            qApp->desktop()->height() / 2 )
+            int(qApp->desktop()->height() / 2.0) )
         );
     }
 }
