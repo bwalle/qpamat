@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.cpp,v 1.14 2003/12/30 00:28:22 bwalle Exp $
+ * Id: $Id: configurationdialog.cpp,v 1.15 2003/12/30 15:23:23 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -75,8 +75,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.14 $
-    \date $Date: 2003/12/30 00:28:22 $
+    \version $Revision: 1.15 $
+    \date $Date: 2003/12/30 15:23:23 $
  */
 
 /*!
@@ -107,7 +107,7 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     // horizontal line
     QLabel* horizontalLine = new QLabel(this, "ConfDlg-Hline");
     horizontalLine->setFrameStyle(QFrame::HLine | QFrame::Sunken);
-    
+
     // layout
     mainHBox->setStretchFactor(m_listBox, 0);
     mainHBox->setStretchFactor(m_widgetStack, 2);
@@ -201,8 +201,8 @@ void ConfigurationDialog::aboutToShowHandler(QWidget* w)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.14 $
-    \date $Date: 2003/12/30 00:28:22 $
+    \version $Revision: 1.15 $
+    \date $Date: 2003/12/30 15:23:23 $
 */
 
 /*!
@@ -243,8 +243,8 @@ void ConfigurationDialog::aboutToShowHandler(QWidget* w)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.14 $
-    \date $Date: 2003/12/30 00:28:22 $
+    \version $Revision: 1.15 $
+    \date $Date: 2003/12/30 15:23:23 $
 */
 
 
@@ -265,7 +265,7 @@ ConfDlgGeneralTab::ConfDlgGeneralTab(QWidget* parent)
 void ConfDlgGeneralTab::createAndLayout()
 {
     // create layouts
-    QVBoxLayout* mainLayout = new QVBoxLayout(this, 6, 6);
+    QVBoxLayout* mainLayout = new QVBoxLayout(this, 0, 6);
     QGroupBox* startupGroup = new QGroupBox(1, Vertical, tr("Startup"), this);
     QGroupBox* locationsGroup = new QGroupBox(4, Vertical, tr("Locations"), this);
     QGroupBox* autoTextGroup = new QGroupBox(4, Vertical, tr("AutoText"), this);
@@ -364,8 +364,8 @@ void ConfDlgGeneralTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.14 $
-    \date $Date: 2003/12/30 00:28:22 $
+    \version $Revision: 1.15 $
+    \date $Date: 2003/12/30 15:23:23 $
 */
 
 
@@ -391,7 +391,7 @@ ConfDlgPasswordTab::ConfDlgPasswordTab(QWidget* parent)
 void ConfDlgPasswordTab::createAndLayout()
 {
     // create layouts
-    QVBoxLayout* mainLayout = new QVBoxLayout(this, 6, 6);
+    QVBoxLayout* mainLayout = new QVBoxLayout(this, 0, 6);
     QGroupBox* passwordGroup = new QGroupBox(5, Vertical, tr("Generated Passwords"), this);
     QGroupBox* checkerGroup = new QGroupBox(5, Vertical, tr("Password checker"), this);
     
@@ -552,8 +552,8 @@ void ConfDlgPasswordTab::strongSliderHandler(int value)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.14 $
-    \date $Date: 2003/12/30 00:28:22 $
+    \version $Revision: 1.15 $
+    \date $Date: 2003/12/30 15:23:23 $
 */
 
 
@@ -574,7 +574,7 @@ ConfDlgSecurityTab::ConfDlgSecurityTab(QWidget* parent)
 void ConfDlgSecurityTab::createAndLayout()
 {
     // create layouts
-    QVBoxLayout* mainLayout = new QVBoxLayout(this, 6, 6);
+    QVBoxLayout* mainLayout = new QVBoxLayout(this, 0, 6);
     QGroupBox* encryptionGroup = new QGroupBox(1, Vertical, tr("Encryption"), this);
     
     // some settings
@@ -638,8 +638,8 @@ void ConfDlgSecurityTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.14 $
-    \date $Date: 2003/12/30 00:28:22 $
+    \version $Revision: 1.15 $
+    \date $Date: 2003/12/30 15:23:23 $
 */
 
 
@@ -660,7 +660,7 @@ ConfDlgPresentationTab::ConfDlgPresentationTab(QWidget* parent)
 void ConfDlgPresentationTab::createAndLayout()
 {
     // create layouts
-    QVBoxLayout* mainLayout = new QVBoxLayout(this, 6, 6);
+    QVBoxLayout* mainLayout = new QVBoxLayout(this, 0, 6);
     QGroupBox* passwordGroup = new QGroupBox(1, Vertical, tr("Passwords"), this);
     QGroupBox* fontGroup = new QGroupBox(4, Vertical, tr("Printing Fonts"), this);
     
@@ -734,8 +734,8 @@ void ConfDlgPresentationTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.14 $
-    \date $Date: 2003/12/30 00:28:22 $
+    \version $Revision: 1.15 $
+    \date $Date: 2003/12/30 15:23:23 $
 */
 
 /*!
@@ -764,16 +764,15 @@ ConfDlgSmartcardTab::ConfDlgSmartcardTab(QWidget* parent)
 void ConfDlgSmartcardTab::createAndLayout()
 {
     // create layouts
-    QVBoxLayout* mainLayout = new QVBoxLayout(this, 6, 6);
-    
+    QVBoxLayout* mainLayout = new QVBoxLayout(this, 0, 6);
     
     m_settingsGroup = new QGroupBox(4, Vertical, tr("Settings"), this);
-    m_radioGroup = new QButtonGroup(2, Vertical, QString::null, this);
+    m_radioGroup = new QButtonGroup(2, Vertical, tr("Smartcard"), this);
     m_testGroup = new QButtonGroup(2, Vertical, tr("Testing"), this);
     
     m_settingsGroup->setFlat(true);
     m_testGroup->setFlat(true);
-    m_radioGroup->setFrameStyle(QFrame::Plain);
+    m_radioGroup->setFlat(true);
     
     new QRadioButton(tr("&Don't use a smartcard"), m_radioGroup);
     new QRadioButton(tr("&Use a smartcard"), m_radioGroup);
