@@ -1,5 +1,5 @@
 /*
- * Id: $Id: global.h,v 1.1 2003/12/10 21:48:40 bwalle Exp $
+ * Id: $Id: global.h,v 1.2 2003/12/18 21:58:57 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -17,6 +17,7 @@
  */
 #include <qvaluevector.h>
 #include <qmap.h>
+#include <qstring.h>
 
 /*!
  * \file global.h
@@ -54,6 +55,11 @@ typedef QValueVector<uint> UIntVector;
  * Vector for integer.
  */
 typedef QValueVector<int> IntVector;
+
+/*!
+ * Vector for Unicode characters.
+ */
+typedef QValueVector<QChar> QCharVector;
 
 // Forward declaration
 class Qpamat;
