@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.8 2003/10/20 20:56:58 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.9 2003/11/04 22:51:15 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -14,6 +14,8 @@ SOURCES     =                                   \
     src/cipher/passwordhash.cpp                 \
     src/cipher/encryptor.cpp                    \
     src/cipher/randompasswordgenerator.cpp      \
+    src/smartcard/cardexception.cpp             \
+    src/smartcard/memorycard.cpp                \
     src/treeentry.cpp                           \
     src/property.cpp                            \
     src/tree.cpp                                \
@@ -37,6 +39,8 @@ HEADERS     =                                   \
     src/cipher/notseededexception.h             \
     src/cipher/encryptor.h                      \
     src/cipher/randompasswordgenerator.h        \
+    src/smartcard/cardexception.h               \
+    src/smartcard/memorycard.h                  \
     src/treeentry.h                             \
     src/property.h                              \
     src/settings.h                              \
