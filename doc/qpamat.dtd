@@ -1,0 +1,38 @@
+<!ELEMENT qpamat            (app-data, passwords)>
+
+<!ELEMENT app-data          (version, crypt-algorithm, passwordhash, smartcard)>
+<!ELEMENT version           EMPTY>
+<!ELEMENT passwordhash      EMPTY>
+<!ELEMENT crypt-algorithm   EMPTY>
+<!ELEMENT smartcard			EMPTY>
+
+<!ELEMENT passwords         (category*, entry*)>
+<!ELEMENT category          (category*, entry*)>
+<!ELEMENT entry             (property*)>
+<!ELEMENT property          EMPTY>
+
+<!ATTLIST crypt-algorithm   value       CDATA       #REQUIRED>
+
+<!ATTLIST passwordhash      value       CDATA       #REQUIRED>
+
+<!ATTLIST smartcard			useCard		(1 | 0)		#REQUIRED
+							card-id		NMTOKEN		#IMPLIED>
+
+<!ATTLIST version           major       NMTOKEN     #REQUIRED
+                            minor       NMTOKEN     #REQUIRED
+                            patch       NMTOKEN     #REQUIRED>
+
+<!ATTLIST category          name        CDATA       #REQUIRED
+                            wasOpen     (1 | 0)     #IMPLIED
+                            isSelected  (1 | 0)     #IMPLIED>
+
+<!ATTLIST entry             name        CDATA       #REQUIRED
+                            wasOpen     (1 | 0)     #IMPLIED
+                            isSelected  (1 | 0)     #IMPLIED>
+
+<!ATTLIST property          key         CDATA       #REQUIRED
+                            hidden      (1 | 0)     #REQUIRED
+                            type        (USERNAME | PASSWORD | MISC | URL) 
+                                                    #REQUIRED
+				            encrypted   (1 | 0)     #REQUIRED
+				            value       CDATA       #REQUIRED>

@@ -1,0 +1,20 @@
+<assistantconfig version="3.2.0">
+   <DCF ref="html/index.html" imagedir="../images/" title="QPaMaT Documentation">
+	   <section ref="html/modules.html" title="Modules">
+		  <section ref="html/group__security.html" title="Security"/>
+		  <section ref="html/group__gui.html" title="GUI"/>
+		  <section ref="html/group__smartcard.html" title="Smartcard"/>
+		  <section ref="html/group__widgets.html" title="Widgets"/>
+		  <section ref="html/group__misc.html" title="Misc"/>
+	   </section>
+	   <section ref="html/namespaces.html" title="Namespace List"/>
+	   <section ref="html/hierarchy.html" title="Class Hierarchy"/>
+	   <section ref="html/classes.html" title="Alphabetical List"/>
+	   <section ref="html/annotated.html" title="Class List"/>
+	   <section ref="html/files.html" title="File List"/>
+	   <section ref="html/namespacemembers.html" title="Namespace Members"/>
+	   <section ref="html/functions.html" title="Class Members"/>
+	   <section ref="html/globals.html" title="File Members"/>
+	   <section ref="html/pages.html" title="Related Pages"/>
+   </DCF>
+</assistantconfig>
