@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encryptor.h,v 1.2 2003/09/21 17:14:49 bwalle Exp $
+ * Id: $Id: encryptor.h,v 1.3 2003/09/21 19:51:38 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -28,8 +28,8 @@
 /**
  * A object which encrypts bytes.
  * @author Bernhard Walle
- * @version $Revision: 1.2 $
- * @date $Date: 2003/09/21 17:14:49 $
+ * @version $Revision: 1.3 $
+ * @date $Date: 2003/09/21 19:51:38 $
  */
 class Encryptor
 {
@@ -102,7 +102,8 @@ class Encryptor
         /**
          * Returns the default algorithm used for new files QPaMaT. As my personal
          * preference I suggest Blowfish as default algorithm if available. It's fast,
-         * not protected by patents and is held for secure.
+         * not protected by patents and is held for secure. AES is the same but it's not
+         * included in older versions of OpenSSL.
          * @return the name of the algorithm
          */
         static QString getSuggestedAlgorithm();

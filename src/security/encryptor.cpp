@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encryptor.cpp,v 1.1 2003/09/21 16:01:35 bwalle Exp $
+ * Id: $Id: encryptor.cpp,v 1.2 2003/09/21 19:51:38 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -74,7 +74,7 @@ QString Encryptor::getSuggestedAlgorithm()
     StringVector vec;
     vec.push_back("BLOWFISH");
     vec.push_back("AES");
-    vec.push_back("CAST");
+    vec.push_back("CAST5");
     
     for (StringVector::Iterator it = vec.begin(); it != vec.end(); ++it)
     {
@@ -96,9 +96,9 @@ StringMap Encryptor::initAlgorithmsMap()
     // add all algorithms that could be used
     // names are listed in EVP_EncryptInit.pod
     map["BLOWFISH"]     = "bf";
-    map["IDEA"]         = "idea";
-    map["CAST"]         = "cast";
     map["AES"]          = "aes";
+    map["CAST5"]        = "cast5";
+    map["IDEA"]         = "idea";
     map["3DES"]         = "des3";
     
     for (StringMap::iterator it = map.begin(); it != map.end(); ++it)
