@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.h,v 1.14 2003/12/29 20:07:28 bwalle Exp $
+ * Id: $Id: tree.h,v 1.15 2004/01/06 23:38:32 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,6 +18,8 @@
 #ifndef TREE_H
 #define TREE_H
 
+#include <stdexcept>
+
 #include <qstring.h>
 #include <qlistview.h>
 #include <qpopupmenu.h>
@@ -25,14 +27,6 @@
 
 #include "treeentry.h"
 #include "security/encryptor.h"
-
-class WrongPassword : public std::runtime_error
-{
-    public:
-        WrongPassword(const std::string& error) : std::runtime_error(error) { }
-};
-
-// -------------------------------------------------------------------------------------------------
 
 class Tree : public QListView
 {
@@ -47,8 +41,9 @@ class Tree : public QListView
     public:
         Tree(QWidget* parent);
         
-        bool readFromXML(const QString& fileName, const QString& password) throw (WrongPassword);
-        bool writeToXML(const QString& fileName, const QString& password, const QString& algorithm);
+        void readFromXML(const QDomElement& document);
+        void appendXML(QDomDocument& doc) const 
+            throw (std::invalid_argument);
         
         QString toRichTextForPrint(); 
         
@@ -76,7 +71,6 @@ class Tree : public QListView
         
     private:
         void initTreeContextMenu();
-        void showCurruptedMessage(const QString& fileName);
         void showReadErrorMessage(const QString& message);
         bool writeOrReadSmartcard(ByteVector& bytes, bool write, byte& randomNumber);
     

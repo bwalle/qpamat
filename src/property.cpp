@@ -1,5 +1,5 @@
 /*
- * Id: $Id: property.cpp,v 1.9 2003/12/29 20:07:04 bwalle Exp $
+ * Id: $Id: property.cpp,v 1.10 2004/01/06 23:36:50 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -34,8 +34,8 @@
 
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.9 $
-    \date $Date: 2003/12/29 20:07:04 $
+    \version $Revision: 1.10 $
+    \date $Date: 2004/01/06 23:36:50 $
 */
 
 /*!
@@ -280,20 +280,15 @@ QString Property::toRichTextForPrint() const
 
 
 /*!
-    Appends the property as \c property tag in the XML structure.
+    Appends the property as \c property tag in the XML structure. No encryption is done,
+    the XML structure must be encrypted afterwards.
     \param document the document needed to create new elements
     \param parent the parent to which the new created element should be attached
-    \param enc the encryptor to use for encrypting passwords
 */
-void Property::appendXML(QDomDocument& document, QDomNode& parent, StringEncryptor& enc) const
+void Property::appendXML(QDomDocument& document, QDomNode& parent) const
 {
     QDomElement property = document.createElement("property");
     QString value = m_value;
-    
-    if (m_encrypted)
-    {
-        value = enc.encryptStrToStr(value);
-    }
     
     property.setAttribute("key", m_key);
     property.setAttribute("value", value);
@@ -318,9 +313,8 @@ void Property::appendXML(QDomDocument& document, QDomNode& parent, StringEncrypt
     Creates a Propery element from a XML \c property tag.
     \param parent the parent
     \param element the \c property tag
-    \param enc the encryptor to use for decrypting passwords
 */
-void Property::appendFromXML(TreeEntry* parent, QDomElement& element, StringEncryptor& enc)
+void Property::appendFromXML(TreeEntry* parent, QDomElement& element)
 {
     Q_ASSERT( element.tagName() == "property" );
     
@@ -346,11 +340,6 @@ void Property::appendFromXML(TreeEntry* parent, QDomElement& element, StringEncr
     else
     {
         type = MISC;
-    }
-    
-    if (encrypted)
-    {
-        value = enc.decryptStrFromStr(value);
     }
     
     parent->appendProperty(new Property(key, value, type, encrypted, hidden));

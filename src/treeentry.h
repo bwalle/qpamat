@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.h,v 1.11 2003/12/29 20:07:31 bwalle Exp $
+ * Id: $Id: treeentry.h,v 1.12 2004/01/06 23:38:45 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -26,7 +26,6 @@
 #include <qvaluelist.h>
 
 #include "property.h"
-#include "security/stringencryptor.h"
 
 typedef QPtrList<Property> PropertyPtrList;
 
@@ -52,7 +51,7 @@ class TreeEntry : public QObject, public QListViewItem
         
         Property::PasswordStrength weakestChildrenPassword() const throw (PasswordCheckException);
         
-        void appendXML(QDomDocument& document, QDomNode& parent, StringEncryptor& enc) const;
+        void appendXML(QDomDocument& document, QDomNode& parent) const;
         
         QString text(int column) const;
         void setText(int column, const QString& text);
@@ -64,7 +63,7 @@ class TreeEntry : public QObject, public QListViewItem
         
     public:
         template<class T>
-        static TreeEntry* appendFromXML(T* parent, QDomElement& element, StringEncryptor& enc);
+        static TreeEntry* appendFromXML(T* parent, QDomElement& element);
         
     public slots:
         void movePropertyOneUp(uint index);

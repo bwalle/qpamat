@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.ipp,v 1.5 2003/12/29 15:12:27 bwalle Exp $
+ * Id: $Id: treeentry.ipp,v 1.6 2004/01/06 23:38:45 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -38,11 +38,10 @@ TreeEntry::TreeEntry(T* parent, const QString& name, bool isCategory)
     Creates a Propery element from a XML \c property tag.
     \param parent the parent
     \param element the \c property or \c element tag
-    \param enc the encryptor to use for decrypting passwords
     \return the appended value
 */
 template<class T>
-TreeEntry* TreeEntry::appendFromXML(T* parent, QDomElement& element, StringEncryptor& enc)
+TreeEntry* TreeEntry::appendFromXML(T* parent, QDomElement& element)
 {
     QString name = element.attribute("name");
     bool isCategory = element.tagName() == "category";
@@ -56,12 +55,12 @@ TreeEntry* TreeEntry::appendFromXML(T* parent, QDomElement& element, StringEncry
             childElement = node.toElement();
             if (isCategory)
             {
-                TreeEntry::appendFromXML(returnvalue, childElement, enc);
+                TreeEntry::appendFromXML(returnvalue, childElement);
                 returnvalue->setOpen(element.attribute("wasOpen", "0") == "1");
             }
             else
             {
-                Property::appendFromXML(returnvalue, childElement, enc);
+                Property::appendFromXML(returnvalue, childElement);
             }
             node = node.nextSibling();
         }
@@ -69,3 +68,4 @@ TreeEntry* TreeEntry::appendFromXML(T* parent, QDomElement& element, StringEncry
     return returnvalue;
 }
 
+// vim: ft=cpp

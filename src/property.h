@@ -1,5 +1,5 @@
 /*
- * Id: $Id: property.h,v 1.10 2003/12/29 20:07:04 bwalle Exp $
+ * Id: $Id: property.h,v 1.11 2004/01/06 23:36:57 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -23,7 +23,6 @@
 #include <qobject.h>
 
 #include "security/passwordchecker.h"
-#include "security/stringencryptor.h"
 
 class TreeEntry;
 
@@ -70,10 +69,10 @@ class Property : public QObject
         
         QString toRichTextForPrint() const;
         
-        void appendXML(QDomDocument& document, QDomNode& parent, StringEncryptor& enc) const;
+        void appendXML(QDomDocument& document, QDomNode& parent) const;
         
     public:
-        static void appendFromXML(TreeEntry* parent, QDomElement& elem, StringEncryptor& enc);
+        static void appendFromXML(TreeEntry* parent, QDomElement& elem);
         
     signals:
         void propertyChanged(Property* current);

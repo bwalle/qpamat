@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.cpp,v 1.12 2003/12/29 20:07:31 bwalle Exp $
+ * Id: $Id: treeentry.cpp,v 1.13 2004/01/06 23:38:20 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -21,7 +21,6 @@
 #include "qpamat.h"
 #include "treeentry.h"
 #include "settings.h"
-#include "security/notencryptor.h"
 #include "tree.h"
 
 
@@ -32,8 +31,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.12 $
-    \date $Date: 2003/12/29 20:07:31 $
+    \version $Revision: 1.13 $
+    \date $Date: 2004/01/06 23:38:20 $
 */
 
 /*!
@@ -272,9 +271,8 @@ QString TreeEntry::toRichTextForPrint() const
     Appends the treeentry as \c category or \c entry tag in the XML structure.
     \param document the document needed to create new elements
     \param parent the parent to which the new created element should be attached
-    \param enc the encryptor to use for encrypting passwords
 */
-void TreeEntry::appendXML(QDomDocument& document, QDomNode& parent, StringEncryptor& enc) const
+void TreeEntry::appendXML(QDomDocument& document, QDomNode& parent) const
 {
     QDomElement newElement;
     if (m_isCategory)
@@ -284,7 +282,7 @@ void TreeEntry::appendXML(QDomDocument& document, QDomNode& parent, StringEncryp
         TreeEntry* child = dynamic_cast<TreeEntry*>(firstChild());
         while(child) 
         {
-            child->appendXML(document, newElement, enc);
+            child->appendXML(document, newElement);
             child = dynamic_cast<TreeEntry*>(child->nextSibling());
         }
     }
@@ -297,7 +295,7 @@ void TreeEntry::appendXML(QDomDocument& document, QDomNode& parent, StringEncryp
         while ( (property = it.current()) != 0 )
         {
             ++it;
-            property->appendXML(document, newElement, enc);
+            property->appendXML(document, newElement);
         }
     }
     newElement.setAttribute("name", m_name);
@@ -316,8 +314,7 @@ void TreeEntry::appendXML(QDomDocument& document, QDomNode& parent, StringEncryp
 QString TreeEntry::toXML() const
 {
     QDomDocument doc;
-    NotEncryptor enc;
-    appendXML(doc, doc, enc);
+    appendXML(doc, doc);
     doc.documentElement().setAttribute("memoryAddress", long(this));
     
     return doc.toString();
@@ -359,16 +356,15 @@ void TreeEntry::dropped(QDropEvent *evt)
             return;
         }
         
-        NotEncryptor enc;
         TreeEntry* item = m_isCategory ? this : dynamic_cast<TreeEntry*>(parent());
         TreeEntry* appended = 0;
         if (item)
         {
-            appended = appendFromXML(item, elem, enc);
+            appended = appendFromXML(item, elem);
         }
         else
         {
-            appended = appendFromXML(listView(), elem, enc);
+            appended = appendFromXML(listView(), elem);
         }
         
         if (!isOpen())
