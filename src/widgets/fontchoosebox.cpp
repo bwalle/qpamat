@@ -1,5 +1,5 @@
 /*
- * Id: $Id: fontchoosebox.cpp,v 1.3 2003/12/17 21:56:22 bwalle Exp $
+ * Id: $Id: fontchoosebox.cpp,v 1.4 2003/12/29 00:37:11 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,12 +24,35 @@
 #include <qfontdialog.h>
 
 #include "fontchoosebox.h"
-#include "../../images/font_16x16.xpm"
+#include "images/font_16x16.xpm"
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    \class FontChooseBox
+    
+    \brief This class provides a not-editable QLineEdit combined with a button.
+
+    The additional button lets the user choose a font which is available on the system.
+    
+    \ingroup widgets
+    \author Bernhard Walle
+    \version $Revision: 1.4 $
+    \date $Date: 2003/12/29 00:37:11 $
+*/
+
+/*!
+    \fn FontChooseBox::fontChanged(const QFont&)
+    
+    This signal is emitted if the font has changed.
+    \param font the new font
+*/
+
+/*!
+    Creates a new instance of a FontChooseBox widget.
+    \param parent the parent widget
+    \param name the name of the widget which can be NULL.
+*/
 FontChooseBox::FontChooseBox(QWidget* parent, const char* name)
-// -------------------------------------------------------------------------------------------------
-        : QWidget(parent, name)
+    : QWidget(parent, name)
 {
     QHBoxLayout* boxLayout = new QHBoxLayout(this, 0, 2);
     m_lineEdit = new QLineEdit(this);
@@ -56,26 +79,32 @@ FontChooseBox::FontChooseBox(QWidget* parent, const char* name)
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Sets the font. The font is displayed in itself.
+    \param font content the content string
+*/
 void FontChooseBox::setFont(const QFont& font)
-// -------------------------------------------------------------------------------------------------
 {
     m_font = font;
     emit fontChanged(m_font);
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    This returns the current font.
+    \return the font
+*/
 QFont FontChooseBox::getFont() const
-// -------------------------------------------------------------------------------------------------
 {
     return m_font;
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Sets the font to display the line edit
+    \param font the font object
+*/
 void FontChooseBox::setDisplayFont(const QFont& font)
-// -------------------------------------------------------------------------------------------------
 {
     QFont displayFont(font.family(), QApplication::font().pointSize());
     m_lineEdit->setFont(displayFont);
@@ -83,9 +112,11 @@ void FontChooseBox::setDisplayFont(const QFont& font)
 }
 
 
-// -------------------------------------------------------------------------------------------------
+/*!
+    Slot that is called if the user pressed the button. It displays a QFontDialog
+    and lets the user choose the font.
+*/
 void FontChooseBox::chooseFont()
-// -------------------------------------------------------------------------------------------------
 {
      bool ok;
      QFont font = QFontDialog::getFont(&ok, m_font, this );
@@ -95,5 +126,4 @@ void FontChooseBox::chooseFont()
          setFont(font);
      }
 }
-
 

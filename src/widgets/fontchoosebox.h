@@ -1,5 +1,5 @@
 /*
- * Id: $Id: fontchoosebox.h,v 1.2 2003/12/10 21:44:16 bwalle Exp $
+ * Id: $Id: fontchoosebox.h,v 1.3 2003/12/29 00:37:11 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -24,68 +24,28 @@
 #include <qevent.h>
 #include <qfont.h>
 
-/*!
- * \brief This class provides a not-editable QLineEdit combined with a button.
- *
- * The additional button lets the user choose a font which is available on the system.
- *
- * \ingroup widgets
- * \author Bernhard Walle
- * \version $Revision: 1.2 $
- * \date $Date: 2003/12/10 21:44:16 $
- */
 class FontChooseBox : public QWidget
 {
     Q_OBJECT
     Q_PROPERTY( QFont font READ getFont WRITE setFont )
     
     public:
-        
-        /*!
-         * Creates a new instance of a FontChooseBox widget.
-         * \param parent the parent widget
-         * \param name the name of the widget which can be NULL.
-         */
         FontChooseBox(QWidget* parent, const char* name = 0);
         
-        /*!
-         * Sets the font. The font is displayed in itself.
-         * \param font content the content string
-         */
         void setFont(const QFont& font);
-        
-        /*!
-         * This returns the current font.
-         * \return the font
-         */
         QFont getFont() const;
     
     signals:
-        
-        /*!
-         * This signal is emitted if the font has changed.
-         * \param font the new font
-         */
         void fontChanged(const QFont& font);
         
     protected slots:
-        
-        /*!
-         * Slot that is called if the user pressed the button. It displays a QFontDialog
-         * and lets the user choose the font.
-         */
         void chooseFont();
-        
-        /*!
-         * Sets the font to display the line edit
-         * \param font the font object
-         */
         void setDisplayFont(const QFont& font);
         
     private:
-        QLineEdit* m_lineEdit;
-        QToolButton* m_fileDialogButton;
-        QFont m_font;
+        QLineEdit*      m_lineEdit;
+        QToolButton*    m_fileDialogButton;
+        QFont           m_font;
 };
 
 #endif // FONTCHOOSEBOX_H
