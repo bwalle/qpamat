@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.h,v 1.2 2003/11/29 14:43:03 bwalle Exp $
+ * Id: $Id: configurationdialog.h,v 1.3 2003/12/04 11:55:30 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -29,6 +29,7 @@ namespace ConfigurationDialogLocal
 {
     class GeneralTab;
     class SmartcardTab;
+    class SecurityTab;
 }
 
 /*!
@@ -36,8 +37,8 @@ namespace ConfigurationDialogLocal
  * 
  * \ingroup gui
  * \author Bernhard Walle
- * \version $Revision: 1.2 $
- * \date $Date: 2003/11/29 14:43:03 $
+ * \version $Revision: 1.3 $
+ * \date $Date: 2003/12/04 11:55:30 $
  */
 class ConfigurationDialog : public QTabDialog
 {
@@ -54,12 +55,14 @@ class ConfigurationDialog : public QTabDialog
     private:
         ConfigurationDialogLocal::GeneralTab* m_generalTab;
         ConfigurationDialogLocal::SmartcardTab* m_smartCardTab;
+        ConfigurationDialogLocal::SecurityTab* m_securityTab;
         
 };
 
 /*!
- * This namespace contains implementation details of the ConfigurationDialog. I didn't want to
- * waste the global namespace with this.
+ * \brief This namespace contains implementation details of the ConfigurationDialog. 
+ *
+ * I didn't want to waste the global namespace with this.
  */
 namespace ConfigurationDialogLocal
 {
@@ -68,8 +71,8 @@ namespace ConfigurationDialogLocal
      *
      * \ingroup gui
      * \author Bernhard Walle
-     * \version $Revision: 1.2 $
-     * \date $Date: 2003/11/29 14:43:03 $
+     * \version $Revision: 1.3 $
+     * \date $Date: 2003/12/04 11:55:30 $
      */
     class GeneralTab : public QWidget
     {
@@ -101,12 +104,12 @@ namespace ConfigurationDialogLocal
     };
     
     /*! 
-     * This class represents the Smartcard tab of the configuration dialog.
+     * \brief This class represents the Smartcard tab of the configuration dialog.
      *
      * \ingroup gui
      * \author Bernhard Walle
-     * \version $Revision: 1.2 $
-     * \date $Date: 2003/11/29 14:43:03 $
+     * \version $Revision: 1.3 $
+     * \date $Date: 2003/12/04 11:55:30 $
      */
     class SmartcardTab : public QWidget
     {
@@ -154,6 +157,52 @@ namespace ConfigurationDialogLocal
             FileLineEdit* m_libraryEdit;
             QComboBox* m_portCombo;
             QPushButton* m_testButton;
+    };
+    
+    
+    /*! 
+     * \brief This class represents the Smartcard tab of the configuration dialog.
+     *
+     * \ingroup gui
+     * \author Bernhard Walle
+     * \version $Revision: 1.3 $
+     * \date $Date: 2003/12/04 11:55:30 $
+     */
+    class SecurityTab : public QWidget
+    {
+        Q_OBJECT
+        
+        public:
+            
+            /*!
+             * Creates a new instance of the widget.
+             * \param parent the parent widget
+             */
+            SecurityTab(QWidget* parent);
+        
+        public slots:
+            
+            /*!
+             * Stores the settings.
+             */
+            void applySettings();
+            
+            /*!
+             * Handles changes of the radio button.
+             * \param buttonId the buttonId as returned by the event. In reality this is of type
+             *        PasswordCheckerType.
+             */
+            void radioButtonHandler(int buttonId);
+            
+        private:
+            void createAndLayout();
+            void fillSettings();
+            
+        private:
+            QButtonGroup* m_radioGroup;
+            QGroupBox* m_passwordCheckerGroup;
+            FileLineEdit* m_dictionaryEdit;
+            FileLineEdit* m_externalEdit;
     };
 }
 

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.cpp,v 1.2 2003/11/28 18:42:25 bwalle Exp $
+ * Id: $Id: configurationdialog.cpp,v 1.3 2003/12/04 11:55:16 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -32,11 +32,14 @@
 
 #include "configurationdialog.h"
 #include "../settings.h"
+#include "../security/passwordcheckerfactory.h"
 #include "../security/encryptor.h"
 #include "../smartcard/memorycard.h"
 
+
 using ConfigurationDialogLocal::GeneralTab;
 using ConfigurationDialogLocal::SmartcardTab;
+using ConfigurationDialogLocal::SecurityTab;
 
 // -------------------------------------------------------------------------------------------------
 ConfigurationDialog::ConfigurationDialog(QWidget* parent)
@@ -47,13 +50,16 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     
     m_generalTab = new GeneralTab(this);
     m_smartCardTab = new SmartcardTab(this);
+    m_securityTab = new SecurityTab(this);
     
     addTab(m_generalTab, "&General");
     addTab(m_smartCardTab, "Smart &Card");
+    addTab(m_securityTab, "&Security");
     
     setCancelButton(tr("Cancel"));
     connect(this, SIGNAL(applyButtonPressed()), m_generalTab, SLOT(applySettings()));
     connect(this, SIGNAL(applyButtonPressed()), m_smartCardTab, SLOT(applySettings()));
+    connect(this, SIGNAL(applyButtonPressed()), m_securityTab, SLOT(applySettings()));
 }
 
 
@@ -167,7 +173,7 @@ void SmartcardTab::createAndLayout()
     new QRadioButton(tr("&Don't use a smartcard"), m_radioGroup);
     new QRadioButton(tr("&Use a smartcard"), m_radioGroup);
     
-    QLabel* libraryLabel = new QLabel(tr("&CT-API Chipcard Driver:"), m_settingsGroup);
+    QLabel* libraryLabel = new QLabel(tr("CT-&API Chipcard Driver:"), m_settingsGroup);
     m_libraryEdit = new FileLineEdit(m_settingsGroup);
     
     QLabel* portLabel = new QLabel(tr("Chipcard Terminal &Port:"), m_settingsGroup);
@@ -292,7 +298,7 @@ void SmartcardTab::testSmartCard()
         QApplication::restoreOverrideCursor();
         QApplication::restoreOverrideCursor();
         QMessageBox::critical(this, "QPaMaT", QString("<qt>"+tr(
-                "<p>A problem occured while loading the specified CT-API (chipcard) driver."
+                "<p>A problem occurred while loading the specified CT-API (chipcard) driver."
                 " The error message was:</p><p>%1</p>")+"</qt>").arg(ex.what()),
                QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
     }
@@ -300,8 +306,109 @@ void SmartcardTab::testSmartCard()
     {
         QApplication::restoreOverrideCursor();
         QMessageBox::critical(this, "QPaMaT", QString("<qt>"+tr(
-                "<p>An error occured while communicating with the chipcard terminal."
+                "<p>An error occurred while communicating with the chipcard terminal."
                 " The error message was:</p><p>%1</p>")+"</qt>").arg(ex.what()),
                QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
     }
+}
+
+
+// -------------------------------------------------------------------------------------------------
+SecurityTab::SecurityTab(QWidget* parent)
+// -------------------------------------------------------------------------------------------------
+        : QWidget(parent)
+{
+    createAndLayout();
+    
+    // init contents
+    fillSettings();
+    
+    connect(m_radioGroup, SIGNAL(clicked(int)), this, SLOT(radioButtonHandler(int)));
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void SecurityTab::createAndLayout()
+// -------------------------------------------------------------------------------------------------
+{
+    // create layouts
+    QVBoxLayout* mainLayout = new QVBoxLayout(this, 6, 6);
+    
+    m_radioGroup = new QButtonGroup(6, Vertical,tr("Password Checker"), this);
+    m_radioGroup->setFlat(true);
+    
+    new QRadioButton(tr("S&imple"), m_radioGroup);
+    new QRadioButton(tr("&Extended"), m_radioGroup);
+    new QRadioButton(tr("&Using dictionary:"), m_radioGroup);
+    QWidget* box1 = new QWidget(m_radioGroup);
+    QHBoxLayout* hlayout1 = new QHBoxLayout(box1);
+    m_dictionaryEdit = new FileLineEdit(box1);
+    hlayout1->addSpacing(20);
+    hlayout1->addWidget(m_dictionaryEdit);
+    
+    new QRadioButton(tr("E&xternal Application (full path if not in PATH environment):"), 
+        m_radioGroup);
+    QWidget* box2 = new QWidget(m_radioGroup);
+    QHBoxLayout* hlayout2 = new QHBoxLayout(box2);
+    m_externalEdit = new FileLineEdit(box2);
+    hlayout2->addSpacing(20);
+    hlayout2->addWidget(m_externalEdit);
+    
+    mainLayout->addWidget(m_radioGroup);
+    mainLayout->addStretch(5);
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void SecurityTab::radioButtonHandler(int buttonId)
+// -------------------------------------------------------------------------------------------------
+{
+    m_dictionaryEdit->setEnabled( PasswordCheckerFactory::PasswordCheckerType(buttonId) == 
+        PasswordCheckerFactory::TExtendedDictPasswordChecker );
+    m_externalEdit->setEnabled( PasswordCheckerFactory::PasswordCheckerType(buttonId) == 
+        PasswordCheckerFactory::TExternalPasswordChecker );
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void SecurityTab::fillSettings()
+// -------------------------------------------------------------------------------------------------
+{
+    QSettings& set = Settings::getInstance().getSettings();
+    
+    m_radioGroup->setButton( PasswordCheckerFactory::fromString( 
+        set.readEntry( "Security/PasswordChecker", PasswordCheckerFactory::DEFAULT_CHECKER_STRING))
+        );
+    m_dictionaryEdit->setContent(set.readEntry( "Security/DictionaryFile"));
+    m_externalEdit->setContent(set.readEntry( "Security/ExternalProgram"));
+    radioButtonHandler(m_radioGroup->selectedId());
+}
+
+
+// -------------------------------------------------------------------------------------------------
+void SecurityTab::applySettings()
+// -------------------------------------------------------------------------------------------------
+{
+    QSettings& set = Settings::getInstance().getSettings();
+    PasswordCheckerFactory::PasswordCheckerType type = 
+        PasswordCheckerFactory::PasswordCheckerType(m_radioGroup->selectedId());
+    
+    QString additional;
+    switch (type)
+    {
+        case PasswordCheckerFactory::TExtendedDictPasswordChecker:
+            additional = m_dictionaryEdit->getContent();
+            break;
+        case PasswordCheckerFactory::TExternalPasswordChecker:
+            additional = m_externalEdit->getContent();
+            break;
+        default:
+            additional = "";
+            break;
+    }
+    
+    set.writeEntry("Security/PasswordChecker", PasswordCheckerFactory::toString(type));
+    set.writeEntry("Security/PasswordCheckerAdditional", additional);
+    set.writeEntry("Security/DictionaryFile", m_dictionaryEdit->getContent() );
+    set.writeEntry("Security/ExternalProgram", m_externalEdit->getContent() );
 }
