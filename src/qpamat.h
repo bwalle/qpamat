@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.h,v 1.15 2003/12/21 20:31:00 bwalle Exp $
+ * Id: $Id: qpamat.h,v 1.16 2003/12/28 15:06:31 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -19,131 +19,51 @@
 #define QPAMAT_H
 
 #include <qmainwindow.h>
-#include <qaction.h>
 #include <qcombobox.h>
 #include <qevent.h>
 #include <qtoolbutton.h>
+#include <qaction.h>
 
 #include "settings.h"
 #include "randompassword.h"
-#include "util/timerstatusmessage.h"
 #include "help.h"
-#include "tree.h"
-#include "rightpanel.h"
 
+// forward declarations
+class Tree;
+class RightPanel;
+class TimerStatusmessage;
 
-/*!
- * \brief The main application window.
- *
- * \ingroup gui
- * \author Bernhard Walle
- * \version $Revision: 1.15 $
- * \date $Date: 2003/12/21 20:31:00 $
- */
 class Qpamat : public QMainWindow
 {
     Q_OBJECT
     
     public:
-        
-        /*!
-         * Creates a new instance of the application.
-         */
         Qpamat();
-        
-        /*!
-         * Deletes the application.
-         */
         ~Qpamat();
         
-        /*!
-         * Returns the settings object.
-         * \return a reference to the object
-         */
         Settings& set();
         
     protected slots:
-        
-        /*!
-         * Performs the login process.
-         */
         void login();
-        
-        /*!
-         * Performs the logout process.
-         */
         void logout();
-        
-        /*!
-         * Performs the newFile process.
-         */
         void newFile();
-        
-        /*!
-         * Performs the save process.
-         */
         void save();
-        
-        /*!
-         * Displayes the change password dialog.
-         */
         void changePassword();
-        
-        /*! 
-         * Displays the configuration dialog.
-         */
         void configure();
-        
-        /*!
-         * Searches in the tree for the specified word.
-         */
         void search();
-        
-        /*!
-         * Prints the current stuff.
-         */
         void print();
-        
-        /*!
-         * Sets the application state to "modified".
-         */
+        void clearClipboard();
         void setModified(bool modified = true);
+        void passwordStrengthHandler(bool enabled);
         
-        /*!
-         * Enables showing of weak passwords.
-         * \param enabled \c true if it's enabled, \c false otherwise
-         */
-        void weakPasswordHandler(bool enabled);
-    
     signals:
-        
-        /*!
-         * This signal is emitted every time the user wants to insert the password at current
-         * position.
-         */
         void insertPassword(const QString& password);
-        
-        
-        /*!
-         * This signal is emitted if some settings have changed.
-         */
         void settingsChanged();
         
     public slots:
-        
-        /*!
-         * Prints a message in the statusbar.
-         * \param message the message string
-         * \param warning \c true if it's a warning, \c false if it's just a information
-         *        Currently the time is determined by this argument.
-         */
         void message(const QString& message, bool warning = TRUE);
         
     protected:
-        
-        /*!
-         * Handles a closeEvent.
-         */
         void closeEvent(QCloseEvent* evt);
         
     private:
@@ -154,23 +74,6 @@ class Qpamat : public QMainWindow
         void setLogin(bool login);
         
     private:
-        Settings m_settings;
-        Tree* m_tree;
-        QString m_password;
-        Help m_help;
-        QPopupMenu* m_treeContextMenu;
-        TimerStatusmessage* m_message;
-        RightPanel* m_rightPanel;
-        QComboBox* m_searchCombo;
-        QToolBar* m_searchToolbar;
-        RandomPassword* m_randomPassword;
-        bool m_loggedIn;
-        bool m_modified;
-        struct ToolButtons
-        {
-            QToolButton* search;
-        };
-        ToolButtons m_toolButtons;
         struct Actions
         {
             QAction* newAction;
@@ -188,15 +91,36 @@ class Qpamat : public QMainWindow
             QAction* addItemAction;
             QAction* removeItemAction;
             QAction* randomPasswordAction;
-            QAction* weakPasswordAction;
+            QAction* passwordStrengthAction;
+            QAction* clearClipboardAction;
         };
-        Actions m_actions;
+        struct ToolButtons
+        {
+            QToolButton* search;
+        };
+        
+    private:
+        Settings            m_settings;
+        Tree*               m_tree;
+        QString             m_password;
+        Help                m_help;
+        QPopupMenu*         m_treeContextMenu;
+        TimerStatusmessage* m_message;
+        RightPanel*         m_rightPanel;
+        QComboBox*          m_searchCombo;
+        QToolBar*           m_searchToolbar;
+        RandomPassword*     m_randomPassword;
+        bool                m_loggedIn;
+        bool                m_modified;
+        ToolButtons         m_toolButtons;
+        Actions             m_actions;
+    
+    private:
+        Qpamat(const Qpamat&);
+        Qpamat& operator=(const Qpamat&);
 };
 
 
-/*!
- * Pointer to the Qpamat object.
- */
 extern Qpamat* qpamat;
 
 
