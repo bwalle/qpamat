@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.50 2005/01/01 19:42:23 bwalle Exp $
+# Id: $Id: qpamat.pro,v 1.51 2005/02/12 10:51:48 bwalle Exp $
 # -----------------------------------------------------------------------------
 
 #
@@ -17,10 +17,10 @@ BINDIR             = $${PREFIX}/bin
 
 ################################################################################
 
-VERSION_STRING     = 0.3.3
+VERSION_STRING     = 0.3.4
 MAJOR_VERSION      = 0
 MINOR_VERSION      = 3
-PATCH_VERSION      = 3
+PATCH_VERSION      = 4
 
 ################################################################################
 
@@ -59,6 +59,7 @@ SOURCES     =                                   \
     src/smartcard/notinitializedexception.cpp   \
     src/util/stringdisplay.cpp                  \
     src/util/singleapplication.cpp              \
+    src/util/timeoutapplication.cpp             \
     src/datareadwriter.cpp                      \
     src/timerstatusmessage.cpp                  \
     src/randompassword.cpp                      \
@@ -115,6 +116,7 @@ HEADERS     =                                   \
     src/util/stdrandomnumbergenerator.h         \
     src/util/stringdisplay.h                    \
     src/util/singleapplication.h                \
+    src/util/timeoutapplication.h               \
     src/datareadwriter.h                        \
     src/timerstatusmessage.h                    \
     src/treeentry.h                             \
@@ -177,6 +179,14 @@ IMAGES =                                        \
     images/traffic_green_22.png                 \
     images/traffic_yellow_16.png                \
     images/traffic_yellow_22.png                \
+    images/login_16.png                         \
+    images/login_24.png                         \
+    images/logout_16.png                        \
+    images/logout_24.png                        \
+    images/export_16.png                        \
+    images/export_24.png                        \
+    images/info_16.png                          \
+    images/info_24.png                          \
     images/rename_16.png                        \
     images/smartcard_24.png                     \
     images/smartcard_34.png                     \
