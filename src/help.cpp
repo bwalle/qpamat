@@ -1,5 +1,5 @@
 /*
- * Id: $Id: help.cpp,v 1.1 2003/10/11 19:51:00 bwalle Exp $
+ * Id: $Id: help.cpp,v 1.2 2003/10/20 20:55:27 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,19 +18,38 @@
 #include <qobject.h>
 #include <qapplication.h>
 #include <qmessagebox.h>
+#include <qwidget.h>
+#include <qprocess.h>
 
-#include "globals.h"
 #include "help.h"
-
+#include "settings.h"
 
 // -------------------------------------------------------------------------------------------------
 void Help::showAbout()
 // -------------------------------------------------------------------------------------------------
 {
-    QMessageBox::about(qApp->mainWidget(), QPAMAT_USERVISIBLE,
+    QMessageBox::about(qApp->mainWidget(), "QPaMaT",
         tr("<p><b>QPaMaT "VERSION"</b></p><p>Password managing tool for Unix, Windows and MacOS X. "
             "It uses the OpenSSL library for encryption and is distributed under the terms "
             "of the GNU General Public License.</p>"
             "<p>© Bernhard Walle (<tt>bernhard.walle@gmx.de</tt>)"));
 }
 
+
+// -------------------------------------------------------------------------------------------------
+void Help::openURL(QWidget* parent, const QString& url)
+// -------------------------------------------------------------------------------------------------
+{
+    QString command = Settings::getInstance().getSettings().readEntry(
+        "/External Programs/Web Browser", Settings::DEFAULT_WEBBROWSER);
+    QProcess* process = new QProcess(command, parent);
+    process->addArgument(url);
+    
+    if (! process->start())
+    {
+        QMessageBox::critical(parent, "QPaMaT",
+            tr("<qt><p>Failed to open the link <tt>%1</tt> in the specified web browser."
+                " The command was:</p><p><tt><nobr>%2</tt></nobr></p></qt>").arg(url).arg(
+                command+" " + url), QMessageBox::Ok, QMessageBox::NoButton);
+    }
+}

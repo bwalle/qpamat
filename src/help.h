@@ -1,5 +1,5 @@
 /*
- * Id: $Id: help.h,v 1.1 2003/10/11 19:51:00 bwalle Exp $
+ * Id: $Id: help.h,v 1.2 2003/10/20 20:55:27 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -19,13 +19,14 @@
 #define HELP_H
 
 #include <qobject.h>
+#include <qwidget.h>
 
 /**
  * Helping class for providing help.
  * @ingroup gui
  * @author Bernhard Walle
- * @version $Revision: 1.1 $
- * @date $Date: 2003/10/11 19:51:00 $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2003/10/20 20:55:27 $
  */
 class Help : public QObject
 {
@@ -37,6 +38,11 @@ class Help : public QObject
          * Shows the about dialog
          */
         void showAbout();
+        
+        /**
+         * Opens the specified URL in the browser.
+         */
+        static void openURL(QWidget* parent, const QString& url);
         
 };
 
