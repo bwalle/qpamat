@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.31 2004/01/11 23:20:28 bwalle Exp $
+ * Id: $Id: qpamat.cpp,v 1.32 2004/01/13 23:49:16 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -58,6 +58,9 @@
 #include "images/edit_add_22x22.xpm"
 #include "images/edit_remove_16x16.xpm"
 #include "images/edit_remove_22x22.xpm"
+#include "images/clear_clipboard_16x16.xpm"
+#include "images/qpamat_16x16.xpm"
+#include "images/qt_16x16.xpm"
 
 #include "qpamat.h"
 #include "settings.h"
@@ -87,8 +90,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.31 $
-    \date $Date: 2004/01/11 23:20:28 $
+    \version $Revision: 1.32 $
+    \date $Date: 2004/01/13 23:49:16 $
  */
 
 /*! 
@@ -775,14 +778,15 @@ void Qpamat::initActions()
     m_actions.passwordStrengthAction = new QAction(tr("&Show password strength"),
         QKeySequence(CTRL|Key_W), this);
     m_actions.passwordStrengthAction->setToggleAction(true);
-    m_actions.clearClipboardAction = new QAction(tr("&Clear clipboard"), 
-        QKeySequence(CTRL|Key_E), this);
+    m_actions.clearClipboardAction = new QAction(QIconSet(clear_clipboard_16x16_xpm), 
+        tr("&Clear clipboard"), QKeySequence(CTRL|Key_E), this);
     
     // ----- Help ----------------------------------------------------------------------------------
     m_actions.whatsThisAction = new QAction(QPixmap(whats_this_xpm), tr("&What's this"), 
         QKeySequence(SHIFT|Key_F1), this);
-    m_actions.aboutAction = new QAction(tr("&About..."), 0, this);
-    m_actions.aboutQtAction = new QAction(tr("About &Qt..."), QKeySequence(), this);
+    m_actions.aboutAction = new QAction(QIconSet(qpamat_16x16_xpm), tr("&About..."), 0, this);
+    m_actions.aboutQtAction = new QAction(QIconSet(qt_16x16_xpm), 
+        tr("About &Qt..."), QKeySequence(), this);
     
     // ------ Toolbar ------------------------------------------------------------------------------
     m_actions.addItemAction = new QAction(QIconSet(edit_add_16x16_xpm, edit_add_22x22_xpm),
