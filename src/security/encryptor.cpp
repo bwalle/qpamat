@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encryptor.cpp,v 1.7 2003/10/04 20:48:02 bwalle Exp $
+ * Id: $Id: encryptor.cpp,v 1.8 2003/10/05 16:07:12 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -47,7 +47,7 @@ Encryptor::Encryptor(const QString& algorithm, const QString& password)
     }
     else
     {
-        throw NoSuchAlgorithmException("Algorithm "+algorithm+" not supported");
+        throw NoSuchAlgorithmException(("Algorithm "+algorithm+" not supported").latin1());
     }
     
     // set the password
