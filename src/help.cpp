@@ -1,5 +1,5 @@
 /*
- * Id: $Id: help.cpp,v 1.8 2004/07/23 22:05:28 bwalle Exp $
+ * Id: $Id: help.cpp,v 1.9 2004/09/25 17:04:49 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,6 +15,8 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
+#include <memory>
+
 #include <qobject.h>
 #include <qapplication.h>
 #include <qmessagebox.h>
@@ -36,8 +38,8 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.8 $
-    \date $Date: 2004/07/23 22:05:28 $
+    \version $Revision: 1.9 $
+    \date $Date: 2004/09/25 17:04:49 $
 */
 
 /*!
