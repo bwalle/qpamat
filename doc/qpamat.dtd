@@ -2,18 +2,14 @@
 
 <!ELEMENT app-data          (version, crypt-algorithm, passwordhash, smartcard)>
 <!ELEMENT version           EMPTY>
-<!ELEMENT passwordhash      EMPTY>
-<!ELEMENT crypt-algorithm   EMPTY>
+<!ELEMENT passwordhash      (#PCDATA)>
+<!ELEMENT crypt-algorithm   (#PCDATA)>
 <!ELEMENT smartcard			EMPTY>
 
 <!ELEMENT passwords         (category*, entry*)>
 <!ELEMENT category          (category*, entry*)>
 <!ELEMENT entry             (property*)>
 <!ELEMENT property          EMPTY>
-
-<!ATTLIST crypt-algorithm   value       CDATA       #REQUIRED>
-
-<!ATTLIST passwordhash      value       CDATA       #REQUIRED>
 
 <!ATTLIST smartcard			useCard		(1 | 0)		#REQUIRED
 							card-id		NMTOKEN		#IMPLIED>

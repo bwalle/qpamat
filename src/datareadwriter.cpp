@@ -1,5 +1,5 @@
 /*
- * Id: $Id: datareadwriter.cpp,v 1.1 2004/01/06 23:39:35 bwalle Exp $
+ * Id: $Id: datareadwriter.cpp,v 1.2 2004/01/11 23:21:18 bwalle Exp $
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -56,8 +56,8 @@
 
     \ingroup gui
     \author $Author: bwalle $
-    \version $Revision: 1.1 $
-    \date $Date: 2004/01/06 23:39:35 $
+    \version $Revision: 1.2 $
+    \date $Date: 2004/01/11 23:21:18 $
     
 */
 
@@ -186,8 +186,8 @@
 
     \ingroup gui
     \author $Author: bwalle $
-    \version $Revision: 1.1 $
-    \date $Date: 2004/01/06 23:39:35 $
+    \version $Revision: 1.2 $
+    \date $Date: 2004/01/11 23:21:18 $
 */
 
 /*!
@@ -223,7 +223,8 @@ QDomDocument DataReadWriter::createSkeletonDocument() throw ()
     appData.appendChild(version);
     
     QDomElement cryptAlgorithm = doc.createElement("crypt-algorithm");
-    cryptAlgorithm.setAttribute("value", qpamat->set().readEntry("Security/CipherAlgorithm"));
+    QDomText algorithm = doc.createTextNode(qpamat->set().readEntry("Security/CipherAlgorithm"));
+    cryptAlgorithm.appendChild(algorithm);
     appData.appendChild(cryptAlgorithm);
     
     QDomElement passwordhash = doc.createElement("passwordhash");
@@ -468,7 +469,8 @@ void DataReadWriter::writeXML(QDomDocument document, const QString& password)
     const QString hash = smartcard
         ? "SMARTCARD"
         : PasswordHash::generateHashString(password);
-    appData.namedItem("passwordhash").toElement().setAttribute("value", hash);
+    QDomText text = document.createTextNode(hash);
+    appData.namedItem("passwordhash").toElement().appendChild(text);
     
     byte id = 0;
     if (smartcard)
@@ -543,7 +545,7 @@ QDomDocument DataReadWriter::readXML(const QString& password)
     // check the password
     if (!smartcard)
     {
-        const QString hash = appData.namedItem("passwordhash").toElement().attribute("value");
+        const QString hash = appData.namedItem("passwordhash").toElement().text();
         if (hash == "SMARTCARD" || !PasswordHash::isCorrect(password, hash))
         {
             throw ReadWriteException(qApp->tr("The password is incorrect."),
@@ -552,7 +554,7 @@ QDomDocument DataReadWriter::readXML(const QString& password)
     }
     
     
-    QString algorithm = appData.namedItem("crypt-algorithm").toElement().attribute("value");
+    QString algorithm = appData.namedItem("crypt-algorithm").toElement().text();
     std::auto_ptr<StringEncryptor> enc;
     std::auto_ptr<Encryptor> realEncryptor;
     try
