@@ -1,4 +1,4 @@
-# Id: $Id: qpamat.pro,v 1.55 2005/03/06 15:45:26 bwalle Exp $
+# Id: $Id$
 # -----------------------------------------------------------------------------
 
 #
@@ -260,18 +260,16 @@ QMAKE_EXTRA_UNIX_TARGETS   += documentation
 #
 # make a tarball on Unix with "make release"
 maketarball.target          = tarball
-maketarball.commands        = cd .. &&
-maketarball.commands       += cp -r qpamat qpamat-$$VERSION_STRING &&
+maketarball.commands        = svn export `pwd` /tmp/qpamat-$$VERSION_STRING &&
+maketarball.commands       += cd /tmp &&
 maketarball.commands       += rm qpamat-$$VERSION_STRING/out/* &&
 maketarball.commands       += rm qpamat-$$VERSION_STRING/qpamat &&
-maketarball.commands       += find qpamat-$$VERSION_STRING -name CVS -type d -exec rm -r {} \; ;
 maketarball.commands       += find qpamat-$$VERSION_STRING -name '*.o' -exec rm {} \; ;
 maketarball.commands       += find qpamat-$$VERSION_STRING -name '*.qm' -exec rm {} \; ;
-maketarball.commands       += find qpamat-$$VERSION_STRING -name .cvsignore -exec rm {} \; ;
-maketarball.commands       += tar cvfz qpamat-$${VERSION_STRING}.tar.gz qpamat-$$VERSION_STRING &&
+maketarball.commands       += tar cvfj qpamat-$${VERSION_STRING}.tar.bz2 qpamat-$$VERSION_STRING &&
 maketarball.commands       += cd - &&
-maketarball.commands       += mv ../qpamat-$${VERSION_STRING}.tar.gz . &&
-maketarball.commands       += rm -r ../qpamat-$$VERSION_STRING
+maketarball.commands       += mv /tmp/qpamat-$${VERSION_STRING}.tar.bz2 . &&
+maketarball.commands       += rm -r /tmp/qpamat-$$VERSION_STRING
 QMAKE_EXTRA_UNIX_TARGETS   += maketarball
 
 #
