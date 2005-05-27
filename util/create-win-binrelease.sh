@@ -8,6 +8,7 @@ mkdir -p qpamat/share/qpamat/translations
 mkdir -p qpamat/share/qpamat/doc
 
 cp qpamat.exe qpamat/bin
+cp $QTDIR/lib/*.dll qpamat/bin
 cp COPYING qpamat/share/qpamat
 cp -r doc/user/en qpamat/share/qpamat/doc
 cp share/dicts/*.txt qpamat/share/qpamat/dicts
