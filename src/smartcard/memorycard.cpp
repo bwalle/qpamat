@@ -1,5 +1,5 @@
 /*
- * Id: $Id: memorycard.cpp,v 1.10 2004/01/15 22:06:08 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -71,7 +71,7 @@ int MemoryCard::m_lastNumber = 1;
     \ingroup smartcard
     \author Bernhard Walle
     \version $Revision: 1.10 $
-    \date $Date: 2004/01/15 22:06:08 $
+    \date $Date$
 */
 
 /*!
@@ -179,7 +179,7 @@ MemoryCard::~MemoryCard()
         }
         catch (...)
         {
-            PRINT_DBG("Caught general exception in destructor.");
+            PRINT_DBG("Caught general exception in destructor.", "");
         }
     }
 }

@@ -15,12 +15,18 @@ BINDIR             = $${PREFIX}/bin
 # set this if you installed OpenSSL in a non-standard place
 # INCLUDEPATH += /usr/local/ssl/include
 
+# On Windows, this is the default installation path of OpenSSL. Change this
+# if needed. Adjust to your compiler (VC is for MS Visual C++) if needed.
+win32:INCLUDEPATH += c:\openssl\include
+win32:LIBS        += c:\openssl\lib\vc\ssleay32.lib \
+                     c:\openssl\lib\vc\libeay32.lib
+
 ################################################################################
 
-VERSION_STRING     = 0.4.2
+VERSION_STRING     = 0.4.3
 MAJOR_VERSION      = 0
 MINOR_VERSION      = 4
-PATCH_VERSION      = 2
+PATCH_VERSION      = 3
 
 ################################################################################
 
@@ -237,11 +243,9 @@ isEmpty (debug) {
   DEFINES  += TRACE
 }
 
-QMAKE_CXXFLAGS_WARN_ON 	+= -Wno-unused-parameter
-
 # -----------------------------------------------------------------------------
 
-LIBS       += -lssl -lm -lcrypto
+unix:LIBS  += -lssl -lm -lcrypto
 
 # -----------------------------------------------------------------------------
 

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: stdrandomnumbergenerator.ipp,v 1.1 2004/01/06 23:32:17 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -17,6 +17,7 @@
  */
 #include <cstdlib>
 #include <limits>
+#include <ctime>
 
 template <class type>
 StdRandomNumberGenerator<type>::StdRandomNumberGenerator()

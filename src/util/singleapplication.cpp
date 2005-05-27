@@ -1,5 +1,5 @@
 /*
- * Id: $Id: singleapplication.cpp,v 1.4 2004/01/11 23:19:52 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -17,6 +17,7 @@
  */
 #include <stdexcept>
 #include <csignal>
+#include <qobject.h>
 
 #ifndef Q_WS_WIN
 #include <unistd.h>
@@ -66,7 +67,7 @@ bool    SingleApplication::initialized;
     \ingroup misc
     \author Bernhard Walle
     \version $Revision: 1.4 $
-    \date $Date: 2004/01/11 23:19:52 $
+    \date $Date$
 */
 
 /*!
@@ -159,7 +160,11 @@ void SingleApplication::shutdown(int signal)
 {
     PRINT_DBG("Caught signal %d", signal)
     
-    if (signal == SIGABRT || signal == SIGQUIT)
+    if (signal == SIGABRT 
+#ifndef Q_WS_WIN
+		|| signal == SIGQUIT
+#endif
+		)
     {
         shutdown();
         std::signal(SIGABRT, SIG_DFL);
@@ -177,7 +182,7 @@ void SingleApplication::shutdown(int signal)
 */
 void SingleApplication::shutdown()
 {
-    PRINT_DBG("Shutting down ...");
+    PRINT_DBG("Shutting down ...", "");
     if (!didShutdownAlready) // prevents multiple calls
     {
         if (!QFile::remove(lockfile))

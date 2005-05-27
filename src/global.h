@@ -1,5 +1,5 @@
 /*
- * Id: $Id: global.h,v 1.6 2004/01/07 23:55:24 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -49,28 +49,56 @@ typedef QValueVector<QChar>     QCharVector;
 
 #ifdef DEBUG
 
-#define PRINT_DBG(fmt, args...)                                                  \
-{                                                                                \
-    qDebug("DEBUG[%s:%d] %s(): "fmt, __FILE__, __LINE__, __DBG_FUNC__, ##args);  \
-}
+#  ifdef _MSC_VER
+#    define PRINT_DBG(fmt, args)                                  \
+     {                                                            \
+         qDebug("DEBUG[%s:%d] %s(): "fmt, __FILE__, __LINE__,     \
+                 __DBG_FUNC__, ##args);                           \
+     }
+#  else
+#    define PRINT_DBG(fmt, ...)                                   \
+     {                                                            \
+         qDebug("DEBUG[%s:%d] %s(): "fmt, __FILE__, __LINE__,     \
+                __DBG_FUNC__, ## __VA_ARGS__);                    \
+     }
 
-#else
+#  endif
 
-#define PRINT_DBG(fmt, args...)   { do {} while(0); }
+#else  
+
+#  ifdef MSC_VER
+#    define PRINT_DBG(fmt, args)   { do {} while(0); }
+#  else
+#    define PRINT_DBG(fmt, ...)   { do {} while(0); }
+#  endif
 
 #endif
 
 
 #ifdef TRACE
 
-#define PRINT_TRACE(fmt, args...)                                                 \
-{                                                                                 \
-    qDebug("TRACE[%s:%d] %s(): "fmt, __FILE__, __LINE__, __DBG_FUNC__, ##args);   \
-}
+#  ifdef MSC_VER
+#    define PRINT_TRACE(fmt, args)                                \
+     {                                                            \
+         qDebug("TRACE[%s:%d] %s(): "fmt, __FILE__, __LINE__,     \
+                 __DBG_FUNC__, ##args);                           \
+     }
+#  else
+#    define PRINT_TRACE(fmt, ...)                                 \
+     {                                                            \
+         qDebug("TRACE[%s:%d] %s(): "fmt, __FILE__, __LINE__,     \
+                __DBG_FUNC__, ## __VA_ARGS__);                    \
+     }
 
-#else
+#  endif
 
-#define PRINT_TRACE(fmt, args...)   { do {} while(0); }
+#else  
 
-#endif // TRACE
+#  ifdef _MSC_VER
+#    define PRINT_TRACE(fmt, args)   { do {} while(0); }
+#  else
+#    define PRINT_TRACE(fmt, ...)   { do {} while(0); }
+#  endif
+
+#endif
 

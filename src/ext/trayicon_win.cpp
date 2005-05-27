@@ -28,6 +28,7 @@
 #include <qcursor.h>
 #include <qlibrary.h>
 
+#include <windows.h>
 #include <qt_windows.h>
 
 static uint WM_TASKBARCREATED = 0;

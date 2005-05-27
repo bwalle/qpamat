@@ -1,5 +1,5 @@
 /*
- * Id: $Id: datareadwriter.cpp,v 1.8 2004/07/24 13:45:42 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -16,6 +16,7 @@
  * ------------------------------------------------------------------------------------------------- 
  */
 #include <memory>
+#include <ctime>
 
 #include <qthread.h>
 #include <qfile.h>
@@ -55,9 +56,9 @@
     getMessage() method instead.
 
     \ingroup gui
-    \author $Author: bwalle $
+    \author $Author$
     \version $Revision: 1.8 $
-    \date $Date: 2004/07/24 13:45:42 $
+    \date $Date$
     
 */
 
@@ -192,9 +193,9 @@
           writing fails with 62 00 error !??
 
     \ingroup gui
-    \author $Author: bwalle $
+    \author $Author$
     \version $Revision: 1.8 $
-    \date $Date: 2004/07/24 13:45:42 $
+    \date $Date$
 */
 
 /*!
@@ -332,7 +333,7 @@ void ReadWriteThread::run()
         if (m_write && m_pin)
         {
             // try to unlock
-            PRINT_DBG("Trying to unlock the card ...");
+            PRINT_DBG("Trying to unlock the card ...", "");
             m_card.verify(m_pin);
         }
         

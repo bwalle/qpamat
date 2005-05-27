@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.cpp,v 1.31 2005/02/27 18:12:56 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -61,7 +61,7 @@
     \ingroup gui
     \author Bernhard Walle
     \version $Revision: 1.31 $
-    \date $Date: 2005/02/27 18:12:56 $
+    \date $Date$
 */
 
 /*!
@@ -264,7 +264,7 @@ void Tree::showContextMenu(QListViewItem* item, const QPoint& point)
         case -1:
             break;
         default: 
-            PRINT_DBG("Error in showContextMenu\n");
+            PRINT_DBG("Error in showContextMenu\n", "");
             break;
     }
 }
