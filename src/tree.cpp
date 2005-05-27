@@ -475,7 +475,7 @@ void Tree::searchFor(const QString& word)
     
     if (selectedItem() == selected)
     {
-        qpamat->message("No items found");
+        qpamat->message(tr("No items found"));
     }
 }
 

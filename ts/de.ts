@@ -936,6 +936,10 @@ Prüfen Sie Ihre Einstellungen!</translation>
         <source>Export date:</source>
         <translation>Exportdatum:</translation>
     </message>
+    <message>
+        <source>No items found</source>
+        <translation>Keine Einträge gefunden</translation>
+    </message>
 </context>
 <context>
     <name>TreeEntry</name>
