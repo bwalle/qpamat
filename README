@@ -6,12 +6,24 @@ You find the documentation in the doc/user/en/manual subdirectory in HTML
 format. Just start your favourite web browser and read this manual. It contains
 also installation instruction. For licensing issues read COPYING.
 
-There's no version for MS Windows now, but Qt 4.0 will be available in terms
-of GNU GPL, so I think I'm able to port it.
-
 If you encounter any problems and if you've read the manual, feel free to
 contact me via e-mail (bernhard.walle@gmx.de) or Jabber (bwalle@jabber.ccc.de)
 if I have time.
+
+To build it on Unix, use:
+
+ $ qmake qpamat.pro
+ $ make
+
+To build it on Windows using MS Visual Studio .NET 2003, start a Visual Studio .NET
+command prompt (it's available in the start menu), change in the qpamat directory and
+type
+
+ $ qmake qpamat.pro
+ $ nmake
+
+Of course, you have to have installed Qt, for example from
+http://kde-cygwin.sourceforge.net/qt3-win32/compile-net.php.
 
 
  -Bernhard Walle

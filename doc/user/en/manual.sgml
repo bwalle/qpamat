@@ -141,14 +141,9 @@
       
     <para>On Microsoft Windows, you need the free edtion which is
       included in a Qt book and <emphasis>not</emphasis> available for download
-      or a commercial edition. Because I don't have such a license (and
-      I don't use Microsoft Windows very often), there's currently no
-      version for Windows available. This may change in future if 
-      <emphasis>you</emphasis>
-      have a license (or the free edition) and contribute a binary.
-      It is also possible to run QPaMaT with the Cygwin environment and a 
-      X11 implementation. If you don't know what this means -- forget it.
-      It is a bit complicated, but the result is not bad!</para>
+      or a commercial edition. Another possibility is to use the free edition available 
+      at <ulink url="http://kde-cygwin.sourceforge.net/qt3-win32/"></ulink>.
+      The binaries provided on the website are created using this free edition.</para>
       
     <para>QPaMaT also uses the OpenSSL crypto library which is available
       for much platforms, too.</para>
@@ -187,6 +182,18 @@
       <para>
         <prompt># </prompt><userInput>make install</userinput>
       </para>
+    </sect3>
+    <sect3>
+      <title>Windows</title>
+
+      <para>Just use the zip file which is available at the QPaMaT website. Also 
+        install OpenSSL, you get it at 
+        <ulink url="http://www.openssl.org/related/binaries.html"></ulink>.
+        Then extract the file at a place you wish, you don't need write access to run
+        the program. Don't change the directory structure, I suggest just to extract
+        it to <FileName>c:\program files\</FileName>.</para>
+
+      <para>That's it. Just execute the <FileName>bin\qpamat.exe</FileName> file.</para>
     </sect3>
   </sect2>
   <sect2>

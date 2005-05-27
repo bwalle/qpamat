@@ -257,7 +257,7 @@ OBJECTS_DIR = out/
 # build the documentation with "make doc"
 # (Unix only, run "doxygen qpamant.doxy" on Microsoft Windows)
 documentation.target        = documentation
-documentation.commands      = doxygen qpamat.doxy ;
+documentation.commands      = doxygen  ;
 documentation.commands     += cd doc/user/en && rm -rf manual && db2html manual.sgml && cd - 
 QMAKE_EXTRA_UNIX_TARGETS   += documentation
 
