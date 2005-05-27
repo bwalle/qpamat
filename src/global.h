@@ -66,7 +66,7 @@ typedef QValueVector<QChar>     QCharVector;
 
 #else  
 
-#  ifdef MSC_VER
+#  ifdef _MSC_VER
 #    define PRINT_DBG(fmt, args)   { do {} while(0); }
 #  else
 #    define PRINT_DBG(fmt, ...)   { do {} while(0); }
@@ -77,7 +77,7 @@ typedef QValueVector<QChar>     QCharVector;
 
 #ifdef TRACE
 
-#  ifdef MSC_VER
+#  ifdef _MSC_VER
 #    define PRINT_TRACE(fmt, args)                                \
      {                                                            \
          qDebug("TRACE[%s:%d] %s(): "fmt, __FILE__, __LINE__,     \
