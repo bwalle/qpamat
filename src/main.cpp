@@ -1,5 +1,5 @@
 /*
- * Id: $Id: main.cpp,v 1.27 2005/02/15 13:01:16 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -171,7 +171,9 @@ int main(int argc, char** argv)
         app.setMainWidget(qpamat);
         
         QObject::connect(qpamat, SIGNAL(quit()), &app, SLOT(quit()));
-        if (!qpamat->set().readBoolEntry("Presentation/StartHidden"))
+        if (!(qpamat->set().readBoolEntry("Presentation/StartHidden")
+                        && qpamat->set().readBoolEntry("Presentation/StartMinimized")))
+
         {
             qpamat->show();
         }
