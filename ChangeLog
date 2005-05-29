@@ -1,9 +1,15 @@
+Sun May 29 12:00:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
+
+	* Icon renaming
+	* Windows trayicon improvement (at least Windows XP)
+	* rc-file for windows
+	* Released 0.4.3
+
 Fri May 27 19:00:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Various Win32 fixes.
 	* Bugfix: If system tray is unchecked and "start hidden" is still
 	  checked, don't start hidden.
-	* Released 0.4.3 (first Win32 release).
 
 Sun Mar 06 18:00:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
 

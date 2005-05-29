@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.cpp,v 1.29 2005/02/15 13:01:05 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -84,7 +84,7 @@
     \ingroup dialogs
     \author Bernhard Walle
     \version $Revision: 1.29 $
-    \date $Date: 2005/02/15 13:01:05 $
+    \date $Date$
  */
 
 /*!
@@ -105,7 +105,7 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     
     // Add the security tab
     ConfDlgSecurityTab* securityTab = new ConfDlgSecurityTab(this, "SecurityTab");
-    addPage(securityTab, QPixmap::fromMimeSource("stock_dialog_authentication_34.png"), tr("Security"));
+    addPage(securityTab, QPixmap::fromMimeSource("qpamat_34.png"), tr("Security"));
     
     // Add the smartcard tab
     ConfDlgSmartcardTab* smartCardTab = new ConfDlgSmartcardTab(this, "SmartCardTab");
@@ -137,7 +137,7 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     \ingroup gui
     \author Bernhard Walle
     \version $Revision: 1.29 $
-    \date $Date: 2005/02/15 13:01:05 $
+    \date $Date$
 */
 
 /*!
@@ -179,7 +179,7 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     \ingroup gui
     \author Bernhard Walle
     \version $Revision: 1.29 $
-    \date $Date: 2005/02/15 13:01:05 $
+    \date $Date$
 */
 
 
@@ -300,7 +300,7 @@ void ConfDlgGeneralTab::applySettings()
     \ingroup gui
     \author Bernhard Walle
     \version $Revision: 1.29 $
-    \date $Date: 2005/02/15 13:01:05 $
+    \date $Date$
 */
 
 
@@ -556,7 +556,7 @@ void ConfDlgPasswordTab::sortDictionary()
     \ingroup gui
     \author Bernhard Walle
     \version $Revision: 1.29 $
-    \date $Date: 2005/02/15 13:01:05 $
+    \date $Date$
 */
 
 /*!
@@ -671,7 +671,7 @@ void ConfDlgSecurityTab::applySettings()
     \ingroup gui
     \author Bernhard Walle
     \version $Revision: 1.29 $
-    \date $Date: 2005/02/15 13:01:05 $
+    \date $Date$
 */
 
 
@@ -786,7 +786,7 @@ void ConfDlgPresentationTab::applySettings()
     \ingroup gui
     \author Bernhard Walle
     \version $Revision: 1.29 $
-    \date $Date: 2005/02/15 13:01:05 $
+    \date $Date$
 */
 
 /*!

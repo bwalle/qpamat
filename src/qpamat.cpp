@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.cpp,v 1.52 2005/03/06 15:45:09 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -72,7 +72,7 @@
     \ingroup gui
     \author Bernhard Walle
     \version $Revision: 1.52 $
-    \date $Date: 2005/03/06 15:45:09 $
+    \date $Date$
  */
 
 /*! 
@@ -104,7 +104,7 @@ Qpamat::Qpamat()
       m_searchToolbar(0), m_randomPassword(0), m_trayIcon(0), m_lastGeometry(0, 0, 0, 0)
 {
     // Title and Icon
-    setIcon(QPixmap::fromMimeSource("stock_dialog_authentication_48.png"));
+    setIcon(QPixmap::fromMimeSource("qpamat_48.png"));
     setCaption("QPaMaT");
     
     setUsesBigPixmaps(true);
@@ -170,7 +170,11 @@ Qpamat::Qpamat()
     // tray icon
     if (set().readBoolEntry("Presentation/SystemTrayIcon"))
     {
-        m_trayIcon = new TrayIcon(QPixmap::fromMimeSource("trayicon_22.png"), QString::null);
+#ifdef Q_WS_WIN
+        m_trayIcon = new TrayIcon(QPixmap::fromMimeSource("qpamat_16.png"), QString::null);
+#else
+        m_trayIcon = new TrayIcon(QPixmap::fromMimeSource("qpamat_22.png"), QString::null);
+#endif
         m_trayIcon->show();
     }
     

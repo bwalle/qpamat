@@ -1,5 +1,5 @@
 /*
- * Id: $Id: aboutdialog.cpp,v 1.4 2004/09/03 13:41:14 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -34,7 +34,7 @@
     \ingroup gui
     \author Bernhard Walle
     \version $Revision: 1.4 $
-    \date $Date: 2004/09/03 13:41:14 $
+    \date $Date$
 */
 
 /*!
@@ -52,7 +52,7 @@ AboutDialog::AboutDialog(QWidget* parent, const char* name = 0)
     // the top of the dialog
     QHBox* titleBox = new QHBox(this);
     QLabel* titleIcon = new QLabel(titleBox);
-    titleIcon->setPixmap(QPixmap::fromMimeSource("stock_dialog_authentication_48.png"));
+    titleIcon->setPixmap(QPixmap::fromMimeSource("qpamat_48.png"));
     QLabel* titleText = new QLabel(tr("<p><b>QPaMaT "VERSION_STRING"</b></p>"), titleBox);
     titleBox->setStretchFactor(titleIcon, 0);
     titleBox->setStretchFactor(titleText, 5);

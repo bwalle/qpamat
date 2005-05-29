@@ -215,7 +215,11 @@ IMAGES =                                        \
     images/whats_this.png                       \
     images/qt_16.png                            \
     images/eye_16.png                           \
-    images/trayicon_22.png
+    images/trayicon_22.png                      \
+    images/trayicon_16.png
+
+win32:RC_FILE = share/win32/qpamat_win32.rc
+
 
 # -----------------------------------------------------------------------------
 
@@ -306,6 +310,10 @@ INSTALLS                   += i_share
 i_messages.path             = $$SHAREDIR/qpamat/translations
 i_messages.files           += ts/*.qm
 INSTALLS                   += i_messages
+
+i_icons.path                = $$SHAREDIR/pixmaps
+i_icons.files              += images/qpamat_*.png
+INSTALLS                   += i_icons
 
 target.path                 = $$BINDIR
 INSTALLS                   += target

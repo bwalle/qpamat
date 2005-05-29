@@ -5,7 +5,7 @@ Release: 	0
 Packager:       Bernhard Walle <bernhard@bwalle.de>
 License:	GPL
 URL: 		http://www.bwalle.de/temp/qpamat/
-Source0: 	%{name}-%{version}.tar.gz
+Source0: 	%{name}-%{version}.tar.bz2
 Group: 		Utilties
 BuildRoot: 	%{_tmppath}/%{name}-root
 Requires:	qt3 >= 3.2.0 
@@ -35,9 +35,12 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%{_bindir} 
 mkdir -p $RPM_BUILD_ROOT/%{_datadir}/qpamat
+mkdir -p $RPM_BUILD_ROOT/%{_datadir}/pixmaps
 mkdir -p $RPM_BUILD_ROOT/%{_datadir}/qpamat/translations
 install -m 0755 qpamat $RPM_BUILD_ROOT/%{_bindir}
 cp -R share/dicts $RPM_BUILD_ROOT/%{_datadir}/qpamat
+install -m 0644 images/qpamat_*.png $RPM_BUILD_ROOT/%{_datadir}/pixmaps/
+install -m 0644 COPYING $RPM_BUILD_ROOT/%{_datadir}/qpamat/
 install -m 0644 COPYING $RPM_BUILD_ROOT/%{_datadir}/qpamat/
 install -m 0644 ts/*.qm $RPM_BUILD_ROOT/%{_datadir}/qpamat/translations
 ln -s %{_docdir}/qpamat $RPM_BUILD_ROOT/%{_datadir}/qpamat/doc
@@ -50,3 +53,4 @@ rm -rf $RPM_BUILD_ROOT
 %doc README COPYING doc/qpamat.dtd doc/user/en
 %{_bindir}/qpamat
 %{_datadir}/qpamat
+%{_datadir}/pixmaps/*.png
