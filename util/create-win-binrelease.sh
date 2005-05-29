@@ -16,5 +16,5 @@ cp -r doc/user/en qpamat/share/qpamat/doc
 cp share/dicts/*.txt qpamat/share/qpamat/dicts
 find qpamat -name .svn -exec rm -fr {} \;
 
-zip -r qpamat-$VERSION qpamat
+zip -r qpamat-$VERSION.zip qpamat
 rm -fr qpamat
