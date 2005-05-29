@@ -269,13 +269,14 @@ QMAKE_EXTRA_UNIX_TARGETS   += documentation
 # make a tarball on Unix with "make release"
 maketarball.target          = tarball
 maketarball.commands        = svn export `pwd` /tmp/qpamat-$$VERSION_STRING &&
+maketarball.commands       += pushd . &&
 maketarball.commands       += cd /tmp/qpamat-$$VERSION_STRING &&
 maketarball.commands       += qmake qpamat.pro &&
 maketarball.commands       += make documentation &&
-maketarball.commands       += cd /tmp &&
 maketarball.commands       += rm Makefile &&
+maketarball.commands       += cd /tmp &&
 maketarball.commands       += tar cvfj qpamat-$${VERSION_STRING}.tar.bz2 qpamat-$$VERSION_STRING &&
-maketarball.commands       += cd - &&
+maketarball.commands       += popd &&
 maketarball.commands       += mv /tmp/qpamat-$${VERSION_STRING}.tar.bz2 . &&
 maketarball.commands       += rm -r /tmp/qpamat-$$VERSION_STRING
 QMAKE_EXTRA_UNIX_TARGETS   += maketarball
