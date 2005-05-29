@@ -189,8 +189,10 @@ IMAGES =                                        \
     images/clear_clipboard_16.png               \
     images/general_34.png                       \
     images/password_34.png                      \
-    images/stock_dialog_authentication_48.png   \
-    images/stock_dialog_authentication_34.png   \
+    images/qpamat_48.png                        \
+    images/qpamat_34.png                        \
+    images/qpamat_22.png                        \
+    images/qpamat_16.png                        \
     images/presentation_34.png                  \
     images/traffic_gray_16.png                  \
     images/traffic_out_22.png                   \
@@ -214,9 +216,7 @@ IMAGES =                                        \
     images/smartcard_48.png                     \
     images/whats_this.png                       \
     images/qt_16.png                            \
-    images/eye_16.png                           \
-    images/trayicon_22.png                      \
-    images/trayicon_16.png
+    images/eye_16.png
 
 win32:RC_FILE = share/win32/qpamat_win32.rc
 
