@@ -23,10 +23,10 @@ win32:LIBS        += c:\openssl\lib\vc\ssleay32.lib \
 
 ################################################################################
 
-VERSION_STRING     = 0.4.3
+VERSION_STRING     = 0.4.4
 MAJOR_VERSION      = 0
 MINOR_VERSION      = 4
-PATCH_VERSION      = 3
+PATCH_VERSION      = 4
 
 ################################################################################
 

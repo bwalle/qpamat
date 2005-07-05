@@ -1,3 +1,10 @@
+Tue Jul 05 23:30:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
+	
+	* Implemented detection if the process in .qpamat.lock with specified
+	  PID is still running. Of course, if it is running it could be
+	  another process, but the probability is low (maybe check for process
+	  name in future but that is not portable).
+
 Sun May 29 12:00:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Icon renaming

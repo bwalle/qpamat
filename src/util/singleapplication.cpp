@@ -16,11 +16,14 @@
  * ------------------------------------------------------------------------------------------------- 
  */
 #include <stdexcept>
-#include <csignal>
 #include <qobject.h>
+#include <csignal>
+#include <errno.h>
 
 #ifndef Q_WS_WIN
 #include <unistd.h>
+#include <signal.h>
+#include <sys/types.h>
 #else
 #include <process.h>
 #endif
@@ -109,12 +112,28 @@ void SingleApplication::startup()
             QTextStream textstream(&file);
             textstream >> id;
         }
-        
-        QMessageBox::critical(0, appName, QObject::tr("You can only start one instance of "
-            "%1. If you are\nreally sure that no other instance is running, delete\nthe file %2 "
-            "and start again.\n\n(PID of the other %3 process should be %4.)").arg(appName).arg(
-            lockfile).arg(appName).arg(id), QMessageBox::Ok, QMessageBox::NoButton);
-        std::exit(1);
+
+#ifndef Q_WS_WIN
+        // check if the process is running
+        bool ok;
+        int pid = id.toInt(&ok);
+        if (ok && kill(pid, 0) != 0 && errno == ESRCH)
+        {
+            // the process is not running
+            // close the file
+            file.close();
+        }
+        else
+        {
+#endif
+            QMessageBox::critical(0, appName, QObject::tr("You can only start one instance of "
+                "%1. If you are\nreally sure that no other instance is running, delete\nthe file %2 "
+                "and start again.\n\n(PID of the other %3 process should be %4.)").arg(appName).arg(
+                lockfile).arg(appName).arg(id), QMessageBox::Ok, QMessageBox::NoButton);
+            std::exit(1);
+#ifndef Q_WS_WIN
+        }
+#endif
     }
     
     
