@@ -1,5 +1,5 @@
 /*
- * Id: $Id: timeoutapplication.h,v 1.2 2005/03/06 15:44:14 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,23 +15,29 @@
  *
  * -------------------------------------------------------------------------------------------------
  */
-#ifndef TIMEOUTAPPLICATION_H
-#define TIMEOUTAPPLICATION_H
+#ifndef DOCKTIMEOUTAPPLICATION_H
+#define DOCKTIMEOUTAPPLICATION_H
 
 #include <qobject.h>
 #include <qtimer.h>
 #include <qapplication.h>
 #include <qevent.h>
 
-class TimeoutApplication : public QApplication
+
+
+#ifdef Q_WS_MAC
+#include <Carbon/Carbon.h>
+#endif   
+
+class DockTimeoutApplication : public QApplication
 {
     Q_OBJECT
     Q_PROPERTY( int timeout READ getTimeout WRITE setTimeout )
     Q_PROPERTY( bool temporaryDisabled READ isTemporaryDisabled WRITE setTemporaryDisabled )
     
     public:
-        TimeoutApplication(int& argc, char** argv);
-        TimeoutApplication(int& argc, char** argv, bool guiEnabled);
+        DockTimeoutApplication(int& argc, char** argv);
+        DockTimeoutApplication(int& argc, char** argv, bool guiEnabled);
         
     public:
         void setTimeout(int newTimeout);
@@ -42,10 +48,19 @@ class TimeoutApplication : public QApplication
         
     signals:
         void timedOut();
+        void dockActivated();
+        void newTrayOwner();
+        void trayOwnerDied();
         
     protected:
         bool notify(QObject* receiver, QEvent* e);
-        
+#ifdef Q_WS_X11
+        bool x11EventFilter(XEvent *event);
+#endif
+#ifdef Q_WS_MAC
+        bool macEventFilter(EventHandlerCallRef, EventRef);
+#endif
+
     private:
         void init();
         
@@ -56,4 +71,4 @@ class TimeoutApplication : public QApplication
 };
             
  
-#endif /* TIMEOUTAPPLICATION_H */
+#endif /* DOCKTIMEOUTAPPLICATION_H */

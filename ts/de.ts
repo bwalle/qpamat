@@ -769,6 +769,14 @@ Wollen Sie jetzt speichern?</translation>
         <source>Login</source>
         <translation>Einloggen</translation>
     </message>
+    <message>
+        <source>&amp;Show</source>
+        <translation>&amp;Anzeigen</translation>
+    </message>
+    <message>
+        <source>&amp;Hide</source>
+        <translation>&amp;Verbergen</translation>
+    </message>
 </context>
 <context>
     <name>RandomPassword</name>

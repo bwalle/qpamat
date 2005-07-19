@@ -264,7 +264,7 @@ void Tree::showContextMenu(QListViewItem* item, const QPoint& point)
         case -1:
             break;
         default: 
-            PRINT_DBG("Error in showContextMenu\n", "");
+            PRINT_DBG("Error in showContextMenu%s\n", "");
             break;
     }
 }

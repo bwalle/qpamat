@@ -48,10 +48,16 @@
 #include "dialogs/passworddialog.h"
 #include "dialogs/newpassworddialog.h"
 #include "dialogs/configurationdialog.h"
-#include "util/timeoutapplication.h"
+#include "util/docktimeoutapplication.h"
 #include "util/windowfunctions.h"
 #include "tree.h"
 #include "rightpanel.h"
+
+#ifdef Q_WS_WIN
+#  define TRAY_ICON_FILE_NAME "qpamat_16.png"
+#else
+#  define TRAY_ICON_FILE_NAME "qpamat_22.png"
+#endif
 
 /*! 
     \class Qpamat
@@ -168,15 +174,7 @@ Qpamat::Qpamat()
     }
     
     // tray icon
-    if (set().readBoolEntry("Presentation/SystemTrayIcon"))
-    {
-#ifdef Q_WS_WIN
-        m_trayIcon = new TrayIcon(QPixmap::fromMimeSource("qpamat_16.png"), QString::null);
-#else
-        m_trayIcon = new TrayIcon(QPixmap::fromMimeSource("qpamat_22.png"), QString::null);
-#endif
-        m_trayIcon->show();
-    }
+    newTrayOwner();
     
     connectSignalsAndSlots();
     
@@ -388,6 +386,7 @@ void Qpamat::handleTrayiconClick()
     {
         m_lastGeometry = geometry();
         hide();
+        m_actions.showHideAction->setMenuText(tr("&Show"));
     }
     else
     {
@@ -397,6 +396,51 @@ void Qpamat::handleTrayiconClick()
             setGeometry(m_lastGeometry);
         }
         WindowFunctions::bringToFront(this);
+        m_actions.showHideAction->setMenuText(tr("&Hide")); 
+    }
+}
+
+
+/*!
+    This function is called if the dock is activated (or destroyed). Don't really know
+    what "activated" means here, just copied this from Psi.
+*/
+void Qpamat::dockActivated()
+{
+    if (isHidden())
+    {
+        show();
+        delete m_trayIcon;
+        m_trayIcon = 0;
+    }
+}
+
+
+/*!
+    Slot that is called if the tray owner changes. This function is also called
+    initially to set the tray owner.
+*/
+void Qpamat::newTrayOwner()
+{
+    if (set().readBoolEntry("Presentation/SystemTrayIcon"))
+    {
+        if (m_trayIcon)
+        {
+            m_trayIcon->newTrayOwner();
+        }
+        else
+        {
+            m_trayIcon = new TrayIcon(QPixmap::fromMimeSource(TRAY_ICON_FILE_NAME), tr("QPaMaT"));
+            
+            QPopupMenu* trayPopup = new QPopupMenu(this);
+            m_actions.showHideAction->addTo(trayPopup);
+            m_actions.quitActionNoKeyboardShortcut->addTo(trayPopup);
+            
+            m_trayIcon->setPopup(trayPopup);
+            m_trayIcon->show();
+            
+            connect(m_trayIcon, SIGNAL(clicked( const QPoint&, int)), SLOT(handleTrayiconClick()));
+        }
     }
 }
 
@@ -517,7 +561,9 @@ void Qpamat::setLogin(bool loggedIn)
     
     if (loggedIn)
     {
-        dynamic_cast<TimeoutApplication*>(qApp)->setTimeout(set().readNumEntry("Security/AutoLogout"));
+        dynamic_cast<DockTimeoutApplication*>(qApp)->setTimeout(
+            set().readNumEntry("Security/AutoLogout")
+        );
     }
     else
     {
@@ -662,7 +708,7 @@ bool Qpamat::logout()
     if (m_modified)
     {
         PRINT_TRACE("Disable timeout action temporary");
-        dynamic_cast<TimeoutApplication*>(qApp)->setTemporaryDisabled(true);
+        dynamic_cast<DockTimeoutApplication*>(qApp)->setTemporaryDisabled(true);
         
         int ret = QMessageBox::question(this, "QPaMaT", tr("There is modified data that was not saved."
             "\nDo you want to save it now?"), QMessageBox::Yes | QMessageBox::Default,
@@ -682,7 +728,7 @@ bool Qpamat::logout()
         }
         
         PRINT_TRACE("Enable timeout action again");
-        dynamic_cast<TimeoutApplication*>(qApp)->setTemporaryDisabled(false);
+        dynamic_cast<DockTimeoutApplication*>(qApp)->setTemporaryDisabled(false);
     }
     
     setLogin(false);
@@ -877,6 +923,8 @@ void Qpamat::connectSignalsAndSlots()
     // Actions
     connect(m_actions.newAction, SIGNAL(activated()), this, SLOT(newFile()));
     connect(m_actions.quitAction, SIGNAL(activated()), this, SLOT(exitHandler()));
+    connect(m_actions.quitActionNoKeyboardShortcut, SIGNAL(activated()), this, SLOT(exitHandler()));
+    connect(m_actions.showHideAction, SIGNAL(activated()), this, SLOT(handleTrayiconClick()));
     connect(m_actions.printAction, SIGNAL(activated()), this, SLOT(print()));
     connect(m_actions.saveAction, SIGNAL(activated()), this, SLOT(save()));
     connect(m_actions.exportAction, SIGNAL(activated()), this, SLOT(exportData()));
@@ -920,12 +968,14 @@ void Qpamat::connectSignalsAndSlots()
         SIGNAL(insertPassword(const QString&)));
         
     // auto logout
-    connect(dynamic_cast<TimeoutApplication*>(qApp), SIGNAL(timedOut()), SLOT(logout()));
+    connect(dynamic_cast<DockTimeoutApplication*>(qApp), SIGNAL(timedOut()), SLOT(logout()));
     
     // tray icon
-    if (m_trayIcon)
+    if (set().readBoolEntry("Presentation/SystemTrayIcon"))
     {
-        connect(m_trayIcon, SIGNAL(clicked( const QPoint&, int)), SLOT(handleTrayiconClick()));
+        connect(qApp, SIGNAL(dockActivated()), SLOT(dockActivated()));
+        connect(qApp, SIGNAL(trayOwnerDied()), SLOT(dockActivated()));
+        connect(qApp, SIGNAL(newTrayOwner()), SLOT(newTrayOwner()));
     }
 }
 
@@ -942,6 +992,10 @@ void Qpamat::initActions()
     m_actions.quitAction = new QAction(QIconSet( QPixmap::fromMimeSource("stock_exit_16.png"),
         QPixmap::fromMimeSource("stock_exit_24.png") ), tr("E&xit"),
         QKeySequence(CTRL|Key_Q), this);
+    m_actions.quitActionNoKeyboardShortcut = new QAction(
+        QIconSet( QPixmap::fromMimeSource("stock_exit_16.png"),
+        QPixmap::fromMimeSource("stock_exit_24.png") ), tr("E&xit"),
+        QKeySequence(), this);
     m_actions.loginLogoutAction = new QAction(QIconSet(QPixmap::fromMimeSource("login_16.png"),
         QPixmap::fromMimeSource("login_24.png")), tr("&Login"), 
         QKeySequence(CTRL|Key_L), this);
@@ -993,5 +1047,6 @@ void Qpamat::initActions()
         
     // ------ Misc ---------------------------------------------------------------------------------
     m_actions.focusSearch = new QAction(tr("Focus &search"), QKeySequence(CTRL|Key_G), this);
+    m_actions.showHideAction = new QAction(tr("&Show"), QKeySequence(), this);
 }
 

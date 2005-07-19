@@ -1,5 +1,5 @@
 /*
- * Id: $Id: qpamat.h,v 1.25 2005/03/06 15:45:09 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -60,6 +60,8 @@ class Qpamat : public QMainWindow
         bool exportOrSave();
         void handleTrayiconClick();
         void exitHandler();
+        void dockActivated();
+        void newTrayOwner();
         
     signals:
         void insertPassword(const QString& password);
@@ -86,6 +88,8 @@ class Qpamat : public QMainWindow
             QAction* exportAction;
             QAction* viewTreeAction;
             QAction* quitAction;
+            QAction* quitActionNoKeyboardShortcut;
+            QAction* showHideAction;
             QAction* printAction;
             QAction* helpAction;
             QAction* aboutAction;
