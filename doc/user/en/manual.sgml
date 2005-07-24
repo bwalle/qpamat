@@ -13,9 +13,9 @@
 		</affiliation>
 	</author>
 
-	<pubdate>2005-03-04</pubdate>
+	<pubdate>2005-07-24</pubdate>
 	
-	<releaseinfo>Version 0.4.2</releaseinfo>   
+	<releaseinfo>Version 0.5.0</releaseinfo>   
 	
 	<copyright>
 		<year>2003-2005</year>
@@ -151,6 +151,13 @@
     
     <sect3>
       <title>Unix</title>
+
+      <para>
+        You have to have installed Qt4 on your computer. Qt3 does not work any more.
+        If your distribution does not have Qt4 packages, get Qt4 from Trolltech
+        and build it yourself. It's easy and described in the <FileName>REAMDE</FileName>
+        file of the Qt distribution.
+      </para>
       
       <para>First try to find a binary package for your Unix. If you run
         Linux, the chances are good. I create RPMs of every releases.
@@ -165,8 +172,15 @@
         contains the headers and the build tools like <command>qmake</command>.
         Also make sure that the environment variable <envar>QTDIR</envar>
         points to the right place, usually something like
-        <FileName>/usr/lib/qt3</FileName>. You also need to have OpenSSL
+        <FileName>/usr/local/Trolltech/Qt-4.0.0</FileName>. You also need to have OpenSSL
         installed, including header files.</para>
+
+      <para>
+        You have to set also the <envar>QMAKESPEC</envar> variable to a correct value,
+        for example <FileName>/usr/local/Trolltech/Qt-4.0.0//mkspecs/linux-g++</FileName>.
+        <command>qmake</command> must be in <envar>PATH</envar>. Normally, just
+        include <FileName>$QTDIR/bin</FileName> in your <envar>PATH</envar> environment.
+      </para>
         
       <para>You may edit <FileName>qpamat.pro</FileName> to change install
         location if you don't like <FileName>/usr/local</FileName>.
@@ -178,6 +192,9 @@
       </para>
       <para>
         <prompt>$ </prompt><userInput>make</userinput>
+      </para>
+      <para>
+        <prompt>$ </prompt><userInput>lrelease qpamat.pro</userinput>
       </para>
       <para>
         <prompt># </prompt><userInput>make install</userinput>
@@ -594,17 +611,6 @@
       <listitem>
         <para>Exit the application. If some data was modified, you will be
           asked to save it before quitting.</para>
-      </listitem>
-    </varlistentry>
-    <varlistentry>
-      <term>
-        <menuchoice>
-          <guimenu>View</guimenu>
-        </menuchoice>
-      </term>
-      <listitem>
-        <para>Here you can enable or disable some toolbars and the tree view.
-          </para>
       </listitem>
     </varlistentry>
     <varlistentry>

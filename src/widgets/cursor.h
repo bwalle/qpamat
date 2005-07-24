@@ -1,5 +1,5 @@
 /*
- * Id: $Id: cursor.h,v 1.2 2005/02/23 18:01:48 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,11 +18,11 @@
 #ifndef CURSOR_H
 #define CURSOR_H
 
-#include <qbitmap.h>
-#include <qcursor.h>
+#include <QBitmap>
+#include <QCursor>
 
 
-class Cursor : public Qt
+class Cursor
 {
     public:
         static QCursor handCursorWindows();

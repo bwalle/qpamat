@@ -1,5 +1,5 @@
 /*
- * Id: $Id: listboxlabeledpict.h,v 1.1 2004/01/03 23:40:12 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,26 +18,26 @@
 #ifndef LISTBOXLABELEDPICT_H
 #define LISTBOXLABELEDPICT_H
 
-#include <qlistbox.h>
-#include <qpainter.h>
-#include <qpixmap.h>
+#include <Q3ListBox>
+#include <QPainter>
+#include <QPixmap>
 
-class ListBoxLabeledPict : public QListBoxItem
+class ListBoxLabeledPict : public Q3ListBoxItem
 {
     public:
-        ListBoxLabeledPict(QListBox* listbox, const QPixmap& pixmap, 
+        ListBoxLabeledPict(Q3ListBox* listbox, const QPixmap& pixmap, 
             const QString& string);
         
         ListBoxLabeledPict(const QPixmap& pixmap, const QString& text);
         
-        ListBoxLabeledPict(QListBox* listbox, const QPixmap& pixmap, 
-            const QString& string, QListBoxItem *after );
+        ListBoxLabeledPict(Q3ListBox* listbox, const QPixmap& pixmap, 
+            const QString& string, Q3ListBoxItem *after );
         
     public:
         const QPixmap* pixmap() const;
 
-        int	height(const QListBox* box) const;
-        int	width(const QListBox* box) const;
+        int	height(const Q3ListBox* box) const;
+        int	width(const Q3ListBox* box) const;
 
         int rtti() const;
 

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: fontchoosebox.h,v 1.3 2003/12/29 00:37:11 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,11 +18,11 @@
 #ifndef FONTCHOOSEBOX_H
 #define FONTCHOOSEBOX_H
 
-#include <qwidget.h>
-#include <qlineedit.h>
-#include <qtoolbutton.h>
-#include <qevent.h>
-#include <qfont.h>
+#include <QWidget>
+#include <QLineEdit>
+#include <QToolButton>
+#include <QEvent>
+#include <QFont>
 
 class FontChooseBox : public QWidget
 {

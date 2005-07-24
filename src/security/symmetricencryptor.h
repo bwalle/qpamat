@@ -1,5 +1,5 @@
 /*
- * Id: $Id: symmetricencryptor.h,v 1.3 2003/12/29 10:59:16 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,8 +18,8 @@
 #ifndef SYMMETRICENCRYPTOR_H
 #define SYMMETRICENCRYPTOR_H
 
-#include <qstring.h>
-#include <qstringlist.h>
+#include <QString>
+#include <QStringList>
 
 #include <openssl/evp.h>
 

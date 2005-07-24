@@ -1,5 +1,5 @@
 /*
- * Id: $Id: newpassworddialog.cpp,v 1.12 2004/07/21 08:03:48 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,13 +15,16 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#include <qdialog.h>
-#include <qlineedit.h>
-#include <qlayout.h>
-#include <qhbox.h>
-#include <qlabel.h>
-#include <qmessagebox.h>
-#include <qpushbutton.h>
+#include <QDialog>
+#include <QLineEdit>
+#include <QLayout>
+#include <Q3HBox>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPushButton>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QGridLayout>
 
 #include "newpassworddialogprivate.h"
 #include "newpassworddialog.h"
@@ -45,7 +48,7 @@
     \ingroup dialogs
     \author Bernhard Walle
     \version $Revision: 1.12 $
-    \date $Date: 2004/07/21 08:03:48 $
+    \date $Date$
 */
 
 
@@ -76,7 +79,7 @@ NewPasswordDialog::NewPasswordDialog(QWidget* parent, const QString& oldPassword
     
     if (!qpamat->set().readBoolEntry("Password/NoGrabbing"))
     {
-        if (m_oldPassword)
+        if (!m_oldPassword.isNull())
         {
             connect(m_oldPasswordEdit, SIGNAL(gotFocus()), SLOT(grabOldPassword()));
             connect(m_oldPasswordEdit, SIGNAL(lostFocus()), SLOT(release()));
@@ -95,7 +98,7 @@ NewPasswordDialog::NewPasswordDialog(QWidget* parent, const QString& oldPassword
 void NewPasswordDialog::createAndLayout()
 {
     // text fields
-    if (m_oldPassword)
+    if (!m_oldPassword.isNull())
     {
         m_oldPasswordEdit = new FocusLineEdit(this);
         m_oldPasswordEdit->setEchoMode(QLineEdit::Password);
@@ -110,17 +113,18 @@ void NewPasswordDialog::createAndLayout()
     m_secondPasswordEdit->setEchoMode(QLineEdit::Password);
     m_secondPasswordEdit->setMinimumWidth(250);
     
-    const QString changeText = "<qt>"+tr("Enter the <b>old passphrase</b> once and the <b>new "
-        "passphrase</b> two times for verification. The minimum length must be six characters, "
-        "but for security reasons more than two words are good!")+"</qt>";
-    const QString newText = "<qt>"+tr("Enter the <b>passphrase</b> two times for verification. The "
-        "minimum length must be six characters, but for security reasons more than two "
-        "words are good!")+"</qt>";
+    // TODO: autowrapping doesn't work, spaces are too high, need to investigate ...
+    const QString changeText = tr("Enter the <b>old passphrase</b> once and the <b>new "
+        "passphrase</b><br> two times for verification. The minimum length must be six<br> characters, "
+        "but for security reasons more than two words<br> are good!");
+    const QString newText = tr("Enter the <b>passphrase</b> two times for verification. The "
+        "minimum length<br> must be six characters, but for security reasons more than two<br> "
+        "words are good!");
     
     // labels
-    QLabel* label = new QLabel((m_oldPassword ? changeText : newText), this);
+    QLabel* label = new QLabel((m_oldPassword.isNull() ? newText : changeText), this);
     QLabel* old = 0;
-    if (m_oldPassword)
+    if (!m_oldPassword.isNull())
     {
         old = new QLabel(tr("&Old password:"), this);
         old->setBuddy(m_oldPasswordEdit);
@@ -139,9 +143,10 @@ void NewPasswordDialog::createAndLayout()
     
     
     // create layouts
-    QVBoxLayout* layout = new QVBoxLayout(this, 6, 6);
-    QGridLayout* textfields = new QGridLayout(0, 2, (m_oldPassword ? 3 : 2), 0, 6);
-    QHBoxLayout* buttonLayout = new QHBoxLayout(0, 0, 6);
+    QVBoxLayout* layout = new QVBoxLayout(this);
+    QGridLayout* textfields = new QGridLayout(0);//, 2, (m_oldPassword.isNull() ? 2 : 3), 0, 6);
+    QHBoxLayout* buttonLayout = new QHBoxLayout(0);
+    buttonLayout->setSpacing(6);
     
     
     // layout elements
@@ -150,7 +155,7 @@ void NewPasswordDialog::createAndLayout()
     buttonLayout->addWidget(m_cancelButton);
     
     int i = 0;
-    if (m_oldPassword)
+    if (!m_oldPassword.isNull())
     {
         textfields->addWidget(old, 0, 0);
         textfields->addWidget(m_oldPasswordEdit, 0, 1);
@@ -163,7 +168,6 @@ void NewPasswordDialog::createAndLayout()
     
     layout->addWidget(label);
     layout->addLayout(textfields);
-    layout->addStretch(10);
     layout->addSpacing(7);
     layout->addLayout(buttonLayout);
 }
@@ -184,7 +188,7 @@ void NewPasswordDialog::accept()
                QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
         return;
     }
-    if (m_oldPassword && m_oldPassword != m_oldPasswordEdit->text())
+    if (!m_oldPassword.isNull() && m_oldPassword != m_oldPasswordEdit->text())
     {
         QMessageBox::warning(this, "QPaMaT",
                "<qt>"+tr("The old password was incorrect. Without the old password, "
@@ -314,7 +318,7 @@ void NewPasswordDialog::checkOkEnabled() const
     \ingroup gui
     \author Bernhard Walle
     \version $Revision: 1.12 $
-    \date $Date: 2004/07/21 08:03:48 $
+    \date $Date$
 */
 
 /*!

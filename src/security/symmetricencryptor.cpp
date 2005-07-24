@@ -1,5 +1,5 @@
 /*
- * Id: $Id: symmetricencryptor.cpp,v 1.4 2004/07/23 08:47:06 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -16,8 +16,10 @@
  * ------------------------------------------------------------------------------------------------- 
  */
 #include <iostream>
-#include <qstring.h>
-#include <qstringlist.h>
+
+#include <QString>
+#include <QStringList>
+#include <Q3CString>
 
 #include <openssl/evp.h>
 #include <openssl/ssl.h>
@@ -45,7 +47,7 @@ StringMap SymmetricEncryptor::m_algorithms = initAlgorithmsMap();
     \ingroup security
     \author Bernhard Walle
     \version $Revision: 1.4 $
-    \date $Date: 2004/07/23 08:47:06 $
+    \date $Date$
 */
 
 /*!
@@ -227,7 +229,7 @@ ByteVector SymmetricEncryptor::crypt(const ByteVector& vector, OperationType ope
 */
 void SymmetricEncryptor::setPassword(const QString& password)
 {
-    QCString pwUtf8 = password.utf8();
+    Q3CString pwUtf8 = password.utf8();
     EVP_BytesToKey(m_cipher_algorithm, HASH_ALGORITHM, 0, 
         (byte*)pwUtf8.operator const char*(), pwUtf8.length(), 1, m_key, m_iv);
 }

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: southpanel.cpp,v 1.15 2004/07/23 13:13:41 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,18 +15,21 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#include <qwidget.h>
-#include <qlayout.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qvbox.h>
-#include <qvgroupbox.h>
-#include <qbuttongroup.h>
-#include <qtooltip.h>
-#include <qtoolbutton.h>
-#include <qmessagebox.h>
+#include <QWidget>
+#include <QLayout>
+#include <QLabel>
+#include <QLineEdit>
+#include <Q3VBox>
+#include <Q3ButtonGroup>
+#include <QToolTip>
+#include <QToolButton>
+#include <QMessageBox>
+#include <Q3Frame>
+#include <QPixmap>
+#include <QHBoxLayout>
 
 #include "qpamat.h"
+
 #include "southpanel.h"
 #include "settings.h"
 #include "util/stringdisplay.h"
@@ -40,7 +43,7 @@
     \ingroup gui
     \author Bernhard Walle
     \version $Revision: 1.15 $
-    \date $Date: 2004/07/23 13:13:41 $
+    \date $Date$
 */
 
 /*!
@@ -82,10 +85,10 @@
     \param parent the parent
 */
 SouthPanel::SouthPanel(QWidget* parent) 
-    : QFrame(parent), m_lastStrength(Property::PUndefined)
+    : Q3Frame(parent), m_lastStrength(Property::PUndefined)
 {
-    QHBoxLayout* hLayout = new QHBoxLayout(this, 10, 10, "SouthPanel-QHBoxLayout");
-    QGroupBox* group = new QGroupBox(2, Horizontal, QString::null, this, "SouthPanel-GroupBox");
+    QHBoxLayout* hLayout = new QHBoxLayout(this, 0, 10, "SouthPanel-QHBoxLayout");
+    Q3GroupBox* group = new Q3GroupBox(2, Qt::Horizontal, QString::null, this, "SouthPanel-GroupBox");
     
     m_updatePasswordQualityTimer = new QTimer(this, "Timer");
     
@@ -112,20 +115,24 @@ SouthPanel::SouthPanel(QWidget* parent)
     hLayout->addWidget(group);
     
     // button group box
-    QVBox* vbox = new QVBox(this, "SouthPanel vertical box");
+    Q3VBox* vbox = new Q3VBox(this, "SouthPanel vertical box");
     vbox->setSpacing(6);
     
     // up button
     m_upButton = new QToolButton(vbox, "SouthPanel up button");
-    m_upButton->setIconSet(QIconSet(QPixmap::fromMimeSource("stock_up_arrow_16.png"),
-        QPixmap::fromMimeSource("stock_up_arrow_24.png")));
-    m_upButton->setUsesBigPixmap(true);
+    QIcon upIcon(QPixmap(":/images/stock_up_arrow_16.png"));
+    upIcon.addPixmap(QPixmap(":/images/stock_up_arrow_24.png"));
+    m_upButton->setIconSet(upIcon);
+    //m_upButton->setUsesBigPixmap(true);
+    m_upButton->setIconSize(QSize(22, 22));
     
     // down button
     m_downButton = new QToolButton(vbox, "SouthPanel down button");
-    m_downButton->setIconSet(QIconSet(QPixmap::fromMimeSource("stock_down_arrow_16.png"), 
-        QPixmap::fromMimeSource("stock_down_arrow_24.png")));
-    m_downButton->setUsesBigPixmap(true);
+    QIcon downIcon(QPixmap(":/images/stock_down_arrow_16.png"));
+    downIcon.addPixmap(QPixmap(":/images/stock_down_arrow_24.png"));
+    m_downButton->setIconSet(downIcon);
+    m_downButton->setIconSize(QSize(22, 22));
+    //m_downButton->setUsesBigPixmap(true);
     
     // filler widget
     QWidget* filler = new QWidget(vbox);
@@ -133,13 +140,13 @@ SouthPanel::SouthPanel(QWidget* parent)
     
     // indicator
     m_indicatorLabel = new QLabel(vbox, "Indicator label", Qt::WRepaintNoErase);
-    m_indicatorLabel->setAlignment(AlignHCenter);
+    m_indicatorLabel->setAlignment(Qt::AlignHCenter);
     m_indicatorLabel->setFixedHeight(28);
     
     hLayout->addWidget(vbox);
     
     setEnabled(false);
-    setFocusPolicy(QWidget::NoFocus);
+    setFocusPolicy(Qt::NoFocus);
     
     // disable the two buttons
     m_upButton->setEnabled(false);
@@ -168,7 +175,7 @@ void SouthPanel::clear()
 {
     m_currentProperty = 0;
     m_lastStrength = Property::PUndefined;
-    m_indicatorLabel->setPixmap(0);
+    m_indicatorLabel->setPixmap(QPixmap());
     m_indicatorLabel->repaint(true);
     QToolTip::remove(m_indicatorLabel);
     blockSignals(true);
@@ -231,16 +238,16 @@ void SouthPanel::updateIndicatorLabel(bool recompute)
                 switch (m_lastStrength)
                 {
                     case Property::PWeak:
-                        m_indicatorLabel->setPixmap(QPixmap::fromMimeSource("traffic_red_22.png"));
+                        m_indicatorLabel->setPixmap(QPixmap(":/images/traffic_red_22.png"));
                         break;
                     case Property::PAcceptable:
-                        m_indicatorLabel->setPixmap(QPixmap::fromMimeSource("traffic_yellow_22.png"));
+                        m_indicatorLabel->setPixmap(QPixmap(":/images/traffic_yellow_22.png"));
                         break;
                     case Property::PStrong:
-                        m_indicatorLabel->setPixmap(QPixmap::fromMimeSource("traffic_green_22.png"));
+                        m_indicatorLabel->setPixmap(QPixmap(":/images/traffic_green_22.png"));
                         break;
                     case Property::PUndefined:
-                        m_indicatorLabel->setPixmap(QPixmap::fromMimeSource("traffic_out_22.png"));
+                        m_indicatorLabel->setPixmap(QPixmap(":/images/traffic_out_22.png"));
                         break;
                 }
             }
@@ -265,7 +272,7 @@ void SouthPanel::updateIndicatorLabel(bool recompute)
     }
     else
     {
-        m_indicatorLabel->setPixmap(0);
+        m_indicatorLabel->setPixmap(QPixmap());
         m_indicatorLabel->repaint(true);
         QToolTip::remove(m_indicatorLabel);
     }

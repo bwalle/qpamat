@@ -1,5 +1,5 @@
 /*
- * Id: $Id: passwordchecker.h,v 1.4 2003/12/29 10:59:16 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -20,8 +20,7 @@
 
 #include <stdexcept>
 
-#include <qstring.h>
-#include <qvaluevector.h>
+#include <QString>
 
 #include "global.h"
 

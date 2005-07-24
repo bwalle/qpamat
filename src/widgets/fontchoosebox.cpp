@@ -1,5 +1,5 @@
 /*
- * Id: $Id: fontchoosebox.cpp,v 1.6 2004/07/23 13:13:01 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,13 +15,14 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#include <qlayout.h>
-#include <qfont.h>
-#include <qfiledialog.h>
-#include <qpushbutton.h>
-#include <qpixmap.h>
-#include <qapplication.h>
-#include <qfontdialog.h>
+#include <QLayout>
+#include <QFont>
+#include <Q3FileDialog>
+#include <QPushButton>
+#include <QPixmap>
+#include <QApplication>
+#include <QFontDialog>
+#include <QHBoxLayout>
 
 #include "fontchoosebox.h"
 
@@ -35,7 +36,7 @@
     \ingroup widgets
     \author Bernhard Walle
     \version $Revision: 1.6 $
-    \date $Date: 2004/07/23 13:13:01 $
+    \date $Date$
 */
 
 /*!
@@ -59,7 +60,7 @@ FontChooseBox::FontChooseBox(QWidget* parent, const char* name)
     // we need a tool button because it has no border and it looks better in this size
     // in Platin style
     m_fileDialogButton = new QToolButton(this);
-    m_fileDialogButton->setIconSet(QIconSet(QPixmap::fromMimeSource("stock_font_16.png")));
+    m_fileDialogButton->setIconSet(QIcon(QPixmap(":/images/stock_font_16.png")));
     
     boxLayout->addWidget(m_lineEdit);
     boxLayout->addWidget(m_fileDialogButton);
@@ -71,7 +72,7 @@ FontChooseBox::FontChooseBox(QWidget* parent, const char* name)
     // make it read-only
     m_lineEdit->setReadOnly(true);
     
-    m_fileDialogButton->setFocusPolicy(QWidget::TabFocus);
+    m_fileDialogButton->setFocusPolicy(Qt::TabFocus);
     
     // connect
     connect(this, SIGNAL(fontChanged(const QFont&)), this, SLOT(setDisplayFont(const QFont&)));

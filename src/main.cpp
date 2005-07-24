@@ -21,16 +21,18 @@
 #include <cstdio>
 #include <memory>
 
-#include <qapplication.h>
-#include <qtextstream.h>
-#include <qmessagebox.h>
-#include <qdesktopwidget.h>
-#include <qsettings.h>
-#include <qfile.h>
-#include <qdir.h>
-#include <qtextcodec.h>
+#include <QApplication>
+#include <QTextStream>
+#include <QMessageBox>
+#include <QDesktopWidget>
+#include <QSettings>
+#include <QFile>
+#include <QDir>
+#include <QTextCodec>
+#include <QTranslator>
 
 #include "qpamat.h"
+
 #include "global.h"
 #include "settings.h"
 #include "main.h"
@@ -92,8 +94,8 @@ void printVersion()
         << "  OS release     " << (nameAvailable ? uname_struct.release : "unknown") << "\n"
         << "  OS version     " << (nameAvailable ? uname_struct.version : "unknown") << "\n"
         << "  OS machine     " << (nameAvailable ? uname_struct.machine : "unknown") << "\n"
-        << "  X11 Protocol   " << X11protocolVersion << "\n"
-        << "  X11 Release    " << X11vendorVersion
+        << "  X11 Protocol   " << X11protocolVersion.toStdString() << "\n"
+        << "  X11 Release    " << X11vendorVersion.toStdString()
 #endif
         << std::endl;
 }
@@ -172,7 +174,7 @@ int main(int argc, char** argv)
         
         QObject::connect(qpamat, SIGNAL(quit()), &app, SLOT(quit()));
         if (!(qpamat->set().readBoolEntry("Presentation/StartHidden")
-                        && qpamat->set().readBoolEntry("Presentation/StartMinimized")))
+                        && qpamat->set().readBoolEntry("Presentation/SystemTrayIcon")))
 
         {
             qpamat->show();

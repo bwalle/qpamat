@@ -15,33 +15,36 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#include <qapplication.h>
-#include <qmainwindow.h>
-#include <qaction.h>
-#include <qkeysequence.h>
-#include <qpopupmenu.h>
-#include <qtextstream.h>
-#include <qmenubar.h>
-#include <qiconset.h>
-#include <qpixmap.h>
-#include <qdockwindow.h>
-#include <qstatusbar.h>
-#include <qmessagebox.h>
-#include <qlabel.h>
-#include <qsettings.h>
-#include <qscrollview.h>
-#include <qprinter.h>
-#include <qpainter.h>
-#include <qclipboard.h>
-#include <qfont.h>
-#include <qeventloop.h>
-#include <qpaintdevicemetrics.h>
-#include <qcursor.h>
-#include <qfiledialog.h>
-#include <qsimplerichtext.h> 
+#include <QApplication>
+#include <QTextDocument>
+#include <QAction>
+#include <QShortcut>
+#include <QKeySequence>
+#include <QMenu>
+#include <QTextStream>
+#include <QToolBar>
+#include <QMenuBar>
+#include <QIcon>
+#include <QPixmap>
+#include <QAbstractTextDocumentLayout>
+#include <QStatusBar>
+#include <QMessageBox>
+#include <QLabel>
+#include <QSettings>
+#include <QDockWidget>
+#include <QPrinter>
+#include <QPainter>
+#include <QClipboard>
+#include <QFont>
+#include <QEventLoop>
+#include <QCursor>
+#include <QFileDialog>
+#include <QCloseEvent>
+#include <QDesktopWidget>
 
 
 #include "qpamat.h"
+
 #include "settings.h"
 #include "datareadwriter.h"
 #include "timerstatusmessage.h"
@@ -54,10 +57,12 @@
 #include "rightpanel.h"
 
 #ifdef Q_WS_WIN
-#  define TRAY_ICON_FILE_NAME "qpamat_16.png"
+#  define TRAY_ICON_FILE_NAME ":/images/qpamat_16.png"
 #else
-#  define TRAY_ICON_FILE_NAME "qpamat_22.png"
+#  define TRAY_ICON_FILE_NAME ":/images/qpamat_22.png"
 #endif
+
+#define CON_MM(x)( int( ( (x)/25.4)*dpiy ) )
 
 /*! 
     \class Qpamat
@@ -107,30 +112,27 @@
  */
 Qpamat::Qpamat()
     : QMainWindow(0, "qpamat main window"), m_tree(0), m_treeContextMenu(0), m_message(0), m_rightPanel(0), m_searchCombo(0), 
-      m_searchToolbar(0), m_randomPassword(0), m_trayIcon(0), m_lastGeometry(0, 0, 0, 0)
+      m_randomPassword(0), m_trayIcon(0), m_lastGeometry(0, 0, 0, 0)
 {
     // Title and Icon
-    setIcon(QPixmap::fromMimeSource("qpamat_48.png"));
+    setIcon(QPixmap(":/images/qpamat_48.png"));
     setCaption("QPaMaT");
     
-    setUsesBigPixmaps(true);
-    QIconSet::setIconSize(QIconSet::Small, QSize(16, 16));
-    QIconSet::setIconSize(QIconSet::Large, QSize(22, 22));
+    setIconSize(QSize(24, 24));
     
     // Random password, we need this for the tree
     m_randomPassword = new RandomPassword(this, "Random Password");
     
     // Tree on the left
-    QDockWindow* dock = new QDockWindow(this);
-    dock->setVerticallyStretchable(true);
-    dock->setResizeEnabled(true);
-    dock->setCloseMode(QDockWindow::Always);
-    dock->setCaption(tr("Sites"));
-    dock->setFixedExtentWidth(int(qApp->desktop()->width() * 0.15));
-    addDockWindow(dock, Qt::DockLeft);
+    QDockWidget* dock = new QDockWidget(tr("Sites"), this);
+    dock->setFeatures(QDockWidget::DockWidgetMovable);
+    dock->setObjectName("Sites");
+    dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    dock->setMinimumWidth(int(qApp->desktop()->width() * 0.15));
     
     m_tree = new Tree(dock);
     dock->setWidget(m_tree);
+    addDockWidget(Qt::LeftDockWidgetArea, dock);
     
     // main widget in the center
     m_rightPanel = new RightPanel(this);
@@ -152,9 +154,7 @@ Qpamat::Qpamat()
     m_searchCombo->clearEdit();
     
     // restore the layout
-    QString layout = set().readEntry("Main Window/layout");
-    QTextStream layoutStream(&layout, IO_ReadOnly);
-    layoutStream >> *this;
+    restoreState(set().readByteArrayEntry("Main Window/layout")); 
     if (set().readBoolEntry("Main Window/maximized"))
     {
         showMaximized();
@@ -167,9 +167,9 @@ Qpamat::Qpamat()
         );
     }
     QString rightpanel = set().readEntry("Main Window/rightpanelLayout");
-    if (rightpanel)
+    if (!rightpanel.isNull())
     {
-        QTextStream rightpanelStream(&rightpanel, IO_ReadOnly);
+        QTextStream rightpanelStream(&rightpanel, QIODevice::ReadOnly);
         rightpanelStream >> *m_rightPanel;
     }
     
@@ -229,37 +229,40 @@ void Qpamat::message(const QString& message, bool)
 void Qpamat::initToolbar()
 {
     // ----- Application ---------------------------------------------------------------------------
-    QToolBar* applicationToolbar = new QToolBar(this);
-    applicationToolbar->setLabel(tr("Application"));
+    QToolBar* applicationToolbar = new QToolBar(tr("Application"), this);
+    applicationToolbar->setObjectName("Application");
+    addToolBar(Qt::TopToolBarArea, applicationToolbar);
     
-    m_actions.newAction->addTo(applicationToolbar);
-    m_actions.saveAction->addTo(applicationToolbar);
-    m_actions.loginLogoutAction->addTo(applicationToolbar);
-    m_actions.printAction->addTo(applicationToolbar);
-    m_actions.settingsAction->addTo(applicationToolbar);
+    applicationToolbar->addAction(m_actions.newAction);
+    applicationToolbar->addAction(m_actions.saveAction);
+    applicationToolbar->addAction(m_actions.loginLogoutAction);
+    applicationToolbar->addAction(m_actions.printAction);
+    applicationToolbar->addAction(m_actions.settingsAction);
     
     // ----- Search --------------------------------------------------------------------------------
-    m_searchToolbar = new QToolBar(this);
-    m_searchToolbar->setLabel(tr("Search"));
-    new QLabel(tr("Search:")+" ", m_searchToolbar);
+    QToolBar* searchToolbar = new QToolBar(tr("Search"), this);
+    searchToolbar->setObjectName("Search");
+    addToolBar(Qt::TopToolBarArea, searchToolbar);
+    m_searchLabel = new QLabel(tr("Search:")+" ", searchToolbar);
     
-    m_searchCombo = new QComboBox(true, m_searchToolbar);
+    m_searchCombo = new QComboBox(true, searchToolbar);
     m_searchCombo->setMinimumWidth(120);
     m_searchCombo->setDuplicatesEnabled(false);
-    m_searchCombo->setFocusPolicy(QWidget::ClickFocus);
+    m_searchCombo->setFocusPolicy(Qt::ClickFocus);
     m_searchCombo->setInsertionPolicy(QComboBox::AtTop);
     m_searchCombo->setAutoCompletion(true);
     
-    m_toolButtons.search = new QToolButton(
-        QIconSet(QPixmap::fromMimeSource("stock_search_16.png"),
-        QPixmap::fromMimeSource("stock_search_24.png")), 0, 0, 0, 0,
-        m_searchToolbar, "Search Toolbutton");
+    searchToolbar->addWidget(m_searchLabel);
+    searchToolbar->addWidget(m_searchCombo);
+    searchToolbar->addAction(m_actions.searchAction);
     
     // ---- Edit toolbar ---------------------------------------------------------------------------
-    QToolBar* editToolbar = new QToolBar(this);
-    editToolbar->setLabel(tr("Edit"));
-    m_actions.addItemAction->addTo(editToolbar);
-    m_actions.removeItemAction->addTo(editToolbar);
+    QToolBar* editToolbar = new QToolBar(tr("Edit"), this);
+    editToolbar->setObjectName("Edit");
+    addToolBar(Qt::TopToolBarArea, editToolbar);
+    
+    editToolbar->addAction(m_actions.addItemAction);
+    editToolbar->addAction(m_actions.removeItemAction);
 }
 
 
@@ -269,45 +272,33 @@ void Qpamat::initToolbar()
 void Qpamat::initMenubar()
 {
      // ----- File ---------------------------------------------------------------------------------
-     QPopupMenu* fileMenu = new QPopupMenu(this);
-     menuBar()->insertItem(tr("&File"), fileMenu);
-     
-     m_actions.newAction->addTo(fileMenu);
-     m_actions.loginLogoutAction->addTo(fileMenu);
-     m_actions.saveAction->addTo(fileMenu);
-     m_actions.exportAction->addTo(fileMenu);
-     m_actions.printAction->addTo(fileMenu);
+     QMenu* fileMenu = menuBar()->addMenu(tr("&File"));
+     fileMenu->addAction(m_actions.newAction);
+     fileMenu->addAction(m_actions.loginLogoutAction);
+     fileMenu->addAction(m_actions.saveAction);
+     fileMenu->addAction(m_actions.exportAction);
+     fileMenu->addAction(m_actions.printAction);
      fileMenu->insertSeparator();
-     m_actions.quitAction->addTo(fileMenu);
-     
-     // ----- View ---------------------------------------------------------------------------------
-     menuBar()->insertItem(tr("&View"), createDockWindowMenu(QMainWindow::NoToolBars));
+     fileMenu->addAction(m_actions.quitAction);
      
      // ----- Options ------------------------------------------------------------------------------
-     QPopupMenu* optionsMenu = new QPopupMenu(this);
-     menuBar()->insertItem(tr("&Options"), optionsMenu);
-     
-     m_actions.changePasswordAction->addTo(optionsMenu);
-     m_actions.settingsAction->addTo(optionsMenu);
+     QMenu* optionsMenu = menuBar()->addMenu(tr("&Options"));
+     optionsMenu->addAction(m_actions.changePasswordAction);
+     optionsMenu->addAction(m_actions.settingsAction);
      
      // ----- Extras -------------------------------------------------------------------------------
-     QPopupMenu* extrasMenu = new QPopupMenu(this);
-     menuBar()->insertItem(tr("&Extras"), extrasMenu);
-     
-     m_actions.randomPasswordAction->addTo(extrasMenu);
-     m_actions.passwordStrengthAction->addTo(extrasMenu);
-     m_actions.clearClipboardAction->addTo(extrasMenu);
+     QMenu* extrasMenu = menuBar()->addMenu(tr("&Extras"));
+     extrasMenu->addAction(m_actions.randomPasswordAction);
+     extrasMenu->addAction(m_actions.passwordStrengthAction);
+     extrasMenu->addAction(m_actions.clearClipboardAction);
      
      // ----- Help ---------------------------------------------------------------------------------
      menuBar()->insertSeparator();
-     QPopupMenu* helpMenu = new QPopupMenu(this);
-     menuBar()->insertItem(tr("&Help"), helpMenu);
-     
-     m_actions.helpAction->addTo(helpMenu);
-     m_actions.whatsThisAction->addTo(helpMenu);
+     QMenu* helpMenu = menuBar()->addMenu(tr("&Help"));
+     helpMenu->addAction(m_actions.helpAction);
      helpMenu->insertSeparator();
-     m_actions.aboutQtAction->addTo(helpMenu);
-     m_actions.aboutAction->addTo(helpMenu);
+     helpMenu->addAction(m_actions.aboutQtAction);
+     helpMenu->addAction(m_actions.aboutAction);
 }
 
 
@@ -331,13 +322,10 @@ void Qpamat::exitHandler()
     set().writeEntry("Main Window/SearchHistory", list.join(" | "));
     
     // write window layout
-    QString layout;
-    QTextStream layoutStream(&layout, IO_WriteOnly);
-    layoutStream << *this;
     QString rightpanelLayout;
-    QTextStream rightpanelStream(&rightpanelLayout, IO_WriteOnly);
+    QTextStream rightpanelStream(&rightpanelLayout, QIODevice::WriteOnly);
     rightpanelStream << *m_rightPanel;
-    set().writeEntry("Main Window/layout", layout);
+    set().writeEntry("Main Window/layout", saveState());
     set().writeEntry("Main Window/width", size().width());
     set().writeEntry("Main Window/height", size().height());
     set().writeEntry("Main Window/maximized", isMaximized());
@@ -430,11 +418,11 @@ void Qpamat::newTrayOwner()
         }
         else
         {
-            m_trayIcon = new TrayIcon(QPixmap::fromMimeSource(TRAY_ICON_FILE_NAME), tr("QPaMaT"));
+            m_trayIcon = new TrayIcon(QPixmap(TRAY_ICON_FILE_NAME), tr("QPaMaT"));
             
-            QPopupMenu* trayPopup = new QPopupMenu(this);
-            m_actions.showHideAction->addTo(trayPopup);
-            m_actions.quitActionNoKeyboardShortcut->addTo(trayPopup);
+            Q3PopupMenu* trayPopup = new Q3PopupMenu(this);
+            trayPopup->addAction(m_actions.showHideAction);
+            trayPopup->addAction(m_actions.quitActionNoKeyboardShortcut);
             
             m_trayIcon->setPopup(trayPopup);
             m_trayIcon->show();
@@ -493,7 +481,8 @@ void Qpamat::login()
                 QMessageBox *mb = new QMessageBox( "QPaMaT", e.getMessage(), icon, 
                     (retry ? QMessageBox::Retry : QMessageBox::Ok) | QMessageBox::Default, 
                     (retry ? QMessageBox::Abort : QMessageBox::NoButton), 
-                    QMessageBox::NoButton, this, "qt_msgbox_information", true, WDestructiveClose);
+                    QMessageBox::NoButton, this, "qt_msgbox_information", true, 
+                        Qt::WDestructiveClose);
                 if (mb->exec() != QMessageBox::Retry)
                 {
                     return;
@@ -532,18 +521,18 @@ void Qpamat::setLogin(bool loggedIn)
     disconnect(m_actions.loginLogoutAction, SIGNAL(activated()), 0, 0 );
     if (loggedIn)
     {
-        m_actions.loginLogoutAction->setIconSet( QIconSet(
-                QPixmap::fromMimeSource("logout_16.png"),  QPixmap::fromMimeSource("logout_24.png"))
-        );
+        QIcon loginLogoutActionIcon(QPixmap(":/images/logout_16.png"));
+        loginLogoutActionIcon.addPixmap(QPixmap(":/images/logout_24.png"));
+        m_actions.loginLogoutAction->setIcon(loginLogoutActionIcon);
         m_actions.loginLogoutAction->setMenuText(tr("&Logout"));
         m_actions.loginLogoutAction->setToolTip(tr("Logout"));
         connect(m_actions.loginLogoutAction, SIGNAL(activated()), SLOT(logout()));
     }
     else
     {
-        m_actions.loginLogoutAction->setIconSet( QIconSet(
-                QPixmap::fromMimeSource("login_16.png"),  QPixmap::fromMimeSource("login_24.png"))
-        );
+        QIcon loginLogoutActionIcon(QPixmap(":/images/login_16.png"));
+        loginLogoutActionIcon.addPixmap(QPixmap(":/images/login_24.png"));
+        m_actions.loginLogoutAction->setIconSet(loginLogoutActionIcon);
         m_actions.loginLogoutAction->setMenuText(tr("&Login"));
         m_actions.loginLogoutAction->setToolTip(tr("Login"));
         connect(m_actions.loginLogoutAction, SIGNAL(activated()), SLOT(login()));
@@ -553,7 +542,8 @@ void Qpamat::setLogin(bool loggedIn)
     m_actions.changePasswordAction->setEnabled(loggedIn);
     m_actions.printAction->setEnabled(loggedIn);
     m_searchCombo->setEnabled(loggedIn);
-    m_toolButtons.search->setEnabled(loggedIn);
+    m_actions.searchAction->setEnabled(loggedIn);
+    m_searchLabel->setEnabled(loggedIn);
     m_actions.addItemAction->setEnabled(loggedIn);
     m_actions.removeItemAction->setEnabled(loggedIn);
     m_actions.passwordStrengthAction->setEnabled(loggedIn);
@@ -618,7 +608,7 @@ bool Qpamat::exportOrSave()
             QMessageBox *mb = new QMessageBox( "QPaMaT", e.getMessage(), icon, 
                 (retry ? QMessageBox::Retry : QMessageBox::Ok) | QMessageBox::Default, 
                 (retry ? QMessageBox::Abort : QMessageBox::NoButton),     
-                QMessageBox::NoButton, this, "qt_msgbox_information", true, WDestructiveClose);
+                QMessageBox::NoButton, this, "qt_msgbox_information", true, Qt::WDestructiveClose);
 
             // ask the user if the exception type is not "abort"
             if (e.getCategory() == ReadWriteException::CAbort 
@@ -640,9 +630,8 @@ void Qpamat::exportData()
     QString oldFilename = set().readEntry("General/Datafile");
     QString fileName;
     
-    QFileDialog* fd = new QFileDialog(QDir::homeDirPath(), 
-        tr("QPaMaT XML files (*.xml);;Text files with cleartext password (*.txt)"),
-        this, "file dialog", true);
+    QFileDialog* fd = new QFileDialog(this, tr("QPaMaT"), QDir::homeDirPath(), 
+        tr("QPaMaT XML files (*.xml);;Text files with cleartext password (*.txt)"));
     fd->setMode(QFileDialog::AnyFile);
     bool oldCard = set().readBoolEntry("Smartcard/UseCard");
     
@@ -680,7 +669,7 @@ void Qpamat::exportData()
     else
     {
         QFile file(fileName);
-        if (file.open(IO_WriteOnly)) 
+        if (file.open(QIODevice::WriteOnly)) 
         {
             QTextStream stream(&file);
             m_tree->appendTextForExport(stream);
@@ -794,9 +783,7 @@ void Qpamat::search()
     
     if (text.length() == 0)
     {
-         QMessageBox::warning(this, QObject::tr("QPaMaT"),
-               tr("Please enter a search criterion in the text field!"),
-               QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
+         message(tr("Please enter a search criterion in the text field!"));
     }
     else
     {
@@ -834,66 +821,86 @@ void Qpamat::passwordStrengthHandler(bool enabled)
  */
 void Qpamat::print()
 {
-    QPrinter printer( QPrinter::HighResolution );
+    QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage( TRUE );
     if ( printer.setup( this ) ) 
     {
-        QPainter p;
-        if ( !p.begin( &printer ) )
+        QPainter p(&printer);
+        // Check that there is a valid device to print to.
+        if (!p.device())
         {
             return;
         }
-        
+
         QFont serifFont;
         QFont sansSerifFont;
         serifFont.fromString(set().readEntry("Presentation/NormalFont"));
         sansSerifFont.fromString(set().readEntry("Presentation/FooterFont"));
-        
         p.setFont(sansSerifFont);
         
         qApp->setOverrideCursor( QCursor( Qt::WaitCursor ) );
-        qApp->eventLoop()->processEvents( QEventLoop::ExcludeUserInput );
+        qApp->processEvents( QEventLoop::ExcludeUserInput );
         
-        QPaintDeviceMetrics metrics(p.device());
-        int dpiy = metrics.logicalDpiY();
-#define CON_MM(x)( int( ( (x)/25.4)*dpiy ) )
-        int margin = CON_MM(20);
-        QRect body( margin, margin, metrics.width() - 2 * margin, 
-            metrics.height() - 2 * margin - CON_MM(8) );
-        QSimpleRichText richText(m_tree->toRichTextForPrint(), serifFont, QString::null, 0, 
-                QMimeSourceFactory::defaultFactory(), body.height(), Qt::black, false );
-        richText.setWidth( &p, body.width() );
-        QRect view( body );
+        const int dpiy = p.device()->logicalDpiY();
+        const int margin = (int) ((2/2.54)*dpiy); // 2 cm margins
+        
+        QRectF body(margin, margin, p.device()->width() - 2*margin, p.device()->height() - 2*margin);
+        
+        QTextDocument* doc = new QTextDocument();
+        doc->setHtml(m_tree->toRichTextForPrint());
+        doc->setDefaultFont(serifFont);
+        QAbstractTextDocumentLayout* layout = doc->documentLayout();
+        layout->setPaintDevice(&printer);
+        doc->setPageSize(body.size());
+        
+        QRectF view(0, 0, body.width(), body.height());
+        p.translate(body.left(), body.top());
+        
         QString programString = tr("QPaMaT - Password managing tool for Unix, Windows and MacOS X");
         QString dateString = QDate::currentDate().toString(Qt::ISODate) + " / " +
             QTime::currentTime().toString("hh:mm");
-        
-        for (int page = 1; ; ++page)
+    
+        int page = 1;
+        do 
         {
-            qApp->eventLoop()->processEvents( QEventLoop::ExcludeUserInput );
+            qApp->processEvents( QEventLoop::ExcludeUserInput );
             QString pageS = tr("page") + " " + QString::number(page);
             
-            richText.draw( &p, body.left(), body.top(), view, colorGroup() );
-            view.moveBy(0, body.height() );
-            p.translate(0 , -body.height() );
+            QAbstractTextDocumentLayout::PaintContext ctx;
+            p.setClipRect(view);
+            ctx.clip = view;
+            layout->draw(&p, ctx);
+    
+            p.setClipping(false);
+            p.setFont(sansSerifFont);
             
-            int x_pos = int(( view.left() + p.fontMetrics().width(programString)
+            int x_pos = qRound(( view.left() + p.fontMetrics().width(programString)
                 + view.right() - p.fontMetrics().width( pageS ) ) / 2.0
                 - p.fontMetrics().width( dateString ) / 2.0 );
-            int y_pos = view.bottom() + p.fontMetrics().ascent() + CON_MM(3);
-            p.drawLine(view.left(), view.bottom()+CON_MM(3), view.right(), view.bottom()+CON_MM(3));
-            p.drawText( view.left(), y_pos, programString);
+            int y_pos = qRound(view.bottom() + p.fontMetrics().ascent() + CON_MM(3));
+            p.drawLine(qRound(view.left()), qRound(view.bottom()+CON_MM(3)), 
+                qRound(view.right()), qRound(view.bottom()+CON_MM(3)));
+            p.drawText( qRound(view.left()), y_pos, programString);
             p.drawText( x_pos, y_pos, dateString );
-            p.drawText( view.right() - p.fontMetrics().width(pageS), y_pos, pageS);
-            if ( view.top() >= richText.height() )
+            p.drawText( qRound(view.right() - p.fontMetrics().width(pageS)), y_pos, pageS);
+    
+            view.translate(0, body.height());
+            p.translate(0 , -body.height());
+    
+            if (view.top() >= layout->documentSize().height())
             {
                 break;
             }
+    
             printer.newPage();
+            page++;
         }
-#undef CONVERT_MM
+        while (true);
+        Q_ASSERT(page == doc->pageCount());
+    
+        delete doc;
         
-        qApp->eventLoop()->processEvents( QEventLoop::ExcludeUserInput );
+        qApp->processEvents( QEventLoop::ExcludeUserInput );
         qApp->restoreOverrideCursor();
     }
 }
@@ -915,8 +922,8 @@ void Qpamat::clearClipboard()
  */
 void Qpamat::connectSignalsAndSlots()
 {
-    connect(m_tree, SIGNAL(selectionChanged(QListViewItem*)),
-        m_rightPanel, SLOT(setItem(QListViewItem*)));
+    connect(m_tree, SIGNAL(selectionChanged(Q3ListViewItem*)),
+        m_rightPanel, SLOT(setItem(Q3ListViewItem*)));
     connect(m_tree, SIGNAL(selectionCleared()), m_rightPanel, SLOT(clear()));
     
     
@@ -933,7 +940,6 @@ void Qpamat::connectSignalsAndSlots()
     connect(m_actions.settingsAction, SIGNAL(activated()), this, SLOT(configure()));
     
     connect(m_actions.helpAction, SIGNAL(activated()), &m_help, SLOT(showHelp()));
-    connect(m_actions.whatsThisAction, SIGNAL(activated()), this, SLOT(whatsThis()));
     connect(m_actions.aboutAction, SIGNAL(activated()) , &m_help, SLOT(showAbout()));
     connect(m_actions.aboutQtAction, SIGNAL(activated()), qApp, SLOT(aboutQt()));
     
@@ -954,8 +960,7 @@ void Qpamat::connectSignalsAndSlots()
     
     // search function
     connect(m_searchCombo, SIGNAL(activated(int)), this, SLOT(search()));
-    connect(m_toolButtons.search, SIGNAL(clicked()), this, SLOT(search()));
-    connect(m_actions.focusSearch, SIGNAL(activated()), m_searchCombo, SLOT(setFocus()));
+    connect(m_actions.searchAction, SIGNAL(activated()), this, SLOT(search()));
     
     // modified
     connect(m_tree, SIGNAL(stateModified()), SLOT(setModified()));
@@ -977,6 +982,10 @@ void Qpamat::connectSignalsAndSlots()
         connect(qApp, SIGNAL(trayOwnerDied()), SLOT(dockActivated()));
         connect(qApp, SIGNAL(newTrayOwner()), SLOT(newTrayOwner()));
     }
+    
+    // previously I used a hidden action for this, but this doesn't work in Qt4 any more
+    QShortcut* focusSearch = new QShortcut(QKeySequence(Qt::CTRL|Qt::Key_G), this);
+    connect(focusSearch, SIGNAL(activated()), m_searchCombo, SLOT(setFocus()));
 }
 
 
@@ -986,67 +995,90 @@ void Qpamat::connectSignalsAndSlots()
 void Qpamat::initActions()
 {
     // ----- File ----------------------------------------------------------------------------------
-    m_actions.newAction = new QAction(QIconSet(QPixmap::fromMimeSource("stock_new_16.png"),
-        QPixmap::fromMimeSource("stock_new_24.png")), tr("&New"), 
-        QKeySequence(CTRL|Key_N), this);
-    m_actions.quitAction = new QAction(QIconSet( QPixmap::fromMimeSource("stock_exit_16.png"),
-        QPixmap::fromMimeSource("stock_exit_24.png") ), tr("E&xit"),
-        QKeySequence(CTRL|Key_Q), this);
-    m_actions.quitActionNoKeyboardShortcut = new QAction(
-        QIconSet( QPixmap::fromMimeSource("stock_exit_16.png"),
-        QPixmap::fromMimeSource("stock_exit_24.png") ), tr("E&xit"),
-        QKeySequence(), this);
-    m_actions.loginLogoutAction = new QAction(QIconSet(QPixmap::fromMimeSource("login_16.png"),
-        QPixmap::fromMimeSource("login_24.png")), tr("&Login"), 
-        QKeySequence(CTRL|Key_L), this);
-    m_actions.saveAction = new QAction(QIconSet(QPixmap::fromMimeSource("stock_save_16.png"),
-        QPixmap::fromMimeSource("stock_save_24.png")), tr("&Save"), 
-        QKeySequence(CTRL|Key_S), this);
-    m_actions.exportAction = new QAction(QIconSet(QPixmap::fromMimeSource("export_16.png"),
-        QPixmap::fromMimeSource("export_24.png")), tr("&Export..."), 
-        QKeySequence(), this);
-    m_actions.printAction = new QAction(QIconSet(
-        QPixmap::fromMimeSource("stock_print_16.png"), 
-        QPixmap::fromMimeSource("stock_print_24.png")),
-        tr("&Print..."), QKeySequence(CTRL|Key_P), this);
+    QIcon newActionIcon(QPixmap(":/images/stock_new_16.png"));
+    newActionIcon.addPixmap(QPixmap(":/images/stock_new_24.png"));
+    m_actions.newAction = new QAction(newActionIcon, tr("&New"), this);
+    m_actions.newAction->setShortcut(QKeySequence(Qt::CTRL|Qt::Key_N));
+    
+    QIcon quitActionIcon(QPixmap(":/images/stock_exit_16.png"));
+    quitActionIcon.addPixmap(QPixmap(":/images/stock_exit_24.png"));
+    m_actions.quitAction = new QAction(quitActionIcon, tr("E&xit"),this);
+    m_actions.quitAction->setShortcut(QKeySequence(Qt::CTRL|Qt::Key_Q));
+    
+    QIcon quitActionNoKeyboardShortcutIcon(QPixmap(":/images/stock_exit_16.png"));
+    quitActionNoKeyboardShortcutIcon.addPixmap(QPixmap(":/images/stock_exit_24.png"));
+    m_actions.quitActionNoKeyboardShortcut = new QAction(quitActionNoKeyboardShortcutIcon,
+        tr("E&xit"), this);
+    
+    QIcon loginLogoutActionIcon(QPixmap(":/images/login_16.png"));
+    loginLogoutActionIcon.addPixmap(QPixmap(":/images/login_24.png"));
+    m_actions.loginLogoutAction = new QAction(loginLogoutActionIcon, tr("&Login"), this);
+    m_actions.loginLogoutAction->setShortcut(QKeySequence(Qt::CTRL|Qt::Key_L));
+    
+    QIcon saveActionIcon(QPixmap(":/images/stock_save_16.png"));
+    saveActionIcon.addPixmap(QPixmap(":/images/stock_save_24.png"));
+    m_actions.saveAction = new QAction(saveActionIcon, tr("&Save"), this);
+    m_actions.saveAction->setShortcut(QKeySequence(Qt::CTRL|Qt::Key_S));
+    
+    QIcon exportActionIcon(QPixmap(":/images/export_16.png"));
+    exportActionIcon.addPixmap(QPixmap(":/images/export_24.png"));
+    m_actions.exportAction = new QAction(exportActionIcon, tr("&Export..."), this);
+    
+    QIcon printActionIcon(QPixmap(":/images/stock_print_16.png"));
+    printActionIcon.addPixmap(QPixmap(":/images/stock_print_24.png"));
+    m_actions.printAction = new QAction(printActionIcon, tr("&Print..."), this);
+    m_actions.printAction->setShortcut(QKeySequence(Qt::CTRL|Qt::Key_P));
     
     // ----- Options -------------------------------------------------------------------------------
-    m_actions.changePasswordAction = new QAction(tr("&Change Password..."), QKeySequence(), this);
-    m_actions.settingsAction = new QAction(QIconSet(
-        QPixmap::fromMimeSource("stock_preferences_16.png"),
-        QPixmap::fromMimeSource("stock_preferences_24.png")), 
-        tr("&Settings..."), QKeySequence(CTRL|Key_T), this);
+    m_actions.changePasswordAction = new QAction(tr("&Change Password..."), this);
+    
+    QIcon settingsActionIcon(QPixmap(":/images/stock_preferences_16.png"));
+    settingsActionIcon.addPixmap(QPixmap(":/images/stock_preferences_24.png"));
+    m_actions.settingsAction = new QAction(settingsActionIcon, tr("&Settings..."), this);
+    m_actions.settingsAction->setShortcut(QKeySequence(Qt::CTRL|Qt::Key_T));
         
     // ----- Extras --------------------------------------------------------------------------------
-    m_actions.randomPasswordAction = new QAction(tr("&Random Password..."), 
-        QKeySequence(CTRL|Key_R), this);
-    m_actions.passwordStrengthAction = new QAction(tr("&Show password strength"),
-        QKeySequence(CTRL|Key_W), this);
+    m_actions.randomPasswordAction = new QAction(tr("&Random Password..."), this);
+    m_actions.randomPasswordAction->setShortcut(QKeySequence(Qt::CTRL|Qt::Key_R));
+    
+    m_actions.passwordStrengthAction = new QAction(tr("&Show password strength"),this);
+    m_actions.passwordStrengthAction->setShortcut(QKeySequence(Qt::CTRL|Qt::Key_W));
     m_actions.passwordStrengthAction->setToggleAction(true);
-    m_actions.clearClipboardAction = new QAction(QIconSet(
-        QPixmap::fromMimeSource("clear_clipboard_16.png")), 
-        tr("&Clear clipboard"), QKeySequence(CTRL|Key_E), this);
+    
+    QIcon clearClipboardActionIcon(QPixmap(":/images/clear_clipboard_16.png"));
+    clearClipboardActionIcon.addPixmap(QPixmap(":/images/clear_clipboard_24.png"));
+    m_actions.clearClipboardAction = new QAction(clearClipboardActionIcon,
+        tr("&Clear clipboard"), this);
+    m_actions.clearClipboardAction->setShortcut(QKeySequence(Qt::CTRL|Qt::Key_E));
     
     // ----- Help ----------------------------------------------------------------------------------
-    m_actions.helpAction = new QAction(QIconSet(QPixmap::fromMimeSource("stock_help_16.png"),
-        QPixmap::fromMimeSource("stock_help_24.png")), tr("&Help"), QKeySequence(Key_F1), this);
-    m_actions.whatsThisAction = new QAction(QPixmap(QPixmap::fromMimeSource("whats_this.png")), 
-        tr("&What's this"), QKeySequence(SHIFT|Key_F1), this);
-    m_actions.aboutAction = new QAction(QIconSet(QPixmap::fromMimeSource("info_16.png"),
-        QPixmap::fromMimeSource("info_24.png")), tr("&About..."), 0, this);
-    m_actions.aboutQtAction = new QAction(QPixmap::fromMimeSource("qt_16.png"), 
-        tr("About &Qt..."), QKeySequence(), this);
+    QIcon helpActionIcon(QPixmap(":/images/stock_help_16.png"));
+    helpActionIcon.addPixmap(QPixmap(":/images/stock_help__24.png"));
+    m_actions.helpAction = new QAction(helpActionIcon, tr("&Help"), this);
+    m_actions.helpAction->setShortcut(QKeySequence(Qt::Key_F1));
+    
+    QIcon aboutActionIcon(QPixmap(":/images/info_16.png"));
+    aboutActionIcon.addPixmap(QPixmap(":/images/info_24.png"));
+    m_actions.aboutAction = new QAction(aboutActionIcon, tr("&About..."), this);
+    
+    QIcon aboutQtActionIcon(QPixmap(":/images/qt_16.png"));
+    m_actions.aboutQtAction = new QAction(aboutQtActionIcon,  tr("About &Qt..."), this);
     
     // ------ Toolbar ------------------------------------------------------------------------------
-    m_actions.addItemAction = new QAction(QIconSet(QPixmap::fromMimeSource("stock_add_16.png"),
-        QPixmap::fromMimeSource("stock_add_24.png")),
-        tr("Add item"), QKeySequence(Key_Insert), this, "Add item action");
-    m_actions.removeItemAction = new QAction(QIconSet(QPixmap::fromMimeSource("stock_remove_16.png"),
-        QPixmap::fromMimeSource("stock_remove_24.png")),
-        tr("Remove item"), QKeySequence(), this, "Remove item action");
+    QIcon addItemActionIcon(QPixmap(":/images/stock_add_16.png"));
+    addItemActionIcon.addPixmap(QPixmap(":/images/stock_add_24.png"));
+    m_actions.addItemAction = new QAction(addItemActionIcon, tr("Add item"), this);
+    m_actions.addItemAction->setShortcut(QKeySequence(Qt::Key_Insert));
+    
+    QIcon removeItemActionIcon(QPixmap(":/images/stock_remove_16.png"));
+    removeItemActionIcon.addPixmap(QPixmap(":/images/stock_remove_24.png"));
+    m_actions.removeItemAction = new QAction(removeItemActionIcon, tr("Remove item"), this);
         
     // ------ Misc ---------------------------------------------------------------------------------
-    m_actions.focusSearch = new QAction(tr("Focus &search"), QKeySequence(CTRL|Key_G), this);
-    m_actions.showHideAction = new QAction(tr("&Show"), QKeySequence(), this);
+    QIcon searchActionIcon(QPixmap(":/images/stock_search_16.png"));
+    searchActionIcon.addPixmap(QPixmap(":/images/stock_search_24"));
+    m_actions.searchAction = new QAction(searchActionIcon, tr("Search"), this);
+    
+    m_actions.showHideAction = new QAction(tr("&Show"), this);
 }
 

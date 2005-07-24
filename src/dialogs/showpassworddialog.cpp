@@ -1,5 +1,5 @@
 /*
- * Id: $Id: showpassworddialog.cpp,v 1.4 2004/01/08 23:40:23 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,15 +15,17 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#include <qdialog.h>
-#include <qlineedit.h>
-#include <qlayout.h>
-#include <qhbox.h>
-#include <qframe.h>
-#include <qlabel.h>
-#include <qapplication.h>
-#include <qclipboard.h>
-#include <qpushbutton.h>
+#include <QDialog>
+#include <QLineEdit>
+#include <QLayout>
+#include <Q3HBox>
+#include <Q3Frame>
+#include <QLabel>
+#include <QApplication>
+#include <QClipboard>
+#include <QPushButton>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 
 #include "qpamat.h"
 #include "showpassworddialog.h"
@@ -44,7 +46,7 @@
     \ingroup dialogs
     \author Bernhard Walle
     \version $Revision: 1.4 $
-    \date $Date: 2004/01/08 23:40:23 $
+    \date $Date$
 */
 
 /*!
@@ -84,7 +86,7 @@ ShowPasswordDialog::ShowPasswordDialog(QWidget* parent, DialogType type, const c
     m_passwordEdit = new CopyLabel(qpamat->set().readBoolEntry("Presentation/HideRandomPass"), 
         this);
     m_passwordEdit->setMinimumWidth(250);
-    m_passwordEdit->setFocusPolicy(NoFocus);
+    m_passwordEdit->setFocusPolicy(Qt::NoFocus);
     
     QPushButton* closeButton = new QPushButton(tr("&Close"), this);
     closeButton->setDefault(true);
@@ -97,8 +99,9 @@ ShowPasswordDialog::ShowPasswordDialog(QWidget* parent, DialogType type, const c
     }
     
     // create layouts
-    QVBoxLayout* layout = new QVBoxLayout(this, 6, 6);
-    QHBoxLayout* buttonLayout = new QHBoxLayout(0, 0, 6);
+    QVBoxLayout* layout = new QVBoxLayout(this);
+    QHBoxLayout* buttonLayout = new QHBoxLayout(0);
+    buttonLayout->setSpacing(6);
     
     // layout elements
     buttonLayout->addStretch(10);
@@ -110,7 +113,6 @@ ShowPasswordDialog::ShowPasswordDialog(QWidget* parent, DialogType type, const c
     
     layout->addWidget(label);
     layout->addWidget(m_passwordEdit);
-    layout->addStretch(10);
     layout->addSpacing(7);
     layout->addLayout(buttonLayout);
     

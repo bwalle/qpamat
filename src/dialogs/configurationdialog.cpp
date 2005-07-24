@@ -17,32 +17,34 @@
  */
 #include <algorithm>
 
-#include <qwidget.h>
-#include <qtabdialog.h>
-#include <qlineedit.h>
-#include <qslider.h>
-#include <qcombobox.h>
-#include <qlabel.h>
-#include <qgroupbox.h>
-#include <qwhatsthis.h>
-#include <qlayout.h>
-#include <qradiobutton.h>
-#include <qbuttongroup.h>
-#include <qhbox.h>
-#include <qvbox.h>
-#include <qmessagebox.h>
-#include <qaction.h>
-#include <qapplication.h>
-#include <qcursor.h>
-#include <qpushbutton.h>
-#include <qcheckbox.h>
-#include <qspinbox.h>
-#include <qlcdnumber.h>
-#include <qwidgetstack.h>
-#include <qlistbox.h>
-#include <qfile.h>
-#include <qtextstream.h>
-#include <qdir.h>
+#include <QWidget>
+#include <Q3TabDialog>
+#include <QLineEdit>
+#include <QSlider>
+#include <QComboBox>
+#include <QLabel>
+#include <Q3GroupBox>
+#include <Q3WhatsThis>
+#include <QLayout>
+#include <QRadioButton>
+#include <Q3ButtonGroup>
+#include <Q3HBox>
+#include <Q3VBox>
+#include <QMessageBox>
+#include <QAction>
+#include <QApplication>
+#include <QCursor>
+#include <QPushButton>
+#include <QCheckBox>
+#include <QSpinBox>
+#include <QLCDNumber>
+#include <Q3WidgetStack>
+#include <Q3ListBox>
+#include <QFile>
+#include <QTextStream>
+#include <QDir>
+#include <QGridLayout>
+#include <QVBoxLayout>
 
 #include "global.h"
 #include "configurationdialog.h"
@@ -97,26 +99,23 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     
     // Add the general tab
     ConfDlgGeneralTab* generalTab = new ConfDlgGeneralTab(this, "GeneralTab");
-    addPage(generalTab, QPixmap::fromMimeSource("general_34.png"), tr("General"));
+    addPage(generalTab, QPixmap(":/images/general_34.png"), tr("General"));
     
     // Add the password tab
     ConfDlgPasswordTab* passwordTab = new ConfDlgPasswordTab(this, "PasswordTab");
-    addPage(passwordTab, QPixmap::fromMimeSource("password_34.png"), tr("Password"));
+    addPage(passwordTab, QPixmap(":/images/password_34.png"), tr("Password"));
     
     // Add the security tab
     ConfDlgSecurityTab* securityTab = new ConfDlgSecurityTab(this, "SecurityTab");
-    addPage(securityTab, QPixmap::fromMimeSource("qpamat_34.png"), tr("Security"));
+    addPage(securityTab, QPixmap(":/images/qpamat_34.png"), tr("Security"));
     
     // Add the smartcard tab
     ConfDlgSmartcardTab* smartCardTab = new ConfDlgSmartcardTab(this, "SmartCardTab");
-    addPage(smartCardTab, QPixmap::fromMimeSource("smartcard_34.png"), tr("Smart Card"));
+    addPage(smartCardTab, QPixmap(":/images/smartcard_34.png"), tr("Smart Card"));
     
     // Add the presentation tab
     ConfDlgPresentationTab* presentationTab = new ConfDlgPresentationTab(this, "PresTab");
-    addPage(presentationTab, QPixmap::fromMimeSource("presentation_34.png"), tr("Presentation"));
-    
-    QAction* whatsThis = new QAction("What's this", QKeySequence(SHIFT|Key_F1), this);
-    connect(whatsThis, SIGNAL(activated()), qpamat, SLOT(whatsThis()));
+    addPage(presentationTab, QPixmap(":/images/presentation_34.png"), tr("Presentation"));
     
     adjustSize();
 }
@@ -201,17 +200,14 @@ void ConfDlgGeneralTab::createAndLayout()
 {
     // create layouts
     QVBoxLayout* mainLayout = new QVBoxLayout(this, 0, 6);
-    QGroupBox* startupGroup = new QGroupBox(1, Vertical, tr("Startup"), this);
-    QGroupBox* locationsGroup = new QGroupBox(4, Vertical, tr("Locations"), this);
-    QGroupBox* autoTextGroup = new QGroupBox(4, Vertical, tr("AutoText"), this);
+    Q3GroupBox* startupGroup = new Q3GroupBox(1, Qt::Vertical, tr("Startup"), this);
+    Q3GroupBox* locationsGroup = new Q3GroupBox(4, Qt::Vertical, tr("Locations"), this);
+    Q3GroupBox* autoTextGroup = new Q3GroupBox(4, Qt::Vertical, tr("AutoText"), this);
     
     // some settings
     startupGroup->setInsideSpacing(6);
     locationsGroup->setInsideSpacing(6);
     autoTextGroup->setInsideSpacing(6);
-    startupGroup->setFlat(true);
-    locationsGroup->setFlat(true);
-    autoTextGroup->setFlat(true);
     
     // auto login
     m_autoLoginCheckbox = new QCheckBox(tr("Enable &AutoLogin on startup"), startupGroup);
@@ -329,14 +325,12 @@ void ConfDlgPasswordTab::createAndLayout()
 {
     // create layouts
     QVBoxLayout* mainLayout = new QVBoxLayout(this, 0, 6);
-    QGroupBox* passwordGroup = new QGroupBox(5, Vertical, tr("Generated Passwords"), this);
-    QGroupBox* checkerGroup = new QGroupBox(6, Vertical, tr("Password checker"), this);
+    Q3GroupBox* passwordGroup = new Q3GroupBox(5, Qt::Vertical, tr("Generated Passwords"), this);
+    Q3GroupBox* checkerGroup = new Q3GroupBox(6, Qt::Vertical, tr("Password checker"), this);
     
     // some settings
     passwordGroup->setInsideSpacing(6);
-    passwordGroup->setFlat(true);
     checkerGroup->setInsideSpacing(6);
-    checkerGroup->setFlat(true);
     
     QWidget* ensureGrid = new QWidget(passwordGroup, "EnsureGrid");
     QGridLayout* ensureGridLayout = new QGridLayout(ensureGrid, 2, 3, 0, 6, "EnsureGridLayout");
@@ -361,14 +355,14 @@ void ConfDlgPasswordTab::createAndLayout()
     
     // checker stuff
     new QLabel(tr("Limits for weak - acceptable - strong (cracking days):"), checkerGroup, "WeakLabel");
-    QHBox* weakSliderBox = new QHBox(checkerGroup, "WeakSliderBox");
+    Q3HBox* weakSliderBox = new Q3HBox(checkerGroup, "WeakSliderBox");
     weakSliderBox->setSpacing(4);
     m_weakSlider = new QSlider(0, 100, 1, 2, Qt::Horizontal, weakSliderBox, "WeakSlider");
     m_weakLabel = new QLCDNumber(3, weakSliderBox);
     m_weakLabel->setSmallDecimalPoint(true);
     m_weakLabel->setLineWidth(0);
     
-    QHBox* strongSliderBox = new QHBox(checkerGroup, "WeakSliderBox");
+    Q3HBox* strongSliderBox = new Q3HBox(checkerGroup, "WeakSliderBox");
     strongSliderBox->setSpacing(4);
     m_strongSlider = new QSlider(0, 100, 1, 15, Qt::Horizontal, strongSliderBox, "WeakSlider");
     m_strongLabel = new QLCDNumber(3, strongSliderBox);
@@ -380,7 +374,7 @@ void ConfDlgPasswordTab::createAndLayout()
     m_dictionaryEdit = new FileLineEdit(checkerGroup, false, "DictEdit");
 
     // sort button
-    QHBox* box = new QHBox(checkerGroup, "Hbox");
+    Q3HBox* box = new Q3HBox(checkerGroup, "Hbox");
     m_sortButton = new QPushButton(tr("&Sort dictionary"), box, "SortBtn");
     m_sortButton->setAutoDefault(false);
     
@@ -397,7 +391,7 @@ void ConfDlgPasswordTab::createAndLayout()
     mainLayout->addStretch(5);
     
     // help
-    QWhatsThis::add(m_sortButton, tr("<qt>For performance reasons, the dictionary file needs "
+    Q3WhatsThis::add(m_sortButton, tr("<qt>For performance reasons, the dictionary file needs "
         "to be sorted by the length of the words. This function does that!<p>It saves also a "
         "copy of the old file by <i>filename.old</i>.</qt>"));
 }
@@ -488,7 +482,7 @@ void ConfDlgPasswordTab::sortDictionary()
 {
     StringVector words;
     QFile file(m_dictionaryEdit->getContent());
-    if (!file.open(IO_ReadOnly)) 
+    if (!file.open(QIODevice::ReadOnly)) 
     {
         QMessageBox::warning(this, "QPaMaT", tr("The file you wanted to sort does not exist!"),
             QMessageBox::Ok, QMessageBox::NoButton);
@@ -498,10 +492,9 @@ void ConfDlgPasswordTab::sortDictionary()
     QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
     
     QTextStream stream(&file);
-    QString line;
-    while (QString line = stream.readLine()) 
+    while (!stream.atEnd()) 
     {
-        words.append(line);
+        words.append(stream.readLine());
     }
     file.close();
     
@@ -520,7 +513,7 @@ void ConfDlgPasswordTab::sortDictionary()
         QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
     }
     
-    if (!file.open(IO_WriteOnly))
+    if (!file.open(QIODevice::WriteOnly))
     {
         QApplication::restoreOverrideCursor();
         QMessageBox::warning(this, "QPaMaT", tr("Could not open the file for writing!"),
@@ -589,14 +582,12 @@ void ConfDlgSecurityTab::createAndLayout()
 {
     // create layouts
     QVBoxLayout* mainLayout = new QVBoxLayout(this, 0, 6);
-    QGroupBox* encryptionGroup = new QGroupBox(1, Vertical, tr("Encryption"), this);
-    QGroupBox* logoutGroup = new QGroupBox(1, Vertical, tr("Logout"), this);
+    Q3GroupBox* encryptionGroup = new Q3GroupBox(1, Qt::Vertical, tr("Encryption"), this);
+    Q3GroupBox* logoutGroup = new Q3GroupBox(1, Qt::Vertical, tr("Logout"), this);
     
     // some settings
     encryptionGroup->setInsideSpacing(6);
-    encryptionGroup->setFlat(true);
     logoutGroup->setInsideSpacing(6);
-    logoutGroup->setFlat(true);
     
     // algorithm stuff
     m_algorithmLabel = new QLabel(tr("Cipher &algorithm:"), encryptionGroup);
@@ -695,17 +686,14 @@ void ConfDlgPresentationTab::createAndLayout()
 {
     // create layouts
     QVBoxLayout* mainLayout = new QVBoxLayout(this, 0, 6);
-    QGroupBox* passwordGroup = new QGroupBox(2, Vertical, tr("Passwords"), this);
-    QGroupBox* fontGroup = new QGroupBox(4, Vertical, tr("Printing Fonts"), this);
-    QGroupBox* systemTrayGroup = new QGroupBox(2, Vertical, tr("System tray"), this);
+    Q3GroupBox* passwordGroup = new Q3GroupBox(2, Qt::Vertical, tr("Passwords"), this);
+    Q3GroupBox* fontGroup = new Q3GroupBox(4, Qt::Vertical, tr("Printing Fonts"), this);
+    Q3GroupBox* systemTrayGroup = new Q3GroupBox(2, Qt::Vertical, tr("System tray"), this);
     
     // some settings
     passwordGroup->setInsideSpacing(6);
-    passwordGroup->setFlat(true);
     fontGroup->setInsideSpacing(6);
-    fontGroup->setFlat(true);
     systemTrayGroup->setInsideSpacing(6);
-    systemTrayGroup->setFlat(true);
     
     QLabel* normalLabel = new QLabel("&Normal font:", fontGroup);
     m_normalFontEdit = new FontChooseBox(fontGroup);
@@ -740,7 +728,6 @@ void ConfDlgPresentationTab::createAndLayout()
 void ConfDlgPresentationTab::fillSettings()
 {
     QFont font;
-    
     font.fromString(qpamat->set().readEntry( "Presentation/NormalFont"));
     m_normalFontEdit->setFont(font);
     font.fromString(qpamat->set().readEntry( "Presentation/FooterFont"));
@@ -817,13 +804,9 @@ void ConfDlgSmartcardTab::createAndLayout()
     // create layouts
     QVBoxLayout* mainLayout = new QVBoxLayout(this, 0, 6);
     
-    QGroupBox* smartCardGroup = new QGroupBox(2, Vertical, tr("Smartcard"), this);
-    m_settingsGroup = new QGroupBox(4, Vertical, tr("Settings"), this);
-    m_testGroup = new QButtonGroup(2, Vertical, tr("Testing"), this);
-    
-    m_settingsGroup->setFlat(true);
-    m_testGroup->setFlat(true);
-    smartCardGroup->setFlat(true);
+    Q3GroupBox* smartCardGroup = new Q3GroupBox(2, Qt::Vertical, tr("Smartcard"), this);
+    m_settingsGroup = new Q3GroupBox(4, Qt::Vertical, tr("Settings"), this);
+    m_testGroup = new Q3ButtonGroup(2, Qt::Vertical, tr("Testing"), this);
     
     m_useCardCB = new QCheckBox(tr("&Use a smartcard"), smartCardGroup);
     m_usePinCB = new QCheckBox(tr("Card has &write-protection"), smartCardGroup);;
@@ -835,7 +818,7 @@ void ConfDlgSmartcardTab::createAndLayout()
     m_portCombo = new QComboBox(false, m_settingsGroup);
     
     new QLabel(tr("Insert a card and click on this button to test your settings:"), m_testGroup);
-    QHBox* box = new QHBox(m_testGroup);
+    Q3HBox* box = new Q3HBox(m_testGroup);
     m_testButton = new QPushButton(tr("&Test"), box);
     m_testButton->setAutoDefault(false);
     
@@ -940,7 +923,7 @@ void ConfDlgSmartcardTab::testSmartCard()
                 "<p>Detected a card with %1 kBytes memory.</p><p>If you think this is "
                 "enough memory you can use this card for storing your passwords!</p>")+"</qt>").arg(
                 QString::number(capacity / 1024.0)),
-                QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
+                QMessageBox::Ok | QMessageBox::Default, Qt::NoButton);
         }
         else
         {
@@ -949,7 +932,7 @@ void ConfDlgSmartcardTab::testSmartCard()
                 "<p>The communication to your chipcard terminal seems to work.<p>"
                 "<p>However, there's no memory card in your reader. So you cannot use "
                 "it for saving your password. Buy a memory card and try again!</p>")),
-                QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
+                QMessageBox::Ok | QMessageBox::Default, Qt::NoButton);
         }
         
         // if we don't access this point the destructor closes it. So no problem here!

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: cardpinvalidator.h,v 1.1 2004/01/20 21:42:46 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,9 +18,9 @@
 #ifndef CARDPINVALIDATOR_H
 #define CARDPINVALIDATOR_H
 
-#include <qvalidator.h>
-#include <qobject.h>
-#include <qstring.h>
+#include <QValidator>
+#include <QObject>
+#include <QString>
 
 class CardPINValidator : public QValidator
 {

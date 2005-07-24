@@ -1,5 +1,5 @@
 /*
- * Id: $Id: property.h,v 1.12 2005/02/27 18:12:56 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,9 +18,10 @@
 #ifndef PROPERTY_H
 #define PROPERTY_H
 
-#include <qstring.h>
-#include <qdom.h>
-#include <qobject.h>
+#include <QString>
+#include <QDomDocument>
+#include <QObject>
+#include <QTextStream>
 
 #include "security/passwordchecker.h"
 
@@ -59,7 +60,7 @@ class Property : public QObject
         double daysToCrack() const;
         
         Type getType() const;
-        void setType(Type type);
+        void setType(Property::Type type);
         
         bool isHidden() const;
         void setHidden(bool hidden);

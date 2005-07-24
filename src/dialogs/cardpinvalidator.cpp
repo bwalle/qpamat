@@ -1,5 +1,5 @@
 /*
- * Id: $Id: cardpinvalidator.cpp,v 1.1 2004/01/20 21:42:46 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,7 +15,7 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#include <qstring.h>
+#include <QString>
 
 #include "cardpinvalidator.h"
 
@@ -33,7 +33,7 @@
     \ingroup dialogs
     \author Bernhard Walle
     \version $Revision: 1.1 $
-    \date $Date: 2004/01/20 21:42:46 $
+    \date $Date$
     
 */
 

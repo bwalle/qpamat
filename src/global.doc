@@ -1,5 +1,5 @@
 /*
- * Id: $Id: global.doc,v 1.2 2004/01/02 12:19:40 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,9 +15,9 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#include <qvaluevector.h>
-#include <qmap.h>
-#include <qstring.h>
+#include <QValueVector>
+#include <QMap>
+#include <QString>
 
 /*!
     \file global.h

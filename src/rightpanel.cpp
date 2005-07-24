@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightpanel.cpp,v 1.6 2004/01/03 23:41:09 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,13 +15,16 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#include <qlistview.h>
-#include <qlayout.h>
-#include <qheader.h>
-#include <qlabel.h>
-#include <qframe.h>
+#include <Q3ListView>
+#include <QLayout>
+#include <Q3Header>
+#include <QLabel>
+#include <Q3Frame>
+#include <QVBoxLayout>
+#include <QTextStream>
 
 #include "qpamat.h"
+
 #include "rightpanel.h"
 #include "rightlistview.h"
 #include "property.h"
@@ -38,7 +41,7 @@
     
     \author Bernhard Walle
     \version $Revision: 1.6 $
-    \date $Date: 2004/01/03 23:41:09 $
+    \date $Date$
 */
 
 /*!
@@ -65,7 +68,7 @@
     Creates a new instance of the right panel.
     \param parent the parent widget as usual for QObject
 */
-RightPanel::RightPanel(Qpamat* parent) : QFrame(parent, "RightPanel")
+RightPanel::RightPanel(Qpamat* parent) : Q3Frame(parent, "RightPanel")
 {
     QVBoxLayout* layout = new QVBoxLayout(this);
     m_listView = new RightListView(this);
@@ -76,8 +79,8 @@ RightPanel::RightPanel(Qpamat* parent) : QFrame(parent, "RightPanel")
     
     setEnabled(false);
     
-    connect(m_listView, SIGNAL(selectionChanged(QListViewItem*)),
-        this, SLOT(selectionChangeHandler(QListViewItem*)));
+    connect(m_listView, SIGNAL(selectionChanged(Q3ListViewItem*)),
+        this, SLOT(selectionChangeHandler(Q3ListViewItem*)));
     connect(m_listView, SIGNAL(itemDeleted(int)), SLOT(itemDeletedHandler(int)));
     connect(m_listView, SIGNAL(stateModified()), SIGNAL(stateModified()));
     connect(m_southPanel, SIGNAL(moveUp()), m_listView, SLOT(moveUp()));
@@ -128,7 +131,7 @@ void RightPanel::itemDeletedHandler(int item)
         --item;
     }
 
-    QListViewItem* it = m_listView->firstChild();
+    Q3ListViewItem* it = m_listView->firstChild();
     for (int i = 0; i < item; ++i)
     {
         it = it->nextSibling();
@@ -144,7 +147,7 @@ void RightPanel::itemDeletedHandler(int item)
 */
 void RightPanel::setEnabled(bool enabled)
 {
-    QFrame::setEnabled(enabled);
+    Q3Frame::setEnabled(enabled);
     m_listView->setEnabled(enabled);
 }
 
@@ -154,7 +157,7 @@ void RightPanel::setEnabled(bool enabled)
     the signal and slots mechanism.
     \param item the current item
 */
-void RightPanel::setItem(QListViewItem* item)
+void RightPanel::setItem(Q3ListViewItem* item)
 {
     clear();
     m_currentItem = dynamic_cast<TreeEntry*>(item);
@@ -174,7 +177,7 @@ void RightPanel::setItem(QListViewItem* item)
     Handles changing of selections.
     \param item the item
 */
-void RightPanel::selectionChangeHandler(QListViewItem* item)
+void RightPanel::selectionChangeHandler(Q3ListViewItem* item)
 {
     disconnect(m_listView, SLOT(updateSelected(Property*)));
     

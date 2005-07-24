@@ -16,9 +16,13 @@
  * ------------------------------------------------------------------------------------------------- 
  */
 #include <stdexcept>
-#include <qobject.h>
 #include <csignal>
 #include <errno.h>
+
+#include <QObject>
+#include <QTextStream>
+#include <QDir>
+#include <QMessageBox>
 
 #ifndef Q_WS_WIN
 #include <unistd.h>
@@ -27,10 +31,6 @@
 #else
 #include <process.h>
 #endif
-
-#include <qobject.h>
-#include <qdir.h>
-#include <qmessagebox.h>
 
 #include "global.h"
 #include "singleapplication.h"
@@ -107,7 +107,7 @@ void SingleApplication::startup()
     if (QFile::exists(lockfile))
     {
         QString id = "???";
-        if (file.open(IO_ReadOnly))
+        if (file.open(QIODevice::ReadOnly))
         {
             QTextStream textstream(&file);
             textstream >> id;
@@ -137,7 +137,7 @@ void SingleApplication::startup()
     }
     
     
-    if (!file.open(IO_WriteOnly))
+    if (!file.open(QIODevice::WriteOnly))
     {
         PRINT_DBG("Could not open the file %s for writing.", lockfile.latin1());
         return;
@@ -201,7 +201,7 @@ void SingleApplication::shutdown(int signal)
 */
 void SingleApplication::shutdown()
 {
-    PRINT_DBG("Shutting down ...", "");
+    PRINT_DBG("Shutting down ...%s", "");
     if (!didShutdownAlready) // prevents multiple calls
     {
         if (!QFile::remove(lockfile))

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightlistview.h,v 1.8 2004/01/03 23:41:09 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,15 +18,17 @@
 #ifndef RIGHTLISTVIEW_H
 #define RIGHTLISTVIEW_H
 
-#include <qlistview.h>
-#include <qwidget.h>
-#include <qevent.h>
-#include <qpopupmenu.h>
+#include <Q3ListView>
+#include <QWidget>
+#include <QEvent>
+#include <Q3PopupMenu>
+#include <QTextStream>
+#include <QKeyEvent>
 
 #include "property.h"
 #include "treeentry.h"
 
-class RightListView : public QListView
+class RightListView : public Q3ListView
 {
     Q_OBJECT
 
@@ -39,7 +41,7 @@ class RightListView : public QListView
     public:
         RightListView(QWidget* parent);
         
-        void setItem(QListViewItem* item);
+        void setItem(Q3ListViewItem* item);
         bool isFocusInside() const;
         void setSelectedIndex(uint index);
         
@@ -57,12 +59,12 @@ class RightListView : public QListView
         
     private slots:
         void updateSelected(Property* property);
-        void showContextMenu(QListViewItem* item, const QPoint& point);
-        void copyItem(QListViewItem* item);
-        void doubleClickHandler(QListViewItem* item);
+        void showContextMenu(Q3ListViewItem* item, const QPoint& point);
+        void copyItem(Q3ListViewItem* item);
+        void doubleClickHandler(Q3ListViewItem* item);
         void itemAppendedHandler();
         void setMoveStateCorrect();
-        void mouseButtonClickedHandler(int but, QListViewItem* item, const QPoint& point, int c);
+        void mouseButtonClickedHandler(int but, Q3ListViewItem* item, const QPoint& point, int c);
         
     signals:
         void itemAppended();
@@ -75,7 +77,7 @@ class RightListView : public QListView
         
     private:
         TreeEntry*  m_currentItem;
-        QPopupMenu* m_contextMenu;
+        Q3PopupMenu* m_contextMenu;
    
 }; 
 

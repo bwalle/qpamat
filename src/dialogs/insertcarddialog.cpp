@@ -1,5 +1,5 @@
 /*
- * Id: $Id: insertcarddialog.cpp,v 1.2 2004/07/23 13:11:27 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,12 +15,14 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#include <qlayout.h>
-#include <qdialog.h>
-#include <qlabel.h>
-#include <qhbox.h>
-#include <qpushbutton.h>
-#include <qpixmap.h>
+#include <QLayout>
+#include <QDialog>
+#include <QLabel>
+#include <Q3HBox>
+#include <QPushButton>
+#include <QPixmap>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 
 #include "insertcarddialog.h"
 
@@ -43,7 +45,7 @@
     \ingroup dialogs
     \author Bernhard Walle
     \version $Revision: 1.2 $
-    \date $Date: 2004/07/23 13:11:27 $
+    \date $Date$
 */
 
 
@@ -66,11 +68,11 @@ InsertCardDialog::InsertCardDialog(bool pin, QWidget* parent, const char* name)
     QVBoxLayout* rightLayout = new QVBoxLayout(0, 0, 10, "HLayout");
     
     QLabel* leftIcon = new QLabel(this, "left icon");
-    leftIcon->setPixmap(QPixmap(QPixmap::fromMimeSource("smartcard_48.png")));
+    leftIcon->setPixmap(QPixmap(":/images/smartcard_48.png"));
    
     QLabel* label = new QLabel(tr(strings[pin]), this, "Label");
     
-    QHBox* box = new QHBox(this, "Box");
+    Q3HBox* box = new Q3HBox(this, "Box");
     box->setSpacing(8);
     
     if (pin)
@@ -103,11 +105,11 @@ InsertCardDialog::InsertCardDialog(bool pin, QWidget* parent, const char* name)
     }
     
     // layout
-    mainLayout->addWidget(leftIcon, 0, AlignLeft| AlignTop);
+    mainLayout->addWidget(leftIcon, 0, Qt::AlignLeft| Qt::AlignTop);
     mainLayout->addLayout(rightLayout, 5);
     
     rightLayout->addSpacing(3);
-    rightLayout->addWidget(label, 5, AlignHCenter | AlignTop);
+    rightLayout->addWidget(label, 5, Qt::AlignHCenter | Qt::AlignTop);
     if (pin)
     {
         rightLayout->addWidget(m_pinEdit);

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.h,v 1.13 2005/02/27 18:12:56 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,25 +18,26 @@
 #ifndef TREEENTRY_H
 #define TREEENTRY_H
 
-#include <qstring.h>
-#include <qptrlist.h>
-#include <qlistview.h>
-#include <qmime.h>
-#include <qevent.h>
-#include <qvaluelist.h>
+#include <QString>
+#include <Q3PtrList>
+#include <Q3ListView>
+#include <QEvent>
+#include <QTextStream>
+#include <QDropEvent>
+#include <Q3ValueList>
 
 #include "property.h"
 
-typedef QPtrList<Property> PropertyPtrList;
+typedef Q3PtrList<Property> PropertyPtrList;
 
-class TreeEntry : public QObject, public QListViewItem
+class TreeEntry : public QObject, public Q3ListViewItem
 {
     Q_OBJECT
     
-    using QListViewItem::parent;
+    using Q3ListViewItem::parent;
     
     public:
-        typedef QPtrListIterator<Property> PropertyIterator;
+        typedef Q3PtrListIterator<Property> PropertyIterator;
         
     public:
         template<class T>

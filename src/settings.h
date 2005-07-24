@@ -1,5 +1,5 @@
 /*
- * Id: $Id: settings.h,v 1.10 2003/12/29 15:12:27 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,8 +18,8 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include <qsettings.h>
-#include <qmap.h>
+#include <QSettings>
+#include <QMap>
 
 class Settings
 {
@@ -27,15 +27,17 @@ class Settings
         Settings();
         virtual ~Settings() { }
         
-        bool writeEntry(const QString & key, const QString & value);
-        bool writeEntry(const QString & key, int value);
-        bool writeEntry(const QString & key, bool value);
-        bool writeEntry(const QString & key, double value);
+        bool writeEntry(const QString& key, const QString & value);
+        bool writeEntry(const QString& key, int value);
+        bool writeEntry(const QString& key, bool value);
+        bool writeEntry(const QString& key, double value);
+        bool writeEntry(const QString& key, const QByteArray& bytes);
         
         QString readEntry(const QString & key, const QString& def = QString::null);
         int readNumEntry (const QString & key, int def = 0);
         double readDoubleEntry(const QString & key, double def = 0.0) const;
         bool readBoolEntry(const QString & key, bool def = false) const;
+        QByteArray readByteArrayEntry(const QString& key, const QByteArray& def = QByteArray());
         
     private:
         QSettings               m_qSettings;

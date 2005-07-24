@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialog.h,v 1.13 2004/01/07 23:54:55 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,7 +18,7 @@
 #ifndef CONFIGURATIONDIALOG_H
 #define CONFIGURATIONDIALOG_H
 
-#include <qdialog.h>
+#include <QDialog>
 
 #include "widgets/listboxdialog.h"
 

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: randompassword.cpp,v 1.7 2003/12/29 20:06:56 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -17,11 +17,11 @@
  */
 #include <memory>
 
-#include <qobject.h>
-#include <qstring.h>
-#include <qmessagebox.h>
-#include <qapplication.h>
-#include <qcursor.h>
+#include <QObject>
+#include <QString>
+#include <QMessageBox>
+#include <QApplication>
+#include <QCursor>
 
 #include "qpamat.h"
 #include "global.h"
@@ -43,7 +43,7 @@
     \ingroup gui
     \author Bernhard Walle
     \version $Revision: 1.7 $
-    \date $Date: 2003/12/29 20:06:56 $
+    \date $Date$
 */
 
 /*!

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: property.cpp,v 1.12 2005/02/27 18:12:56 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,12 +15,14 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#include <qstring.h>
-#include <qdom.h>
-#include <qlistview.h>
-#include <qmessagebox.h>
+#include <QString>
+#include <QDomDocument>
+#include <Q3ListView>
+#include <QMessageBox>
+#include <QTextStream>
 
 #include "qpamat.h"
+
 #include "security/hybridpasswordchecker.h"
 #include "property.h"
 #include "security/encodinghelper.h"
@@ -34,7 +36,7 @@
     \ingroup gui
     \author Bernhard Walle
     \version $Revision: 1.12 $
-    \date $Date: 2005/02/27 18:12:56 $
+    \date $Date$
 */
 
 /*!
@@ -286,7 +288,7 @@ QString Property::toRichTextForPrint() const
 */
 void Property::appendTextForExport(QTextStream& stream)
 {
-    stream << qSetW(20) << m_key + ": " << m_value << "\n";
+    stream << qSetFieldWidth(20) << m_key + ": " << qSetFieldWidth(0) << m_value << "\n";
 }
 
 

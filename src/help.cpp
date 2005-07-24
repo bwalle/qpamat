@@ -1,5 +1,5 @@
 /*
- * Id: $Id: help.cpp,v 1.9 2004/09/25 17:04:49 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -17,13 +17,13 @@
  */
 #include <memory>
 
-#include <qobject.h>
-#include <qapplication.h>
-#include <qmessagebox.h>
-#include <qwidget.h>
-#include <qprocess.h>
-#include <qtextcodec.h>
-#include <qfile.h>
+#include <QObject>
+#include <QApplication>
+#include <QMessageBox>
+#include <QWidget>
+#include <Q3Process>
+#include <QTextCodec>
+#include <QFile>
 
 #include "global.h"
 #include "qpamat.h"
@@ -39,7 +39,7 @@
     \ingroup gui
     \author Bernhard Walle
     \version $Revision: 1.9 $
-    \date $Date: 2004/09/25 17:04:49 $
+    \date $Date$
 */
 
 /*!
@@ -86,7 +86,7 @@ void Help::showHelp()
 void Help::openURL(QWidget* parent, const QString& url)
 {
     QString command = qpamat->set().readEntry("/General/Webbrowser");
-    QProcess* process = new QProcess(command, parent);
+    Q3Process* process = new Q3Process(command, parent);
     process->addArgument(url);
     
     if (! process->start())

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: copylabel.cpp,v 1.7 2004/07/23 13:13:01 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,13 +15,16 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#include <qlayout.h>
-#include <qpushbutton.h>
-#include <qpixmap.h>
-#include <qaction.h>
-#include <qdir.h>
-#include <qapplication.h>
-#include <qclipboard.h>
+#include <QLayout>
+#include <QPushButton>
+#include <QPixmap>
+#include <QAction>
+#include <QDir>
+#include <QApplication>
+#include <QClipboard>
+#include <QLabel>
+#include <Q3Frame>
+#include <QHBoxLayout>
 
 #include "copylabel.h"
 
@@ -36,7 +39,7 @@
     \ingroup widgets
     \author Bernhard Walle
     \version $Revision: 1.7 $
-    \date $Date: 2004/07/23 13:13:01 $
+    \date $Date$
 */
 
 /*!
@@ -70,12 +73,12 @@ void CopyLabel::init()
 {
     QHBoxLayout* boxLayout = new QHBoxLayout(this, 0, 2);
     m_label = new QLabel(this);
-    m_label->setFrameStyle( QFrame::Panel | QFrame::Sunken );
+    m_label->setFrameStyle( Q3Frame::Panel | Q3Frame::Sunken );
     
     // we need a tool button because it has no border and it looks better in this size
     // in Platin style
     m_copyButton = new QToolButton(this);
-    m_copyButton->setIconSet(QIconSet(QPixmap::fromMimeSource("stock_copy_16.png")));
+    m_copyButton->setIconSet(QIcon(QPixmap(":/images/stock_copy_16.png")));
     
     boxLayout->addWidget(m_label);
     boxLayout->addWidget(m_copyButton);
@@ -84,7 +87,8 @@ void CopyLabel::init()
     
     connect(m_copyButton, SIGNAL(clicked()), SLOT(copyText()));
     
-    QAction* copy = new QAction("Copy", QKeySequence(CTRL|Key_C), this);
+    QAction* copy = new QAction(tr("Copy"), this);
+    copy->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_C));
     connect(copy, SIGNAL(activated()), SLOT(copyText()));
 }
 
@@ -104,7 +108,7 @@ void CopyLabel::setContent(const QString& content)
     if (m_hidden)
     {
         QString text;
-        for (uint i = 0; i < content.length(); ++i)
+        for (int i = 0; i < content.length(); ++i)
         {
             text += "*";
         }

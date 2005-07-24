@@ -1,5 +1,5 @@
 /*
- * Id: $Id: externalpasswordgenerator.h,v 1.3 2003/12/29 10:59:16 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,7 +18,7 @@
 #ifndef EXTERNALPASSWORDGENERATOR_H
 #define EXTERNALPASSWORDGENERATOR_H
 
-#include <qstring.h>
+#include <QString>
 
 #include "passwordgenerator.h"
 

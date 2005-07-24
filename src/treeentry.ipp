@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.ipp,v 1.6 2004/01/06 23:38:45 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -16,7 +16,6 @@
  * ------------------------------------------------------------------------------------------------- 
  */
 
-
 /*!
     Creates a new TreeEntry.
     \param parent the parent entry. There must be a parent, i.e. parent must not be 0.
@@ -25,7 +24,7 @@
 */
 template<class T>
 TreeEntry::TreeEntry(T* parent, const QString& name, bool isCategory)
-    : QListViewItem(parent), m_name(name), m_isCategory(isCategory), m_weak(false)
+    : Q3ListViewItem(parent), m_name(name), m_isCategory(isCategory), m_weak(false)
 {
     setRenameEnabled(0, true);
     setDragEnabled(true);
@@ -68,4 +67,3 @@ TreeEntry* TreeEntry::appendFromXML(T* parent, QDomElement& element)
     return returnvalue;
 }
 
-// vim: ft=cpp

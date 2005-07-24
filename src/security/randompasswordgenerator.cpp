@@ -1,5 +1,5 @@
 /*
- * Id: $Id: randompasswordgenerator.cpp,v 1.9 2003/12/29 10:59:16 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,7 +15,7 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#include <qstring.h>
+#include <QString>
 
 #include <openssl/rand.h>
 
@@ -34,7 +34,7 @@
     \ingroup security
     \author Bernhard Walle
     \version $Revision: 1.9 $
-    \date $Date: 2003/12/29 10:59:16 $
+    \date $Date$
 */
 
 /*!

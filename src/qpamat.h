@@ -18,11 +18,15 @@
 #ifndef QPAMAT_H
 #define QPAMAT_H
 
-#include <qmainwindow.h>
-#include <qcombobox.h>
-#include <qevent.h>
-#include <qtoolbutton.h>
-#include <qaction.h>
+#include <QMainWindow>
+#include <Q3MainWindow>
+#include <QComboBox>
+#include <QEvent>
+#include <QToolButton>
+#include <QAction>
+#include <Q3PopupMenu>
+#include <QCloseEvent>
+#include <QLabel>
 
 #include "settings.h"
 #include "randompassword.h"
@@ -89,12 +93,12 @@ class Qpamat : public QMainWindow
             QAction* viewTreeAction;
             QAction* quitAction;
             QAction* quitActionNoKeyboardShortcut;
+            QAction* searchAction;
             QAction* showHideAction;
             QAction* printAction;
             QAction* helpAction;
             QAction* aboutAction;
             QAction* aboutQtAction;
-            QAction* whatsThisAction;
             QAction* changePasswordAction;
             QAction* settingsAction;
             QAction* addItemAction;
@@ -104,25 +108,20 @@ class Qpamat : public QMainWindow
             QAction* clearClipboardAction;
             QAction* focusSearch;
         };
-        struct ToolButtons
-        {
-            QToolButton* search;
-        };
         
     private:
+        QLabel*             m_searchLabel;
         Settings            m_settings;
         Tree*               m_tree;
         QString             m_password;
         Help                m_help;
-        QPopupMenu*         m_treeContextMenu;
+        Q3PopupMenu*         m_treeContextMenu;
         TimerStatusmessage* m_message;
         RightPanel*         m_rightPanel;
         QComboBox*          m_searchCombo;
-        QToolBar*           m_searchToolbar;
         RandomPassword*     m_randomPassword;
         bool                m_loggedIn;
         bool                m_modified;
-        ToolButtons         m_toolButtons;
         Actions             m_actions;
         TrayIcon*           m_trayIcon;
         QRect               m_lastGeometry;

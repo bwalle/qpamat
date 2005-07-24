@@ -23,8 +23,13 @@
 
 #include <qobject.h>
 #include <qimage.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <QMouseEvent>
+#include <QEvent>
+#include <Q3PopupMenu>
 
-class QPopupMenu;
+class Q3PopupMenu;
 
 class TrayIcon : public QObject
 {
@@ -35,7 +40,7 @@ class TrayIcon : public QObject
 
 public:
 	TrayIcon( QObject *parent = 0, const char *name = 0 );
-	TrayIcon( const QPixmap &, const QString &, QPopupMenu *popup = 0, QObject *parent = 0, const char *name = 0 );
+	TrayIcon( const QPixmap &, const QString &, Q3PopupMenu *popup = 0, QObject *parent = 0, const char *name = 0 );
 	~TrayIcon();
 
 	// use WindowMaker dock mode.  ignored on non-X11 platforms
@@ -43,8 +48,8 @@ public:
 	bool isWMDock() { return v_isWMDock; }
 
 	// Set a popup menu to handle RMB
-	void setPopup( QPopupMenu * );
-	QPopupMenu* popup() const;
+	void setPopup( Q3PopupMenu * );
+	Q3PopupMenu* popup() const;
 
 	QPixmap icon() const;
 	QString toolTip() const;
@@ -73,7 +78,7 @@ protected:
 	virtual void mouseDoubleClickEvent( QMouseEvent *e );
 
 private:
-	QPopupMenu *pop;
+	Q3PopupMenu *pop;
 	QPixmap pm;
 	QString tip;
 	bool v_isWMDock;

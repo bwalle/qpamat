@@ -1,5 +1,5 @@
 /*
- * Id: $Id: randompassword.h,v 1.3 2003/12/29 15:12:27 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,8 +18,8 @@
 #ifndef RANDOMPASSWORD_H
 #define RANDOMPASSWORD_H
 
-#include <qobject.h>
-#include <qstring.h>
+#include <QObject>
+#include <QString>
 
 class Qpamat;
 

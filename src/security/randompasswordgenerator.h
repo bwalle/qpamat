@@ -1,5 +1,5 @@
 /*
- * Id: $Id: randompasswordgenerator.h,v 1.9 2003/12/29 10:59:16 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,7 +18,7 @@
 #ifndef RANDOMPASSWORDGENERATOR_H
 #define RANDOMPASSWORDGENERATOR_H
 
-#include <qstring.h>
+#include <QString>
 
 #include "global.h"
 #include "passwordgenerator.h"

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: listboxlabeledpict.cpp,v 1.1 2004/01/03 23:40:12 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,8 +15,9 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#include <qstring.h>
-#include <qapplication.h>
+#include <QString>
+#include <QApplication>
+#include <QPixmap>
 
 #include "global.h"
 #include "listboxlabeledpict.h"
@@ -39,9 +40,9 @@ const int ListBoxLabeledPict::RTTI = 10025;
     usual in KDE configuration dialogs.
 
     \ingroup gui
-    \author $Author: bwalle $
+    \author $Author$
     \version $Revision: 1.1 $
-    \date $Date: 2004/01/03 23:40:12 $
+    \date $Date$
 
     \sa QListBox, QListBoxItem
 */
@@ -52,8 +53,8 @@ const int ListBoxLabeledPict::RTTI = 10025;
     \param pixmap the pixmap
     \param string the string that is displayed
 */
-ListBoxLabeledPict::ListBoxLabeledPict(QListBox* listbox, const QPixmap& pixmap, const QString& string)
-    : QListBoxItem(listbox), m_pixmap(pixmap)
+ListBoxLabeledPict::ListBoxLabeledPict(Q3ListBox* listbox, const QPixmap& pixmap, const QString& string)
+    : Q3ListBoxItem(listbox), m_pixmap(pixmap)
 {
     setText(string);
 }
@@ -78,9 +79,9 @@ ListBoxLabeledPict::ListBoxLabeledPict(const QPixmap& pixmap, const QString& tex
     \param text the text
     \param after the iterm after which this new item should be inserted
 */
-ListBoxLabeledPict::ListBoxLabeledPict(QListBox* listbox, const QPixmap& pixmap, 
-            const QString& text, QListBoxItem *after)
-    : QListBoxItem(listbox, after), m_pixmap(pixmap)
+ListBoxLabeledPict::ListBoxLabeledPict(Q3ListBox* listbox, const QPixmap& pixmap, 
+            const QString& text, Q3ListBoxItem *after)
+    : Q3ListBoxItem(listbox, after), m_pixmap(pixmap)
 {
     setText(text);
 }
@@ -124,7 +125,7 @@ void ListBoxLabeledPict::paint( QPainter *painter )
     \sa paint(), width()
 */
 
-int ListBoxLabeledPict::height( const QListBox* lb ) const
+int ListBoxLabeledPict::height( const Q3ListBox* lb ) const
 {
     int h = m_pixmap.height() + lb->fontMetrics().lineSpacing() + 12;
     return QMAX( h, QApplication::globalStrut().height() );
@@ -136,7 +137,7 @@ int ListBoxLabeledPict::height( const QListBox* lb ) const
     \sa paint(), height()
 */
 
-int ListBoxLabeledPict::width( const QListBox* lb ) const
+int ListBoxLabeledPict::width( const Q3ListBox* lb ) const
 {
     return QMAX( QMAX( m_pixmap.width(), lb->fontMetrics().width( text() ) + 6),
 	    QApplication::globalStrut().width() );

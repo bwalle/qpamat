@@ -1,5 +1,5 @@
 /*
- * Id: $Id: filelineedit.cpp,v 1.9 2004/07/23 13:13:01 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,11 +15,12 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#include <qlayout.h>
-#include <qfiledialog.h>
-#include <qpushbutton.h>
-#include <qpixmap.h>
-#include <qdir.h>
+#include <QLayout>
+#include <QFileDialog>
+#include <QPushButton>
+#include <QPixmap>
+#include <QDir>
+#include <QHBoxLayout>
 
 #include "filelineedit.h"
 
@@ -34,7 +35,7 @@
     \ingroup widgets
     \author Bernhard Walle
     \version $Revision: 1.9 $
-    \date $Date: 2004/07/23 13:13:01 $
+    \date $Date$
 */
 
 /*!
@@ -53,13 +54,13 @@ FileLineEdit::FileLineEdit(QWidget* parent, bool save, const char* name)
     // we need a tool button because it has no border and it looks better in this size
     // in Platin style
     m_fileDialogButton = new QToolButton(this);
-    m_fileDialogButton->setIconSet(QIconSet(QPixmap::fromMimeSource("stock_directory_16.png")));
+    m_fileDialogButton->setIconSet(QIcon(QPixmap(":/images/stock_directory_16.png")));
     
     boxLayout->addWidget(m_lineEdit);
     boxLayout->addWidget(m_fileDialogButton);
     
     connect(m_fileDialogButton, SIGNAL(clicked()), this, SLOT(chooseFile()));
-    m_fileDialogButton->setFocusPolicy(QWidget::TabFocus);
+    m_fileDialogButton->setFocusPolicy(Qt::TabFocus);
     
     setFocusProxy(m_lineEdit);
     

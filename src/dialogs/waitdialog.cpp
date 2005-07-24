@@ -1,5 +1,5 @@
 /*
- * Id: $Id: waitdialog.cpp,v 1.2 2004/01/08 23:40:24 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,10 +15,11 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#include <qstring.h>
-#include <qpixmap.h>
-#include <qlayout.h>
-#include <qlabel.h>
+#include <QString>
+#include <QPixmap>
+#include <QLayout>
+#include <QLabel>
+#include <QHBoxLayout>
 
 #include "waitdialog.h"
 
@@ -43,7 +44,7 @@
     \ingroup dialogs
     \author Bernhard Walle
     \version $Revision: 1.2 $
-    \date $Date: 2004/01/08 23:40:24 $
+    \date $Date$
 */
 
 /*!
@@ -70,7 +71,7 @@ WaitDialog::WaitDialog(const QPixmap& icon, const QString& message, const QStrin
     }
     
     QLabel* textLabel = new QLabel(message, this, "WaitDialog-TextLabel");
-    textLabel->setAlignment(AlignVCenter | AlignHCenter | ExpandTabs);
+    textLabel->setAlignment(Qt::AlignVCenter | Qt::AlignHCenter | Qt::ExpandTabs);
     
     if (!icon.isNull())
     {

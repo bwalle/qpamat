@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightpanel.h,v 1.8 2004/01/03 23:41:09 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,9 +18,9 @@
 #ifndef RIGHTPANEL_H
 #define RIGHTPANEL_H
 
-#include <qlistview.h>
-#include <qframe.h>
-#include <qtextstream.h>
+#include <Q3ListView>
+#include <Q3Frame>
+#include <QTextStream>
 
 #include "treeentry.h"
 #include "southpanel.h"
@@ -28,7 +28,7 @@
 
 class Qpamat;
 
-class RightPanel : public QFrame
+class RightPanel : public Q3Frame
 {
     Q_OBJECT
     
@@ -41,7 +41,7 @@ class RightPanel : public QFrame
         bool isFocusInside() const;
         
     public slots:
-        void setItem(QListViewItem* item);
+        void setItem(Q3ListViewItem* item);
         void clear();
         void setEnabled(bool enabled);
         void deleteCurrent();
@@ -53,7 +53,7 @@ class RightPanel : public QFrame
         void passwordStrengthUpdated();
         
     private slots:
-        void selectionChangeHandler(QListViewItem* item);
+        void selectionChangeHandler(Q3ListViewItem* item);
         void itemDeletedHandler(int item);
     
     private:

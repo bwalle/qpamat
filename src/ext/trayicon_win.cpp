@@ -27,6 +27,9 @@
 #include <qbitmap.h>
 #include <qcursor.h>
 #include <qlibrary.h>
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <QEvent>
 
 #include <windows.h>
 #include <qt_windows.h>
@@ -101,7 +104,7 @@ public:
     bool trayMessageW( DWORD msg )
     {
 		resolveLibs();
-		if ( ! (ptrShell_NotifyIcon && qWinVersion() & Qt::WV_NT_based) )
+		if ( ! (ptrShell_NotifyIcon && qWinVersion() & QSysInfo::WV_NT_based) )
 			return trayMessageA( msg );
 
 		NOTIFYICONDATAW tnd;

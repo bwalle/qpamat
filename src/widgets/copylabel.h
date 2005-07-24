@@ -1,5 +1,5 @@
 /*
- * Id: $Id: copylabel.h,v 1.2 2003/12/29 00:37:11 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,10 +18,10 @@
 #ifndef COPYLABEL_H
 #define COPYLABEL_H
 
-#include <qwidget.h>
-#include <qlabel.h>
-#include <qtoolbutton.h>
-#include <qevent.h>
+#include <QWidget>
+#include <QLabel>
+#include <QToolButton>
+#include <QEvent>
 
 class CopyLabel : public QWidget
 {

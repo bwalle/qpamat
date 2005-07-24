@@ -1,5 +1,5 @@
 /*
- * Id: $Id: timerstatusmessage.cpp,v 1.1 2003/12/29 15:12:41 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,10 +15,10 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#include <qstring.h>
-#include <qstatusbar.h>
-#include <qdatetime.h>
-#include <qtimer.h>
+#include <QString>
+#include <QStatusBar>
+#include <QDateTime>
+#include <QTimer>
 
 #include "timerstatusmessage.h"
 
@@ -37,7 +37,7 @@
     \ingroup gui
     \author Bernhard Walle
     \version $Revision: 1.1 $
-    \date $Date: 2003/12/29 15:12:41 $
+    \date $Date$
 */
 
 /*!

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: datareadwriter.h,v 1.4 2004/03/25 16:47:11 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -20,10 +20,10 @@
 
 #include <stdexcept>
 
-#include <qobject.h>
-#include <qstring.h>
-#include <qwidget.h>
-#include <qdom.h>
+#include <QObject>
+#include <QString>
+#include <QWidget>
+#include <QDomDocument>
 
 #include "global.h"
 #include "security/encryptor.h"
@@ -43,7 +43,7 @@ class ReadWriteException : public std::runtime_error
         
     public:
         ReadWriteException(const QString& error, Category category = COtherError, 
-            Severity severity = WARNING) : std::runtime_error(!error ? "" : error.latin1()), 
+            Severity severity = WARNING) : std::runtime_error(error.isNull() ? "" : error.latin1()), 
             m_message(error), m_severity(severity), m_category(category) 
             { PRINT_TRACE("EXception generated"); }
 

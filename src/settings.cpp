@@ -1,5 +1,5 @@
 /*
- * Id: $Id: settings.cpp,v 1.17 2005/02/15 13:01:16 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,9 +15,9 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#include <qsettings.h>
-#include <qdir.h>
-#include <qapplication.h>
+#include <QSettings>
+#include <QDir>
+#include <QApplication>
 
 #include "security/symmetricencryptor.h"
 #include "security/passwordgeneratorfactory.h"
@@ -33,7 +33,7 @@
     \ingroup gui
     \author Bernhard Walle
     \version $Revision: 1.17 $
-    \date $Date: 2005/02/15 13:01:16 $
+    \date $Date$
 */
 
 /*!
@@ -41,8 +41,7 @@
 */
 Settings::Settings()
 {
-    m_qSettings.setPath( "bwalle.de", "qpamat", QSettings::User );
-    m_qSettings.beginGroup("/qpamat");
+    m_qSettings.setPath( "qpamat", "qpamat", QSettings::User );
     
 #define DEF_STRING(a, b) ( m_stringMap.insert( (a), (b) ) )
 #define DEF_INTEGE(a, b) ( m_intMap.insert( (a), (b) ) )
@@ -149,6 +148,20 @@ bool Settings::writeEntry(const QString & key, bool value)
 
 
 /*!
+    Stores a byte array.
+    
+    \param key the key
+    \param bytes the value
+    \return if the entry was written
+*/
+bool Settings::writeEntry(const QString& key, const QByteArray& bytes)
+{
+    return m_qSettings.writeEntry(key, QString::fromUtf8(bytes.toBase64()));
+    
+}
+
+
+/*!
     Reads the entry. If the entry does not exist there's a automatic default value that
     is returned.
     \return the entry
@@ -178,8 +191,8 @@ QString Settings::readEntry(const QString & key, const QString& def)
 */
 int Settings::readNumEntry (const QString & key, int def)
 {
-    bool read = false;
-    int number = m_qSettings.readNumEntry(key, def, &read);
+    bool read = m_qSettings.contains(key);
+    int number = m_qSettings.value(key, def).toInt();
     if (!read && m_intMap.contains(key))
     {
         return m_intMap[key];
@@ -201,8 +214,8 @@ int Settings::readNumEntry (const QString & key, int def)
 */
 double Settings::readDoubleEntry(const QString & key, double def) const
 {
-    bool read = false;
-    double number = m_qSettings.readDoubleEntry(key, def, &read);
+    bool read = m_qSettings.contains(key);
+    double number = m_qSettings.value(key, def).toDouble();
     if (!read && m_doubleMap.contains(key))
     {
         return m_doubleMap[key];
@@ -224,8 +237,8 @@ double Settings::readDoubleEntry(const QString & key, double def) const
 */
 bool Settings::readBoolEntry(const QString & key, bool def) const
 {
-    bool read = false;
-    bool res = m_qSettings.readBoolEntry(key, def, &read);
+    bool read = m_qSettings.contains(key);
+    bool res = m_qSettings.value(key, def).toBool();
     if (!read && m_boolMap.contains(key))
     {
         return m_boolMap[key];
@@ -237,5 +250,26 @@ bool Settings::readBoolEntry(const QString & key, bool def) const
     }
 #endif
     return res;
+}
+
+
+/*!
+    Writes a QByteArray entry. If the entry does not exist, the default value is returned.
+    There's no automatic default value for QByteArrays.
+    
+    \param key the key to look for
+    \param def the default value if the key does not exist
+    \return the entry
+*/
+QByteArray Settings::readByteArrayEntry(const QString& key, const QByteArray& def)
+{
+    if (m_qSettings.contains(key))
+    {
+        return QByteArray::fromBase64(m_qSettings.value(key).toString().toUtf8());
+    }
+    else
+    {
+        return def;
+    }
 }
 

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: aboutdialog.h,v 1.1 2004/07/23 08:47:25 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,10 +18,11 @@
 #ifndef ABOUTDIALOG_H
 #define ABOUTDIALOG_H
 
-#include <qtabwidget.h>
-#include <qdialog.h>
-#include <qvbox.h>
-#include <qlayout.h>
+#include <QTabWidget>
+#include <QDialog>
+#include <Q3VBox>
+#include <QLayout>
+#include <QVBoxLayout>
 
 class AboutDialog : public QDialog
 {

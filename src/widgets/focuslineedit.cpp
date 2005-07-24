@@ -1,5 +1,5 @@
 /*
- * Id: $Id: focuslineedit.cpp,v 1.2 2003/12/29 00:37:11 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,6 +18,8 @@
 #include <qstring.h>
 #include <qlineedit.h>
 #include <qobject.h>
+//Added by qt3to4:
+#include <QFocusEvent>
 
 #include "focuslineedit.h"
 
@@ -33,7 +35,7 @@
     \ingroup widgets
     \author Bernhard Walle
     \version $Revision: 1.2 $
-    \date $Date: 2003/12/29 00:37:11 $
+    \date $Date$
 */
 
 /*!

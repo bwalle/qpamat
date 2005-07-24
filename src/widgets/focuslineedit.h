@@ -1,5 +1,5 @@
 /*
- * Id: $Id: focuslineedit.h,v 1.2 2003/12/29 00:37:11 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,10 +18,11 @@
 #ifndef FOCUSLINEEDIT_H
 #define FOCUSLINEEDIT_H
 
-#include <qlineedit.h>
-#include <qevent.h>
-#include <qstring.h>
-#include <qwidget.h>
+#include <QLineEdit>
+#include <QEvent>
+#include <QString>
+#include <QWidget>
+#include <QFocusEvent>
 
 class FocusLineEdit : public QLineEdit
 {

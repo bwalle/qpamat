@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encodinghelper.h,v 1.10 2003/12/29 10:59:16 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -20,9 +20,9 @@
 
 #include <iostream>
 
-#include <qmemarray.h>
-#include <qstring.h>
-#include <qvaluevector.h>
+#include <Q3MemArray>
+#include <QString>
+#include <Q3ValueVector>
 
 #include "global.h"
 

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: singleapplication.h,v 1.3 2004/01/11 23:19:52 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -19,8 +19,9 @@
 #define SINGLEAPPLICATION_H
 
 #include <stdexcept>
-#include <qobject.h>
-#include <qstring.h>
+
+#include <QObject>
+#include <QString>
 
 class SingleApplication : public QObject
 {

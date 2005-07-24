@@ -1,5 +1,5 @@
 /*
- * Id: $Id: collectencryptor.cpp,v 1.4 2004/07/23 08:47:06 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,8 +15,8 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#include <qstring.h>
-#include <qstringlist.h>
+#include <QString>
+#include <QStringList>
 
 #include "global.h"
 #include "collectencryptor.h"
@@ -45,7 +45,7 @@
     \ingroup security
     \author Bernhard Walle
     \version $Revision: 1.4 $
-    \date $Date: 2004/07/23 08:47:06 $
+    \date $Date$
 */
 
 /*!

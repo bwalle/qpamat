@@ -1,5 +1,5 @@
 /*
- * Id: $Id: timerstatusmessage.h,v 1.1 2003/12/29 15:12:41 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,9 +18,9 @@
 #ifndef TIMERSTATUSMESSAGE_H
 #define TIMERSTATUSMESSAGE_H
 
-#include <qstring.h>
-#include <qstatusbar.h>
-#include <qdatetime.h>
+#include <QString>
+#include <QStatusBar>
+#include <QDateTime>
 
 class TimerStatusmessage : public QObject
 {

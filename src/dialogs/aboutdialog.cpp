@@ -17,14 +17,18 @@
  */
 #include "aboutdialog.h"
 
-#include <qlabel.h>
-#include <qhbox.h>
-#include <qvbox.h>
-#include <qfile.h>
-#include <qtextedit.h>
-#include <qapplication.h>
-#include <qdir.h>
-#include <qpushbutton.h>
+#include <QLabel>
+#include <Q3HBox>
+#include <Q3VBox>
+#include <QFile>
+#include <Q3TextEdit>
+#include <QApplication>
+#include <QDir>
+#include <QPushButton>
+#include <QPixmap>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QTextStream>
 
 /*!
     \class AboutDialog
@@ -50,13 +54,15 @@ AboutDialog::AboutDialog(QWidget* parent, const char* name = 0)
     setCaption(tr("About QPaMaT"));
     
     // the top of the dialog
-    QHBox* titleBox = new QHBox(this);
+    Q3HBox* titleBox = new Q3HBox(this);
     QLabel* titleIcon = new QLabel(titleBox);
-    titleIcon->setPixmap(QPixmap::fromMimeSource("qpamat_48.png"));
-    QLabel* titleText = new QLabel(tr("<p><b>QPaMaT "VERSION_STRING"</b></p>"), titleBox);
-    titleBox->setStretchFactor(titleIcon, 0);
-    titleBox->setStretchFactor(titleText, 5);
-    titleBox->setSpacing(5);
+    titleIcon->setPixmap(QPixmap(":/images/qpamat_48.png"));
+    QLabel* titleText = new QLabel(tr("<p><b><big>QPaMaT %1</big></b></p>").arg(VERSION_STRING), 
+        titleBox);
+    QWidget* filler = new QWidget(titleBox);
+    titleText->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    filler->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    titleBox->setSpacing(15);
     
     // the tab
     m_tabWidget = new QTabWidget(this);
@@ -66,11 +72,11 @@ AboutDialog::AboutDialog(QWidget* parent, const char* name = 0)
     // the ok Button
     QPushButton* okButton = new QPushButton(tr("&Close"), this, "Close button");
     okButton->setDefault(true);
-    QWidget* filler = new QWidget(this);
+    QWidget* filler2 = new QWidget(this);
     QHBoxLayout* buttonLayout = new QHBoxLayout(0, 0, 6);
-    buttonLayout->addWidget(filler);
+    buttonLayout->addWidget(filler2);
     buttonLayout->addWidget(okButton);
-    buttonLayout->setStretchFactor(filler, 1);
+    buttonLayout->setStretchFactor(filler2, 1);
     buttonLayout->setStretchFactor(okButton, 0);
     
     // main layout
@@ -88,12 +94,12 @@ AboutDialog::AboutDialog(QWidget* parent, const char* name = 0)
 */
 void AboutDialog::setupAboutTab()
 {
-    QHBox* aboutTab = new QHBox(this);
+    Q3HBox* aboutTab = new Q3HBox(this);
     aboutTab->setMargin(15);
     
     (void)new QLabel(
         tr("<p><nobr>This is a password managing tool for Unix, Windows and "
-            "MacOS X</nobr> written in C++ using the Qt library.</p>"
+            "MacOS X</nobr> written in C++<br> using the Qt library.</p>"
             "<p><b>Thanks to:</b>"
             "<ul><li>Trolltech for the Qt library</li>"
             "<li>OpenSSL team for the OpenSSL library</li>"
@@ -110,22 +116,18 @@ void AboutDialog::setupAboutTab()
 */
 void AboutDialog::setupLicenseTab()
 {
-    QVBox* licenseTab = new QVBox(this);
+    Q3VBox* licenseTab = new Q3VBox(this);
     
-    QTextEdit* textEdit = new QTextEdit(licenseTab);
+    Q3TextEdit* textEdit = new Q3TextEdit(licenseTab);
     textEdit->setReadOnly(true);
-    textEdit->setWordWrap(QTextEdit::FixedColumnWidth);
+    textEdit->setWordWrap(Q3TextEdit::FixedColumnWidth);
     textEdit->setWrapColumnOrWidth(100);
     
-    QString fileName = qApp->applicationDirPath() + "/../share/qpamat/COPYING";
-    if (QFile::exists(fileName))
+    QFile file(":/COPYING");
+    if (file.open( QIODevice::ReadOnly )) 
     {
-        QFile file(fileName);
-        if (file.open( IO_ReadOnly )) 
-        {
-            QTextStream stream(&file);
-            textEdit->setText("<pre>" + stream.read() + "</pre>");
-        }
+        QTextStream stream(&file);
+        textEdit->setText("<pre>" + stream.read() + "</pre>");
     }
     
     m_tabWidget->addTab(licenseTab, tr("&License"));

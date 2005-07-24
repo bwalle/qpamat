@@ -1,5 +1,5 @@
 /*
- * Id: $Id: waitdialog.h,v 1.1 2003/12/28 22:08:15 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,10 +18,10 @@
 #ifndef WAITDIALOG_H
 #define WAITDIALOG_H
 
-#include <qstring.h>
-#include <qwidget.h>
-#include <qdialog.h>
-#include <qpixmap.h>
+#include <QString>
+#include <QWidget>
+#include <QDialog>
+#include <QPixmap>
 
 class WaitDialog : public QDialog
 {

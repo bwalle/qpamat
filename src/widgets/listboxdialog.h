@@ -1,5 +1,5 @@
 /*
- * Id: $Id: listboxdialog.h,v 1.1 2004/01/07 23:55:11 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -22,8 +22,11 @@
 
 #include <qdialog.h>
 #include <qwidget.h>
-#include <qlistbox.h>
-#include <qwidgetstack.h>
+#include <q3listbox.h>
+#include <q3widgetstack.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <QEvent>
 
 class ListBoxDialogPage : public QWidget
 {
@@ -51,7 +54,7 @@ class ListBoxDialog : public QDialog
         
     protected slots:
         void accept();
-        virtual void polish();
+        virtual bool event(QEvent* e);
         void aboutToShowHandler(QWidget* widget);
         
     private:
@@ -59,9 +62,9 @@ class ListBoxDialog : public QDialog
         ListBoxDialog& operator=(const ListBoxDialog&);
         
     private:
-        QListBox*                     m_listBox;
-        QWidgetStack*                 m_widgetStack;
-        std::set<ListBoxDialogPage*>  m_filledTabs;
+        Q3ListBox*                     m_listBox;
+        Q3WidgetStack*                 m_widgetStack;
+        std::set<ListBoxDialogPage*>   m_filledTabs;
 };
 
 #endif // LISTBOXDIALOG_H

@@ -15,19 +15,19 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#include <qvaluevector.h>
-#include <qmap.h>
-#include <qstring.h>
+#include <Q3ValueVector>
+#include <QMap>
+#include <QString>
 
 typedef unsigned char byte;
 
-typedef QValueVector<byte>      ByteVector;
-typedef QValueVector<QString>   StringVector;
-typedef QValueVector<uint>      UIntVector;
-typedef QValueVector<int>       IntVector;
+typedef Q3ValueVector<byte>      ByteVector;
+typedef Q3ValueVector<QString>   StringVector;
+typedef Q3ValueVector<uint>      UIntVector;
+typedef Q3ValueVector<int>       IntVector;
 
 typedef QMap<QString, QString>  StringMap;
-typedef QValueVector<QChar>     QCharVector;
+typedef Q3ValueVector<QChar>     QCharVector;
 
 
 // Copyright (c) 2003 Benedikt Meurer (benedikt.meurer@unix-ag.uni-siegen.de)

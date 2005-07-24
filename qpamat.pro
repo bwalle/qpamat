@@ -23,10 +23,10 @@ win32:LIBS        += c:\openssl\lib\vc\ssleay32.lib \
 
 ################################################################################
 
-VERSION_STRING     = 0.4.4
+VERSION_STRING     = 0.5.0
 MAJOR_VERSION      = 0
-MINOR_VERSION      = 4
-PATCH_VERSION      = 4
+MINOR_VERSION      = 5
+PATCH_VERSION      = 0
 
 ################################################################################
 
@@ -158,77 +158,20 @@ TRANSLATIONS =                                  \
 # -----------------------------------------------------------------------------
 
 UI_DIR = out
-IMAGES =                                        \
-    images/stock_print_16.png                   \
-    images/stock_print_24.png                   \
-    images/stock_exit_16.png                    \
-    images/stock_exit_24.png                    \
-    images/stock_new_16.png                     \
-    images/stock_new_24.png                     \
-    images/stock_save_16.png                    \
-    images/stock_save_24.png                    \             
-    images/stock_preferences_16.png             \
-    images/stock_preferences_24.png             \
-    images/stock_search_16.png                  \
-    images/stock_search_24.png                  \
-    images/stock_up_arrow_16.png                \
-    images/stock_up_arrow_24.png                \
-    images/stock_down_arrow_16.png              \
-    images/stock_down_arrow_24.png              \
-    images/stock_copy_16.png                    \
-    images/stock_copy_24.png                    \
-    images/stock_font_16.png                    \
-    images/stock_font_24.png                    \
-    images/stock_add_16.png                     \
-    images/stock_add_24.png                     \
-    images/stock_remove_16.png                  \
-    images/stock_remove_24.png                  \
-    images/stock_help_16.png                    \
-    images/stock_help_24.png                    \
-    images/stock_directory_16.png               \
-    images/clear_clipboard_16.png               \
-    images/general_34.png                       \
-    images/password_34.png                      \
-    images/qpamat_48.png                        \
-    images/qpamat_34.png                        \
-    images/qpamat_22.png                        \
-    images/qpamat_16.png                        \
-    images/presentation_34.png                  \
-    images/traffic_gray_16.png                  \
-    images/traffic_out_22.png                   \
-    images/traffic_red_16.png                   \
-    images/traffic_red_22.png                   \
-    images/traffic_green_16.png                 \
-    images/traffic_green_22.png                 \
-    images/traffic_yellow_16.png                \
-    images/traffic_yellow_22.png                \
-    images/login_16.png                         \
-    images/login_24.png                         \
-    images/logout_16.png                        \
-    images/logout_24.png                        \
-    images/export_16.png                        \
-    images/export_24.png                        \
-    images/info_16.png                          \
-    images/info_24.png                          \
-    images/rename_16.png                        \
-    images/smartcard_24.png                     \
-    images/smartcard_34.png                     \
-    images/smartcard_48.png                     \
-    images/whats_this.png                       \
-    images/qt_16.png                            \
-    images/eye_16.png
-
+RESOURCES     = qpamat.qrc
 win32:RC_FILE = share/win32/qpamat_win32.rc
 
 
 # -----------------------------------------------------------------------------
 
+QT           += xml qt3support 
+
 isEmpty(static) {
   CONFIG     += warn_on qt exceptions thread
 } else {
-  LIBS        += /usr/lib/qt3/lib/libqt-mt.a -lfreetype -lXft -lz -lpthread \
+  LIBS       += /usr/lib/qt3/lib/libqt-mt.a -lfreetype -lXft -lz -lpthread \
                  -lpng -lX11 -lXext -lXinerama -lXi -lSM -lXcursor -lXrandr -lGL
-  CONFIG      += qt warn_on exceptions thread
+  CONFIG     += qt warn_on exceptions thread
 }
 
 # -----------------------------------------------------------------------------
@@ -253,8 +196,10 @@ unix:LIBS  += -lssl -lm -lcrypto
 
 # -----------------------------------------------------------------------------
 
-MOC_DIR     = out/
-OBJECTS_DIR = out/
+MOC_DIR     = out
+OBJECTS_DIR = out
+UI_DIR      = out
+RCC_DIr     = out
 
 # -----------------------------------------------------------------------------
 
@@ -320,3 +265,4 @@ target.path                 = $$BINDIR
 INSTALLS                   += target
 
 # vim: ft=text et
+

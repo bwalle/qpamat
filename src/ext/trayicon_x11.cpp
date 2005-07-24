@@ -21,11 +21,19 @@
 
 #include "trayicon.h"
 
+#include <qtimer.h>
 #include<qapplication.h>
 #include<qimage.h>
 #include<qpixmap.h>
 #include<qtooltip.h>
 #include<qpainter.h>
+#include <QX11Info>
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <QDesktopWidget>
+#include <QEvent>
+#include <QPaintEvent>
+#include <QCloseEvent>
 
 #include<X11/Xlib.h>
 #include<X11/Xutil.h>
@@ -120,16 +128,17 @@ private:
 };
 
 TrayIcon::TrayIconPrivate::TrayIconPrivate(TrayIcon *object, int _size)
-	: QWidget(0, "psidock", WRepaintNoErase)
+	: QWidget(0, "psidock", Qt::WNoAutoErase)
 {
 	iconObject = object;
 	size = _size;
 
-	setFocusPolicy(NoFocus);
-	setBackgroundMode(X11ParentRelative);
+	setFocusPolicy(Qt::NoFocus);
+	setBackgroundMode(Qt::X11ParentRelative);
 
 	setMinimumSize(size, size);
 	setMaximumSize(size, size);
+    QTimer::singleShot(0, this, SLOT(update()));
 }
 
 // This base stuff is required by both FreeDesktop specification and WindowMaker
@@ -177,15 +186,15 @@ void TrayIcon::TrayIconPrivate::enterEvent(QEvent *e)
 	//if ( !qApp->focusWidget() ) {
 		XEvent ev;
 		memset(&ev, 0, sizeof(ev));
-		ev.xfocus.display = qt_xdisplay();
+		ev.xfocus.display = QX11Info::display();
 		ev.xfocus.type = FocusIn;
 		ev.xfocus.window = winId();
 		ev.xfocus.mode = NotifyNormal;
 		ev.xfocus.detail = NotifyAncestor;
-		Time time = qt_x_time;
-		qt_x_time = 1;
+		Time time = QX11Info::appTime();
+		QX11Info::setAppTime(1);
 		qApp->x11ProcessEvent( &ev );
-		qt_x_time = time;
+		QX11Info::setAppTime(time);
 	//}
 //#endif
 	QWidget::enterEvent(e);
@@ -312,7 +321,7 @@ public:
 	{
 		QPixmap pm;
 		QImage i = _pm.convertToImage();
-		i = i.scale(i.width() * 2, i.height() * 2);
+		i = i.scaled(i.width() * 2, i.height() * 2);
 		pm.convertFromImage(i);
 
 		TrayIconPrivate::setPixmap(pm);

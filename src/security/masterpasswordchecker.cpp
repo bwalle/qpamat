@@ -1,5 +1,5 @@
 /*
- * Id: $Id: masterpasswordchecker.cpp,v 1.2 2003/12/29 10:59:16 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -17,7 +17,7 @@
  */
 #include <limits>
 
-#include <qstring.h>
+#include <QString>
 
 #include "global.h"
 #include "masterpasswordchecker.h"
@@ -37,7 +37,7 @@
     \ingroup security
     \author Bernhard Walle
     \version $Revision: 1.2 $
-    \date $Date: 2003/12/29 10:59:16 $
+    \date $Date$
 */
 
 /*!
@@ -56,7 +56,7 @@ double MasterPasswordChecker::passwordQuality(const QString& password) throw ()
     bool uppercase = false;
     bool lowercase = false;
     bool nonLetter = false;
-    for (uint i = 0; i < password.length(); ++i)
+    for (int i = 0; i < password.length(); ++i)
     {
         const QChar character = password[i];
         QChar::Category cat = character.category();

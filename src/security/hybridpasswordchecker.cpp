@@ -1,5 +1,5 @@
 /*
- * Id: $Id: hybridpasswordchecker.cpp,v 1.5 2004/02/09 19:33:08 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -19,10 +19,11 @@
 #include <algorithm>
 #include <cmath>
 
-#include <qstring.h>
-#include <qvaluevector.h>
-#include <qfile.h>
-#include <qfileinfo.h>
+#include <QString>
+#include <Q3ValueVector>
+#include <QFile>
+#include <QFileInfo>
+#include <QTextStream>
 
 #include "global.h"
 #include "hybridpasswordchecker.h"
@@ -54,7 +55,7 @@ QMap<int, int>  HybridPasswordChecker::m_lengthBeginMap;
     \ingroup security
     \author Bernhard Walle
     \version $Revision: 1.5 $
-    \date $Date: 2004/02/09 19:33:08 $
+    \date $Date$
 */
 
 
@@ -82,7 +83,7 @@ HybridPasswordChecker::HybridPasswordChecker(const QString& dictFileName)
         PRINT_TRACE("!!!! Re-reading the file !!!!!");
         
         QFile file(dictFileName);
-        if (!file.open(IO_ReadOnly))
+        if (!file.open(QIODevice::ReadOnly))
         {
             throw PasswordCheckException( QString("Could not open the file %1.").arg(
                 dictFileName).latin1() );
@@ -95,7 +96,7 @@ HybridPasswordChecker::HybridPasswordChecker(const QString& dictFileName)
         
         // check the number of lines to increase speed
         uint numberOfLines = 0;
-        for (uint i = 0; i < bytes.size(); ++i)
+        for (int i = 0; i < bytes.size(); ++i)
         {
             if (bytes[i] == '\n')
             {
@@ -104,12 +105,13 @@ HybridPasswordChecker::HybridPasswordChecker(const QString& dictFileName)
         }
         
         m_words.reserve(numberOfLines+5);
-        QTextStream fileStream(bytes, IO_ReadOnly);
+        QTextStream fileStream(bytes, QIODevice::ReadOnly);
         int oldLength = 0;
         int length = 0;
         int index = 0;
-        while (QString text = fileStream.readLine())
+        while (!fileStream.atEnd())
         {
+            QString text = fileStream.readLine();
             length = text.length();
             if (length != oldLength)
             {
@@ -146,7 +148,7 @@ double HybridPasswordChecker::passwordQuality(const QString& password) throw ()
     {
         W = 1;
     }
-    uint P = longest ? (password.length() - longest.length() + 1 ) : password.length();
+    uint P = !longest.isNull() ? (password.length() - longest.length() + 1 ) : password.length();
     
     PRINT_TRACE("-----------------------------------------------------");
     PRINT_TRACE("Z = %d, L = %d, W = %d, P = %d", Z, L, W, P);
@@ -241,15 +243,15 @@ int HybridPasswordChecker::findNumerOfCharsInClass(const QString& chars) const
         else if (!hasSpecial || c == ',' || c == '.' || c == '-' || c == ';' || c == ':' || c == '_' 
             || c == '='
             || c == '(' || c == ')' || c == '*' || c == '+' || c == '?' || c == '"' || c == '$'
-            || c == '£' || c == '§' || c == '@' ||c == '#' || c == '%' || c == '&' || c == '/'
+            || c == 'ï¿½' || c == 'ï¿½' || c == '@' ||c == '#' || c == '%' || c == '&' || c == '/'
             || c == '\\' || c == '{' || c == '}' || c == '[' || c == ']' || c == '!' || c == '^'
             || c == '?' || c == '\'' || c == '?' || c == '`' || c == '~')
         {
             hasSpecial = true;
         }
-        else if (!hasUmlauts || c == 'ö' || c == 'ä' || c == 'ü' || c == 'é' || c == 'à' || 
-            c == 'è' || c == 'Ö' || c == 'Ä' || c == 'Ü' || c == 'É' || c == 'À' || c == 'È' || 
-            c == 'ç')
+        else if (!hasUmlauts || c == 'ï¿½' || c == 'ï¿½' || c == 'ï¿½' || c == 'ï¿½' || c == 'ï¿½' || 
+            c == 'ï¿½' || c == 'ï¿½' || c == 'ï¿½' || c == 'ï¿½' || c == 'ï¿½' || c == 'ï¿½' || c == 'ï¿½' || 
+            c == 'ï¿½')
         {
             hasUmlauts = true;
         }

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encodinghelper.cpp,v 1.4 2003/12/29 10:59:16 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -17,7 +17,7 @@
  */
 #include <stdexcept>
  
-#include <qstring.h>
+#include <QString>
 
 #include <openssl/bio.h>
 #include <openssl/evp.h>
@@ -67,7 +67,7 @@ const char EncodingHelper::reverseBase64Alphabet[] = {
     \ingroup security
     \author Bernhard Walle
     \version $Revision: 1.4 $
-    \date $Date: 2003/12/29 10:59:16 $
+    \date $Date$
 */
 
 /*!
@@ -81,7 +81,7 @@ QString EncodingHelper::toBase64(const ByteVector& vector)
     unsigned char a, b, c;
     int lenMod3;
     
-    for (unsigned int i = 0; i < vector.size(); i += 3)
+    for (int i = 0; i < vector.size(); i += 3)
     {
         lenMod3 = ((i+3) > vector.size()) ? (vector.size() % 3) : 3;
         a = vector[i];
@@ -111,7 +111,7 @@ ByteVector EncodingHelper::fromBase64(const QString& string)
         throw std::invalid_argument("In EncodingHelper::fromBase64: string % 4 != 0");
     }
     const char* stringAscii = string.ascii();
-    QValueVector<unsigned char> vector;
+    Q3ValueVector<unsigned char> vector;
     char a, b, c, d;
     for (int i = 0; i < stringLength; i += 4)
     {

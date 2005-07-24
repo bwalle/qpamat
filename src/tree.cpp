@@ -17,23 +17,30 @@
  */
 #include <cstdlib>
 
-#include <qstatusbar.h>
-#include <qfile.h>
-#include <qthread.h>
-#include <qdom.h>
-#include <qstring.h>
-#include <qmessagebox.h>
-#include <qtimer.h>
-#include <qapplication.h>
-#include <qheader.h>
-#include <qiconset.h>
-#include <qevent.h>
-#include <qcursor.h>
-#include <qeventloop.h>
-#include <qfileinfo.h>
-#include <qprogressdialog.h>
+#include <QStatusBar>
+#include <QFile>
+#include <QThread>
+#include <QDomDocument>
+#include <QString>
+#include <QMessageBox>
+#include <QTimer>
+#include <QApplication>
+#include <Q3Header>
+#include <QIcon>
+#include <QEvent>
+#include <QCursor>
+#include <QEventLoop>
+#include <QFileInfo>
+#include <Q3ProgressDialog>
+#include <QPixmap>
+#include <QTextStream>
+#include <QKeyEvent>
+#include <QDropEvent>
+#include <Q3PopupMenu>
+#include <QDateTime>
 
 #include "qpamat.h"
+
 #include "tree.h"
 #include "treeentry.h"
 #include "security/passwordhash.h"
@@ -87,7 +94,7 @@
     \param parent the parent
 */
 Tree::Tree(QWidget* parent)
-    : QListView(parent), m_showPasswordStrength(false)
+    : Q3ListView(parent), m_showPasswordStrength(false)
 {
     addColumn("first");
     header()->setStretchEnabled(true);
@@ -95,15 +102,15 @@ Tree::Tree(QWidget* parent)
     setRootIsDecorated(true);
     setShowSortIndicator(true);
     
-    setFocusPolicy(QWidget::StrongFocus);
+    setFocusPolicy(Qt::StrongFocus);
     viewport()->setAcceptDrops(true);
     setAcceptDrops(true);
     
     initTreeContextMenu();
-    connect(this, SIGNAL(contextMenuRequested(QListViewItem*, const QPoint&, int)),
-        SLOT(showContextMenu(QListViewItem*, const QPoint&)));
-    connect(this, SIGNAL(currentChanged(QListViewItem*)), 
-        this, SLOT(currentChangedHandler(QListViewItem*)));
+    connect(this, SIGNAL(contextMenuRequested(Q3ListViewItem*, const QPoint&, int)),
+        SLOT(showContextMenu(Q3ListViewItem*, const QPoint&)));
+    connect(this, SIGNAL(currentChanged(Q3ListViewItem*)), 
+        this, SLOT(currentChangedHandler(Q3ListViewItem*)));
     connect(this, SIGNAL(dropped(QDropEvent*)), SLOT(droppedHandler(QDropEvent*)));
 }
 
@@ -113,17 +120,17 @@ Tree::Tree(QWidget* parent)
 */
 void Tree::initTreeContextMenu()
 {
-    m_contextMenu = new QPopupMenu(this);
-    m_contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("stock_add_16.png")), 
-        tr("Insert &Item") + "\t" + QString(QKeySequence(Key_Insert)), INSERT_ITEM);
+    m_contextMenu = new Q3PopupMenu(this);
+    m_contextMenu->insertItem(QIcon(QPixmap(":/images/stock_add_16.png")), 
+        tr("Insert &Item") + "\t" + QString(QKeySequence(Qt::Key_Insert)), INSERT_ITEM);
     m_contextMenu->insertItem(tr("Insert &Category"), INSERT_CATEGORY);
     
     m_contextMenu->insertSeparator();
     
-    m_contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("rename_16.png")), 
-        tr("&Rename") + "\t" + QString(QKeySequence(Key_F2)), RENAME_ITEM);
-    m_contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("stock_remove_16.png")), 
-        tr("Delete &Item") + "\t" + QString(QKeySequence(Key_Delete)), DELETE_ITEM);
+    m_contextMenu->insertItem(QIcon(QPixmap(":/images/rename_16.png")), 
+        tr("&Rename") + "\t" + QString(QKeySequence(Qt::Key_F2)), RENAME_ITEM);
+    m_contextMenu->insertItem(QIcon(QPixmap(":/images/stock_remove_16.png")), 
+        tr("Delete &Item") + "\t" + QString(QKeySequence(Qt::Key_Delete)), DELETE_ITEM);
     
 }
 
@@ -136,12 +143,12 @@ void Tree::keyPressEvent(QKeyEvent* evt)
 {
     switch (evt->key())
     {
-        case Key_Delete:
+        case Qt::Key_Delete:
             deleteCurrent();
             break;
         default:
             evt->ignore();
-            QListView::keyPressEvent(evt);
+            Q3ListView::keyPressEvent(evt);
             break;
     }
 }
@@ -206,14 +213,14 @@ void Tree::appendXML(QDomDocument& doc) const throw (std::invalid_argument)
     Returns the appropriage QDragObject for performing Drag and drop
     \return the object
 */
-QDragObject* Tree::dragObject()
+Q3DragObject* Tree::dragObject()
 {
-    QListViewItem* current = currentItem();
+    Q3ListViewItem* current = currentItem();
     emit stateModified();
     if (current)
     {
         QString xml = dynamic_cast<TreeEntry*>(current)->toXML();
-        QStoredDrag* drag = new QStoredDrag("application/x-qpamat", this);
+        Q3StoredDrag* drag = new Q3StoredDrag("application/x-qpamat", this);
         drag->setEncodedData(xml.utf8());
         return drag;
     }
@@ -240,8 +247,13 @@ void Tree::showReadErrorMessage(const QString& message)
     \param item the menu item 
     \param point the coordinates of the click
 */
-void Tree::showContextMenu(QListViewItem* item, const QPoint& point) 
+void Tree::showContextMenu(Q3ListViewItem* item, const QPoint& point) 
 {
+    if (!isEnabled())
+    {   
+        return;
+    }
+    
     m_contextMenu->setItemEnabled(DELETE_ITEM, item != 0);
     m_contextMenu->setItemEnabled(RENAME_ITEM, item != 0);
     int id = m_contextMenu->exec(point);
@@ -285,14 +297,14 @@ void Tree::insertItem(TreeEntry* item, bool category)
     const QString name = category
         ? tr("New category")
         : tr("New Item");
-    QListViewItem* newItem = 0;
+    Q3ListViewItem* newItem = 0;
     if (item)
     {
         if (! item->isCategory())
         {
             if (currentItem()->parent())
             {
-                newItem = new TreeEntry( item->QListViewItem::parent(), name, category);
+                newItem = new TreeEntry( item->Q3ListViewItem::parent(), name, category);
             }
             else
             {
@@ -321,11 +333,11 @@ void Tree::deleteCurrent()
 {
     if (hasFocus())
     {
-        QListViewItem* selected = selectedItem();
+        Q3ListViewItem* selected = selectedItem();
         if (selected)
         {
             setOpen(selected, false);
-            QListViewItem* below = selected->itemBelow();
+            Q3ListViewItem* below = selected->itemBelow();
             if (!below || below->parent() != selected->parent())
             {
                 below = selected->itemAbove();
@@ -340,7 +352,7 @@ void Tree::deleteCurrent()
             }
 
             // check if the parent of the item that should made visible is deleted
-            QListViewItem* p = below;
+            Q3ListViewItem* p = below;
             do 
             {
                 if (p == selected)
@@ -385,8 +397,8 @@ void Tree::insertAtCurrentPos()
 */
 QString Tree::toRichTextForPrint() 
 {
-    QListViewItemIterator it(this);
-    QListViewItem* current;
+    Q3ListViewItemIterator it(this);
+    Q3ListViewItem* current;
     QString ret;
     ret += "<qt>";
     while ( (current = it.current()) ) 
@@ -407,13 +419,14 @@ QString Tree::toRichTextForPrint()
 */
 void Tree::appendTextForExport(QTextStream& stream)
 {
-    QListViewItemIterator it(this);
-    QListViewItem* current;
+    Q3ListViewItemIterator it(this);
+    Q3ListViewItem* current;
     
     stream.setf(QTextStream::left);
-    stream << qSetW(20) << tr("QPaMaT") 
+    stream << qSetFieldWidth(20) << tr("QPaMaT") << qSetFieldWidth(0) 
            << tr("password managing tool for Unix, Windows and MacOS X")  << "\n";
-    stream << qSetW(20) << tr("Export date:") << QDate::currentDate().toString(Qt::ISODate) << "\n";
+    stream << qSetFieldWidth(20) << tr("Export date:") << qSetFieldWidth(0)
+           << QDateTime::currentDateTime().date().toString(Qt::ISODate) << "\n";
     stream << "================================================================================\n";
     
     while ( (current = it.current()) ) 
@@ -430,18 +443,18 @@ void Tree::appendTextForExport(QTextStream& stream)
 */
 void Tree::searchFor(const QString& word)
 {
-    QListViewItem* selected = selectedItem();
-    QListViewItem* current;
+    Q3ListViewItem* selected = selectedItem();
+    Q3ListViewItem* current;
    
-    QListViewItemIterator* it;
+    Q3ListViewItemIterator* it;
     if (selected)
     {
-        it = new QListViewItemIterator(selected);
+        it = new Q3ListViewItemIterator(selected);
         ++(*it);
     }
     else
     {
-        it = new QListViewItemIterator(this);
+        it = new Q3ListViewItemIterator(this);
     }
     
     while ( (current = it->current()) ) 
@@ -460,7 +473,7 @@ void Tree::searchFor(const QString& word)
     // wrap
     if (selectedItem() == selected)
     {
-        it = new QListViewItemIterator(this);
+        it = new Q3ListViewItemIterator(this);
         while ( (current = it->current()) && current != selected ) 
         {
             if (current->text(0).contains(word, false))
@@ -484,7 +497,7 @@ void Tree::searchFor(const QString& word)
     Handler that is called if the current item has changed (usually after delete operations). It
     Must change the selection on the right panel.
 */
-void Tree::currentChangedHandler(QListViewItem*)
+void Tree::currentChangedHandler(Q3ListViewItem*)
 {
     if (selectedItem() == 0)
     {
@@ -506,8 +519,8 @@ void Tree::droppedHandler(QDropEvent* evt)
         QDomDocument doc;
         doc.setContent(xml);
         QDomElement elem = doc.documentElement();
-        QListViewItem* src = reinterpret_cast<TreeEntry*>(elem.attribute("memoryAddress").toLong());
-        QListViewItem* appended = TreeEntry::appendFromXML(this, elem);
+        Q3ListViewItem* src = reinterpret_cast<TreeEntry*>(elem.attribute("memoryAddress").toLong());
+        Q3ListViewItem* appended = TreeEntry::appendFromXML(this, elem);
         setSelected(appended, true);
         delete src;
         updatePasswordStrengthView(); 
@@ -536,7 +549,7 @@ void Tree::recomputePasswordStrength(bool* error)
     QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
     int num = 0;
     {
-        QListViewItemIterator it(this);
+        Q3ListViewItemIterator it(this);
         while (it.current()) 
         {
             TreeEntry* current = dynamic_cast<TreeEntry*>(it.current());
@@ -555,13 +568,13 @@ void Tree::recomputePasswordStrength(bool* error)
     
     try
     {
-        QProgressDialog progress( tr("Updating password strength..."), 0, num, this, "progress",
+        Q3ProgressDialog progress( tr("Updating password strength..."), 0, num, this, "progress",
                 false);
         progress.setMinimumDuration(200);
         progress.setCaption("QPaMaT");
         int progr = 0;
     
-        QListViewItemIterator it(this);
+        Q3ListViewItemIterator it(this);
         while (it.current()) 
         {
             TreeEntry* current = dynamic_cast<TreeEntry*>(it.current());
@@ -620,7 +633,7 @@ void Tree::updatePasswordStrengthView()
     {
         if (m_showPasswordStrength)
         {
-            QListViewItemIterator it(this);
+            Q3ListViewItemIterator it(this);
             while (it.current()) 
             {
                 Property::PasswordStrength strength = 
@@ -628,16 +641,16 @@ void Tree::updatePasswordStrengthView()
                 switch (strength)
                 {
                     case Property::PWeak:
-                        it.current()->setPixmap(0, QPixmap::fromMimeSource("traffic_red_16.png"));
+                        it.current()->setPixmap(0, QPixmap(":/images/traffic_red_16.png"));
                         break;
                     case Property::PAcceptable:
-                        it.current()->setPixmap(0, QPixmap::fromMimeSource("traffic_yellow_16.png"));
+                        it.current()->setPixmap(0, QPixmap(":/images/traffic_yellow_16.png"));
                         break;
                     case Property::PStrong:
-                        it.current()->setPixmap(0, QPixmap::fromMimeSource("traffic_green_16.png"));
+                        it.current()->setPixmap(0, QPixmap(":/images/traffic_green_16.png"));
                         break;
                     case Property::PUndefined:
-                        it.current()->setPixmap(0, QPixmap::fromMimeSource("traffic_gray_16.png"));
+                        it.current()->setPixmap(0, QPixmap(":/images/traffic_gray_16.png"));
                         break;
                     default:
                         PRINT_DBG("Value out of range: %d", strength);
@@ -648,10 +661,10 @@ void Tree::updatePasswordStrengthView()
         }
         else
         {
-            QListViewItemIterator it(this);
+            Q3ListViewItemIterator it(this);
             while (it.current()) 
             {
-                it.current()->setPixmap(0, 0);
+                it.current()->setPixmap(0, QPixmap());
                 ++it;
             }
         }

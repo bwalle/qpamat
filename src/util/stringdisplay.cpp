@@ -1,5 +1,5 @@
 /*
- * Id: $Id: stringdisplay.cpp,v 1.1 2003/12/29 00:13:48 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -19,7 +19,7 @@
 #include <sstream>
 #include <string>
 
-#include <qobject.h>
+#include <QObject>
 
 #include "stringdisplay.h"
 
@@ -35,7 +35,7 @@
     \ingroup misc
     \author Bernhard Walle
     \version $Revision: 1.1 $
-    \date $Date: 2003/12/29 00:13:48 $
+    \date $Date$
 */
 
 /*!

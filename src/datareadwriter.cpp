@@ -18,15 +18,18 @@
 #include <memory>
 #include <ctime>
 
-#include <qthread.h>
-#include <qfile.h>
-#include <qapplication.h>
-#include <qcursor.h>
-#include <qtimer.h>
-#include <qeventloop.h>
-#include <qmessagebox.h>
-#include <qfileinfo.h>
-#include <qtranslator.h>
+#include <QThread>
+#include <QFile>
+#include <QApplication>
+#include <QCursor>
+#include <QTimer>
+#include <QEventLoop>
+#include <QMessageBox>
+#include <QFileInfo>
+#include <QTranslator>
+#include <QDateTime>
+#include <QPixmap>
+#include <QTextStream>
 
 #include "qpamat.h"
 #include "datareadwriter.h"
@@ -36,7 +39,7 @@
 #include "security/collectencryptor.h"
 #include "dialogs/insertcarddialog.h"
 #include "dialogs/waitdialog.h"
-#include "treeentry.h"
+//#include "treeentry.h"
 
 #include "global.h"
 
@@ -330,10 +333,10 @@ void ReadWriteThread::run()
             return;
         }
         
-        if (m_write && m_pin)
+        if (m_write && !m_pin.isNull())
         {
             // try to unlock
-            PRINT_DBG("Trying to unlock the card ...", "");
+            PRINT_DBG("Trying to unlock the card ...%s", "");
             m_card.verify(m_pin);
         }
         
@@ -509,7 +512,7 @@ void DataReadWriter::writeXML(QDomDocument document, const QString& password)
         appData.namedItem("smartcard").toElement().setAttribute("card-id", id);
     }
     
-    if (!file.open(IO_WriteOnly))
+    if (!file.open(QIODevice::WriteOnly))
     {
         throw ReadWriteException(QObject::tr("The data could not be saved. There "
             "was an\nerror while creating the file:\n%1").arg( qApp->translate("QFile",
@@ -546,7 +549,7 @@ QDomDocument DataReadWriter::readXML(const QString& password)
     
     // load the XML structure
     QFile file(fileName);
-    if (!file.open(IO_ReadOnly))
+    if (!file.open(QIODevice::ReadOnly))
     {
         throw ReadWriteException(QObject::tr("The file %1 could not be opened:\n%2.").
             arg(fileName).arg(qApp->translate("QFile", file.errorString())),
@@ -695,7 +698,7 @@ void DataReadWriter::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& r
         ? QObject::tr("<b>Writing</b> to the smartcard...") 
         : QObject::tr("<b>Reading</b> from the smartcard..."); 
     std::auto_ptr<WaitDialog> msg(new WaitDialog(QPixmap(
-        QPixmap::fromMimeSource("smartcard_24.png")), dlgText, 
+        QPixmap(":/images/smartcard_24.png")), dlgText, 
          "QPaMaT", m_parent, "Wait dialog"));
     msg->show();
     
@@ -704,8 +707,7 @@ void DataReadWriter::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& r
     timer.start(100, 0);
     while (thread.running())
     {
-        qApp->eventLoop()->processEvents(QEventLoop::ExcludeUserInput 
-                | QEventLoop::WaitForMore);
+        qApp->processEvents(QEventLoop::ExcludeUserInput | QEventLoop::WaitForMore);
     }
     timer.stop();
     

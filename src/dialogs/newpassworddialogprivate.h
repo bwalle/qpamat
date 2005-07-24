@@ -1,5 +1,5 @@
 /*
- * Id: $Id: newpassworddialogprivate.h,v 1.1 2003/12/28 22:08:15 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,8 +18,8 @@
 #ifndef NEWPASSWORDDIALOGPRIVATE_H
 #define NEWPASSWORDDIALOGPRIVATE_H
 
-#include <qvalidator.h>
-#include <qstring.h>
+#include <QValidator>
+#include <QString>
 
 class PasswordValidator : public QValidator
 {

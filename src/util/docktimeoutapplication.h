@@ -18,10 +18,10 @@
 #ifndef DOCKTIMEOUTAPPLICATION_H
 #define DOCKTIMEOUTAPPLICATION_H
 
-#include <qobject.h>
-#include <qtimer.h>
-#include <qapplication.h>
-#include <qevent.h>
+#include <QObject>
+#include <QTimer>
+#include <QApplication>
+#include <QEvent>
 
 
 

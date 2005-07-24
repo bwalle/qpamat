@@ -1,5 +1,5 @@
 /*
- * Id: $Id: windowfunctions.cpp,v 1.1 2005/02/15 02:02:02 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,7 +15,8 @@
  *
  * -------------------------------------------------------------------------------------------------
  */
-#include <qwidget.h>
+#include <QWidget>
+#include <QX11Info>
 
 #include "windowfunctions.h"
 
@@ -81,7 +82,7 @@ bool getCardinal32Prop(Display *display, Window win, char *propName, long *value
 // Get the desktop number that a window is on
 bool desktopOfWindow(Window *window, long *desktop)
 {
-	Display *display = qt_xdisplay();
+	Display *display = QX11Info::display();
 	bool result = getCardinal32Prop(display, *window, (char *)"_NET_WM_DESKTOP", desktop);
 	//if( result )
 	//	qDebug("Desktop: " + QString::number(*desktop));
@@ -93,10 +94,10 @@ bool desktopOfWindow(Window *window, long *desktop)
 bool currentDesktop(long *desktop)
 {
 	Window rootWin;
-	Display *display = qt_xdisplay();;
+	Display *display = QX11Info::display();
 	bool result;
 
-	rootWin = RootWindow(qt_xdisplay(), XDefaultScreen(qt_xdisplay()));
+	rootWin = RootWindow(QX11Info::display(), XDefaultScreen(QX11Info::display()));
 	result = getCardinal32Prop(display, rootWin, (char *)"_NET_CURRENT_DESKTOP", desktop);
 	//if( result )
 	//	qDebug("Current Desktop: " + QString::number(*desktop));
@@ -117,7 +118,7 @@ bool currentDesktop(long *desktop)
     \ingroup misc
     \author Bernhard Walle
     \version $Revision: 1.1 $
-    \date $Date: 2005/02/15 02:02:02 $
+    \date $Date$
 */
 
 

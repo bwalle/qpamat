@@ -1,5 +1,5 @@
 /*
- * Id: $Id: encryptor.h,v 1.12 2004/01/13 23:20:12 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -20,8 +20,8 @@
 
 #include <stdexcept>
 
-#include <qstring.h>
-#include <qstringlist.h>
+#include <QString>
+#include <QStringList>
 
 #include "global.h"
 #include "encryptor.h"

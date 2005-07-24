@@ -1,5 +1,5 @@
 /*
- * Id: $Id: tree.h,v 1.16 2005/02/27 18:12:56 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -20,15 +20,18 @@
 
 #include <stdexcept>
 
-#include <qstring.h>
-#include <qlistview.h>
-#include <qpopupmenu.h>
-#include <qdragobject.h>
+#include <QString>
+#include <Q3ListView>
+#include <Q3PopupMenu>
+#include <Q3DragObject>
+#include <QTextStream>
+#include <QKeyEvent>
+#include <QDropEvent>
 
 #include "treeentry.h"
 #include "security/encryptor.h"
 
-class Tree : public QListView
+class Tree : public Q3ListView
 {
     Q_OBJECT
     
@@ -61,13 +64,13 @@ class Tree : public QListView
         void stateModified();
         
     protected:
-        QDragObject* dragObject();
+        Q3DragObject* dragObject();
         void keyPressEvent(QKeyEvent* evt);
         
     private slots:
-        void showContextMenu(QListViewItem* item, const QPoint& point);
+        void showContextMenu(Q3ListViewItem* item, const QPoint& point);
         void insertItem(TreeEntry* item, bool category = false);
-        void currentChangedHandler(QListViewItem* item);
+        void currentChangedHandler(Q3ListViewItem* item);
         void droppedHandler(QDropEvent* e);
         
     private:
@@ -76,7 +79,7 @@ class Tree : public QListView
         bool writeOrReadSmartcard(ByteVector& bytes, bool write, byte& randomNumber);
     
     private:
-        QPopupMenu*  m_contextMenu;
+        Q3PopupMenu*  m_contextMenu;
         bool         m_showPasswordStrength;
 };
 

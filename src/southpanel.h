@@ -1,5 +1,5 @@
 /*
- * Id: $Id: southpanel.h,v 1.10 2003/12/29 15:12:27 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,18 +18,18 @@
 #ifndef SOUTHPANEL_H
 #define SOUTHPANEL_H
 
-#include <qwidget.h>
-#include <qlabel.h>
-#include <qcombobox.h>
-#include <qframe.h>
-#include <qevent.h>
-#include <qtoolbutton.h>
-#include <qtimer.h>
+#include <QWidget>
+#include <QLabel>
+#include <QComboBox>
+#include <Q3Frame>
+#include <QEvent>
+#include <QToolButton>
+#include <QTimer>
 
 #include "widgets/focuslineedit.h"
 #include "property.h"
 
-class SouthPanel : public QFrame
+class SouthPanel : public Q3Frame
 {
     Q_OBJECT
     

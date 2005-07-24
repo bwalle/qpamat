@@ -1,5 +1,5 @@
 /*
- * Id: $Id: showpassworddialog.h,v 1.2 2003/12/28 22:08:15 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,9 +18,9 @@
 #ifndef SHOWPASSWORDDIALOG_H
 #define SHOWPASSWORDDIALOG_H
 
-#include <qdialog.h>
-#include <qlineedit.h>
-#include <qwidget.h>
+#include <QDialog>
+#include <QLineEdit>
+#include <QWidget>
 
 #include "widgets/copylabel.h"
 

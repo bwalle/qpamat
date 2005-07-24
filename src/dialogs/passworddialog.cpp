@@ -1,5 +1,5 @@
 /*
- * Id: $Id: passworddialog.cpp,v 1.7 2004/01/08 23:40:23 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,12 +15,14 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#include <qdialog.h>
-#include <qlineedit.h>
-#include <qlayout.h>
-#include <qhbox.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
+#include <QDialog>
+#include <QLineEdit>
+#include <QLayout>
+#include <Q3HBox>
+#include <QLabel>
+#include <QPushButton>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 
 #include "passworddialog.h"
 #include "qpamat.h"
@@ -39,7 +41,7 @@
     \ingroup dialogs
     \author Bernhard Walle
     \version $Revision: 1.7 $
-    \date $Date: 2004/01/08 23:40:23 $
+    \date $Date$
 */
 
 /*!
@@ -48,8 +50,7 @@
     \param name the name of the widget
 */
 PasswordDialog::PasswordDialog(QWidget* parent, const char* name)
-    : QDialog(parent, name, false, WStyle_Customize | WStyle_NormalBorder |
-                                   WStyle_Title | WStyle_SysMenu)
+    : QDialog(parent, name, false)
 {
     setCaption("QPaMaT");
     
@@ -66,8 +67,9 @@ PasswordDialog::PasswordDialog(QWidget* parent, const char* name)
     QPushButton* cancelButton = new QPushButton(tr("Cancel"), this);
     
     // create layouts
-    QVBoxLayout* layout = new QVBoxLayout(this, 6, 6);
-    QHBoxLayout* buttonLayout = new QHBoxLayout(0, 0, 6);
+    QVBoxLayout* layout = new QVBoxLayout(this);
+    QHBoxLayout* buttonLayout = new QHBoxLayout(0);
+    buttonLayout->setSpacing(6);
     
     // layout elements
     buttonLayout->addStretch(10);
@@ -76,7 +78,6 @@ PasswordDialog::PasswordDialog(QWidget* parent, const char* name)
     
     layout->addWidget(label);
     layout->addWidget(m_passwordEdit);
-    layout->addStretch(10);
     layout->addSpacing(7);
     layout->addLayout(buttonLayout);
     

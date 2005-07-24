@@ -1,5 +1,5 @@
 /*
- * Id: $Id: passwordhash.cpp,v 1.4 2004/01/06 23:31:51 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -22,8 +22,8 @@
 
 #include <openssl/evp.h>
 
-#include <qstring.h>
-#include <qcstring.h>
+#include <QString>
+#include <Q3CString>
 
 #include "global.h"
 #include "constants.h"
@@ -35,7 +35,7 @@
 //                                     Static data
 // -------------------------------------------------------------------------------------------------
 
-const uint PasswordHash::numberOfRandomBytes = 8;
+const int PasswordHash::numberOfRandomBytes = 8;
 
 /*!
     This constant describes the maximal length of the hash. The current implementation uses
@@ -47,7 +47,7 @@ const uint PasswordHash::numberOfRandomBytes = 8;
     the constant \c EVP_MAX_MD_SIZE here. I use an assertion to check that the actual value
     has a length smaller or equal to this constant.
 */
-const uint PasswordHash::MAX_HASH_LENGTH = 40;
+const int PasswordHash::MAX_HASH_LENGTH = 40;
 
 /*!
     \class PasswordHash
@@ -56,7 +56,7 @@ const uint PasswordHash::MAX_HASH_LENGTH = 40;
     \ingroup security
     \author Bernhard Walle
     \version $Revision: 1.4 $
-    \date $Date: 2004/01/06 23:31:51 $
+    \date $Date$
 */
 
 /*!
@@ -94,15 +94,15 @@ bool PasswordHash::isCorrect(QString password, const ByteVector& hash)
 {
     ByteVector output;
     
-    Q_ASSERT(hash.size() > uint(numberOfRandomBytes));
+    Q_ASSERT(hash.size() > numberOfRandomBytes);
     
     // attach the random bytes
     ByteVector passwordBytes(numberOfRandomBytes);
     std::copy(hash.begin(), hash.begin() + numberOfRandomBytes, passwordBytes.begin());
     
     // convert the password to a byte vector
-    QCString passwordCString = password.utf8();
-    std::copy(passwordCString.begin(), passwordCString.end()-1, std::back_inserter(passwordBytes));
+    QByteArray passwordCString = password.toUtf8();
+    std::copy(passwordCString.begin(), passwordCString.end(), std::back_inserter(passwordBytes));
     
     attachHashWithoutSalt(output, passwordBytes);
     
@@ -127,8 +127,8 @@ ByteVector PasswordHash::generateHash(QString password)
     std::copy(output.begin(), output.end(), passwordBytes.begin());
     
     // attach the password
-    QCString passwordCString = password.utf8();
-    std::copy(passwordCString.begin(), passwordCString.end()-1, std::back_inserter(passwordBytes));
+    QByteArray passwordCString = password.toUtf8();
+    std::copy(passwordCString.begin(), passwordCString.end(), std::back_inserter(passwordBytes));
     
     attachHashWithoutSalt(output, passwordBytes);
     

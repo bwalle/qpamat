@@ -1,5 +1,5 @@
 /*
- * Id: $Id: stringdisplay.h,v 1.1 2003/12/29 00:13:48 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,7 +18,7 @@
 #ifndef CONVERSION_H
 #define CONVERSION_H
 
-#include <qstring.h>
+#include <QString>
 
 class StringDisplay
 {

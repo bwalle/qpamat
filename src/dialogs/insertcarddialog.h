@@ -1,5 +1,5 @@
 /*
- * Id: $Id: insertcarddialog.h,v 1.1 2004/01/20 21:42:46 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,10 +18,10 @@
 #ifndef INSERTCARDDIALOG_H
 #define INSERTCARDDIALOG_H
 
-#include <qstring.h>
-#include <qwidget.h>
-#include <qdialog.h>
-#include <qlineedit.h>
+#include <QString>
+#include <QWidget>
+#include <QDialog>
+#include <QLineEdit>
 
 #include "cardpinvalidator.h"
 

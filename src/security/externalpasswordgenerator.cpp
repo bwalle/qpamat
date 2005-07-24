@@ -1,5 +1,5 @@
 /*
- * Id: $Id: externalpasswordgenerator.cpp,v 1.3 2003/12/29 10:59:16 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,11 +15,11 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#include <qstring.h>
-#include <qprocess.h>
-#include <qtimer.h>
-#include <qapplication.h>
-#include <qeventloop.h>
+#include <QString>
+#include <Q3Process>
+#include <QTimer>
+#include <QApplication>
+#include <QEventLoop>
 
 #include "global.h"
 #include "externalpasswordgenerator.h"
@@ -45,7 +45,7 @@ const int ExternalPasswordGenerator::TIMEOUT = 5*1000;
     \ingroup security
     \author Bernhard Walle
     \version $Revision: 1.3 $
-    \date $Date: 2003/12/29 10:59:16 $
+    \date $Date$
 */
 
 /*!
@@ -71,7 +71,7 @@ QString ExternalPasswordGenerator::getPassword(uint length, const QString&)
     {
         throw PasswordGenerateException("In ExternalPasswordGenerator::getPassword: No program set."); 
     }
-    QProcess* proc = new QProcess(0);
+    Q3Process* proc = new Q3Process(0);
     proc->setArguments(QStringList::split(" ", m_applicationName));
     proc->addArgument(QString::number(length));
     if (!proc->start())
@@ -83,7 +83,7 @@ QString ExternalPasswordGenerator::getPassword(uint length, const QString&)
     QTimer::singleShot( 5*1000, proc, SLOT(kill()) );
     while (proc->isRunning())
     {
-        qApp->eventLoop()->processEvents(QEventLoop::ExcludeUserInput | QEventLoop::WaitForMore);
+        qApp->processEvents(QEventLoop::ExcludeUserInput | QEventLoop::WaitForMore);
     }
     if (!proc->normalExit())
     {

@@ -1,5 +1,5 @@
 /*
- * Id: $Id: treeentry.cpp,v 1.14 2005/02/27 18:12:56 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,10 +15,13 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#include <qstring.h>
-#include <qdom.h>
+#include <QString>
+#include <QDomDocument>
+#include <QTextStream>
+#include <QDropEvent>
 
 #include "qpamat.h"
+
 #include "treeentry.h"
 #include "settings.h"
 #include "tree.h"
@@ -32,7 +35,7 @@
     \ingroup gui
     \author Bernhard Walle
     \version $Revision: 1.14 $
-    \date $Date: 2005/02/27 18:12:56 $
+    \date $Date$
 */
 
 /*!
@@ -245,7 +248,7 @@ QString TreeEntry::toRichTextForPrint() const
     }
     
     QString catString;
-    const QListViewItem* item = this;
+    const Q3ListViewItem* item = this;
     while ((item = item->parent()))
     {
         catString = catString.prepend( dynamic_cast<const TreeEntry*>(item)->getName() + ": ");
@@ -262,7 +265,7 @@ QString TreeEntry::toRichTextForPrint() const
         ++it;
         ret += current->toRichTextForPrint();
     }
-    ret += "</table></td></tr></table><br>";
+    ret += "</table></td></tr></table<p>&nbsp;<p>";
     return ret;
 }
 
@@ -281,7 +284,7 @@ void TreeEntry::appendTextForExport(QTextStream& stream)
     }
     
     QString catString;
-    const QListViewItem* item = this;
+    const Q3ListViewItem* item = this;
     while ((item = item->parent()))
     {
         catString = catString.prepend( dynamic_cast<const TreeEntry*>(item)->getName() + ": ");
@@ -352,7 +355,7 @@ QString TreeEntry::toXML() const
 {
     QDomDocument doc;
     appendXML(doc, doc);
-    doc.documentElement().setAttribute("memoryAddress", long(this));
+    doc.documentElement().setAttribute(QString("memoryAddress"), (qlonglong)this);
     
     return doc.toString();
 }
@@ -385,7 +388,7 @@ void TreeEntry::dropped(QDropEvent *evt)
         doc.setContent(xml);
         QDomElement elem = doc.documentElement();
         
-        QListViewItem* src = reinterpret_cast<TreeEntry*>(elem.attribute("memoryAddress").toLong());
+        Q3ListViewItem* src = reinterpret_cast<TreeEntry*>(elem.attribute("memoryAddress").toLong());
         
         if (src == this)
         {

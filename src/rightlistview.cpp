@@ -1,5 +1,5 @@
 /*
- * Id: $Id: rightlistview.cpp,v 1.15 2004/07/23 13:13:38 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,16 +15,21 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#include <qlistview.h>
-#include <qwidget.h>
-#include <qheader.h>
-#include <qclipboard.h>
-#include <qapplication.h>
-#include <qevent.h>
-#include <qregexp.h>
-#include <qstringlist.h>
+#include <Q3ListView>
+#include <QWidget>
+#include <Q3Header>
+#include <QClipboard>
+#include <QApplication>
+#include <QEvent>
+#include <QRegExp>
+#include <QStringList>
+#include <QPixmap>
+#include <QKeyEvent>
+#include <QTextStream>
+#include <Q3PopupMenu>
 
 #include "qpamat.h"
+
 #include "global.h"
 #include "rightlistview.h"
 #include "dialogs/showpassworddialog.h"
@@ -38,7 +43,7 @@
     \ingroup gui
     \author Bernhard Walle
     \version $Revision: 1.15 $
-    \date $Date: 2004/07/23 13:13:38 $
+    \date $Date$
 */
 
 /*!
@@ -80,7 +85,7 @@
     \param parent the parent widget
 */
 RightListView::RightListView(QWidget* parent)
-    : QListView(parent)
+    : Q3ListView(parent)
 {
     addColumn(tr("Key"), 250);
     addColumn(tr("Value"), 250);
@@ -93,19 +98,19 @@ RightListView::RightListView(QWidget* parent)
     
     initContextMenu();
     
-    connect(this, SIGNAL(contextMenuRequested(QListViewItem*, const QPoint&, int)), 
-        SLOT(showContextMenu(QListViewItem*, const QPoint&)));
+    connect(this, SIGNAL(contextMenuRequested(Q3ListViewItem*, const QPoint&, int)), 
+        SLOT(showContextMenu(Q3ListViewItem*, const QPoint&)));
     connect(this, SIGNAL(itemAppended()), SLOT(updateView()));
     connect(this, SIGNAL(itemAppended()), SLOT(itemAppendedHandler()));
     //connect(this, SIGNAL(itemDeleted(int)), SLOT(updateView()));
-    connect(this, SIGNAL(doubleClicked(QListViewItem*, const QPoint&, int)),
-        SLOT(doubleClickHandler(QListViewItem*)));
+    connect(this, SIGNAL(doubleClicked(Q3ListViewItem*, const QPoint&, int)),
+        SLOT(doubleClickHandler(Q3ListViewItem*)));
     connect(this, SIGNAL(itemDeleted(int)), SIGNAL(stateModified()));
     connect(this, SIGNAL(itemAppended()), SIGNAL(stateModified()));
     connect(this, SIGNAL(selectionChanged()), SLOT(setMoveStateCorrect()));
-    connect(this, SIGNAL(currentChanged(QListViewItem*)), SLOT(setMoveStateCorrect()));
-    connect(this, SIGNAL(mouseButtonClicked(int, QListViewItem*, const QPoint&, int)),
-        SLOT(mouseButtonClickedHandler(int, QListViewItem*, const QPoint&, int)));
+    connect(this, SIGNAL(currentChanged(Q3ListViewItem*)), SLOT(setMoveStateCorrect()));
+    connect(this, SIGNAL(mouseButtonClicked(int, Q3ListViewItem*, const QPoint&, int)),
+        SLOT(mouseButtonClickedHandler(int, Q3ListViewItem*, const QPoint&, int)));
 }
 
 
@@ -114,14 +119,15 @@ RightListView::RightListView(QWidget* parent)
 */
 void RightListView::initContextMenu()
 {
-    m_contextMenu = new QPopupMenu(this);
-    m_contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("stock_add_16.png")), tr("&New"), NEW);
-    m_contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("stock_remove_16.png")), 
-        tr("&Delete") + "\t" + QString(QKeySequence(Key_Delete)), DELETE);
+    m_contextMenu = new Q3PopupMenu(this);
+    m_contextMenu->insertItem(QIcon(QPixmap(":/images/stock_add_16.png")), tr("&New"), NEW);
+    m_contextMenu->insertItem(QIcon(QPixmap(":/images/stock_remove_16.png")), 
+        tr("&Delete") + "\t" + QString(QKeySequence(Qt::Key_Delete)), DELETE);
     m_contextMenu->insertSeparator();
-    m_contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("stock_copy_16.png")),
-        tr("&Copy") + "\t" + QString(QKeySequence(CTRL|Key_C)), COPY);
-    m_contextMenu->insertItem(QIconSet(QPixmap::fromMimeSource("eye_16.png")), tr("Show &password..."), SHOW_PW);
+    m_contextMenu->insertItem(QIcon(QPixmap(":/images/stock_copy_16.png")),
+        tr("&Copy") + "\t" + QString(QKeySequence(Qt::CTRL|Qt::Key_C)), COPY);
+    m_contextMenu->insertItem(QIcon(QPixmap(":/images/eye_16.png")), 
+        tr("Show &password..."), SHOW_PW);
 }
 
 
@@ -130,8 +136,12 @@ void RightListView::initContextMenu()
     \param item the list view item
     \param point the coordinates of the click
 */
-void RightListView::showContextMenu(QListViewItem* item, const QPoint& point) 
+void RightListView::showContextMenu(Q3ListViewItem* item, const QPoint& point) 
 {
+    if (!isEnabled())
+    {
+        return;
+    }
     bool passw = item != 0 && m_currentItem->getProperty(item->text(2).toInt(0))->getType()
         == Property::PASSWORD;
     
@@ -173,7 +183,7 @@ void RightListView::setSelectedIndex(uint index)
 {
     Q_ASSERT(index <= uint(childCount()));
     
-    QListViewItem* item = firstChild();
+    Q3ListViewItem* item = firstChild();
     for (uint i = 0; i < index; ++i)
     {
         item = item->nextSibling();
@@ -189,21 +199,21 @@ void RightListView::setSelectedIndex(uint index)
 */
 void RightListView::keyPressEvent(QKeyEvent* evt)
 {
-    QListViewItem* selected = selectedItem();
+    Q3ListViewItem* selected = selectedItem();
     int key = evt->key();
     
-    if (key == Key_Delete)
+    if (key == Qt::Key_Delete)
     {
         deleteCurrent();
     }
-    else if (selected && key == Key_C && evt->state() == ControlButton)
+    else if (selected && key == Qt::Key_C && evt->state() == Qt::ControlButton)
     {
         copyItem(selected);
     }
     else
     {
         evt->ignore();
-        QListView::keyPressEvent(evt);
+        Q3ListView::keyPressEvent(evt);
     }
 }
 
@@ -212,7 +222,7 @@ void RightListView::keyPressEvent(QKeyEvent* evt)
     Copies a item into the clipboard.
     \param item
 */
-void RightListView::copyItem(QListViewItem* item)
+void RightListView::copyItem(Q3ListViewItem* item)
 {
     if (item != 0)
     {
@@ -231,7 +241,7 @@ void RightListView::copyItem(QListViewItem* item)
     Handles double clicks (show the password or open the browser).
     \param item the item
 */
-void RightListView::doubleClickHandler(QListViewItem* item)
+void RightListView::doubleClickHandler(Q3ListViewItem* item)
 {
     if (item != 0)
     {
@@ -262,10 +272,10 @@ void RightListView::doubleClickHandler(QListViewItem* item)
     \param point the coordinares
     \param col the column
 */
-void RightListView::mouseButtonClickedHandler(int but, QListViewItem* item, 
+void RightListView::mouseButtonClickedHandler(int but, Q3ListViewItem* item, 
                                               const QPoint& point, int col)
 {
-    if (but == MidButton)
+    if (but == Qt::MidButton)
     {
         copyItem(item);
     }
@@ -286,7 +296,7 @@ void RightListView::updateView()
         int i = 0;
         while ( (current = it.current()) != 0 )
         {
-            new QListViewItem(this, lastItem(), current->getKey(), current->getVisibleValue(), 
+            new Q3ListViewItem(this, lastItem(), current->getKey(), current->getVisibleValue(), 
                 QString::number(i++));
             ++it;
         }
@@ -302,7 +312,7 @@ void RightListView::updateView()
 */
 void RightListView::updateSelected(Property* property)
 {
-    QListViewItem* item = selectedItem();
+    Q3ListViewItem* item = selectedItem();
     
     if (item != 0)
     {
@@ -317,7 +327,7 @@ void RightListView::updateSelected(Property* property)
     Sets an item
     \param item the item
 */
-void RightListView::setItem(QListViewItem* item)
+void RightListView::setItem(Q3ListViewItem* item)
 {
     disconnect(this, SIGNAL(itemAppended()));
     m_currentItem = dynamic_cast<TreeEntry*>(item);
@@ -334,7 +344,7 @@ void RightListView::setItem(QListViewItem* item)
 */
 void RightListView::deleteCurrent()
 {
-    QListViewItem* selected = selectedItem();
+    Q3ListViewItem* selected = selectedItem();
     if (selected)
     {
         int num = selected->text(2).toInt(0);
@@ -362,7 +372,7 @@ void RightListView::insertAtCurrentPos()
 */
 void RightListView::itemAppendedHandler()
 {
-    QListViewItem* addedItem = lastItem();
+    Q3ListViewItem* addedItem = lastItem();
     if (addedItem)
     {
         setSelected(addedItem, true);
@@ -385,7 +395,7 @@ bool RightListView::isFocusInside() const
 */
 void RightListView::moveDown()
 {
-    QListViewItem* selected = selectedItem();
+    Q3ListViewItem* selected = selectedItem();
     if (selected)
     {
         int index = selected->text(2).toInt(0);
@@ -407,7 +417,7 @@ void RightListView::moveDown()
 */
 void RightListView::moveUp()
 {
-    QListViewItem* selected = selectedItem();
+    Q3ListViewItem* selected = selectedItem();
     if (selected)
     {
         int index = selected->text(2).toInt(0);
@@ -432,7 +442,7 @@ void RightListView::setMoveStateCorrect()
 {
     bool up = false;
     bool down = false;
-    QListViewItem* selected = selectedItem();
+    Q3ListViewItem* selected = selectedItem();
     
     if (selected)
     {

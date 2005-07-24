@@ -1,5 +1,5 @@
 /*
- * Id: $Id: newpassworddialog.h,v 1.6 2003/12/31 16:33:33 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,8 +18,8 @@
 #ifndef NEWPASSWORDDIALOG_H
 #define NEWPASSWORDDIALOG_H
 
-#include <qdialog.h>
-#include <qwidget.h>
+#include <QDialog>
+#include <QWidget>
 
 #include "widgets/focuslineedit.h"
 

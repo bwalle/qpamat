@@ -1,5 +1,5 @@
 /*
- * Id: $Id: abstractencryptor.cpp,v 1.4 2004/07/23 08:47:06 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,8 +15,9 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#include <qstring.h>
-#include <qstringlist.h>
+#include <QString>
+#include <QStringList>
+#include <Q3CString>
 
 #include "global.h"
 #include "abstractencryptor.h"
@@ -34,7 +35,7 @@
     \ingroup security
     \author Bernhard Walle
     \version $Revision: 1.4 $
-    \date $Date: 2004/07/23 08:47:06 $
+    \date $Date$
 */
 
 /*!
@@ -42,7 +43,7 @@
 */
 ByteVector AbstractEncryptor::encryptStrToBytes(const QString& string)
 {
-    QCString utf8CString = string.utf8();
+    Q3CString utf8CString = string.utf8();
     uint utf8Length = utf8CString.length();
     ByteVector vector(utf8Length);
     const byte* utf8 = (const byte*)utf8CString.data();

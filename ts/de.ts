@@ -19,7 +19,15 @@
     </message>
     <message>
         <source>&lt;p&gt;&lt;nobr&gt;This is a password managing tool for Unix, Windows and MacOS X&lt;/nobr&gt; written in C++ using the Qt library.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Thanks to:&lt;/b&gt;&lt;ul&gt;&lt;li&gt;Trolltech for the Qt library&lt;/li&gt;&lt;li&gt;OpenSSL team for the OpenSSL library&lt;/li&gt;&lt;li&gt;Gtk+ artists for the nice stock icons&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Homepage:&lt;/b&gt; &lt;tt&gt;http://qpamat.berlios.de&lt;/tt&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;nobr&gt;Dies ist ein Passwort-Management-Tool für Unix, Windows und MacOS X.&lt;/nobr&gt; Es wurde in C++ mit Hilfe der Qt-Bibliothek geschrieben.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Danke an:&lt;/b&gt;&lt;ul&gt;&lt;li&gt;Trolltech für die Qt-Bibliothek&lt;/li&gt;&lt;li&gt;OpenSSL-Team für die OpenSSL-Bibliothek&lt;/li&gt;&lt;li&gt;Gtk+-Grafiker für die Stock-Icons&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Homepage:&lt;/b&gt; &lt;tt&gt;http://qpamat.berlios.de&lt;/tt&gt;&lt;/p&gt;</translation>
+        <translation type="obsolete">&lt;p&gt;&lt;nobr&gt;Dies ist ein Passwort-Management-Tool für Unix, Windows und MacOS X.&lt;/nobr&gt; Es wurde in C++ mit Hilfe der Qt-Bibliothek geschrieben.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Danke an:&lt;/b&gt;&lt;ul&gt;&lt;li&gt;Trolltech für die Qt-Bibliothek&lt;/li&gt;&lt;li&gt;OpenSSL-Team für die OpenSSL-Bibliothek&lt;/li&gt;&lt;li&gt;Gtk+-Grafiker für die Stock-Icons&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Homepage:&lt;/b&gt; &lt;tt&gt;http://qpamat.berlios.de&lt;/tt&gt;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;&lt;b&gt;&lt;big&gt;QPaMaT %1&lt;/big&gt;&lt;/b&gt;&lt;/p&gt;</source>
+        <translation>&lt;p&gt;&lt;b&gt;&lt;big&gt;QPaMaT %1&lt;/big&gt;&lt;/b&gt;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;&lt;nobr&gt;This is a password managing tool for Unix, Windows and MacOS X&lt;/nobr&gt; written in C++&lt;br&gt; using the Qt library.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Thanks to:&lt;/b&gt;&lt;ul&gt;&lt;li&gt;Trolltech for the Qt library&lt;/li&gt;&lt;li&gt;OpenSSL team for the OpenSSL library&lt;/li&gt;&lt;li&gt;Gtk+ artists for the nice stock icons&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Homepage:&lt;/b&gt; &lt;tt&gt;http://qpamat.berlios.de&lt;/tt&gt;&lt;/p&gt;</source>
+        <translation>&lt;p&gt;&lt;nobr&gt;Dies ist ein Passwort-Management-Tool für Unix, Windows und MacOS X.&lt;/nobr&gt; Es wurde&lt;br&gt; in C++ mit Hilfe der Qt-Bibliothek geschrieben.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Danke an:&lt;/b&gt;&lt;ul&gt;&lt;li&gt;Trolltech für die Qt-Bibliothek&lt;/li&gt;&lt;li&gt;OpenSSL-Team für die OpenSSL-Bibliothek&lt;/li&gt;&lt;li&gt;Gtk+-Grafiker für die Stock-Icons&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Homepage:&lt;/b&gt; &lt;tt&gt;http://qpamat.berlios.de&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -312,6 +320,13 @@ um die Einstellungen zu testen:</translation>
     </message>
 </context>
 <context>
+    <name>CopyLabel</name>
+    <message>
+        <source>Copy</source>
+        <translation>Kopieren</translation>
+    </message>
+</context>
+<context>
     <name>FileLineEdit</name>
     <message>
         <source>QPaMaT</source>
@@ -372,11 +387,11 @@ It must consist of six hexadecimal digits:</source>
     <name>NewPasswordDialog</name>
     <message>
         <source>Enter the &lt;b&gt;old passphrase&lt;/b&gt; once and the &lt;b&gt;new passphrase&lt;/b&gt; two times for verification. The minimum length must be six characters, but for security reasons more than two words are good!</source>
-        <translation>Geben Sie die &lt;b&gt;alte Passphrase&lt;/b&gt; einmal und dann die &lt;b&gt;neue Passphrase&lt;/b&gt; zweimal zur Bestätigung ein. Die minimale Länge muss sechs Zeichen betragen, aus Sicherheitsgründen wären mehr als zwei Wörter gut!</translation>
+        <translation type="obsolete">Geben Sie die &lt;b&gt;alte Passphrase&lt;/b&gt; einmal und dann die &lt;b&gt;neue Passphrase&lt;/b&gt; zweimal zur Bestätigung ein. Die minimale Länge muss sechs Zeichen betragen, aus Sicherheitsgründen wären mehr als zwei Wörter gut!</translation>
     </message>
     <message>
         <source>Enter the &lt;b&gt;passphrase&lt;/b&gt; two times for verification. The minimum length must be six characters, but for security reasons more than two words are good!</source>
-        <translation>Geben Sie die &lt;b&gt;Passphrase&lt;/b&gt; zweimal zur Bestätigung ein. Die minimale Länge beträgt sechs Zeichen, aus Sicherheitsgründen sind mehr als zwei Wörter gut!</translation>
+        <translation type="obsolete">Geben Sie die &lt;b&gt;Passphrase&lt;/b&gt; zweimal zur Bestätigung ein. Die minimale Länge beträgt sechs Zeichen, aus Sicherheitsgründen sind mehr als zwei Wörter gut!</translation>
     </message>
     <message>
         <source>&amp;Old password:</source>
@@ -413,6 +428,14 @@ It must consist of six hexadecimal digits:</source>
     <message>
         <source>&lt;nobr&gt;The passphrase is too simple. See the&lt;/nobr&gt; Security settings for details about the conditions a valid password must met.</source>
         <translation>&lt;nobr&gt;Die Passphrase war zu einfach. Überpüfen&lt;/nobr&gt; Sie die Sicherheitseinstellungen.</translation>
+    </message>
+    <message>
+        <source>Enter the &lt;b&gt;old passphrase&lt;/b&gt; once and the &lt;b&gt;new passphrase&lt;/b&gt;&lt;br&gt; two times for verification. The minimum length must be six&lt;br&gt; characters, but for security reasons more than two words&lt;br&gt; are good!</source>
+        <translation>Geben Sie die &lt;b&gt;alte Passphrase&lt;/b&gt; einmal und dann die &lt;b&gt;neue Passphrase&lt;/b&gt;&lt;br&gt; zweimal zur Bestätigung ein. Die minimale Länge&lt;br&gt; muss sechs Zeichen betragen, aus Sicherheitsgründen wären mehr&lt;br&gt; als zwei Wörter gut!</translation>
+    </message>
+    <message>
+        <source>Enter the &lt;b&gt;passphrase&lt;/b&gt; two times for verification. The minimum length&lt;br&gt; must be six characters, but for security reasons more than two&lt;br&gt; words are good!</source>
+        <translation>Geben Sie die &lt;b&gt;Passphrase&lt;/b&gt; zweimal zur Bestätigung ein. Die minimale Länge&lt;br&gt; beträgt sechs Zeichen, aus Sicherheitsgründen&lt;br&gt; sind mehr als zwei Wörter gut!</translation>
     </message>
 </context>
 <context>
@@ -625,7 +648,7 @@ OpenSSL neu kompilieren oder zu aktualisieren.</translation>
     </message>
     <message>
         <source>&amp;View</source>
-        <translation>&amp;Ansicht</translation>
+        <translation type="obsolete">&amp;Ansicht</translation>
     </message>
     <message>
         <source>&amp;Options</source>
@@ -715,7 +738,7 @@ Wollen Sie jetzt speichern?</translation>
     </message>
     <message>
         <source>&amp;What&apos;s this</source>
-        <translation>&amp;Kontexthilfe</translation>
+        <translation type="obsolete">&amp;Kontexthilfe</translation>
     </message>
     <message>
         <source>&amp;About...</source>
@@ -735,7 +758,7 @@ Wollen Sie jetzt speichern?</translation>
     </message>
     <message>
         <source>Focus &amp;search</source>
-        <translation>Suchfeld &amp;fokussieren</translation>
+        <translation type="obsolete">Suchfeld &amp;fokussieren</translation>
     </message>
     <message>
         <source>The file you&apos;ve choosen exists. Do you overwrite it?</source>

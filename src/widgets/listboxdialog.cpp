@@ -1,5 +1,5 @@
 /*
- * Id: $Id: listboxdialog.cpp,v 1.3 2004/01/09 23:38:49 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -15,12 +15,15 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#include <qwidget.h>
-#include <qlayout.h>
-#include <qhbox.h>
-#include <qcursor.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
+#include <QWidget>
+#include <QLayout>
+#include <Q3HBox>
+#include <QCursor>
+#include <QPushButton>
+#include <QLabel>
+#include <QPixmap>
+#include <QVBoxLayout>
+#include <Q3Frame>
 
 #include "global.h"
 #include "listboxdialog.h"
@@ -36,9 +39,9 @@
     fillSettings() method gets called if necessary.
     
     \ingroup widgets
-    \author $Author: bwalle $
+    \author $Author$
     \version $Revision: 1.3 $
-    \date $Date: 2004/01/09 23:38:49 $
+    \date $Date$
 */
 
 /*!
@@ -78,9 +81,9 @@
     fillSettings() was not called. This increases performance.
     
     \ingroup widgets
-    \author $Author: bwalle $
+    \author $Author$
     \version $Revision: 1.3 $
-    \date $Date: 2004/01/09 23:38:49 $
+    \date $Date$
     
 */
 
@@ -93,34 +96,33 @@ ListBoxDialog::ListBoxDialog(QWidget* parent, const char* name)
     : QDialog(parent, name)
 {
     QVBoxLayout* vboxLayout = new QVBoxLayout(this, 8, 2, "ConfDlg-Vbox");
-    QHBox* mainHBox = new QHBox(this, "ConfDlg-MainHBox");
-    QHBox* buttonHBox = new QHBox(this, "ConfDlg-ButtonHBox");
+    Q3HBox* mainHBox = new Q3HBox(this, "ConfDlg-MainHBox");
+    Q3HBox* buttonHBox = new Q3HBox(this, "ConfDlg-ButtonHBox");
     
-    m_listBox = new QListBox(mainHBox, "ConfDlg-Listbox");
+    m_listBox = new Q3ListBox(mainHBox, "ConfDlg-Listbox");
+    m_listBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
     QFont f = m_listBox->font();
     f.setBold(true);
     m_listBox->setFont(f);
     m_listBox->setCursor(Cursor::handCursorWindows());
-    m_widgetStack = new QWidgetStack(mainHBox, "ConfDlg-Widget");
+    m_widgetStack = new Q3WidgetStack(mainHBox, "ConfDlg-Widget");
     
     // buttons
-    QWidget* filler = new QWidget(buttonHBox);
+    (void)new QWidget(buttonHBox);
     buttonHBox->setSpacing(7);
     QPushButton* okButton = new QPushButton(tr("OK"), buttonHBox, "OkButton");
     QPushButton* cancelButton = new QPushButton(tr("Cancel"), buttonHBox, "CancelButton");
     okButton->setDefault(true);
-    buttonHBox->setStretchFactor(filler, 2);
-    buttonHBox->setStretchFactor(okButton, 0);
-    buttonHBox->setStretchFactor(cancelButton, 0);
+    okButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    cancelButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     
     // horizontal line
     QLabel* horizontalLine = new QLabel(this, "ConfDlg-Hline");
-    horizontalLine->setFrameStyle(QFrame::HLine | QFrame::Sunken);
+    horizontalLine->setFrameStyle(Q3Frame::HLine | Q3Frame::Sunken);
 
     // layout
     mainHBox->setStretchFactor(m_listBox, 0);
     mainHBox->setStretchFactor(m_widgetStack, 2);
-    mainHBox->setSpacing(12);
     vboxLayout->addWidget(mainHBox);
     vboxLayout->addWidget(horizontalLine);
     vboxLayout->addWidget(buttonHBox);
@@ -151,15 +153,19 @@ void ListBoxDialog::addPage(ListBoxDialogPage* widget, const QPixmap& pixmap, co
 /*!
     Polishes the dialog, i.e. shows the first page.
 */
-void ListBoxDialog::polish()
+bool ListBoxDialog::event(QEvent* e)
 {
-    QDialog::polish();
-    QWidget* w = m_widgetStack->widget(0);
-    if (w)
+    if (e->type() == QEvent::Polish)
     {
-        aboutToShowHandler(w);
-        m_listBox->setSelected(0, true);
-    } 
+        QWidget* w = m_widgetStack->widget(0);
+        if (w)
+        {
+            aboutToShowHandler(w);
+            m_listBox->setSelected(0, true);
+        }
+        return true;
+    }
+    return false;
 }
 
 

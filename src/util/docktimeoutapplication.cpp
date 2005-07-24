@@ -15,9 +15,11 @@
  *
  * -------------------------------------------------------------------------------------------------
  */
-#include <qtimer.h>
-#include <qapplication.h>
-#include <qevent.h>
+#include <QTimer>
+#include <QApplication>
+#include <QEvent>
+#include <QX11Info>
+#include <QDesktopWidget>
 
 #include "docktimeoutapplication.h"
 #include "global.h"
@@ -161,7 +163,7 @@ void DockTimeoutApplication::init()
     atoms[n] = &manager_atom;
     names[n++] = (char *) "MANAGER";
 
-    Display *dsp = qt_xdisplay();
+    Display *dsp = QX11Info::display();
 
     XInternAtoms( dsp, names, n, false, atoms_return );
 
@@ -327,3 +329,22 @@ bool DockTimeoutApplication::macEventFilter(EventHandlerCallRef, EventRef inEven
 }
 #endif
 
+
+/*!
+    \fn DockTimeoutApplication::dockActivated
+    
+    Emitted if the dock was activated. Don't know really what this means, function is from
+    Psi.
+*/
+
+/*!
+    \fn DockTimeoutApplication::newTrayOwner()
+    
+    Emitted if the system tray has a new owner. Only occures on X11.
+*/
+
+/*!
+    \fn DockTimeoutApplication::trayOwnerDied
+    
+    Emitted if the tray owner died. Only occures on X11.
+*/

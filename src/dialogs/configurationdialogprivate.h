@@ -1,5 +1,5 @@
 /*
- * Id: $Id: configurationdialogprivate.h,v 1.11 2005/02/15 13:01:05 bwalle Exp $
+ * Id: $Id$
  * -------------------------------------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
@@ -18,16 +18,16 @@
 #ifndef CONFIGURATIONDIALOGPRIVATE_H
 #define CONFIGURATIONDIALOGPRIVATE_H
 
-#include <qlineedit.h>
-#include <qslider.h>
-#include <qcombobox.h>
-#include <qlabel.h>
-#include <qradiobutton.h>
-#include <qbuttongroup.h>
-#include <qpushbutton.h>
-#include <qcheckbox.h>
-#include <qspinbox.h>
-#include <qlcdnumber.h>
+#include <QLineEdit>
+#include <QSlider>
+#include <QComboBox>
+#include <QLabel>
+#include <QRadioButton>
+#include <Q3ButtonGroup>
+#include <QPushButton>
+#include <QCheckBox>
+#include <QSpinBox>
+#include <QLCDNumber>
 
 #include "widgets/filelineedit.h"
 #include "widgets/fontchoosebox.h"
@@ -162,8 +162,8 @@ class ConfDlgSmartcardTab : public ListBoxDialogPage
     private:
         QCheckBox*      m_useCardCB;
         QCheckBox*      m_usePinCB;
-        QGroupBox*      m_settingsGroup;
-        QGroupBox*      m_testGroup;
+        Q3GroupBox*      m_settingsGroup;
+        Q3GroupBox*      m_testGroup;
         FileLineEdit*   m_libraryEdit;
         QComboBox*      m_portCombo;
         QPushButton*    m_testButton;
