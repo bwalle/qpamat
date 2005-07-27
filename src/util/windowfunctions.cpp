@@ -16,7 +16,9 @@
  * -------------------------------------------------------------------------------------------------
  */
 #include <QWidget>
-#include <QX11Info>
+#ifdef Q_WS_X11
+#  include <QX11Info>
+#endif
 
 #include "windowfunctions.h"
 

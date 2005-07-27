@@ -35,7 +35,7 @@ class RightListView : public Q3ListView
     public:
         enum MenuID 
         { 
-            NEW, DELETE, COPY, SHOW_PW 
+            M_NEW, M_DELETE, M_COPY, M_SHOW_PW 
         };
         
     public:

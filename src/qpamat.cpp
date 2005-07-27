@@ -418,13 +418,11 @@ void Qpamat::newTrayOwner()
         }
         else
         {
-            m_trayIcon = new TrayIcon(QPixmap(TRAY_ICON_FILE_NAME), tr("QPaMaT"));
-            
             Q3PopupMenu* trayPopup = new Q3PopupMenu(this);
             trayPopup->addAction(m_actions.showHideAction);
             trayPopup->addAction(m_actions.quitActionNoKeyboardShortcut);
             
-            m_trayIcon->setPopup(trayPopup);
+            m_trayIcon = new TrayIcon(QPixmap(TRAY_ICON_FILE_NAME), tr("QPaMaT"), trayPopup, this);
             m_trayIcon->show();
             
             connect(m_trayIcon, SIGNAL(clicked( const QPoint&, int)), SLOT(handleTrayiconClick()));

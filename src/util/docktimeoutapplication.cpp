@@ -18,7 +18,9 @@
 #include <QTimer>
 #include <QApplication>
 #include <QEvent>
-#include <QX11Info>
+#ifdef Q_WS_X11
+#  include <QX11Info>
+#endif
 #include <QDesktopWidget>
 
 #include "docktimeoutapplication.h"

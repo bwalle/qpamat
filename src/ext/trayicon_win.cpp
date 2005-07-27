@@ -146,7 +146,7 @@ public:
 		return TRUE;
     }
 
-    bool winEvent( MSG *m )
+    bool winEvent( MSG *m, long* result )
     {
 		switch(m->message) {
 			case WM_DRAWITEM:
@@ -157,16 +157,16 @@ public:
 				QPoint gpos = QCursor::pos();
 				switch (m->lParam) {
 					case WM_MOUSEMOVE: e = new QMouseEvent( QEvent::MouseMove, mapFromGlobal( gpos ), gpos, 0, 0 );	break;
-					case WM_LBUTTONDOWN: e = new QMouseEvent( QEvent::MouseButtonPress, mapFromGlobal( gpos ), gpos, LeftButton, LeftButton ); break;
-					case WM_LBUTTONUP: e = new QMouseEvent( QEvent::MouseButtonRelease, mapFromGlobal( gpos ), gpos, LeftButton, LeftButton ); break;
-					case WM_LBUTTONDBLCLK: e = new QMouseEvent( QEvent::MouseButtonDblClick, mapFromGlobal( gpos ), gpos, LeftButton, LeftButton );	break;
-					case WM_RBUTTONDOWN: e = new QMouseEvent( QEvent::MouseButtonPress, mapFromGlobal( gpos ), gpos, RightButton, RightButton ); break;
-					case WM_RBUTTONUP: e = new QMouseEvent( QEvent::MouseButtonRelease, mapFromGlobal( gpos ), gpos, RightButton, RightButton ); break;
-					case WM_RBUTTONDBLCLK: e = new QMouseEvent( QEvent::MouseButtonDblClick, mapFromGlobal( gpos ), gpos, RightButton, RightButton ); break;
-					case WM_MBUTTONDOWN: e = new QMouseEvent( QEvent::MouseButtonPress, mapFromGlobal( gpos ), gpos, MidButton, MidButton ); break;
-					case WM_MBUTTONUP: e = new QMouseEvent( QEvent::MouseButtonRelease, mapFromGlobal( gpos ), gpos, MidButton, MidButton ); break;
-					case WM_MBUTTONDBLCLK: e = new QMouseEvent( QEvent::MouseButtonDblClick, mapFromGlobal( gpos ), gpos, MidButton, MidButton ); break;
-					case WM_CONTEXTMENU: e = new QMouseEvent( QEvent::MouseButtonRelease, mapFromGlobal( gpos ), gpos, RightButton, RightButton ); break;
+					case WM_LBUTTONDOWN: e = new QMouseEvent( QEvent::MouseButtonPress, mapFromGlobal( gpos ), gpos, Qt::LeftButton, Qt::LeftButton ); break;
+					case WM_LBUTTONUP: e = new QMouseEvent( QEvent::MouseButtonRelease, mapFromGlobal( gpos ), gpos, Qt::LeftButton, Qt::LeftButton ); break;
+					case WM_LBUTTONDBLCLK: e = new QMouseEvent( QEvent::MouseButtonDblClick, mapFromGlobal( gpos ), gpos, Qt::LeftButton, Qt::LeftButton );	break;
+					case WM_RBUTTONDOWN: e = new QMouseEvent( QEvent::MouseButtonPress, mapFromGlobal( gpos ), gpos, Qt::RightButton, Qt::RightButton ); break;
+					case WM_RBUTTONUP: e = new QMouseEvent( QEvent::MouseButtonRelease, mapFromGlobal( gpos ), gpos, Qt::RightButton, Qt::RightButton ); break;
+					case WM_RBUTTONDBLCLK: e = new QMouseEvent( QEvent::MouseButtonDblClick, mapFromGlobal( gpos ), gpos, Qt::RightButton, Qt::RightButton ); break;
+					case WM_MBUTTONDOWN: e = new QMouseEvent( QEvent::MouseButtonPress, mapFromGlobal( gpos ), gpos, Qt::MidButton, Qt::MidButton ); break;
+					case WM_MBUTTONUP: e = new QMouseEvent( QEvent::MouseButtonRelease, mapFromGlobal( gpos ), gpos, Qt::MidButton, Qt::MidButton ); break;
+					case WM_MBUTTONDBLCLK: e = new QMouseEvent( QEvent::MouseButtonDblClick, mapFromGlobal( gpos ), gpos, Qt::MidButton, Qt::MidButton ); break;
+					case WM_CONTEXTMENU: e = new QMouseEvent( QEvent::MouseButtonRelease, mapFromGlobal( gpos ), gpos, Qt::RightButton, Qt::RightButton ); break;
 				}
 				if ( e ) {
 					bool res = QApplication::sendEvent( iconObject, e );
@@ -178,7 +178,7 @@ public:
 			default:
 				if ( m->message == WM_TASKBARCREATED ) trayMessage( NIM_ADD );
 		}
-		return QWidget::winEvent( m );
+		return QWidget::winEvent( m, result );
     }
 };
 
@@ -197,21 +197,27 @@ static HBITMAP createIconMask( const QPixmap &qp )
     return hbm;
 }
 
-static HICON createIcon( const QPixmap &pm, HBITMAP &hbm )
+static HICON createIcon( const QPixmap &pm, HBITMAP& hbm )
 {
-    QPixmap maskpm( pm.size(), pm.depth(), QPixmap::NormalOptim );
-    QBitmap mask( pm.size(), FALSE, QPixmap::NormalOptim );
-    if ( pm.mask() ) {
-        maskpm.fill( Qt::black );			// make masked area black
-        bitBlt( &mask, 0, 0, pm.mask() );
-    } else
+    QPixmap maskpm( pm.size() );
+    QBitmap mask( pm.size() );
+    if ( !pm.mask().isNull() ) 
+    {
+      /*   maskpm.fill( Qt::black );			// make masked area black
+        QBitmap bm = pm.mask();
+        bitBlt( &mask, 0, 0, &bm ); */
+    } 
+    else
+    {
         maskpm.fill( Qt::color1 );
-
+    }
+    maskpm.fill( Qt::black );
+    
     bitBlt( &maskpm, 0, 0, &pm);
     ICONINFO iconInfo;
     iconInfo.fIcon    = TRUE;
     iconInfo.hbmMask  = hbm = createIconMask(mask);
-    iconInfo.hbmColor = maskpm.hbm();
+    iconInfo.hbmColor = maskpm.toWinHBITMAP();
 
     HICON icon = CreateIconIndirect( &iconInfo );
     DeleteObject(iconInfo.hbmMask);

@@ -120,14 +120,14 @@ RightListView::RightListView(QWidget* parent)
 void RightListView::initContextMenu()
 {
     m_contextMenu = new Q3PopupMenu(this);
-    m_contextMenu->insertItem(QIcon(QPixmap(":/images/stock_add_16.png")), tr("&New"), NEW);
+    m_contextMenu->insertItem(QIcon(QPixmap(":/images/stock_add_16.png")), tr("&New"), M_NEW);
     m_contextMenu->insertItem(QIcon(QPixmap(":/images/stock_remove_16.png")), 
-        tr("&Delete") + "\t" + QString(QKeySequence(Qt::Key_Delete)), DELETE);
+        tr("&Delete") + "\t" + QString(QKeySequence(Qt::Key_Delete)), M_DELETE);
     m_contextMenu->insertSeparator();
     m_contextMenu->insertItem(QIcon(QPixmap(":/images/stock_copy_16.png")),
-        tr("&Copy") + "\t" + QString(QKeySequence(Qt::CTRL|Qt::Key_C)), COPY);
+        tr("&Copy") + "\t" + QString(QKeySequence(Qt::CTRL|Qt::Key_C)), M_COPY);
     m_contextMenu->insertItem(QIcon(QPixmap(":/images/eye_16.png")), 
-        tr("Show &password..."), SHOW_PW);
+        tr("Show &password..."), M_SHOW_PW);
 }
 
 
@@ -145,28 +145,28 @@ void RightListView::showContextMenu(Q3ListViewItem* item, const QPoint& point)
     bool passw = item != 0 && m_currentItem->getProperty(item->text(2).toInt(0))->getType()
         == Property::PASSWORD;
     
-    m_contextMenu->setItemEnabled(DELETE, item != 0);
-    m_contextMenu->setItemEnabled(COPY, item != 0);
-    m_contextMenu->setItemEnabled(SHOW_PW, passw);
+    m_contextMenu->setItemEnabled(M_DELETE, item != 0);
+    m_contextMenu->setItemEnabled(M_COPY, item != 0);
+    m_contextMenu->setItemEnabled(M_SHOW_PW, passw);
     
     int id = m_contextMenu->exec(point);
     switch (id)
     {
-        case DELETE:
+        case M_DELETE:
         {
             int num = item->text(2).toInt(0);
             m_currentItem->deleteProperty(num);
             emit itemDeleted(num);
             break;
         }
-        case COPY:
+        case M_COPY:
             copyItem(item);
             break;
-        case NEW:
+        case M_NEW:
             m_currentItem->appendProperty(new Property());
             emit stateModified();
             break;
-        case SHOW_PW:
+        case M_SHOW_PW:
             ShowPasswordDialog* dlg = new ShowPasswordDialog(this, ShowPasswordDialog::TNormalPasswordDlg);
             dlg->setPassword(m_currentItem->getProperty(item->text(2).toInt(0))->getValue());
             dlg->exec();

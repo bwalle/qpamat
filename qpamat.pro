@@ -16,10 +16,10 @@ BINDIR             = $${PREFIX}/bin
 # INCLUDEPATH += /usr/local/ssl/include
 
 # On Windows, this is the default installation path of OpenSSL. Change this
-# if needed. Adjust to your compiler (VC is for MS Visual C++) if needed.
+# if needed. Adjust to your compiler if needed.
 win32:INCLUDEPATH += c:\openssl\include
-win32:LIBS        += c:\openssl\lib\vc\ssleay32.lib \
-                     c:\openssl\lib\vc\libeay32.lib
+win32:LIBS        += -lgdi32 c:\openssl\lib\MinGW\ssleay32.a \
+                     c:\openssl\lib\MinGW\libeay32.a
 
 ################################################################################
 
