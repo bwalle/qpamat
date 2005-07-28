@@ -346,11 +346,14 @@ void Qpamat::closeEvent(QCloseEvent* e)
     if (m_trayIcon)
     {
         handleTrayiconClick();
+        e->ignore();
     }
     else
     {
         exitHandler();
+        e->accept();
     }
+    QWidget::closeEvent(e);
 }
 
 
