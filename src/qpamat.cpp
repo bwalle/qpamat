@@ -57,7 +57,7 @@
 #include "rightpanel.h"
 
 #ifdef Q_WS_WIN
-#  define TRAY_ICON_FILE_NAME ":/images/qpamat_16.png"
+#  define TRAY_ICON_FILE_NAME ":/images/qpamat_16_win.png"
 #else
 #  define TRAY_ICON_FILE_NAME ":/images/qpamat_22.png"
 #endif
