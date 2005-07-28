@@ -199,7 +199,8 @@ unix:LIBS  += -lssl -lm -lcrypto
 MOC_DIR     = out
 OBJECTS_DIR = out
 UI_DIR      = out
-RCC_DIr     = out
+RCC_DIR     = out
+DESTDIR     = bin
 
 # -----------------------------------------------------------------------------
 
@@ -261,8 +262,9 @@ i_icons.path                = $$SHAREDIR/pixmaps
 i_icons.files              += images/qpamat_*.png
 INSTALLS                   += i_icons
 
-target.path                 = $$BINDIR
-INSTALLS                   += target
+i_binary.path               = $$BINDIR
+i_binary.files             += bin/qpamat*
+INSTALLS                   += i_binary
 
 # vim: ft=text et
 

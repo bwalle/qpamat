@@ -37,7 +37,7 @@ mkdir -p $RPM_BUILD_ROOT/%{_bindir}
 mkdir -p $RPM_BUILD_ROOT/%{_datadir}/qpamat
 mkdir -p $RPM_BUILD_ROOT/%{_datadir}/pixmaps
 mkdir -p $RPM_BUILD_ROOT/%{_datadir}/qpamat/translations
-install -m 0755 qpamat $RPM_BUILD_ROOT/%{_bindir}
+install -m 0755 bin/qpamat $RPM_BUILD_ROOT/%{_bindir}
 cp -R share/dicts $RPM_BUILD_ROOT/%{_datadir}/qpamat
 install -m 0644 images/qpamat_*.png $RPM_BUILD_ROOT/%{_datadir}/pixmaps/
 install -m 0644 COPYING $RPM_BUILD_ROOT/%{_datadir}/qpamat/
