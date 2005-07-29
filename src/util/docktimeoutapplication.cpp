@@ -220,7 +220,6 @@ int DockTimeoutApplication::getTimeout() const
 */
 void DockTimeoutApplication::setTimeout(int timeout)
 {
-    qDebug("timeout = %d", timeout);
     m_timeout = timeout;
 }
 
@@ -251,7 +250,6 @@ void DockTimeoutApplication::setTemporaryDisabled(bool disabled)
 {
     m_timer->stop();
     m_temporaryDisabled = disabled;
-    qDebug("disable = %d", disabled);
 }
 
 
@@ -266,7 +264,6 @@ void DockTimeoutApplication::setTemporaryDisabled(bool disabled)
 void DockTimeoutApplication::addReceiverToIgnore(void* receiver)
 {
     m_receiversToIgnore.append(receiver);
-    qDebug("Addding = %d", receiver);
 }
 
 
@@ -302,9 +299,6 @@ bool DockTimeoutApplication::notify(QObject* receiver, QEvent* e)
               || e->type() == QEvent::MouseMove || e->type() == QEvent::KeyPress))
     {
         m_timer->start(m_timeout*1000*60);
-        qDebug("Start timer (%d)", e->type());
-        qDebug("Receiver = %d", receiver);
-        qDebug("Receiver = %d", receiver->name());
     }
     
     return QApplication::notify(receiver, e);
@@ -330,7 +324,6 @@ bool DockTimeoutApplication::x11EventFilter( XEvent *_event )
 				// announced its presence
 				setTrayOwnerWindow(_event->xclient.display);
 				emit newTrayOwner();
-                qDebug("new tray owner");
 				break;
 			}
 		case DestroyNotify:
