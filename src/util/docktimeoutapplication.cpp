@@ -17,6 +17,8 @@
  */
 #include <QTimer>
 #include <QApplication>
+#include <QList>
+#include <QObject>
 #include <QEvent>
 #ifdef Q_WS_X11
 #  include <QX11Info>
@@ -122,7 +124,7 @@ void setTrayOwnerWindow(Display *dsp)
     \param argv the argv of the main() function
 */
 DockTimeoutApplication::DockTimeoutApplication(int& argc, char** argv)
-    : QApplication(argc, argv), m_timeout(0), m_timer(0)
+    : QApplication(argc, argv), m_timeout(0), m_timer(0), m_temporaryDisabled(false)
 {
     init();
 }
@@ -218,6 +220,7 @@ int DockTimeoutApplication::getTimeout() const
 */
 void DockTimeoutApplication::setTimeout(int timeout)
 {
+    qDebug("timeout = %d", timeout);
     m_timeout = timeout;
 }
 
@@ -248,6 +251,40 @@ void DockTimeoutApplication::setTemporaryDisabled(bool disabled)
 {
     m_timer->stop();
     m_temporaryDisabled = disabled;
+    qDebug("disable = %d", disabled);
+}
+
+
+/*!
+    Adds receivers to ignore for timeout. This is a kind of hack to ignore
+    events which get passed to the tray icon. If the object is destroyed,
+    it does not gets automatically removed from this list. You have to take care
+    this yourself!
+
+    \param receiver the receiver to ignore
+*/
+void DockTimeoutApplication::addReceiverToIgnore(void* receiver)
+{
+    m_receiversToIgnore.append(receiver);
+    qDebug("Addding = %d", receiver);
+}
+
+
+/*!
+    
+*/
+void DockTimeoutApplication::removeReceiverToIgnore(void* receiver)
+{
+    m_receiversToIgnore.removeAll(receiver);
+}
+
+
+/*!
+    Clears the list of receivers to ignore.
+*/
+void DockTimeoutApplication::clearReceiversToIgnore()
+{
+    m_receiversToIgnore.clear();
 }
 
 
@@ -260,10 +297,14 @@ void DockTimeoutApplication::setTemporaryDisabled(bool disabled)
 bool DockTimeoutApplication::notify(QObject* receiver, QEvent* e)
 {
     if (!m_temporaryDisabled && m_timeout != 0 && 
+            !m_receiversToIgnore.contains(receiver) &&
             (e->type() == QEvent::MouseButtonPress || e->type() == QEvent::MouseButtonRelease
               || e->type() == QEvent::MouseMove || e->type() == QEvent::KeyPress))
     {
         m_timer->start(m_timeout*1000*60);
+        qDebug("Start timer (%d)", e->type());
+        qDebug("Receiver = %d", receiver);
+        qDebug("Receiver = %d", receiver->name());
     }
     
     return QApplication::notify(receiver, e);

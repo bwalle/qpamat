@@ -30,6 +30,7 @@
 #include <Q3PopupMenu>
 
 class Q3PopupMenu;
+class Qpamat;
 
 class TrayIcon : public QObject
 {
@@ -37,6 +38,11 @@ class TrayIcon : public QObject
 
 	Q_PROPERTY( QString toolTip READ toolTip WRITE setToolTip )
 	Q_PROPERTY( QPixmap icon READ icon WRITE setIcon )
+
+    // bwalle:
+    // very ugly, but needed to access d which is neccessary for exclusion of Tray events
+    // timeout
+    friend class Qpamat;
 
 public:
 	TrayIcon( QObject *parent = 0, const char *name = 0 );

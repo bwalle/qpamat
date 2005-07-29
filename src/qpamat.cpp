@@ -401,6 +401,7 @@ void Qpamat::dockActivated()
     if (isHidden())
     {
         show();
+        dynamic_cast<DockTimeoutApplication*>(qApp)->clearReceiversToIgnore();
         delete m_trayIcon;
         m_trayIcon = 0;
     }
@@ -427,6 +428,9 @@ void Qpamat::newTrayOwner()
             
             m_trayIcon = new TrayIcon(QPixmap(TRAY_ICON_FILE_NAME), tr("QPaMaT"), trayPopup, this);
             m_trayIcon->show();
+            // hack to prevent icontray events to interfere with the timeout mechanism
+            //dynamic_cast<DockTimeoutApplication*>(qApp)->addReceiverToIgnore(m_trayIcon);
+            dynamic_cast<DockTimeoutApplication*>(qApp)->addReceiverToIgnore(m_trayIcon->d);
             
             connect(m_trayIcon, SIGNAL(clicked( const QPoint&, int)), SLOT(handleTrayiconClick()));
         }

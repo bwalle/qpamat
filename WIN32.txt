@@ -1,0 +1,14 @@
+Win 32 notes
+============
+
+Create setup package:
+
+ * unpack Unix tar.gz
+ * open Qt Shell
+ * run "qmake qpamat.pro"
+ * run "make"
+ * run "lrelease qpamat.pro"
+ * copy QtGui4.dll, QtXml4.dll, Qt3Support4.dll and QtCore4.dll to bin
+ * right click on qpamat.nsi and choose "Compile NSI script"
+ * rename qpamat-setup.exe to qpamat-setup-version.exe
+

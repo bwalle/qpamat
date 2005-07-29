@@ -20,6 +20,7 @@
 
 #include <QObject>
 #include <QTimer>
+#include <QList>
 #include <QApplication>
 #include <QEvent>
 
@@ -45,6 +46,11 @@ class DockTimeoutApplication : public QApplication
         
         bool isTemporaryDisabled() const;
         void setTemporaryDisabled(bool disabled);
+
+    public slots:
+        void addReceiverToIgnore(void* receiver);
+        void removeReceiverToIgnore(void* receiver);
+        void clearReceiversToIgnore();
         
     signals:
         void timedOut();
@@ -68,6 +74,7 @@ class DockTimeoutApplication : public QApplication
         int m_timeout;
         QTimer* m_timer;
         bool m_temporaryDisabled;
+        QList<void*> m_receiversToIgnore;
 };
             
  
