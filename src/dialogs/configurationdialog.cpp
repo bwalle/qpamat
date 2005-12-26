@@ -204,11 +204,6 @@ void ConfDlgGeneralTab::createAndLayout()
     Q3GroupBox* locationsGroup = new Q3GroupBox(4, Qt::Vertical, tr("Locations"), this);
     Q3GroupBox* autoTextGroup = new Q3GroupBox(4, Qt::Vertical, tr("AutoText"), this);
     
-    // some settings
-    startupGroup->setInsideSpacing(6);
-    locationsGroup->setInsideSpacing(6);
-    autoTextGroup->setInsideSpacing(6);
-    
     // auto login
     m_autoLoginCheckbox = new QCheckBox(tr("Enable &AutoLogin on startup"), startupGroup);
     
@@ -327,10 +322,6 @@ void ConfDlgPasswordTab::createAndLayout()
     QVBoxLayout* mainLayout = new QVBoxLayout(this, 0, 6);
     Q3GroupBox* passwordGroup = new Q3GroupBox(5, Qt::Vertical, tr("Generated Passwords"), this);
     Q3GroupBox* checkerGroup = new Q3GroupBox(6, Qt::Vertical, tr("Password checker"), this);
-    
-    // some settings
-    passwordGroup->setInsideSpacing(6);
-    checkerGroup->setInsideSpacing(6);
     
     QWidget* ensureGrid = new QWidget(passwordGroup, "EnsureGrid");
     QGridLayout* ensureGridLayout = new QGridLayout(ensureGrid, 2, 3, 0, 6, "EnsureGridLayout");
@@ -585,10 +576,6 @@ void ConfDlgSecurityTab::createAndLayout()
     Q3GroupBox* encryptionGroup = new Q3GroupBox(1, Qt::Vertical, tr("Encryption"), this);
     Q3GroupBox* logoutGroup = new Q3GroupBox(1, Qt::Vertical, tr("Logout"), this);
     
-    // some settings
-    encryptionGroup->setInsideSpacing(6);
-    logoutGroup->setInsideSpacing(6);
-    
     // algorithm stuff
     m_algorithmLabel = new QLabel(tr("Cipher &algorithm:"), encryptionGroup);
     m_algorithmCombo = new QComboBox(false, encryptionGroup);
@@ -689,11 +676,6 @@ void ConfDlgPresentationTab::createAndLayout()
     Q3GroupBox* passwordGroup = new Q3GroupBox(2, Qt::Vertical, tr("Passwords"), this);
     Q3GroupBox* fontGroup = new Q3GroupBox(4, Qt::Vertical, tr("Printing Fonts"), this);
     Q3GroupBox* systemTrayGroup = new Q3GroupBox(2, Qt::Vertical, tr("System tray"), this);
-    
-    // some settings
-    passwordGroup->setInsideSpacing(6);
-    fontGroup->setInsideSpacing(6);
-    systemTrayGroup->setInsideSpacing(6);
     
     QLabel* normalLabel = new QLabel("&Normal font:", fontGroup);
     m_normalFontEdit = new FontChooseBox(fontGroup);

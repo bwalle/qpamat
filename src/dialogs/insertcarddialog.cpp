@@ -108,14 +108,14 @@ InsertCardDialog::InsertCardDialog(bool pin, QWidget* parent, const char* name)
     mainLayout->addWidget(leftIcon, 0, Qt::AlignLeft| Qt::AlignTop);
     mainLayout->addLayout(rightLayout, 5);
     
-    rightLayout->addSpacing(3);
-    rightLayout->addWidget(label, 5, Qt::AlignHCenter | Qt::AlignTop);
+    //rightLayout->addSpacing(3);
+    rightLayout->addWidget(label, 0, Qt::AlignHCenter | Qt::AlignTop);
     if (pin)
     {
         rightLayout->addWidget(m_pinEdit);
     }
     rightLayout->addSpacing(10);
-    rightLayout->addStretch();
+    //rightLayout->addStretch();
     rightLayout->addWidget(box);
     
     connect(m_okButton, SIGNAL(clicked()), SLOT(accept()));

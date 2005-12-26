@@ -1,3 +1,10 @@
+Mon Dec 26 23:10:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
+
+	* Bugfixes for Qt 4.1.0
+	* Bugfix: events on the system tray doesn't count as events for the
+	  timeout
+	* small layout improvements
+
 Fri Jul 29 23:50:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Porting to Qt 4.0.0.

@@ -23,10 +23,10 @@ win32:LIBS        += -lgdi32 c:\openssl\lib\MinGW\ssleay32.a \
 
 ################################################################################
 
-VERSION_STRING     = 0.5.0
+VERSION_STRING     = 0.5.1
 MAJOR_VERSION      = 0
 MINOR_VERSION      = 5
-PATCH_VERSION      = 0
+PATCH_VERSION      = 1
 
 ################################################################################
 

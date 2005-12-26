@@ -183,7 +183,7 @@ void TrayIcon::TrayIconPrivate::enterEvent(QEvent *e)
 {
 	// Taken from KSystemTray..
 //#if QT_VERSION < 0x030200
-	//if ( !qApp->focusWidget() ) {
+	if ( !qApp->focusWidget() ) {
 		XEvent ev;
 		memset(&ev, 0, sizeof(ev));
 		ev.xfocus.display = QX11Info::display();
@@ -195,7 +195,7 @@ void TrayIcon::TrayIconPrivate::enterEvent(QEvent *e)
 		QX11Info::setAppTime(1);
 		qApp->x11ProcessEvent( &ev );
 		QX11Info::setAppTime(time);
-	//}
+	}
 //#endif
 	QWidget::enterEvent(e);
 }

@@ -111,8 +111,9 @@
     Creates a new instance of the application.
  */
 Qpamat::Qpamat()
-    : QMainWindow(0, "qpamat main window"), m_tree(0), m_treeContextMenu(0), m_message(0), m_rightPanel(0), m_searchCombo(0), 
-      m_randomPassword(0), m_trayIcon(0), m_lastGeometry(0, 0, 0, 0)
+    : QMainWindow(0, "qpamat main window"), m_tree(0), m_treeContextMenu(0), m_message(0),
+      m_rightPanel(0), m_searchCombo(0), m_randomPassword(0), m_trayIcon(0), 
+      m_lastGeometry(0, 0, 0, 0)
 {
     // Title and Icon
     setIcon(QPixmap(":/images/qpamat_48.png"));
@@ -246,7 +247,9 @@ void Qpamat::initToolbar()
     m_searchLabel = new QLabel(tr("Search:")+" ", searchToolbar);
     
     m_searchCombo = new QComboBox(true, searchToolbar);
-    m_searchCombo->setMinimumWidth(120);
+    //m_searchCombo->setFixedWidth(120);
+    m_searchCombo->setSizeAdjustPolicy(QComboBox::AdjustToContentsOnFirstShow);
+    m_searchCombo->setObjectName("SearchCombo");
     m_searchCombo->setDuplicatesEnabled(false);
     m_searchCombo->setFocusPolicy(Qt::ClickFocus);
     m_searchCombo->setInsertionPolicy(QComboBox::AtTop);
@@ -255,6 +258,7 @@ void Qpamat::initToolbar()
     searchToolbar->addWidget(m_searchLabel);
     searchToolbar->addWidget(m_searchCombo);
     searchToolbar->addAction(m_actions.searchAction);
+
     
     // ---- Edit toolbar ---------------------------------------------------------------------------
     QToolBar* editToolbar = new QToolBar(tr("Edit"), this);
@@ -263,6 +267,9 @@ void Qpamat::initToolbar()
     
     editToolbar->addAction(m_actions.addItemAction);
     editToolbar->addAction(m_actions.removeItemAction);
+
+    searchToolbar->adjustSize();
+    editToolbar->adjustSize();
 }
 
 
@@ -293,7 +300,9 @@ void Qpamat::initMenubar()
      extrasMenu->addAction(m_actions.clearClipboardAction);
      
      // ----- Help ---------------------------------------------------------------------------------
-     menuBar()->insertSeparator();
+     
+     // this is for Motif/CDE style, but doesn't work in Qt 4.1.0, so disable it
+     // menuBar()->insertSeparator();
      QMenu* helpMenu = menuBar()->addMenu(tr("&Help"));
      helpMenu->addAction(m_actions.helpAction);
      helpMenu->insertSeparator();

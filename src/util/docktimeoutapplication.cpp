@@ -268,7 +268,10 @@ void DockTimeoutApplication::addReceiverToIgnore(void* receiver)
 
 
 /*!
-    
+    Removes receivers to ignore from timeout. See also 
+    DockTimeoutApplication::addReceiverToIgnore().
+
+    \param receiver the receiver to remove
 */
 void DockTimeoutApplication::removeReceiverToIgnore(void* receiver)
 {
@@ -294,9 +297,9 @@ void DockTimeoutApplication::clearReceiversToIgnore()
 bool DockTimeoutApplication::notify(QObject* receiver, QEvent* e)
 {
     if (!m_temporaryDisabled && m_timeout != 0 && 
-            !m_receiversToIgnore.contains(receiver) &&
             (e->type() == QEvent::MouseButtonPress || e->type() == QEvent::MouseButtonRelease
-              || e->type() == QEvent::MouseMove || e->type() == QEvent::KeyPress))
+              || e->type() == QEvent::MouseMove || e->type() == QEvent::KeyPress) &&
+            !m_receiversToIgnore.contains(receiver))
     {
         m_timer->start(m_timeout*1000*60);
     }
