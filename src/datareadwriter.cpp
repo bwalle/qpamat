@@ -453,10 +453,10 @@ void ReadWriteThread::run()
                  - cipher algorithm is not available
                  - error in communicating with the smart-card terminal
 */
-void DataReadWriter::writeXML(const QDomDocument& document_par, const QString& password)
+void DataReadWriter::writeXML(const QDomDocument& document, const QString& password)
     throw (ReadWriteException)
 {
-    QDomDocument document = document_par.cloneNode(true).toDocument();
+    QDomDocument document_cpy = document.cloneNode(true).toDocument();
     bool smartcard = qpamat->set().readBoolEntry("Smartcard/UseCard");
     const QString fileName = qpamat->set().readEntry("General/Datafile");
     const QString algorithm = qpamat->set().readEntry("Security/CipherAlgorithm");
@@ -494,15 +494,15 @@ void DataReadWriter::writeXML(const QDomDocument& document_par, const QString& p
     }
     
     // encrypt
-    QDomElement pwData = document.documentElement().namedItem("passwords").toElement();
-    QDomElement appData = document.documentElement().namedItem("app-data").toElement();
+    QDomElement pwData = document_cpy.documentElement().namedItem("passwords").toElement();
+    QDomElement appData = document_cpy.documentElement().namedItem("app-data").toElement();
     crypt(pwData, *enc, true);
     
     // write the password hash
     const QString hash = smartcard
         ? "SMARTCARD"
         : PasswordHash::generateHashString(password);
-    QDomText text = document.createTextNode(hash);
+    QDomText text = document_cpy.createTextNode(hash);
     appData.namedItem("passwordhash").toElement().appendChild(text);
     
     byte id = 0;
@@ -522,7 +522,7 @@ void DataReadWriter::writeXML(const QDomDocument& document_par, const QString& p
     
     QTextStream stream(&file);
     stream.setEncoding(QTextStream::UnicodeUTF8);
-    stream << document.toString();
+    stream << document_cpy.toString();
 }
 
 
