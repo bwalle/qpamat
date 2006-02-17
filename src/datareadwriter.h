@@ -76,7 +76,7 @@ class DataReadWriter
         DataReadWriter(QWidget* parent); 
         
     public:
-        void writeXML(QDomDocument document, const QString& password)
+        void writeXML(const QDomDocument& document, const QString& password)
             throw (ReadWriteException);
         
         QDomDocument readXML(const QString& password)

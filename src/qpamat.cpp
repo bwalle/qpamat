@@ -57,7 +57,7 @@
 #include "rightpanel.h"
 
 #ifdef Q_WS_WIN
-#  define TRAY_ICON_FILE_NAME ":/images/qpamat_16_win.png"
+#  define TRAY_ICON_FILE_NAME ":/images/qpamat_16.png"
 #else
 #  define TRAY_ICON_FILE_NAME ":/images/qpamat_22.png"
 #endif
@@ -361,8 +361,8 @@ void Qpamat::closeEvent(QCloseEvent* e)
     {
         exitHandler();
         e->accept();
+        QWidget::closeEvent(e);
     }
-    QWidget::closeEvent(e);
 }
 
 
@@ -431,7 +431,7 @@ void Qpamat::newTrayOwner()
         }
         else
         {
-            Q3PopupMenu* trayPopup = new Q3PopupMenu(this);
+            QMenu* trayPopup = new QMenu(this);
             trayPopup->addAction(m_actions.showHideAction);
             trayPopup->addAction(m_actions.quitActionNoKeyboardShortcut);
             

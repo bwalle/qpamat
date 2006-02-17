@@ -27,10 +27,9 @@
 #include <QPixmap>
 #include <QMouseEvent>
 #include <QEvent>
-#include <Q3PopupMenu>
+#include <QMenu>
 
-class Q3PopupMenu;
-class Qpamat;
+class QMenu;
 
 class TrayIcon : public QObject
 {
@@ -39,14 +38,11 @@ class TrayIcon : public QObject
 	Q_PROPERTY( QString toolTip READ toolTip WRITE setToolTip )
 	Q_PROPERTY( QPixmap icon READ icon WRITE setIcon )
 
-    // bwalle:
-    // very ugly, but needed to access d which is neccessary for exclusion of Tray events
-    // timeout
     friend class Qpamat;
 
 public:
 	TrayIcon( QObject *parent = 0, const char *name = 0 );
-	TrayIcon( const QPixmap &, const QString &, Q3PopupMenu *popup = 0, QObject *parent = 0, const char *name = 0 );
+	TrayIcon( const QPixmap &, const QString &, QMenu *popup = 0, QObject *parent = 0, const char *name = 0 );
 	~TrayIcon();
 
 	// use WindowMaker dock mode.  ignored on non-X11 platforms
@@ -54,8 +50,8 @@ public:
 	bool isWMDock() { return v_isWMDock; }
 
 	// Set a popup menu to handle RMB
-	void setPopup( Q3PopupMenu * );
-	Q3PopupMenu* popup() const;
+	void setPopup( QMenu * );
+	QMenu* popup() const;
 
 	QPixmap icon() const;
 	QString toolTip() const;
@@ -84,7 +80,7 @@ protected:
 	virtual void mouseDoubleClickEvent( QMouseEvent *e );
 
 private:
-	Q3PopupMenu *pop;
+	QMenu *pop;
 	QPixmap pm;
 	QString tip;
 	bool v_isWMDock;

@@ -453,9 +453,10 @@ void ReadWriteThread::run()
                  - cipher algorithm is not available
                  - error in communicating with the smart-card terminal
 */
-void DataReadWriter::writeXML(QDomDocument document, const QString& password)
+void DataReadWriter::writeXML(const QDomDocument& document_par, const QString& password)
     throw (ReadWriteException)
 {
+    QDomDocument document = document_par.cloneNode(true).toDocument();
     bool smartcard = qpamat->set().readBoolEntry("Smartcard/UseCard");
     const QString fileName = qpamat->set().readEntry("General/Datafile");
     const QString algorithm = qpamat->set().readEntry("Security/CipherAlgorithm");

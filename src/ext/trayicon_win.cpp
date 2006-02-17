@@ -20,18 +20,15 @@
 
 #include "trayicon.h"
 
-#include <qwidget.h>
-#include <qapplication.h>
-#include <qimage.h>
-#include <qpixmap.h>
-#include <qbitmap.h>
-#include <qcursor.h>
-#include <qlibrary.h>
-//Added by qt3to4:
-#include <QMouseEvent>
-#include <QEvent>
+#include <QWidget>
+#include <QApplication>
+#include <QImage>
+#include <QPixmap>
+#include <QBitmap>
+#include <QCursor>
+#include <QLibrary>
+#include <QPainter>
 
-#include <windows.h>
 #include <qt_windows.h>
 
 static uint WM_TASKBARCREATED = 0;
@@ -104,7 +101,7 @@ public:
     bool trayMessageW( DWORD msg )
     {
 		resolveLibs();
-		if ( ! (ptrShell_NotifyIcon && qWinVersion() & QSysInfo::WV_NT_based) )
+		if ( ! (ptrShell_NotifyIcon && qWinVersion() & Qt::WV_NT_based) )
 			return trayMessageA( msg );
 
 		NOTIFYICONDATAW tnd;
@@ -146,7 +143,7 @@ public:
 		return TRUE;
     }
 
-    bool winEvent( MSG *m, long* result )
+    bool winEvent( MSG *m, long *result )
     {
 		switch(m->message) {
 			case WM_DRAWITEM:
@@ -182,47 +179,24 @@ public:
     }
 };
 
-static HBITMAP createIconMask( const QPixmap &qp )
+static HICON createIcon( const QPixmap &pm, HBITMAP &hbm )
 {
-    QImage bm = qp.convertToImage();
-    int w = bm.width();
-    int h = bm.height();
-    int bpl = ((w+15)/16)*2;			// bpl, 16 bit alignment
-    uchar *bits = new uchar[bpl*h];
-    bm.invertPixels();
-    for ( int y=0; y<h; y++ )
-		memcpy( bits+y*bpl, bm.scanLine(y), bpl );
-    HBITMAP hbm = CreateBitmap( w, h, 1, 1, bits );
-    delete [] bits;
-    return hbm;
-}
+	HBITMAP pmhbitmap = pm.toWinHBITMAP( QPixmap::PremultipliedAlpha );
+ 
+	ICONINFO iconInfo;
+	iconInfo.fIcon    = TRUE;
+	iconInfo.hbmMask  = pmhbitmap;
+	iconInfo.hbmColor = pmhbitmap;
+	
+	HICON icon = CreateIconIndirect( &iconInfo );
 
-static HICON createIcon( const QPixmap &pm, HBITMAP& hbm )
-{
-    QPixmap maskpm( pm.size() );
-    QBitmap mask( pm.size() );
-    if ( !pm.mask().isNull() ) 
-    {
-      /*   maskpm.fill( Qt::black );			// make masked area black
-        QBitmap bm = pm.mask();
-        bitBlt( &mask, 0, 0, &bm ); */
-    } 
-    else
-    {
-        maskpm.fill( Qt::color1 );
-    }
-    maskpm.fill( Qt::black );
-    
-    bitBlt( &maskpm, 0, 0, &pm);
-    ICONINFO iconInfo;
-    iconInfo.fIcon    = TRUE;
-    iconInfo.hbmMask  = hbm = createIconMask(mask);
-    iconInfo.hbmColor = maskpm.toWinHBITMAP();
+	DeleteObject(pmhbitmap);
 
-    HICON icon = CreateIconIndirect( &iconInfo );
-    DeleteObject(iconInfo.hbmMask);
-        iconInfo.hbmMask = hbm = 0; // michalj
-    return icon;
+	iconInfo.hbmMask = 0;
+	iconInfo.hbmColor = 0;
+	hbm = 0; // michalj
+
+	return icon;
 }
 
 void TrayIcon::sysInstall()
@@ -230,7 +204,6 @@ void TrayIcon::sysInstall()
     if ( !d ) {
 		d = new TrayIconPrivate( this );
 		d->hIcon = createIcon( pm, d->hMask );
-
 		d->trayMessage( NIM_ADD );
 	}
 }
@@ -258,6 +231,7 @@ void TrayIcon::sysUpdateIcon()
 		}
 
 		d->hIcon = createIcon( pm, d->hMask );
+
 		d->trayMessage( NIM_MODIFY );
 	}
 }

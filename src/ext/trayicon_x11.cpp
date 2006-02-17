@@ -21,26 +21,21 @@
 
 #include "trayicon.h"
 
-#include <qtimer.h>
-#include<qapplication.h>
-#include<qimage.h>
-#include<qpixmap.h>
-#include<qtooltip.h>
-#include<qpainter.h>
-#include <QX11Info>
-//Added by qt3to4:
-#include <QMouseEvent>
 #include <QDesktopWidget>
-#include <QEvent>
-#include <QPaintEvent>
-#include <QCloseEvent>
+#include <qapplication.h>
+#include <qimage.h>
+#include <qpixmap.h>
+#include <qtooltip.h>
+#include <qpainter.h>
+#include <QBitmap>
 
-#include<X11/Xlib.h>
-#include<X11/Xutil.h>
-#include<X11/Xatom.h>
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <X11/Xatom.h>
+#include <QX11Info>
 
 //#if QT_VERSION < 0x030200
-extern Time qt_x_time;
+//extern Time qt_x_time;
 //#endif
 
 //----------------------------------------------------------------------------
@@ -128,7 +123,7 @@ private:
 };
 
 TrayIcon::TrayIconPrivate::TrayIconPrivate(TrayIcon *object, int _size)
-	: QWidget(0, "psidock", Qt::WNoAutoErase)
+	: QWidget(0, "psidock" )
 {
 	iconObject = object;
 	size = _size;
@@ -138,7 +133,6 @@ TrayIcon::TrayIconPrivate::TrayIconPrivate(TrayIcon *object, int _size)
 
 	setMinimumSize(size, size);
 	setMaximumSize(size, size);
-    QTimer::singleShot(0, this, SLOT(update()));
 }
 
 // This base stuff is required by both FreeDesktop specification and WindowMaker
@@ -168,34 +162,62 @@ void TrayIcon::TrayIconPrivate::initWM(WId icon)
 
 void TrayIcon::TrayIconPrivate::setPixmap(const QPixmap &pm)
 {
-	pix = pm;
-	setIcon(pix);
+        QBitmap mask( QWidget::size() );
+
+	if( pm.size() != QWidget::size() ) {
+		// let's make a new mask
+		mask.fill(Qt::color0);
+		QPainter maskPainter(&mask);
+		
+		// draw the old mask in the center
+		maskPainter.drawPixmap((width()  - pm.width() ) / 2, 
+		                       (height() - pm.height()) / 2, pm.mask());
+		
+		QPixmap newPix(QWidget::size());
+		QPainter pixPainter( &newPix );
+		
+		// draw the old pixmap in the center
+		pixPainter.drawPixmap((width() - pm.width())/2, 
+					(height() - pm.height())/2, pm);
+		newPix.setMask(mask);
+		pix = newPix;
+	}
+	else {
+		pix = pm;
+		mask = pm.mask(); 
+	}
+
+	setMask(mask);
+	setWindowIcon(pix);
 	repaint();
 }
 
 void TrayIcon::TrayIconPrivate::paintEvent(QPaintEvent *)
 {
 	QPainter p(this);
-	p.drawPixmap((width() - pix.width())/2, (height() - pix.height())/2, pix);
+	p.drawPixmap(0, 0, pix);
 }
 
 void TrayIcon::TrayIconPrivate::enterEvent(QEvent *e)
 {
+        // bwalle: fixes a crash, don't know much about X11 events, but works 
+        return;
+		//qt_x_time = 1;
 	// Taken from KSystemTray..
 //#if QT_VERSION < 0x030200
-	if ( !qApp->focusWidget() ) {
+	//if ( !qApp->focusWidget() ) {
 		XEvent ev;
 		memset(&ev, 0, sizeof(ev));
-		ev.xfocus.display = QX11Info::display();
+		ev.xfocus.display = QX11Info::display(); //x11AppDisplay();
 		ev.xfocus.type = FocusIn;
 		ev.xfocus.window = winId();
 		ev.xfocus.mode = NotifyNormal;
 		ev.xfocus.detail = NotifyAncestor;
-		Time time = QX11Info::appTime();
-		QX11Info::setAppTime(1);
+		//Time time = qt_x_time;
+		//qt_x_time = 1;
 		qApp->x11ProcessEvent( &ev );
-		QX11Info::setAppTime(time);
-	}
+		//qt_x_time = time;
+	//}
 //#endif
 	QWidget::enterEvent(e);
 }

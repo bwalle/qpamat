@@ -49,7 +49,7 @@ TrayIcon::TrayIcon( QObject *parent, const char *name )
 
   \sa show
 */
-TrayIcon::TrayIcon( const QPixmap &icon, const QString &tooltip, Q3PopupMenu *popup, QObject *parent, const char *name )
+TrayIcon::TrayIcon( const QPixmap &icon, const QString &tooltip, QMenu *popup, QObject *parent, const char *name )
 : QObject(parent, name), pop(popup), pm(icon), tip(tooltip), d(0)
 {
 	v_isWMDock = FALSE;
@@ -83,7 +83,7 @@ void TrayIcon::newTrayOwner()
   Sets the context menu to \a popup. The context menu will pop up when the
   user clicks the system tray entry with the right mouse button.
 */
-void TrayIcon::setPopup( Q3PopupMenu* popup )
+void TrayIcon::setPopup( QMenu* popup )
 {
     pop = popup;
 }
@@ -93,7 +93,7 @@ void TrayIcon::setPopup( Q3PopupMenu* popup )
 
   \sa setPopup
 */
-Q3PopupMenu* TrayIcon::popup() const
+QMenu* TrayIcon::popup() const
 {
     return pop;
 }
