@@ -1,6 +1,10 @@
 Win 32 notes
 ============
 
+Requirements to build the setup packages:
+ * Qt 4.1.0 from http://www.trolltech.com
+ * OpenSSL from http://www.slproweb.com/products/Win32OpenSSL.html
+
 Create setup package:
 
  * unpack Unix tar.gz
@@ -8,7 +12,8 @@ Create setup package:
  * run "qmake qpamat.pro"
  * run "make"
  * run "lrelease qpamat.pro"
- * copy QtGui4.dll, QtXml4.dll, Qt3Support4.dll and QtCore4.dll to bin
+ * copy libeay32.dll, mingwm10.dll, Qt3Support4.dll, QtCore4.dll,
+   QtGui4.dll, QtNetwork4.dll, QtSql4.dll, QtXml4.dll to bin
  * right click on qpamat.nsi and choose "Compile NSI script"
  * rename qpamat-setup.exe to qpamat-setup-version.exe
 
