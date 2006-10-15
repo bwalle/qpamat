@@ -25,6 +25,7 @@
 #include <QClipboard>
 #include <QPushButton>
 #include <QHBoxLayout>
+#include <QDialogButtonBox>
 #include <QVBoxLayout>
 
 #include "qpamat.h"
@@ -88,37 +89,29 @@ ShowPasswordDialog::ShowPasswordDialog(QWidget* parent, DialogType type, const c
     m_passwordEdit->setMinimumWidth(250);
     m_passwordEdit->setFocusPolicy(Qt::NoFocus);
     
-    QPushButton* closeButton = new QPushButton(tr("&Close"), this);
-    closeButton->setDefault(true);
+    QDialogButtonBox *dialogButtons = new QDialogButtonBox(QDialogButtonBox::Close,
+            Qt::Horizontal, this);
+    dialogButtons->button(QDialogButtonBox::Close)->setDefault(true);
     
     QPushButton* insertButton = 0;
     
-    if (type == TRandomPasswordDlgInsert)
-    {
-        insertButton = new QPushButton(tr("&Insert"), this);
-    }
-    
     // create layouts
     QVBoxLayout* layout = new QVBoxLayout(this);
-    QHBoxLayout* buttonLayout = new QHBoxLayout(0);
-    buttonLayout->setSpacing(6);
     
     // layout elements
-    buttonLayout->addStretch(10);
-    if (insertButton)
+    if (type == TRandomPasswordDlgInsert)
     {
-        buttonLayout->addWidget(insertButton);
+        insertButton = dialogButtons->addButton(tr("&Insert"), QDialogButtonBox::ActionRole);
     }
-    buttonLayout->addWidget(closeButton);
     
     layout->addWidget(label);
     layout->addWidget(m_passwordEdit);
     layout->addSpacing(7);
-    layout->addLayout(buttonLayout);
+    layout->addWidget(dialogButtons);
     
     
     // communication
-    connect(closeButton, SIGNAL(clicked()), SLOT(reject()));
+    connect(dialogButtons->button(QDialogButtonBox::Close), SIGNAL(clicked()), SLOT(reject()));
     if (insertButton)
     {
         connect(insertButton, SIGNAL(clicked()), SLOT(insertButtonHandler()));

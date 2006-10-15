@@ -207,11 +207,6 @@ void ConfDlgGeneralTab::createAndLayout()
     // auto login
     m_autoLoginCheckbox = new QCheckBox(tr("Enable &AutoLogin on startup"), startupGroup);
     
-    // labels  & edit fields
-    QLabel* browserLabel = new QLabel(tr("&Web Browser (full path if not in PATH environment):"), 
-        locationsGroup);
-    m_browserEdit = new FileLineEdit(locationsGroup, false);
-    
     QLabel* datafileLabel = new QLabel(tr("&Data File:"), locationsGroup);
     m_datafileEdit = new FileLineEdit(locationsGroup, true);
     
@@ -226,7 +221,6 @@ void ConfDlgGeneralTab::createAndLayout()
     m_urlEdit = new QLineEdit(autoTextGroup);
     
     // set buddys
-    browserLabel->setBuddy(m_browserEdit);
     datafileLabel->setBuddy(m_datafileEdit);
     miscLabel->setBuddy(m_miscEdit);
     usernameLabel->setBuddy(m_usernameEdit);
@@ -250,7 +244,6 @@ void ConfDlgGeneralTab::createAndLayout()
 void ConfDlgGeneralTab::fillSettings()
 {
     m_autoLoginCheckbox->setChecked(qpamat->set().readBoolEntry("General/AutoLogin"));
-    m_browserEdit->setContent(qpamat->set().readEntry("General/Webbrowser"));
     m_datafileEdit->setContent(qpamat->set().readEntry("General/Datafile"));
     m_miscEdit->setText(qpamat->set().readEntry("AutoText/Misc"));
     m_usernameEdit->setText(qpamat->set().readEntry("AutoText/Username"));
@@ -265,7 +258,6 @@ void ConfDlgGeneralTab::fillSettings()
 void ConfDlgGeneralTab::applySettings()
 {
     qpamat->set().writeEntry("General/AutoLogin", m_autoLoginCheckbox->isChecked() );
-    qpamat->set().writeEntry("General/Webbrowser", m_browserEdit->getContent() );
     qpamat->set().writeEntry("General/Datafile", m_datafileEdit->getContent() );
     qpamat->set().writeEntry("AutoText/Misc", m_miscEdit->text() );
     qpamat->set().writeEntry("AutoText/Username", m_usernameEdit->text() );
@@ -690,6 +682,10 @@ void ConfDlgPresentationTab::createAndLayout()
     // Systray
     m_systrayCB = new QCheckBox(tr("Show icon in system tray (needs restart!)"),
         systemTrayGroup, "IconInSystemtray");
+    if (!QSystemTrayIcon::isSystemTrayAvailable())
+    {
+        m_systrayCB->setEnabled(false);
+    }
     m_hiddenCB = new QCheckBox(tr("Start hidden"), systemTrayGroup, "StartHidden");
     
     // buddys

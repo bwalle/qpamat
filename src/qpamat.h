@@ -27,11 +27,11 @@
 #include <Q3PopupMenu>
 #include <QCloseEvent>
 #include <QLabel>
+#include <QSystemTrayIcon>
 
 #include "settings.h"
 #include "randompassword.h"
 #include "help.h"
-#include "ext/trayicon.h"
 
 // forward declarations
 class Tree;
@@ -63,9 +63,9 @@ class Qpamat : public QMainWindow
         void exportData();
         bool exportOrSave();
         void handleTrayiconClick();
+        void handleTrayiconClick(QSystemTrayIcon::ActivationReason reason);
         void exitHandler();
         void dockActivated();
-        void newTrayOwner();
         
     signals:
         void insertPassword(const QString& password);
@@ -123,7 +123,7 @@ class Qpamat : public QMainWindow
         bool                m_loggedIn;
         bool                m_modified;
         Actions             m_actions;
-        TrayIcon*           m_trayIcon;
+        QSystemTrayIcon*    m_trayIcon;
         QRect               m_lastGeometry;
     
     private:

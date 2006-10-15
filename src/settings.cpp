@@ -51,7 +51,6 @@ Settings::Settings()
     DEF_BOOLEA("Main Window/maximized",          false);
     DEF_STRING("Main Window/SearchHistory",      "");
     DEF_STRING("Main Window/Layout",             "");
-    DEF_STRING("General/Webbrowser",             "mozilla");
     DEF_STRING("General/Datafile",               QDir::homeDirPath() + "/.qpamat");
     DEF_BOOLEA("General/AutoLogin",              true);
     DEF_STRING("AutoText/Misc",                  "");

@@ -22,6 +22,7 @@
 #include <QLabel>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QDialogButtonBox>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QGridLayout>
@@ -69,7 +70,6 @@ NewPasswordDialog::NewPasswordDialog(QWidget* parent, const QString& oldPassword
     PasswordValidator* validator = new PasswordValidator(this);
     m_firstPasswordEdit->setValidator(validator);
     m_secondPasswordEdit->setValidator(validator);
-    
     
     // communication
     connect(m_okButton, SIGNAL(clicked()), SLOT(accept()));
@@ -136,23 +136,19 @@ void NewPasswordDialog::createAndLayout()
     
     
     // buttons
-    m_okButton = new QPushButton(tr("OK"), this);
-    m_okButton->setDefault(true);
+    QDialogButtonBox *dialogButtons = new QDialogButtonBox(
+            QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
+            Qt::Horizontal, this);
+    m_okButton = dialogButtons->button(QDialogButtonBox::Ok);
     m_okButton->setEnabled(false);
-    m_cancelButton = new QPushButton(tr("Cancel"), this);
+    m_okButton->setDefault(true);
+    m_cancelButton = dialogButtons->button(QDialogButtonBox::Cancel);
     
     
     // create layouts
     QVBoxLayout* layout = new QVBoxLayout(this);
     QGridLayout* textfields = new QGridLayout(0);//, 2, (m_oldPassword.isNull() ? 2 : 3), 0, 6);
-    QHBoxLayout* buttonLayout = new QHBoxLayout(0);
-    buttonLayout->setSpacing(6);
     
-    
-    // layout elements
-    buttonLayout->addStretch(10);
-    buttonLayout->addWidget(m_okButton);
-    buttonLayout->addWidget(m_cancelButton);
     
     int i = 0;
     if (!m_oldPassword.isNull())
@@ -169,7 +165,7 @@ void NewPasswordDialog::createAndLayout()
     layout->addWidget(label);
     layout->addLayout(textfields);
     layout->addSpacing(7);
-    layout->addLayout(buttonLayout);
+    layout->addWidget(dialogButtons);
 }
 
 

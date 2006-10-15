@@ -20,6 +20,7 @@
 #include <QLabel>
 #include <Q3HBox>
 #include <QPushButton>
+#include <QDialogButtonBox>
 #include <QPixmap>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -72,8 +73,9 @@ InsertCardDialog::InsertCardDialog(bool pin, QWidget* parent, const char* name)
    
     QLabel* label = new QLabel(tr(strings[pin]), this, "Label");
     
-    Q3HBox* box = new Q3HBox(this, "Box");
-    box->setSpacing(8);
+    QDialogButtonBox *dialogButtons = new QDialogButtonBox(
+            QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
+            Qt::Horizontal, this);
     
     if (pin)
     {
@@ -82,27 +84,10 @@ InsertCardDialog::InsertCardDialog(bool pin, QWidget* parent, const char* name)
         m_pinEdit->setEchoMode(QLineEdit::Password);
     }
     
-    QWidget* dummyLeft = new QWidget(box, "Left dummy");
-    m_okButton = new QPushButton(tr("OK"), box, "m_okButton");
+    m_okButton = dialogButtons->button(QDialogButtonBox::Ok);
     m_okButton->setDefault(true);
-    m_cancelButton = new QPushButton(tr("Cancel"), box, "CancelButton");
+    m_cancelButton = dialogButtons->button(QDialogButtonBox::Cancel);
     
-    // no spacing
-    m_cancelButton->setAutoDefault(false);
-    
-    QWidget* dummyRight = 0;
-    if (!pin)
-    {
-        dummyRight = new QWidget(box, "Rigth dummy");
-    }
-    
-    box->setStretchFactor(dummyLeft, 5);
-    box->setStretchFactor(m_okButton, 0);
-    box->setStretchFactor(m_cancelButton, 0);
-    if (!pin)
-    {
-        box->setStretchFactor(dummyRight, 5);
-    }
     
     // layout
     mainLayout->addWidget(leftIcon, 0, Qt::AlignLeft| Qt::AlignTop);
@@ -116,7 +101,7 @@ InsertCardDialog::InsertCardDialog(bool pin, QWidget* parent, const char* name)
     }
     rightLayout->addSpacing(10);
     //rightLayout->addStretch();
-    rightLayout->addWidget(box);
+    rightLayout->addWidget(dialogButtons);
     
     connect(m_okButton, SIGNAL(clicked()), SLOT(accept()));
     connect(m_cancelButton, SIGNAL(clicked()), SLOT(reject()));

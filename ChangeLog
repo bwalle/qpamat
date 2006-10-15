@@ -1,3 +1,12 @@
+Mon Oct 16 00:15:00 2006  Bernhard Walle <bernhard.walle@gmx.de>
+
+	* Require Qt 4.2
+	* Remove TrayIcon implementation and use the implementation
+	  of Qt 4.2
+	* Use QDialogButtonBox in all dialogs
+	* Use QDesktopServices for opening the web browser and remove
+	  the corresponding setting
+
 Fri Feb 17 22:00:00 2006  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Important Bugfix: Retry of smartcard store writes the correct

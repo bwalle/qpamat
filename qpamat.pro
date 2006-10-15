@@ -67,7 +67,6 @@ SOURCES     =                                   \
     src/util/singleapplication.cpp              \
     src/util/docktimeoutapplication.cpp         \
     src/util/windowfunctions.cpp                \
-    src/ext/trayicon.cpp                        \
     src/datareadwriter.cpp                      \
     src/timerstatusmessage.cpp                  \
     src/randompassword.cpp                      \
@@ -81,16 +80,6 @@ SOURCES     =                                   \
     src/rightlistview.cpp                       \
     src/southpanel.cpp                          \
     src/main.cpp                                
-
-unix:!mac {
-    SOURCES += src/ext/trayicon_x11.cpp
-}
-win32: {
-    SOURCES += src/ext/trayicon_win.cpp
-}
-mac: {
-    SOURCES += src/ext/trayicon_mac.cpp
-}
 
 
 # -----------------------------------------------------------------------------
@@ -137,7 +126,6 @@ HEADERS     =                                   \
     src/util/singleapplication.h                \
     src/util/docktimeoutapplication.h           \
     src/util/windowfunctions.h                  \
-    src/ext/trayicon.h                          \
     src/datareadwriter.h                        \
     src/timerstatusmessage.h                    \
     src/treeentry.h                             \
@@ -176,7 +164,7 @@ isEmpty(static) {
 
 # -----------------------------------------------------------------------------
 
-DEFINES    += VERSION_STRING=\"$$VERSION_STRING\" 
+DEFINES    += VERSION_STRING=\"\\\"$$VERSION_STRING\\\"\" 
 DEFINES    += MAJOR_VERSION=$$MAJOR_VERSION
 DEFINES    += MINOR_VERSION=$$MINOR_VERSION
 DEFINES    += PATCH_VERSION=$$PATCH_VERSION

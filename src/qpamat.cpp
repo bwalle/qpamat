@@ -59,7 +59,7 @@
 #ifdef Q_WS_WIN
 #  define TRAY_ICON_FILE_NAME ":/images/qpamat_16.png"
 #else
-#  define TRAY_ICON_FILE_NAME ":/images/qpamat_22.png"
+#  define TRAY_ICON_FILE_NAME ":/images/qpamat_34.png"
 #endif
 
 #define CON_MM(x)( int( ( (x)/25.4)*dpiy ) )
@@ -175,7 +175,23 @@ Qpamat::Qpamat()
     }
     
     // tray icon
-    newTrayOwner();
+    if (set().readBoolEntry("Presentation/SystemTrayIcon"))
+    {
+        QMenu* trayPopup = new QMenu(this);
+        trayPopup->addAction(m_actions.showHideAction);
+        trayPopup->addAction(m_actions.quitActionNoKeyboardShortcut);
+
+        m_trayIcon = new QSystemTrayIcon(QPixmap(TRAY_ICON_FILE_NAME), this);
+        m_trayIcon->setToolTip(tr("QPaMaT"));
+        m_trayIcon->setContextMenu(trayPopup);
+        m_trayIcon->show();
+        // hack to prevent icontray events to interfere with the timeout mechanism
+        //dynamic_cast<DockTimeoutApplication*>(qApp)->addReceiverToIgnore(m_trayIcon);
+        //dynamic_cast<DockTimeoutApplication*>(qApp)->addReceiverToIgnore(m_trayIcon->d);
+
+        connect(m_trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+                SLOT(handleTrayiconClick(QSystemTrayIcon::ActivationReason)));
+    }
     
     connectSignalsAndSlots();
     
@@ -377,26 +393,37 @@ void Qpamat::setModified(bool modified)
 }
 
 /*!
-    Handles single click on the tray icon. If the window is shown, it is hidden. Else, it is
-    shown again.
+    Needed to connect with a signal that has no ActivationReason parameter.
 */
 void Qpamat::handleTrayiconClick()
 {
-    if (isShown())
+    handleTrayiconClick(QSystemTrayIcon::Trigger);
+}
+
+/*!
+    Handles single click on the tray icon. If the window is shown, it is hidden. Else, it is
+    shown again.
+*/
+void Qpamat::handleTrayiconClick(QSystemTrayIcon::ActivationReason reason)
+{
+    if (reason == QSystemTrayIcon::Trigger)
     {
-        m_lastGeometry = geometry();
-        hide();
-        m_actions.showHideAction->setMenuText(tr("&Show"));
-    }
-    else
-    {
-        if (!(m_lastGeometry.x() == 0 && m_lastGeometry.y() == 0
-                && m_lastGeometry.width() == 0 && m_lastGeometry.height() == 0))
+        if (isShown())
         {
-            setGeometry(m_lastGeometry);
+            m_lastGeometry = geometry();
+            hide();
+            m_actions.showHideAction->setMenuText(tr("&Show"));
         }
-        WindowFunctions::bringToFront(this);
-        m_actions.showHideAction->setMenuText(tr("&Hide")); 
+        else
+        {
+            if (!(m_lastGeometry.x() == 0 && m_lastGeometry.y() == 0
+                        && m_lastGeometry.width() == 0 && m_lastGeometry.height() == 0))
+            {
+                setGeometry(m_lastGeometry);
+            }
+            WindowFunctions::bringToFront(this);
+            m_actions.showHideAction->setMenuText(tr("&Hide")); 
+        }
     }
 }
 
@@ -416,35 +443,6 @@ void Qpamat::dockActivated()
     }
 }
 
-
-/*!
-    Slot that is called if the tray owner changes. This function is also called
-    initially to set the tray owner.
-*/
-void Qpamat::newTrayOwner()
-{
-    if (set().readBoolEntry("Presentation/SystemTrayIcon"))
-    {
-        if (m_trayIcon)
-        {
-            m_trayIcon->newTrayOwner();
-        }
-        else
-        {
-            QMenu* trayPopup = new QMenu(this);
-            trayPopup->addAction(m_actions.showHideAction);
-            trayPopup->addAction(m_actions.quitActionNoKeyboardShortcut);
-            
-            m_trayIcon = new TrayIcon(QPixmap(TRAY_ICON_FILE_NAME), tr("QPaMaT"), trayPopup, this);
-            m_trayIcon->show();
-            // hack to prevent icontray events to interfere with the timeout mechanism
-            //dynamic_cast<DockTimeoutApplication*>(qApp)->addReceiverToIgnore(m_trayIcon);
-            dynamic_cast<DockTimeoutApplication*>(qApp)->addReceiverToIgnore(m_trayIcon->d);
-            
-            connect(m_trayIcon, SIGNAL(clicked( const QPoint&, int)), SLOT(handleTrayiconClick()));
-        }
-    }
-}
 
 /*!
     Does the login.
@@ -990,11 +988,11 @@ void Qpamat::connectSignalsAndSlots()
     connect(dynamic_cast<DockTimeoutApplication*>(qApp), SIGNAL(timedOut()), SLOT(logout()));
     
     // tray icon
-    if (set().readBoolEntry("Presentation/SystemTrayIcon"))
+    if (set().readBoolEntry("Presentation/SystemTrayIcon") && 
+            QSystemTrayIcon::isSystemTrayAvailable())
     {
         connect(qApp, SIGNAL(dockActivated()), SLOT(dockActivated()));
         connect(qApp, SIGNAL(trayOwnerDied()), SLOT(dockActivated()));
-        connect(qApp, SIGNAL(newTrayOwner()), SLOT(newTrayOwner()));
     }
     
     // previously I used a hidden action for this, but this doesn't work in Qt4 any more

@@ -24,6 +24,8 @@
 #include <Q3Process>
 #include <QTextCodec>
 #include <QFile>
+#include <QDesktopServices>
+#include <QUrl>
 
 #include "global.h"
 #include "qpamat.h"
@@ -85,15 +87,11 @@ void Help::showHelp()
 */
 void Help::openURL(QWidget* parent, const QString& url)
 {
-    QString command = qpamat->set().readEntry("/General/Webbrowser");
-    Q3Process* process = new Q3Process(command, parent);
-    process->addArgument(url);
-    
-    if (! process->start())
+    if (!QDesktopServices::openUrl(QUrl(url)))
     {
         QMessageBox::critical(parent, "QPaMaT",
-            tr("<qt><p>Failed to open the link <tt>%1</tt> in the specified web browser."
-                " The command was:</p><p><tt><nobr>%2</tt></nobr></p></qt>").arg(url).arg(
-                command+" " + url), QMessageBox::Ok, QMessageBox::NoButton);
+            tr("<qt><p>Failed to open the link <tt>%1</tt> in "
+                "the specified web browser.</p></qt>").arg(url), 
+            QMessageBox::Ok, QMessageBox::NoButton);
     }
 }

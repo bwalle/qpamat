@@ -18,6 +18,7 @@
 #include <QDialog>
 #include <QLineEdit>
 #include <QLayout>
+#include <QDialogButtonBox>
 #include <Q3HBox>
 #include <QLabel>
 #include <QPushButton>
@@ -61,29 +62,21 @@ PasswordDialog::PasswordDialog(QWidget* parent, const char* name)
     m_passwordEdit->setEchoMode(QLineEdit::Password);
     m_passwordEdit->setMinimumWidth(250);
     
-    QPushButton* okButton = new QPushButton(tr("OK"), this);
-    okButton->setDefault(true);
-    
-    QPushButton* cancelButton = new QPushButton(tr("Cancel"), this);
+    QDialogButtonBox *dialogButtons = new QDialogButtonBox(
+            QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
+    dialogButtons->button(QDialogButtonBox::Ok)->setDefault(true);
     
     // create layouts
     QVBoxLayout* layout = new QVBoxLayout(this);
-    QHBoxLayout* buttonLayout = new QHBoxLayout(0);
-    buttonLayout->setSpacing(6);
-    
-    // layout elements
-    buttonLayout->addStretch(10);
-    buttonLayout->addWidget(okButton);
-    buttonLayout->addWidget(cancelButton);
     
     layout->addWidget(label);
     layout->addWidget(m_passwordEdit);
     layout->addSpacing(7);
-    layout->addLayout(buttonLayout);
+    layout->addWidget(dialogButtons);
     
     // communication
-    connect(okButton, SIGNAL(clicked()), SLOT(accept()));
-    connect(cancelButton, SIGNAL(clicked()), SLOT(reject()));
+    connect(dialogButtons, SIGNAL(accepted()), SLOT(accept()));
+    connect(dialogButtons, SIGNAL(rejected()), SLOT(reject()));
     
     if (!qpamat->set().readBoolEntry("Password/NoGrabbing"))
     {

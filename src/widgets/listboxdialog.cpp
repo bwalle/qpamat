@@ -24,6 +24,7 @@
 #include <QPixmap>
 #include <QVBoxLayout>
 #include <Q3Frame>
+#include <QDialogButtonBox>
 
 #include "global.h"
 #include "listboxdialog.h"
@@ -97,7 +98,8 @@ ListBoxDialog::ListBoxDialog(QWidget* parent, const char* name)
 {
     QVBoxLayout* vboxLayout = new QVBoxLayout(this, 8, 2, "ConfDlg-Vbox");
     Q3HBox* mainHBox = new Q3HBox(this, "ConfDlg-MainHBox");
-    Q3HBox* buttonHBox = new Q3HBox(this, "ConfDlg-ButtonHBox");
+    QDialogButtonBox *buttonHBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, 
+            Qt::Horizontal, this);
     
     m_listBox = new Q3ListBox(mainHBox, "ConfDlg-Listbox");
     m_listBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
@@ -111,15 +113,6 @@ ListBoxDialog::ListBoxDialog(QWidget* parent, const char* name)
 #endif
     m_widgetStack = new Q3WidgetStack(mainHBox, "ConfDlg-Widget");
     
-    // buttons
-    (void)new QWidget(buttonHBox);
-    buttonHBox->setSpacing(7);
-    QPushButton* okButton = new QPushButton(tr("OK"), buttonHBox, "OkButton");
-    QPushButton* cancelButton = new QPushButton(tr("Cancel"), buttonHBox, "CancelButton");
-    okButton->setDefault(true);
-    okButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    cancelButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    
     // horizontal line
     QLabel* horizontalLine = new QLabel(this, "ConfDlg-Hline");
     horizontalLine->setFrameStyle(Q3Frame::HLine | Q3Frame::Sunken);
@@ -132,10 +125,13 @@ ListBoxDialog::ListBoxDialog(QWidget* parent, const char* name)
     vboxLayout->addWidget(buttonHBox);
     vboxLayout->setStretchFactor(mainHBox, 2);
     vboxLayout->setStretchFactor(buttonHBox, 0);
+
+    // set default button
+    buttonHBox->button(QDialogButtonBox::Ok)->setDefault(true);
     
     // signals & slots
-    connect(okButton, SIGNAL(clicked()), SLOT(accept()));
-    connect(cancelButton, SIGNAL(clicked()), SLOT(reject())); 
+    connect(buttonHBox, SIGNAL(accepted()), SLOT(accept()));
+    connect(buttonHBox, SIGNAL(rejected()), SLOT(reject())); 
     connect(m_listBox, SIGNAL(highlighted(int)), m_widgetStack, SLOT(raiseWidget(int)));
     connect(m_widgetStack, SIGNAL(aboutToShow(QWidget*)), SLOT(aboutToShowHandler(QWidget*)));
 }

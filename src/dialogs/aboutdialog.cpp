@@ -18,6 +18,7 @@
 #include "aboutdialog.h"
 
 #include <QLabel>
+#include <QDialogButtonBox>
 #include <Q3HBox>
 #include <Q3VBox>
 #include <QFile>
@@ -70,22 +71,16 @@ AboutDialog::AboutDialog(QWidget* parent, const char* name = 0)
     setupLicenseTab();
     
     // the ok Button
-    QPushButton* okButton = new QPushButton(tr("&Close"), this, "Close button");
-    okButton->setDefault(true);
-    QWidget* filler2 = new QWidget(this);
-    QHBoxLayout* buttonLayout = new QHBoxLayout(0, 0, 6);
-    buttonLayout->addWidget(filler2);
-    buttonLayout->addWidget(okButton);
-    buttonLayout->setStretchFactor(filler2, 1);
-    buttonLayout->setStretchFactor(okButton, 0);
+    QDialogButtonBox *dialogButtons = new QDialogButtonBox(QDialogButtonBox::Close,
+            Qt::Horizontal, this);
     
     // main layout
     m_mainLayout->addWidget(titleBox);
     m_mainLayout->addWidget(m_tabWidget);
     m_mainLayout->addStretch(5);
-    m_mainLayout->addLayout(buttonLayout);
+    m_mainLayout->addWidget(dialogButtons);
     
-    connect(okButton, SIGNAL(clicked()), SLOT(accept()));
+    connect(dialogButtons, SIGNAL(clicked(QAbstractButton *)), SLOT(accept()));
     
 }
 

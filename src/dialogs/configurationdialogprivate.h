@@ -52,7 +52,6 @@ class ConfDlgGeneralTab : public ListBoxDialogPage
         
     private:
         QCheckBox*      m_autoLoginCheckbox;
-        FileLineEdit*   m_browserEdit;
         FileLineEdit*   m_datafileEdit;
         QLineEdit*      m_miscEdit;
         QLineEdit*      m_usernameEdit;
