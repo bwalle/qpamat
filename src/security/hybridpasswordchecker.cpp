@@ -221,7 +221,7 @@ int HybridPasswordChecker::findNumerOfCharsInClass(const QString& chars) const
     int ret = 0;
     bool hasDigits = false, hasLowercase = false, hasUppercase = false, hasUmlauts = false;
     bool hasSpecial = false, hasOther = false;
-    for (uint i = 0; i < chars.length(); ++i)
+    for (int i = 0; i < chars.length(); ++i)
     {
         QChar c = chars[i];
         if (c.latin1() == 0)

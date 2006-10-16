@@ -91,13 +91,13 @@ QString CollectEncryptor::decryptStrFromStr(const QString& string)
             "\"SMARTCARD\"");
     }
     bool ok;
-    uint offset = list[1].toUInt(&ok);
+    int offset = list[1].toUInt(&ok);
     if (!ok)
     {
         throw std::invalid_argument("CollectEncryptor::decryptStrFromStr: list[1] is not a "
             "positive integer");
     }
-    uint length = list[2].toUInt(&ok);
+    int length = list[2].toUInt(&ok);
     if (!ok)
     {
         throw std::invalid_argument("CollectEncryptor::decryptStrFromStr: list[1] is not a "

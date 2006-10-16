@@ -52,7 +52,6 @@
 #include "dialogs/newpassworddialog.h"
 #include "dialogs/configurationdialog.h"
 #include "util/docktimeoutapplication.h"
-#include "util/windowfunctions.h"
 #include "tree.h"
 #include "rightpanel.h"
 
@@ -126,7 +125,7 @@ Qpamat::Qpamat()
     
     // Tree on the left
     QDockWidget* dock = new QDockWidget(tr("Sites"), this);
-    dock->setFeatures(QDockWidget::DockWidgetMovable);
+    dock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     dock->setObjectName("Sites");
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     dock->setMinimumWidth(int(qApp->desktop()->width() * 0.15));
@@ -185,9 +184,9 @@ Qpamat::Qpamat()
         m_trayIcon->setToolTip(tr("QPaMaT"));
         m_trayIcon->setContextMenu(trayPopup);
         m_trayIcon->show();
+
         // hack to prevent icontray events to interfere with the timeout mechanism
-        //dynamic_cast<DockTimeoutApplication*>(qApp)->addReceiverToIgnore(m_trayIcon);
-        //dynamic_cast<DockTimeoutApplication*>(qApp)->addReceiverToIgnore(m_trayIcon->d);
+        dynamic_cast<DockTimeoutApplication*>(qApp)->addReceiverToIgnore(m_trayIcon);
 
         connect(m_trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
                 SLOT(handleTrayiconClick(QSystemTrayIcon::ActivationReason)));
@@ -421,7 +420,7 @@ void Qpamat::handleTrayiconClick(QSystemTrayIcon::ActivationReason reason)
             {
                 setGeometry(m_lastGeometry);
             }
-            WindowFunctions::bringToFront(this);
+            show();
             m_actions.showHideAction->setMenuText(tr("&Hide")); 
         }
     }

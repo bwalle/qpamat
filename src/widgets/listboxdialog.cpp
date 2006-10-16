@@ -165,7 +165,10 @@ bool ListBoxDialog::event(QEvent* e)
         }
         return true;
     }
-    return false;
+    else
+    {
+        return QDialog::event(e);
+    }
 }
 
 

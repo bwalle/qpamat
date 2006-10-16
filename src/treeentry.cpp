@@ -156,7 +156,9 @@ QString TreeEntry::text(int column) const
 */
 void TreeEntry::setText(int column, const QString& text)
 {
+    UNUSED(column);
     Q_ASSERT(column == 0);
+
     m_name = text;
     listView()->sort();
     listView()->triggerUpdate();

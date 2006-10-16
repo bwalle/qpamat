@@ -29,6 +29,13 @@ typedef Q3ValueVector<int>       IntVector;
 typedef QMap<QString, QString>  StringMap;
 typedef Q3ValueVector<QChar>     QCharVector;
 
+/**
+ * Unused parameters.
+ *
+ * @param param the unused parameter
+ */
+#define UNUSED(param) (void)param;
+
 
 // Copyright (c) 2003 Benedikt Meurer (benedikt.meurer@unix-ag.uni-siegen.de)
 // xfwm4: debug.h

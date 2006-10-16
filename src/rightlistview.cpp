@@ -275,6 +275,9 @@ void RightListView::doubleClickHandler(Q3ListViewItem* item)
 void RightListView::mouseButtonClickedHandler(int but, Q3ListViewItem* item, 
                                               const QPoint& point, int col)
 {
+    UNUSED(point);
+    UNUSED(col);
+
     if (but == Qt::MidButton)
     {
         copyItem(item);

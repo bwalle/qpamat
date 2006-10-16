@@ -1,3 +1,10 @@
+Mon Oct 16 15:00:00 2006  Bernhard Walle <bernhard.walle@gmx.de>
+
+	* Removed bringToFront(), a simple show() also works
+	* fix code to compile without warnings
+	* Bugfix: ESC and ENTER work now in the configuration dialog
+	* Released 0.5.2.
+
 Mon Oct 16 00:15:00 2006  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Require Qt 4.2

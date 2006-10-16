@@ -18,6 +18,7 @@
 #include <QString>
 
 #include "cardpinvalidator.h"
+#include "global.h"
 
 /*!
     \class CardPINValidator 
@@ -56,6 +57,8 @@ CardPINValidator::CardPINValidator(QObject* parent, const char* name )
 */
 CardPINValidator::State CardPINValidator::validate(QString& input, int& pos) const
 {
+    UNUSED(pos);
+
     // invalid characters
     QRegExp hex("^[0-9a-fA-F]*$");
     if (!hex.exactMatch(input))

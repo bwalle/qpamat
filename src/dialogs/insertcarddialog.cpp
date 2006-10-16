@@ -25,6 +25,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 
+#include "global.h"
 #include "insertcarddialog.h"
 
 
@@ -132,6 +133,7 @@ QString InsertCardDialog::getPIN() const
 */
 void InsertCardDialog::pinEditHandler(const QString& text)
 {
+    UNUSED(text);
     Q_ASSERT( m_pinEdit );
     
     m_okButton->setEnabled(m_pinEdit->hasAcceptableInput());

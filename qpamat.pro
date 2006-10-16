@@ -23,10 +23,10 @@ win32:LIBS        += -lgdi32 c:\openssl\lib\MinGW\ssleay32.a \
 
 ################################################################################
 
-VERSION_STRING     = 0.5.1
+VERSION_STRING     = 0.5.2
 MAJOR_VERSION      = 0
 MINOR_VERSION      = 5
-PATCH_VERSION      = 1
+PATCH_VERSION      = 2
 
 ################################################################################
 
@@ -66,7 +66,6 @@ SOURCES     =                                   \
     src/util/stringdisplay.cpp                  \
     src/util/singleapplication.cpp              \
     src/util/docktimeoutapplication.cpp         \
-    src/util/windowfunctions.cpp                \
     src/datareadwriter.cpp                      \
     src/timerstatusmessage.cpp                  \
     src/randompassword.cpp                      \
@@ -125,7 +124,6 @@ HEADERS     =                                   \
     src/util/stringdisplay.h                    \
     src/util/singleapplication.h                \
     src/util/docktimeoutapplication.h           \
-    src/util/windowfunctions.h                  \
     src/datareadwriter.h                        \
     src/timerstatusmessage.h                    \
     src/treeentry.h                             \

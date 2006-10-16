@@ -67,7 +67,7 @@ QString RandomPasswordGenerator::getPassword(uint length, const QString& pAllowe
         allowedChars.replace("0-9", "0123456789");
     }
     
-    while (ret.length() < length)
+    while (ret.length() < (int)length)
     {
         if (RAND_bytes(buffer, 1) == 0)
         {

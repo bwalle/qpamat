@@ -335,6 +335,8 @@ PasswordValidator::PasswordValidator(QObject* parent, const char* name)
 */
 PasswordValidator::State PasswordValidator::validate(QString& input, int& pos) const
 {
+    UNUSED(pos);
+
     if (input.length() < 6)
     {
         return QValidator::Intermediate;
