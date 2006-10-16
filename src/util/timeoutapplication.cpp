@@ -25,11 +25,11 @@
 #endif
 #include <QDesktopWidget>
 
-#include "docktimeoutapplication.h"
+#include "timeoutapplication.h"
 #include "global.h"
 
 /*!
-    \class DockTimeoutApplication
+    \class TimeoutApplication
     
     \brief Support for a application that wants to trigger an inactivity action after a timeout
     
@@ -116,14 +116,14 @@ void setTrayOwnerWindow(Display *dsp)
 
 
 /*!
-    Creates a new DockTimeoutApplication object. 
+    Creates a new TimeoutApplication object. 
     
     See QApplication::QApplication(int&, char**) for details.
     
     \param argc the args of the main() function
     \param argv the argv of the main() function
 */
-DockTimeoutApplication::DockTimeoutApplication(int& argc, char** argv)
+TimeoutApplication::TimeoutApplication(int& argc, char** argv)
     : QApplication(argc, argv), m_timeout(0), m_timer(0), m_temporaryDisabled(false)
 {
     init();
@@ -131,7 +131,7 @@ DockTimeoutApplication::DockTimeoutApplication(int& argc, char** argv)
 
 
 /*!
-    Creates a new DockTimeoutApplication object. 
+    Creates a new TimeoutApplication object. 
     
     See QApplication::QApplication(int&, char**, bool) for details.
     
@@ -139,7 +139,7 @@ DockTimeoutApplication::DockTimeoutApplication(int& argc, char** argv)
     \param argv the argv of the main() function
     \param guiEnabled if it is a GUI application
 */
-DockTimeoutApplication::DockTimeoutApplication(int& argc, char** argv, bool guiEnabled)
+TimeoutApplication::TimeoutApplication(int& argc, char** argv, bool guiEnabled)
     : QApplication(argc, argv, guiEnabled), m_timeout(0), m_timer(0), m_temporaryDisabled(false)
 {
     init();
@@ -149,7 +149,7 @@ DockTimeoutApplication::DockTimeoutApplication(int& argc, char** argv, bool guiE
 /*!
     Common init function because in C++ a constructor cannot call another constructor.
 */
-void DockTimeoutApplication::init()
+void TimeoutApplication::init()
 {
     m_timer = new QTimer(this);
     connect(m_timer, SIGNAL(timeout()), SIGNAL(timedOut()));
@@ -195,7 +195,7 @@ void DockTimeoutApplication::init()
 }
 
 /*!
-    \property DockTimeoutApplication::timeout
+    \property TimeoutApplication::timeout
     
     The inactivity timeout after that the timedOut signal should be triggered. The value
     must be positive, negative values are not permitted.
@@ -206,7 +206,7 @@ void DockTimeoutApplication::init()
     
     \return the timeout
 */
-int DockTimeoutApplication::getTimeout() const
+int TimeoutApplication::getTimeout() const
 {
     return m_timeout;
 }
@@ -218,25 +218,25 @@ int DockTimeoutApplication::getTimeout() const
     
     \param timeout the timeout in milliseconds
 */
-void DockTimeoutApplication::setTimeout(int timeout)
+void TimeoutApplication::setTimeout(int timeout)
 {
     m_timeout = timeout;
 }
 
 
 /*!
-    \property DockTimeoutApplication::temporaryDisabled
+    \property TimeoutApplication::temporaryDisabled
 
     Sometimes, the call of the timedOut() function has to disabled temporary without loosing
     the timeout value. To do this, set temporaryDisabled to true.
 */
 
 /*!
-    Checks if the DockTimeoutApplication is disabled temporary.
+    Checks if the TimeoutApplication is disabled temporary.
     
     \return \c true if it is disabled, \c false if not
 */
-bool DockTimeoutApplication::isTemporaryDisabled() const
+bool TimeoutApplication::isTemporaryDisabled() const
 {
     return m_temporaryDisabled;
 }
@@ -246,7 +246,7 @@ bool DockTimeoutApplication::isTemporaryDisabled() const
     
     \param disabled \c true if it should be disabled, \c false if not
 */
-void DockTimeoutApplication::setTemporaryDisabled(bool disabled)
+void TimeoutApplication::setTemporaryDisabled(bool disabled)
 {
     m_timer->stop();
     m_temporaryDisabled = disabled;
@@ -261,7 +261,7 @@ void DockTimeoutApplication::setTemporaryDisabled(bool disabled)
 
     \param receiver the receiver to ignore
 */
-void DockTimeoutApplication::addReceiverToIgnore(void* receiver)
+void TimeoutApplication::addReceiverToIgnore(void* receiver)
 {
     m_receiversToIgnore.append(receiver);
 }
@@ -269,11 +269,11 @@ void DockTimeoutApplication::addReceiverToIgnore(void* receiver)
 
 /*!
     Removes receivers to ignore from timeout. See also 
-    DockTimeoutApplication::addReceiverToIgnore().
+    TimeoutApplication::addReceiverToIgnore().
 
     \param receiver the receiver to remove
 */
-void DockTimeoutApplication::removeReceiverToIgnore(void* receiver)
+void TimeoutApplication::removeReceiverToIgnore(void* receiver)
 {
     m_receiversToIgnore.removeAll(receiver);
 }
@@ -282,7 +282,7 @@ void DockTimeoutApplication::removeReceiverToIgnore(void* receiver)
 /*!
     Clears the list of receivers to ignore.
 */
-void DockTimeoutApplication::clearReceiversToIgnore()
+void TimeoutApplication::clearReceiversToIgnore()
 {
     m_receiversToIgnore.clear();
 }
@@ -294,7 +294,7 @@ void DockTimeoutApplication::clearReceiversToIgnore()
     \param receiver the receiver
     \param e the event
 */
-bool DockTimeoutApplication::notify(QObject* receiver, QEvent* e)
+bool TimeoutApplication::notify(QObject* receiver, QEvent* e)
 {
     if (!m_temporaryDisabled && m_timeout != 0 && 
             (e->type() == QEvent::MouseButtonPress || e->type() == QEvent::MouseButtonRelease
@@ -310,80 +310,9 @@ bool DockTimeoutApplication::notify(QObject* receiver, QEvent* e)
 
 
 /*!
-    \fn DockTimeoutApplication::timedOut()
+    \fn TimeoutApplication::timedOut()
     
     Signal that is emitted if the inactivity timeout occured.
 */
 
-#ifdef Q_WS_X11
-bool DockTimeoutApplication::x11EventFilter( XEvent *_event )
-{
-	switch ( _event->type ) {
 
-		case ClientMessage:
-			if (_event->xclient.window == root_window && _event->xclient.message_type == manager_atom)
-			{
-				// A new notification area application has
-				// announced its presence
-				setTrayOwnerWindow(_event->xclient.display);
-				emit newTrayOwner();
-				break;
-			}
-		case DestroyNotify:
-			if (_event->xdestroywindow.event == tray_owner)
-			{
-				// there is now no known notification area.
-				// We're still looking out for the MANAGER
-				// message sent to the root window, at which
-				// point we'll have another look to see
-				// whether a notification area is available.
-				tray_owner = 0;
-				emit trayOwnerDied();
-				break;
-			}
-            break;
-
-		default:
-			break;
-	}
-
-	// process the event normally
-	return false;
-}
-#endif
-
-
-#ifdef Q_WS_MAC
-bool DockTimeoutApplication::macEventFilter(EventHandlerCallRef, EventRef inEvent)
-{
-	UInt32 eclass = GetEventClass(inEvent);
-	int etype = GetEventKind(inEvent);
-	
-    if (eclass == 'eppc' && etype == kEventAppleEvent) 
-    {
-		dockActivated();
-	}
-    
-	return false;
-}
-#endif
-
-
-/*!
-    \fn DockTimeoutApplication::dockActivated
-    
-    Emitted if the dock was activated. Don't know really what this means, function is from
-    Psi.
-*/
-
-/*!
-    \fn DockTimeoutApplication::newTrayOwner()
-    
-    Emitted if the system tray has a new owner. Only occures on X11.
-*/
-
-/*!
-    \fn DockTimeoutApplication::trayOwnerDied
-    
-    Emitted if the tray owner died. Only occures on X11.
-*/

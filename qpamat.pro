@@ -65,7 +65,7 @@ SOURCES     =                                   \
     src/smartcard/notinitializedexception.cpp   \
     src/util/stringdisplay.cpp                  \
     src/util/singleapplication.cpp              \
-    src/util/docktimeoutapplication.cpp         \
+    src/util/timeoutapplication.cpp             \
     src/datareadwriter.cpp                      \
     src/timerstatusmessage.cpp                  \
     src/randompassword.cpp                      \
@@ -123,7 +123,7 @@ HEADERS     =                                   \
     src/util/stdrandomnumbergenerator.h         \
     src/util/stringdisplay.h                    \
     src/util/singleapplication.h                \
-    src/util/docktimeoutapplication.h           \
+    src/util/timeoutapplication.h               \
     src/datareadwriter.h                        \
     src/timerstatusmessage.h                    \
     src/treeentry.h                             \

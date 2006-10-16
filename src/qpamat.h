@@ -65,7 +65,6 @@ class Qpamat : public QMainWindow
         void handleTrayiconClick();
         void handleTrayiconClick(QSystemTrayIcon::ActivationReason reason);
         void exitHandler();
-        void dockActivated();
         
     signals:
         void insertPassword(const QString& password);

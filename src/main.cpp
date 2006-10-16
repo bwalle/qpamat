@@ -37,7 +37,7 @@
 #include "settings.h"
 #include "main.h"
 #include "util/singleapplication.h"
-#include "util/docktimeoutapplication.h"
+#include "util/timeoutapplication.h"
 
 #ifdef Q_WS_X11
 #include <unistd.h>
@@ -149,7 +149,7 @@ void getX11Version(QString& protocolVersion, QString& vendorVersion)
 
 int main(int argc, char** argv)
 {
-    DockTimeoutApplication app(argc, argv);
+    TimeoutApplication app(argc, argv);
     parseCommandLine(argc, argv);
     
     // translation

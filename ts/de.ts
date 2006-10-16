@@ -540,7 +540,7 @@ It must consist of six hexadecimal digits:</source>
     <message>
         <location filename="../src/dialogs/newpassworddialog.cpp" line="122"/>
         <source>Enter the &lt;b&gt;passphrase&lt;/b&gt; two times for verification. The minimum length&lt;br&gt; must be six characters, but for security reasons more than two&lt;br&gt; words are good!</source>
-        <translation>Geben Sie die &lt;b&gt;Passphrase&lt;/b&gt; zweimal zur Bestätigung ein. Die minimale Länge&lt;br&gt; beträgt sechs Zeichen, aus Sicherheitsgründen&lt;br&gt; sind mehr als zwei Wörter gut!</translation>
+        <translation>Geben Sie die &lt;b&gt;Passphrase&lt;/b&gt; zweimal zur Bestätigung ein. Die minimale&lt;br&gt; Länge beträgt sechs Zeichen, aus Sicherheitsgründen sind mehr als&lt;br&gt; zwei Wörter gut!</translation>
     </message>
 </context>
 <context>

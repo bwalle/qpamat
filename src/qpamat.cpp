@@ -51,7 +51,7 @@
 #include "dialogs/passworddialog.h"
 #include "dialogs/newpassworddialog.h"
 #include "dialogs/configurationdialog.h"
-#include "util/docktimeoutapplication.h"
+#include "util/timeoutapplication.h"
 #include "tree.h"
 #include "rightpanel.h"
 
@@ -174,7 +174,8 @@ Qpamat::Qpamat()
     }
     
     // tray icon
-    if (set().readBoolEntry("Presentation/SystemTrayIcon"))
+    if (set().readBoolEntry("Presentation/SystemTrayIcon") && 
+            QSystemTrayIcon::isSystemTrayAvailable())
     {
         QMenu* trayPopup = new QMenu(this);
         trayPopup->addAction(m_actions.showHideAction);
@@ -186,7 +187,7 @@ Qpamat::Qpamat()
         m_trayIcon->show();
 
         // hack to prevent icontray events to interfere with the timeout mechanism
-        dynamic_cast<DockTimeoutApplication*>(qApp)->addReceiverToIgnore(m_trayIcon);
+        dynamic_cast<TimeoutApplication*>(qApp)->addReceiverToIgnore(m_trayIcon);
 
         connect(m_trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
                 SLOT(handleTrayiconClick(QSystemTrayIcon::ActivationReason)));
@@ -427,21 +428,6 @@ void Qpamat::handleTrayiconClick(QSystemTrayIcon::ActivationReason reason)
 }
 
 
-/*!
-    This function is called if the dock is activated (or destroyed). Don't really know
-    what "activated" means here, just copied this from Psi.
-*/
-void Qpamat::dockActivated()
-{
-    if (isHidden())
-    {
-        show();
-        dynamic_cast<DockTimeoutApplication*>(qApp)->clearReceiversToIgnore();
-        delete m_trayIcon;
-        m_trayIcon = 0;
-    }
-}
-
 
 /*!
     Does the login.
@@ -562,7 +548,7 @@ void Qpamat::setLogin(bool loggedIn)
     
     if (loggedIn)
     {
-        dynamic_cast<DockTimeoutApplication*>(qApp)->setTimeout(
+        dynamic_cast<TimeoutApplication*>(qApp)->setTimeout(
             set().readNumEntry("Security/AutoLogout")
         );
     }
@@ -708,7 +694,7 @@ bool Qpamat::logout()
     if (m_modified)
     {
         PRINT_TRACE("Disable timeout action temporary");
-        dynamic_cast<DockTimeoutApplication*>(qApp)->setTemporaryDisabled(true);
+        dynamic_cast<TimeoutApplication*>(qApp)->setTemporaryDisabled(true);
         
         int ret = QMessageBox::question(this, "QPaMaT", tr("There is modified data that was not saved."
             "\nDo you want to save it now?"), QMessageBox::Yes | QMessageBox::Default,
@@ -728,7 +714,7 @@ bool Qpamat::logout()
         }
         
         PRINT_TRACE("Enable timeout action again");
-        dynamic_cast<DockTimeoutApplication*>(qApp)->setTemporaryDisabled(false);
+        dynamic_cast<TimeoutApplication*>(qApp)->setTemporaryDisabled(false);
     }
     
     setLogin(false);
@@ -984,15 +970,7 @@ void Qpamat::connectSignalsAndSlots()
         SIGNAL(insertPassword(const QString&)));
         
     // auto logout
-    connect(dynamic_cast<DockTimeoutApplication*>(qApp), SIGNAL(timedOut()), SLOT(logout()));
-    
-    // tray icon
-    if (set().readBoolEntry("Presentation/SystemTrayIcon") && 
-            QSystemTrayIcon::isSystemTrayAvailable())
-    {
-        connect(qApp, SIGNAL(dockActivated()), SLOT(dockActivated()));
-        connect(qApp, SIGNAL(trayOwnerDied()), SLOT(dockActivated()));
-    }
+    connect(dynamic_cast<TimeoutApplication*>(qApp), SIGNAL(timedOut()), SLOT(logout()));
     
     // previously I used a hidden action for this, but this doesn't work in Qt4 any more
     QShortcut* focusSearch = new QShortcut(QKeySequence(Qt::CTRL|Qt::Key_G), this);
