@@ -13,9 +13,9 @@
 		</affiliation>
 	</author>
 
-	<pubdate>2005-07-24</pubdate>
+	<pubdate>2006-10-16</pubdate>
 	
-	<releaseinfo>Version 0.5.0</releaseinfo>   
+	<releaseinfo>Version 0.5.2</releaseinfo>   
 	
 	<copyright>
 		<year>2003-2005</year>
@@ -290,18 +290,6 @@
             on startup automatically. Otherwise, you have to
             choose <menuchoice><guimenu>File</guimenu>
             <guimenuitem>Login</guimenuitem></menuchoice> manually.</para>
-        </listitem>
-      </varlistentry>
-      <varlistentry>
-        <term>Web browser location</term>
-        <listitem>
-          <para>Choose the location of the web browser which is opened
-            if you double-click a URL in the list and which will be used
-            to display the help. If the browser is in <envar>PATH</envar>,
-            you may only specify the executable name such as
-            <filename>firefox</filename>. On Microsoft Windows, you
-            always have to specify the full path, e.g. 
-            <filename>c:\program files\mozilla\mozilla.exe</filename>.</para>
         </listitem>
       </varlistentry>
       <varlistentry>

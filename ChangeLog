@@ -3,6 +3,8 @@ Mon Oct 16 15:00:00 2006  Bernhard Walle <bernhard.walle@gmx.de>
 	* Removed bringToFront(), a simple show() also works
 	* fix code to compile without warnings
 	* Bugfix: ESC and ENTER work now in the configuration dialog
+	* removed Web Browser setting in documentation (it was
+	  replaced by QDesktopServices automatism)
 	* Released 0.5.2.
 
 Mon Oct 16 00:15:00 2006  Bernhard Walle <bernhard.walle@gmx.de>
