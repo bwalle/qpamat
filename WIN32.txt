@@ -2,7 +2,7 @@ Win 32 notes
 ============
 
 Requirements to build the setup packages:
- * Qt 4.1.0 from http://www.trolltech.com
+ * Qt 4.2.0 from http://www.trolltech.com
  * OpenSSL from http://www.slproweb.com/products/Win32OpenSSL.html
 
 Create setup package:
