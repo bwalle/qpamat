@@ -1,4 +1,4 @@
-Mon Oct 16 18:00:00 2006  Bernhard Walle <bernhard.walle@gmx.de>
+Mon Oct 16 22:00:00 2006  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Removed bringToFront(), a simple show() also works
 	* fix code to compile without warnings
@@ -6,6 +6,7 @@ Mon Oct 16 18:00:00 2006  Bernhard Walle <bernhard.walle@gmx.de>
 	* removed Web Browser setting in documentation (it was
 	  replaced by QDesktopServices automatism)
 	* added OpenSSL exception to the license
+	* use QLocale instead of std::ostringstream
 	* Released 0.5.2.
 
 Mon Oct 16 00:15:00 2006  Bernhard Walle <bernhard.walle@gmx.de>

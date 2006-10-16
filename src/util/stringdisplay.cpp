@@ -15,11 +15,8 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
-#include <locale>
-#include <sstream>
-#include <string>
-
 #include <QObject>
+#include <QLocale>
 
 #include "stringdisplay.h"
 
@@ -46,19 +43,17 @@ QString StringDisplay::displayTimeSuitable(double days)
 {
     if (days > 365)
     {
+        QLocale loc;
+
         int num = int(days / 365);
-        
-        std::ostringstream outStream;
-        outStream.imbue(std::locale(""));
-        outStream << num;
         
         if (num <= 1)
         {
-            return QObject::tr("%1 year").arg(outStream.str().c_str());
+            return QObject::tr("%1 year").arg(loc.toString(num));
         }
         else
         {
-            return QObject::tr("%1 years").arg(outStream.str().c_str());
+            return QObject::tr("%1 years").arg(loc.toString(num));
         }
     }
     else if (days > 30)
