@@ -156,9 +156,23 @@ int main(int argc, char** argv)
     QTranslator translator(0), ttranslator(0);
     QString loc = QTextCodec::locale();
     translator.load(loc, qApp->applicationDirPath() + "/../share/qpamat/translations/");
-    ttranslator.load(QString("qt_") + loc, QString(getenv("QTDIR")) + "/translations/");
-    ttranslator.load(QString("qt_") + loc, "/usr/share/qt4/translations");
-    ttranslator.load(QString("qt_") + loc, qApp->applicationDirPath() + "/../share/qpamat/translations/");
+
+    QString dirs[] = {
+            QString(getenv("QTDIR")) + "/translations/",
+            QString("/usr/share/qt4/translations"),
+            qApp->applicationDirPath() + "/../share/qpamat/translations/"
+    };
+
+    for (unsigned int i = 0; i < sizeof(dirs)/sizeof(dirs[0]); i++)
+    {
+        QDir test(dirs[i]);
+        if (test.exists())
+        {
+            ttranslator.load(QString("qt_") + loc, dirs[i]);
+            break;
+        }
+    }
+
     app.installTranslator(&translator);
     app.installTranslator(&ttranslator);
     
