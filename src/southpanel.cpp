@@ -88,7 +88,7 @@ SouthPanel::SouthPanel(QWidget* parent)
     : Q3Frame(parent), m_lastStrength(Property::PUndefined)
 {
     QHBoxLayout* hLayout = new QHBoxLayout(this, 0, 10, "SouthPanel-QHBoxLayout");
-    Q3GroupBox* group = new Q3GroupBox(2, Qt::Horizontal, QString::null, this, "SouthPanel-GroupBox");
+    Q3GroupBox* group = new Q3GroupBox(2, Qt::Horizontal, tr("&Properties"), this, "SouthPanel-GroupBox");
     
     m_updatePasswordQualityTimer = new QTimer(this, "Timer");
     

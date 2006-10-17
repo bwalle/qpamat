@@ -441,12 +441,12 @@ um die Einstellungen zu testen:</translation>
 <context>
     <name>InsertCardDialog</name>
     <message>
-        <location filename="../src/dialogs/insertcarddialog.cpp" line="62"/>
+        <location filename="../src/dialogs/insertcarddialog.cpp" line="64"/>
         <source>Insert the card in the reader.</source>
         <translation>Legen Sie die Karte in den Leser ein.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/insertcarddialog.cpp" line="65"/>
+        <location filename="../src/dialogs/insertcarddialog.cpp" line="67"/>
         <source>Enter the PIN and insert the card in your reader.
 It must consist of six hexadecimal digits:</source>
         <translation>Geben Sie die PIN ein und legen Sie die Karte in Ihren Leser ein. Sie muss aus sechs hexadezimalen Ziffern bestehen:</translation>
@@ -454,12 +454,12 @@ It must consist of six hexadecimal digits:</source>
     <message>
         <location filename="../src/dialogs/insertcarddialog.cpp" line="86"/>
         <source>OK</source>
-        <translation>OK</translation>
+        <translation type="obsolete">OK</translation>
     </message>
     <message>
         <location filename="../src/dialogs/insertcarddialog.cpp" line="88"/>
         <source>Cancel</source>
-        <translation>Abbrechen</translation>
+        <translation type="obsolete">Abbrechen</translation>
     </message>
 </context>
 <context>
@@ -564,52 +564,52 @@ It must consist of six hexadecimal digits:</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/util/stringdisplay.cpp" line="57"/>
+        <location filename="../src/util/stringdisplay.cpp" line="52"/>
         <source>%1 year</source>
         <translation>%1 Jahr</translation>
     </message>
     <message>
-        <location filename="../src/util/stringdisplay.cpp" line="61"/>
+        <location filename="../src/util/stringdisplay.cpp" line="56"/>
         <source>%1 years</source>
         <translation>%1 Jahre</translation>
     </message>
     <message>
-        <location filename="../src/util/stringdisplay.cpp" line="69"/>
+        <location filename="../src/util/stringdisplay.cpp" line="64"/>
         <source>%1 month</source>
         <translation>%1 Monat</translation>
     </message>
     <message>
-        <location filename="../src/util/stringdisplay.cpp" line="73"/>
+        <location filename="../src/util/stringdisplay.cpp" line="68"/>
         <source>%1 months</source>
         <translation>%1 Monate</translation>
     </message>
     <message>
-        <location filename="../src/util/stringdisplay.cpp" line="81"/>
+        <location filename="../src/util/stringdisplay.cpp" line="76"/>
         <source>%1 week</source>
         <translation>%1 Woche</translation>
     </message>
     <message>
-        <location filename="../src/util/stringdisplay.cpp" line="85"/>
+        <location filename="../src/util/stringdisplay.cpp" line="80"/>
         <source>%1 weeks</source>
         <translation>%1 Wochen</translation>
     </message>
     <message>
-        <location filename="../src/util/stringdisplay.cpp" line="93"/>
+        <location filename="../src/util/stringdisplay.cpp" line="88"/>
         <source>%1 day</source>
         <translation>%1 Tag</translation>
     </message>
     <message>
-        <location filename="../src/util/stringdisplay.cpp" line="97"/>
+        <location filename="../src/util/stringdisplay.cpp" line="92"/>
         <source>%1 days</source>
         <translation>%1 Tage</translation>
     </message>
     <message>
-        <location filename="../src/util/stringdisplay.cpp" line="105"/>
+        <location filename="../src/util/stringdisplay.cpp" line="100"/>
         <source>a few minutes</source>
         <translation>einige Minuten</translation>
     </message>
     <message>
-        <location filename="../src/util/stringdisplay.cpp" line="109"/>
+        <location filename="../src/util/stringdisplay.cpp" line="104"/>
         <source>%1 hours</source>
         <translation>%1 Stunden</translation>
     </message>
@@ -763,7 +763,7 @@ OpenSSL neu kompilieren oder zu aktualisieren.</translation>
 <context>
     <name>Qpamat</name>
     <message>
-        <location filename="../src/qpamat.cpp" line="128"/>
+        <location filename="../src/qpamat.cpp" line="127"/>
         <source>Sites</source>
         <translation>Seiten</translation>
     </message>
@@ -773,7 +773,7 @@ OpenSSL neu kompilieren oder zu aktualisieren.</translation>
         <translation>Anwendung</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1091"/>
+        <location filename="../src/qpamat.cpp" line="1069"/>
         <source>Search</source>
         <translation>Suchen</translation>
     </message>
@@ -808,7 +808,7 @@ OpenSSL neu kompilieren oder zu aktualisieren.</translation>
         <translation>&amp;Extras</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1068"/>
+        <location filename="../src/qpamat.cpp" line="1046"/>
         <source>&amp;Help</source>
         <translation>&amp;Hilfe</translation>
     </message>
@@ -818,89 +818,89 @@ OpenSSL neu kompilieren oder zu aktualisieren.</translation>
         <translation type="obsolete">QPaMaT XML-Dateien (*.xml)</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="693"/>
+        <location filename="../src/qpamat.cpp" line="678"/>
         <source>QPaMaT</source>
         <translation>QPaMaT</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="715"/>
+        <location filename="../src/qpamat.cpp" line="700"/>
         <source>There is modified data that was not saved.
 Do you want to save it now?</source>
         <translation>Daten wurden modifiziert aber nicht gespeichert.
 Wollen Sie jetzt speichern?</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="798"/>
+        <location filename="../src/qpamat.cpp" line="783"/>
         <source>Please enter a search criterion in the text field!</source>
         <translation>Bitte geben Sie in Suchkriterium in das Textfeld ein!</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="871"/>
+        <location filename="../src/qpamat.cpp" line="856"/>
         <source>QPaMaT - Password managing tool for Unix, Windows and MacOS X</source>
         <translation>QPaMaT - Passwort-Management-Tool für Unix, Windows und MacOS X</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="879"/>
+        <location filename="../src/qpamat.cpp" line="864"/>
         <source>page</source>
         <translation>Seite</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1011"/>
+        <location filename="../src/qpamat.cpp" line="989"/>
         <source>&amp;New</source>
         <translation>&amp;Neu</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1022"/>
+        <location filename="../src/qpamat.cpp" line="1000"/>
         <source>E&amp;xit</source>
         <translation>&amp;Beenden</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1026"/>
+        <location filename="../src/qpamat.cpp" line="1004"/>
         <source>&amp;Login</source>
         <translation>&amp;Einloggen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="539"/>
+        <location filename="../src/qpamat.cpp" line="524"/>
         <source>&amp;Logout</source>
         <translation>&amp;Ausloggen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1031"/>
+        <location filename="../src/qpamat.cpp" line="1009"/>
         <source>&amp;Save</source>
         <translation>&amp;Speichern</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1036"/>
+        <location filename="../src/qpamat.cpp" line="1014"/>
         <source>&amp;Export...</source>
         <translation>&amp;Exportieren...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1040"/>
+        <location filename="../src/qpamat.cpp" line="1018"/>
         <source>&amp;Print...</source>
         <translation>&amp;Drucken...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1044"/>
+        <location filename="../src/qpamat.cpp" line="1022"/>
         <source>&amp;Change Password...</source>
         <translation>&amp;Passwort ändern...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1048"/>
+        <location filename="../src/qpamat.cpp" line="1026"/>
         <source>&amp;Settings...</source>
         <translation>&amp;Einstellungen...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1052"/>
+        <location filename="../src/qpamat.cpp" line="1030"/>
         <source>&amp;Random Password...</source>
         <translation>&amp;Zufallspasswort...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1055"/>
+        <location filename="../src/qpamat.cpp" line="1033"/>
         <source>&amp;Show password strength</source>
         <translation>&amp;Passwortstärke anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1062"/>
+        <location filename="../src/qpamat.cpp" line="1040"/>
         <source>&amp;Clear clipboard</source>
         <translation>&amp;Zwischenablage löschen</translation>
     </message>
@@ -910,22 +910,22 @@ Wollen Sie jetzt speichern?</translation>
         <translation type="obsolete">&amp;Kontexthilfe</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1073"/>
+        <location filename="../src/qpamat.cpp" line="1051"/>
         <source>&amp;About...</source>
         <translation>&amp;Über...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1076"/>
+        <location filename="../src/qpamat.cpp" line="1054"/>
         <source>About &amp;Qt...</source>
         <translation>Über &amp;Qt...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1081"/>
+        <location filename="../src/qpamat.cpp" line="1059"/>
         <source>Add item</source>
         <translation>Eintrag hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1086"/>
+        <location filename="../src/qpamat.cpp" line="1064"/>
         <source>Remove item</source>
         <translation>Eintrag entfernen</translation>
     </message>
@@ -935,7 +935,7 @@ Wollen Sie jetzt speichern?</translation>
         <translation type="obsolete">Suchfeld &amp;fokussieren</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="662"/>
+        <location filename="../src/qpamat.cpp" line="647"/>
         <source>The file you&apos;ve choosen exists. Do you overwrite it?</source>
         <translation>Die gewählte Datei existiert bereits. Soll sie überschrieben werden?</translation>
     </message>
@@ -945,37 +945,37 @@ Wollen Sie jetzt speichern?</translation>
         <translation type="obsolete">&amp;Überschreiben</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="694"/>
+        <location filename="../src/qpamat.cpp" line="679"/>
         <source>An error occured while saving the file.</source>
         <translation>Ein Fehler ist beim Speichern aufgetreten.</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="646"/>
+        <location filename="../src/qpamat.cpp" line="631"/>
         <source>QPaMaT XML files (*.xml);;Text files with cleartext password (*.txt)</source>
         <translation>QPaMaT XML-Dateien (*.xml);;Textdateien mit Klartextpasswort (*.txt)</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="663"/>
+        <location filename="../src/qpamat.cpp" line="648"/>
         <source>&amp;Overwrite</source>
         <translation>&amp;Überschreiben</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="663"/>
+        <location filename="../src/qpamat.cpp" line="648"/>
         <source>&amp;Don&apos;t export</source>
         <translation>&amp;Nicht exportieren</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="540"/>
+        <location filename="../src/qpamat.cpp" line="525"/>
         <source>Logout</source>
         <translation>Ausloggen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="549"/>
+        <location filename="../src/qpamat.cpp" line="534"/>
         <source>Login</source>
         <translation>Einloggen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1093"/>
+        <location filename="../src/qpamat.cpp" line="1071"/>
         <source>&amp;Show</source>
         <translation>&amp;Anzeigen</translation>
     </message>
@@ -1049,7 +1049,7 @@ Prüfen Sie Ihre Einstellungen!</translation>
         <translation>Doppelklick wird nur bei Passwörtern und URLs unterstützt!</translation>
     </message>
     <message>
-        <location filename="../src/rightlistview.cpp" line="356"/>
+        <location filename="../src/rightlistview.cpp" line="359"/>
         <source>No item selected!</source>
         <translation>Kein Eintrag ausgewählt!</translation>
     </message>
@@ -1118,6 +1118,11 @@ Prüfen Sie Ihre Einstellungen!</translation>
         <location filename="../src/southpanel.cpp" line="270"/>
         <source>&lt;qt&gt;&lt;nobr&gt;Failed to calculate the password strength. The error message&lt;/nobr&gt; was:&lt;p&gt;%1&lt;p&gt;Check your configuration!&lt;/qt&gt;</source>
         <translation>&lt;qt&gt;&lt;nobr&gt;Berechnung der Passwortstärke fehlgeschlagen. Die Fehlermeldung&lt;/nobr&gt; lautete:&lt;p&gt;%1&lt;p&gt;Prüfen Sie Ihre Konfiguration!&lt;/qt&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/southpanel.cpp" line="91"/>
+        <source>&amp;Properties</source>
+        <translation>&amp;Eigenschaften</translation>
     </message>
 </context>
 <context>
@@ -1196,7 +1201,7 @@ Prüfen Sie Ihre Einstellungen!</translation>
 <context>
     <name>TreeEntry</name>
     <message>
-        <location filename="../src/treeentry.cpp" line="395"/>
+        <location filename="../src/treeentry.cpp" line="397"/>
         <source>Cannot dray to itself.</source>
         <translation>Eintrag kann nicht auf sich selbst gezogen werden.</translation>
     </message>
