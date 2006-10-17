@@ -14,6 +14,7 @@ Create setup package:
  * run "lrelease qpamat.pro"
  * copy libeay32.dll, mingwm10.dll, Qt3Support4.dll, QtCore4.dll,
    QtGui4.dll, QtNetwork4.dll, QtSql4.dll, QtXml4.dll to bin
+ * copy qt_*.qm translations from QTDIR/translations to ts/
  * right click on qpamat.nsi and choose "Compile NSI script"
  * rename qpamat-setup.exe to qpamat-setup-version.exe
 
