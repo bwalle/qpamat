@@ -158,8 +158,8 @@ int main(int argc, char** argv)
     translator.load(loc, qApp->applicationDirPath() + "/../share/qpamat/translations/");
 
     QString dirs[] = {
-            QString(getenv("QTDIR")) + "/translations/",
             QString("/usr/share/qt4/translations"),
+            QString(getenv("QTDIR")) + "/translations/",
             qApp->applicationDirPath() + "/../share/qpamat/translations/"
     };
 
