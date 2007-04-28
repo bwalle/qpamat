@@ -1,3 +1,8 @@
+Sun Apr 22 00:53:00 2007  Bernhard Walle <bernhard.walle@gmx.de>
+
+	* use only width information of the current screen, not of all screens
+	  on a multihead configuration
+
 Tue Oct 17 23:00:00 2006  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* QString::null as QGroupBox label doesn't work, so give it a

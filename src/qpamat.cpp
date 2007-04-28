@@ -25,6 +25,7 @@
 #include <QToolBar>
 #include <QMenuBar>
 #include <QIcon>
+#include <QDesktopWidget>
 #include <QPixmap>
 #include <QAbstractTextDocumentLayout>
 #include <QStatusBar>
@@ -40,7 +41,6 @@
 #include <QCursor>
 #include <QFileDialog>
 #include <QCloseEvent>
-#include <QDesktopWidget>
 
 
 #include "qpamat.h"
@@ -52,8 +52,8 @@
 #include "dialogs/newpassworddialog.h"
 #include "dialogs/configurationdialog.h"
 #include "util/timeoutapplication.h"
-#include "tree.h"
 #include "rightpanel.h"
+#include "tree.h"
 
 #ifdef Q_WS_WIN
 #  define TRAY_ICON_FILE_NAME ":/images/qpamat_16.png"
@@ -114,6 +114,8 @@ Qpamat::Qpamat()
       m_rightPanel(0), m_searchCombo(0), m_randomPassword(0), m_trayIcon(0), 
       m_lastGeometry(0, 0, 0, 0)
 {
+    QRect geometry;
+
     // Title and Icon
     setIcon(QPixmap(":/images/qpamat_48.png"));
     setCaption("QPaMaT");
@@ -122,13 +124,16 @@ Qpamat::Qpamat()
     
     // Random password, we need this for the tree
     m_randomPassword = new RandomPassword(this, "Random Password");
+
+    // retrieve the geometry only from the current screen
+    geometry = qApp->desktop()->screenGeometry(this);
     
     // Tree on the left
     QDockWidget* dock = new QDockWidget(tr("Sites"), this);
     dock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     dock->setObjectName("Sites");
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-    dock->setMinimumWidth(int(qApp->desktop()->width() * 0.15));
+    dock->setMinimumWidth(int(geometry.width() * 0.15));
     
     m_tree = new Tree(dock);
     dock->setWidget(m_tree);
@@ -142,7 +147,7 @@ Qpamat::Qpamat()
     initActions();
     initMenubar();
     initToolbar();
-    
+  
     // display statusbar
     statusBar();
     m_message = new TimerStatusmessage(statusBar());
@@ -162,8 +167,8 @@ Qpamat::Qpamat()
     else
     {
         resize(
-            set().readNumEntry("Main Window/width", int(qApp->desktop()->width() * 0.6) ),
-            set().readNumEntry("Main Window/height", int(qApp->desktop()->height() / 2.0) )
+            set().readNumEntry("Main Window/width", int(geometry.width() * 0.6) ),
+            set().readNumEntry("Main Window/height", int(geometry.height() / 2.0) )
         );
     }
     QString rightpanel = set().readEntry("Main Window/rightpanelLayout");
