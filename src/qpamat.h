@@ -41,6 +41,8 @@ class TimerStatusmessage;
 class Qpamat : public QMainWindow
 {
     Q_OBJECT
+
+    friend class QpamatAdaptor;
     
     public:
         Qpamat();

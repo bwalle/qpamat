@@ -23,10 +23,10 @@ win32:LIBS        += -lgdi32 c:\openssl\lib\MinGW\ssleay32.a \
 
 ################################################################################
 
-VERSION_STRING     = 0.5.2
+VERSION_STRING     = 0.5.3
 MAJOR_VERSION      = 0
 MINOR_VERSION      = 5
-PATCH_VERSION      = 2
+PATCH_VERSION      = 3
 
 ################################################################################
 
@@ -80,6 +80,9 @@ SOURCES     =                                   \
     src/southpanel.cpp                          \
     src/main.cpp                                
 
+unix:!mac {
+    SOURCES += src/qpamatadaptor.cpp
+}
 
 # -----------------------------------------------------------------------------
 
@@ -136,6 +139,10 @@ HEADERS     =                                   \
     src/southpanel.h                            \
     src/help.h
 
+unix:!mac {
+    HEADERS += src/qpamatadaptor.h
+}
+
 # -----------------------------------------------------------------------------
 
 TRANSLATIONS =                                  \
@@ -158,6 +165,10 @@ isEmpty(static) {
   LIBS       += /usr/lib/qt3/lib/libqt-mt.a -lfreetype -lXft -lz -lpthread \
                  -lpng -lX11 -lXext -lXinerama -lXi -lSM -lXcursor -lXrandr -lGL
   CONFIG     += qt warn_on exceptions thread
+}
+
+unix:!mac {
+  CONFIG     += qdbus
 }
 
 # -----------------------------------------------------------------------------

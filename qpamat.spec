@@ -1,6 +1,6 @@
 Summary: 	Password manager written with Qt
 Name: 		qpamat
-Version: 	0.5.2
+Version: 	0.5.3
 Release: 	0
 Packager:       Bernhard Walle <bernhard@bwalle.de>
 License:	GPL

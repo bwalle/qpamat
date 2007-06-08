@@ -30,6 +30,8 @@
 #include <QDir>
 #include <QTextCodec>
 #include <QTranslator>
+#include <QtDBus>
+#include <QDBusConnection>
 
 #include "qpamat.h"
 
@@ -38,6 +40,7 @@
 #include "main.h"
 #include "util/singleapplication.h"
 #include "util/timeoutapplication.h"
+#include "qpamatadaptor.h"
 
 #ifdef Q_WS_X11
 #include <unistd.h>
@@ -187,6 +190,13 @@ int main(int argc, char** argv)
         qp = std::auto_ptr<Qpamat>(new Qpamat());
         qpamat = qp.get();
         app.setMainWidget(qpamat);
+
+#ifdef Q_WS_X11
+	// register the remote interface
+	new QpamatAdaptor(qpamat);
+	QDBusConnection::sessionBus().registerService("de.berlios.Qpamat");
+	QDBusConnection::sessionBus().registerObject("/Qpamat", qpamat);
+#endif	
         
         QObject::connect(qpamat, SIGNAL(quit()), &app, SLOT(quit()));
         if (!(qpamat->set().readBoolEntry("Presentation/StartHidden")

@@ -1,3 +1,8 @@
+Fri Jun 08 19:22:00 2007  Bernhard Walle <bernhard.walle@gmx.de>
+
+	* implement D-Bus interface for showing/hiding the application
+	  (can be used with dbus-send)
+
 Sun Apr 22 00:53:00 2007  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* use only width information of the current screen, not of all screens
