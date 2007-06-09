@@ -13,12 +13,12 @@
     </affiliation>
   </author>
 
-  <pubdate>2006-10-16</pubdate>
+  <pubdate>2007-06-09</pubdate>
   
-  <releaseinfo>Version 0.5.2</releaseinfo>   
+  <releaseinfo>Version 0.5.3</releaseinfo>   
   
   <copyright>
-    <year>2003-2005</year>
+    <year>2003-2007</year>
     <holder role="mailto:bernhard@bwalle.de">Bernhard Walle</holder>
   </copyright>
 
@@ -134,20 +134,10 @@
     <para>QPaMaT is very protable. It is written in C++ programming language
       using the Qt toolkit from Trolltech. This toolkit is avaiable for all
       major operating systems: Unix (including Linux, Solaris, HP-UX and
-      many others) using X11, MacOS X and Microsoft Windows. For X11 and
-      MacOS X there exits GPL'd version which basically means that every application
-      that is open source could be linked against Qt without purchasing
-      any money.</para>
-      
-    <para>On Microsoft Windows, you need the free edtion which is
-      included in a Qt book and <emphasis>not</emphasis> available for download
-      or a commercial edition. Another possibility is to use the free edition available 
-      at <ulink url="http://kde-cygwin.sourceforge.net/qt3-win32/"></ulink>.
-      The binaries provided on the website are created using this free edition.</para>
-      
+      many others) using X11, MacOS X and Microsoft Windows.</para>
+
     <para>QPaMaT also uses the OpenSSL crypto library which is available
       for much platforms, too.</para>
-    
     
     <sect3>
       <title>Unix</title>
@@ -203,14 +193,12 @@
     <sect3>
       <title>Windows</title>
 
-      <para>Just use the zip file which is available at the QPaMaT website. Also 
-        install OpenSSL, you get it at 
-        <ulink url="http://www.openssl.org/related/binaries.html"></ulink>.
-        Then extract the file at a place you wish, you don't need write access to run
-        the program. Don't change the directory structure, I suggest just to extract
-        it to <FileName>c:\program files\</FileName>.</para>
+      <para>Just use the installer file which is available at the QPaMaT website.
+        If you want to compile from source, you have to download the GPL version
+        of Qt from the Trolltech website and basically perform the same steps as
+        on Unix. The file <FileName>WIN32.txt</FileName> in the top-level
+        directory of the source distribution contains some more hints.</para>
 
-      <para>That's it. Just execute the <FileName>bin\qpamat.exe</FileName> file.</para>
     </sect3>
   </sect2>
   <sect2>

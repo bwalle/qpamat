@@ -2,6 +2,7 @@
 
 	* added documentation for D-Bus interface
 	* use ISO date format for the ChangeLog
+	* update the Windows documentation (Cygwin is not needed any more)
 
 2007-06-08  Bernhard Walle <bernhard.walle@gmx.de>
 
