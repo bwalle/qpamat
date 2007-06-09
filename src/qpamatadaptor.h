@@ -18,6 +18,11 @@
 #ifndef QPAMATADAPTOR_H
 #define QPAMATADAPTOR_H
 
+#include <QObject>
+#ifdef Q_WS_X11
+
+#include <QtDBus>
+#include <QDBusConnection>
 #include <QDBusAbstractAdaptor>
 
 class Qpamat;
@@ -41,6 +46,7 @@ class QpamatAdaptor: public QDBusAbstractAdaptor
 };
 
 
+#endif /* Q_WS_X11 */
 #endif /* QPAMATADAPTOR_H */
 
 // vim: set sw=4 ts=4 et:

@@ -224,6 +224,7 @@ int HybridPasswordChecker::findNumerOfCharsInClass(const QString& chars) const
     for (int i = 0; i < chars.length(); ++i)
     {
         QChar c = chars[i];
+	int l1 = c.latin1() & 0xff;
         if (c.latin1() == 0)
         {
             return 255;
@@ -243,15 +244,13 @@ int HybridPasswordChecker::findNumerOfCharsInClass(const QString& chars) const
         else if (!hasSpecial || c == ',' || c == '.' || c == '-' || c == ';' || c == ':' || c == '_' 
             || c == '='
             || c == '(' || c == ')' || c == '*' || c == '+' || c == '?' || c == '"' || c == '$'
-            || c == '�' || c == '�' || c == '@' ||c == '#' || c == '%' || c == '&' || c == '/'
+            || c == '@' ||c == '#' || c == '%' || c == '&' || c == '/'
             || c == '\\' || c == '{' || c == '}' || c == '[' || c == ']' || c == '!' || c == '^'
             || c == '?' || c == '\'' || c == '?' || c == '`' || c == '~')
         {
             hasSpecial = true;
         }
-        else if (!hasUmlauts || c == '�' || c == '�' || c == '�' || c == '�' || c == '�' || 
-            c == '�' || c == '�' || c == '�' || c == '�' || c == '�' || c == '�' || c == '�' || 
-            c == '�')
+        else if (!hasUmlauts || (l1 >= 0xC0 && l1 <= 0xD6) || (l1 >= 0xD8 && l1 <= 0xFF))
         {
             hasUmlauts = true;
         }

@@ -1,3 +1,8 @@
+2007-06-10  Bernhard Walle <bernhard.walle@gmx.de>
+
+	* get rid of multi-byte character constants in 
+	  src/security/hybridpasswordchecker.cpp
+
 2007-06-09  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* added documentation for D-Bus interface

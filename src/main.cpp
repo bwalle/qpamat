@@ -30,8 +30,6 @@
 #include <QDir>
 #include <QTextCodec>
 #include <QTranslator>
-#include <QtDBus>
-#include <QDBusConnection>
 
 #include "qpamat.h"
 
