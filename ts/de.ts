@@ -193,6 +193,16 @@ Sie ohne Backup fortfahren?</translation>
         <source>Start hidden</source>
         <translation>Versteckt starten</translation>
     </message>
+    <message>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="672"/>
+        <source>&amp;Normal font:</source>
+        <translation>Schriftart für &amp;normalen Text:</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="674"/>
+        <source>&amp;Footer font:</source>
+        <translation>Schriftart für &amp;Fußzeile:</translation>
+    </message>
 </context>
 <context>
     <name>ConfDlgSecurityTab</name>
@@ -731,18 +741,18 @@ could not be read. Check the file with a text editor.</source>
         <translation>&lt;b&gt;Lesen&lt;/b&gt; von der Chipkarte...</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="193"/>
+        <location filename="../src/main.cpp" line="219"/>
         <source>QPaMaT</source>
         <translation>QPaMaT</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="188"/>
+        <location filename="../src/main.cpp" line="214"/>
         <source>No more memory available. The application
 will be closed.</source>
         <translation>Nicht genug Speicher verfügbar. Die Anwendung wird geschlossen.</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="195"/>
+        <location filename="../src/main.cpp" line="221"/>
         <source>An unknown error occurred:
 %1
 The application will be closed.</source>
@@ -763,32 +773,32 @@ OpenSSL neu kompilieren oder zu aktualisieren.</translation>
 <context>
     <name>Qpamat</name>
     <message>
-        <location filename="../src/qpamat.cpp" line="127"/>
+        <location filename="../src/qpamat.cpp" line="132"/>
         <source>Sites</source>
         <translation>Seiten</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="249"/>
+        <location filename="../src/qpamat.cpp" line="254"/>
         <source>Application</source>
         <translation>Anwendung</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1069"/>
+        <location filename="../src/qpamat.cpp" line="1074"/>
         <source>Search</source>
         <translation>Suchen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="263"/>
+        <location filename="../src/qpamat.cpp" line="268"/>
         <source>Search:</source>
         <translation>Suchen:</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="280"/>
+        <location filename="../src/qpamat.cpp" line="285"/>
         <source>Edit</source>
         <translation>Bearbeiten</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="298"/>
+        <location filename="../src/qpamat.cpp" line="303"/>
         <source>&amp;File</source>
         <translation>&amp;Datei</translation>
     </message>
@@ -798,17 +808,17 @@ OpenSSL neu kompilieren oder zu aktualisieren.</translation>
         <translation type="obsolete">&amp;Ansicht</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="308"/>
+        <location filename="../src/qpamat.cpp" line="313"/>
         <source>&amp;Options</source>
         <translation>&amp;Optionen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="313"/>
+        <location filename="../src/qpamat.cpp" line="318"/>
         <source>&amp;Extras</source>
         <translation>&amp;Extras</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1046"/>
+        <location filename="../src/qpamat.cpp" line="1051"/>
         <source>&amp;Help</source>
         <translation>&amp;Hilfe</translation>
     </message>
@@ -818,89 +828,89 @@ OpenSSL neu kompilieren oder zu aktualisieren.</translation>
         <translation type="obsolete">QPaMaT XML-Dateien (*.xml)</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="678"/>
+        <location filename="../src/qpamat.cpp" line="683"/>
         <source>QPaMaT</source>
         <translation>QPaMaT</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="700"/>
+        <location filename="../src/qpamat.cpp" line="705"/>
         <source>There is modified data that was not saved.
 Do you want to save it now?</source>
         <translation>Daten wurden modifiziert aber nicht gespeichert.
 Wollen Sie jetzt speichern?</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="783"/>
+        <location filename="../src/qpamat.cpp" line="788"/>
         <source>Please enter a search criterion in the text field!</source>
         <translation>Bitte geben Sie in Suchkriterium in das Textfeld ein!</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="856"/>
+        <location filename="../src/qpamat.cpp" line="861"/>
         <source>QPaMaT - Password managing tool for Unix, Windows and MacOS X</source>
         <translation>QPaMaT - Passwort-Management-Tool für Unix, Windows und MacOS X</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="864"/>
+        <location filename="../src/qpamat.cpp" line="869"/>
         <source>page</source>
         <translation>Seite</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="989"/>
+        <location filename="../src/qpamat.cpp" line="994"/>
         <source>&amp;New</source>
         <translation>&amp;Neu</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1000"/>
+        <location filename="../src/qpamat.cpp" line="1005"/>
         <source>E&amp;xit</source>
         <translation>&amp;Beenden</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1004"/>
+        <location filename="../src/qpamat.cpp" line="1009"/>
         <source>&amp;Login</source>
         <translation>&amp;Einloggen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="524"/>
+        <location filename="../src/qpamat.cpp" line="529"/>
         <source>&amp;Logout</source>
         <translation>&amp;Ausloggen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1009"/>
+        <location filename="../src/qpamat.cpp" line="1014"/>
         <source>&amp;Save</source>
         <translation>&amp;Speichern</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1014"/>
+        <location filename="../src/qpamat.cpp" line="1019"/>
         <source>&amp;Export...</source>
         <translation>&amp;Exportieren...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1018"/>
+        <location filename="../src/qpamat.cpp" line="1023"/>
         <source>&amp;Print...</source>
         <translation>&amp;Drucken...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1022"/>
+        <location filename="../src/qpamat.cpp" line="1027"/>
         <source>&amp;Change Password...</source>
         <translation>&amp;Passwort ändern...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1026"/>
+        <location filename="../src/qpamat.cpp" line="1031"/>
         <source>&amp;Settings...</source>
         <translation>&amp;Einstellungen...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1030"/>
+        <location filename="../src/qpamat.cpp" line="1035"/>
         <source>&amp;Random Password...</source>
         <translation>&amp;Zufallspasswort...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1033"/>
+        <location filename="../src/qpamat.cpp" line="1038"/>
         <source>&amp;Show password strength</source>
         <translation>&amp;Passwortstärke anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1040"/>
+        <location filename="../src/qpamat.cpp" line="1045"/>
         <source>&amp;Clear clipboard</source>
         <translation>&amp;Zwischenablage löschen</translation>
     </message>
@@ -910,22 +920,22 @@ Wollen Sie jetzt speichern?</translation>
         <translation type="obsolete">&amp;Kontexthilfe</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1051"/>
+        <location filename="../src/qpamat.cpp" line="1056"/>
         <source>&amp;About...</source>
         <translation>&amp;Über...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1054"/>
+        <location filename="../src/qpamat.cpp" line="1059"/>
         <source>About &amp;Qt...</source>
         <translation>Über &amp;Qt...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1059"/>
+        <location filename="../src/qpamat.cpp" line="1064"/>
         <source>Add item</source>
         <translation>Eintrag hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1064"/>
+        <location filename="../src/qpamat.cpp" line="1069"/>
         <source>Remove item</source>
         <translation>Eintrag entfernen</translation>
     </message>
@@ -935,7 +945,7 @@ Wollen Sie jetzt speichern?</translation>
         <translation type="obsolete">Suchfeld &amp;fokussieren</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="647"/>
+        <location filename="../src/qpamat.cpp" line="652"/>
         <source>The file you&apos;ve choosen exists. Do you overwrite it?</source>
         <translation>Die gewählte Datei existiert bereits. Soll sie überschrieben werden?</translation>
     </message>
@@ -945,42 +955,42 @@ Wollen Sie jetzt speichern?</translation>
         <translation type="obsolete">&amp;Überschreiben</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="679"/>
+        <location filename="../src/qpamat.cpp" line="684"/>
         <source>An error occured while saving the file.</source>
         <translation>Ein Fehler ist beim Speichern aufgetreten.</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="631"/>
+        <location filename="../src/qpamat.cpp" line="636"/>
         <source>QPaMaT XML files (*.xml);;Text files with cleartext password (*.txt)</source>
         <translation>QPaMaT XML-Dateien (*.xml);;Textdateien mit Klartextpasswort (*.txt)</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="648"/>
+        <location filename="../src/qpamat.cpp" line="653"/>
         <source>&amp;Overwrite</source>
         <translation>&amp;Überschreiben</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="648"/>
+        <location filename="../src/qpamat.cpp" line="653"/>
         <source>&amp;Don&apos;t export</source>
         <translation>&amp;Nicht exportieren</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="525"/>
+        <location filename="../src/qpamat.cpp" line="530"/>
         <source>Logout</source>
         <translation>Ausloggen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="534"/>
+        <location filename="../src/qpamat.cpp" line="539"/>
         <source>Login</source>
         <translation>Einloggen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1071"/>
+        <location filename="../src/qpamat.cpp" line="1076"/>
         <source>&amp;Show</source>
         <translation>&amp;Anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="425"/>
+        <location filename="../src/qpamat.cpp" line="430"/>
         <source>&amp;Hide</source>
         <translation>&amp;Verbergen</translation>
     </message>

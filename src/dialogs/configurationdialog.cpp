@@ -669,9 +669,9 @@ void ConfDlgPresentationTab::createAndLayout()
     Q3GroupBox* fontGroup = new Q3GroupBox(4, Qt::Vertical, tr("Printing Fonts"), this);
     Q3GroupBox* systemTrayGroup = new Q3GroupBox(2, Qt::Vertical, tr("System tray"), this);
     
-    QLabel* normalLabel = new QLabel("&Normal font:", fontGroup);
+    QLabel* normalLabel = new QLabel(tr("&Normal font:"), fontGroup);
     m_normalFontEdit = new FontChooseBox(fontGroup);
-    QLabel* footerLabel = new QLabel("&Footer font:", fontGroup);
+    QLabel* footerLabel = new QLabel(tr("&Footer font:"), fontGroup);
     m_footerFontEdit = new FontChooseBox(fontGroup);
     
     m_hidePasswordCB = new QCheckBox(tr("Hide passwords in Random Password Dialog"), 

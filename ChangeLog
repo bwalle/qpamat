@@ -1,20 +1,25 @@
-Fri Jun 08 19:22:00 2007  Bernhard Walle <bernhard.walle@gmx.de>
+2007-06-09  Bernhard Walle <bernhard.walle@gmx.de>
+
+	* added documentation for D-Bus interface
+	* use ISO date format for the ChangeLog
+
+2007-06-08  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* implement D-Bus interface for showing/hiding the application
 	  (can be used with dbus-send)
 
-Sun Apr 22 00:53:00 2007  Bernhard Walle <bernhard.walle@gmx.de>
+2007-04-22  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* use only width information of the current screen, not of all screens
 	  on a multihead configuration
 
-Tue Oct 17 23:00:00 2006  Bernhard Walle <bernhard.walle@gmx.de>
+2006-10-17  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* QString::null as QGroupBox label doesn't work, so give it a
 	  name
 	* Released 0.5.2.
 
-Mon Oct 16 22:00:00 2006  Bernhard Walle <bernhard.walle@gmx.de>
+2006-10-16  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Removed bringToFront(), a simple show() also works
 	* fix code to compile without warnings
@@ -24,7 +29,7 @@ Mon Oct 16 22:00:00 2006  Bernhard Walle <bernhard.walle@gmx.de>
 	* added OpenSSL exception to the license
 	* use QLocale instead of std::ostringstream
 
-Mon Oct 16 00:15:00 2006  Bernhard Walle <bernhard.walle@gmx.de>
+2006-10-16  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Require Qt 4.2
 	* Remove TrayIcon implementation and use the implementation
@@ -33,7 +38,7 @@ Mon Oct 16 00:15:00 2006  Bernhard Walle <bernhard.walle@gmx.de>
 	* Use QDesktopServices for opening the web browser and remove
 	  the corresponding setting
 
-Fri Feb 17 22:00:00 2006  Bernhard Walle <bernhard.walle@gmx.de>
+2006-02-17  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Important Bugfix: Retry of smartcard store writes the correct
 	  data on the smartcard. Previously, 'SMARTCARD:x:x' was written
@@ -43,72 +48,72 @@ Fri Feb 17 22:00:00 2006  Bernhard Walle <bernhard.walle@gmx.de>
 	  -> works on Windows now
 	* Released 0.5.1.
 
-Mon Dec 26 23:10:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
+2005-12-26  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Bugfixes for Qt 4.1.0
 	* Bugfix: events on the system tray doesn't count as events for the
 	  timeout
 	* small layout improvements
 
-Fri Jul 29 23:50:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
+2005-07-29  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Porting to Qt 4.0.0.
 	* Released 0.5.0.
 
-Tue Jul 19 23:50:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
+2005-07-19  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Improved systray implementation (tooltip, menu, support removing
 	  and re-adding on X11)
 
 
-Tue Jul 05 23:30:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
+2005-07-05  Bernhard Walle <bernhard.walle@gmx.de>
 	
 	* Implemented detection if the process in .qpamat.lock with specified
 	  PID is still running. Of course, if it is running it could be
 	  another process, but the probability is low (maybe check for process
 	  name in future but that is not portable).
 
-Sun May 29 12:00:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
+2005-05-29  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Icon renaming
 	* Windows trayicon improvement (at least Windows XP)
 	* rc-file for windows
 	* Released 0.4.3
 
-Fri May 27 19:00:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
+2005-05-27  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Various Win32 fixes.
 	* Bugfix: If system tray is unchecked and "start hidden" is still
 	  checked, don't start hidden.
 
-Sun Mar 06 18:00:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
+2005-03-06  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Make login action and logout action one combined action
 	* Released 0.4.2.
 
-Fri Mar 04 23:00:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
+2005-03-04  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Bugfix: If the timeout exceeded multiple times, the save question
 	  was displayed multiple times, too.
 
-Sun Feb 27 19:00:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
+2005-02-27  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* implemented text export function
 	* Released 0.4.1.
 
-Wed Feb 23 19:00:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
+2005-02-23  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Changed email address in this changelog
 	* Don't use qt.h any more (build problems on Debian)
 	* Filled README file.
 
-Mon Feb 14 03:00:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
+2005-02-14  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Implemented systray support.
 	* Added "start hidden" option.
 	* Released 0.4.0.
 
-Sat Feb 12 12:00:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
+2005-02-12  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Implemented AutoLogout function.
 	* Icons for login/logout.
@@ -116,36 +121,36 @@ Sat Feb 12 12:00:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
 	* Added export icon.
 	* Released 0.3.4.
 
-Sat Jan 01 17:00:00 2005  Bernhard Walle <bernhard.walle@gmx.de>
+2005-01-01  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Fixed missing documentation.
 	* Released 0.3.3.
 
-Sun Dec 26 18:42:00 2004  Bernhard Walle <bernhard.walle@gmx.de>
+2004-12-26  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Added "Cancel" in the dialog that appears if a user wants to 
 	  log out without saving.
 	* Released 0.3.2.
 
-Sat Sep 25 19:00:00 2004  Bernhard Walle <bernhard.walle@gmx.de>
+2004-09-25  Bernhard Walle <bernhard.walle@gmx.de>
 	
 	* Fixed compile error in help.cpp.
 	* Released 0.3.1.
 
-Fri Sep 03 16:41:00 2004  Bernhard Walle <bernhard.walle@gmx.de>
+2004-09-03  Bernhard Walle <bernhard.walle@gmx.de>
 	
 	* Removed superflous code (QErrorMessage) in qpamat.cpp.
 	* Improved AboutDialog (increased border).
 
-Sat Jul 24 15:51:00 2004  Bernhard Walle <bernhard.walle@gmx.de>
+2004-07-24  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Bufix: If a new document is created, it's now in "modified" state
 
-Sat Jul 24 11:00:00 2004  Bernhard Walle <bernhard.walle@gmx.de>
- 	
+2004-07-24  Bernhard Walle <bernhard.walle@gmx.de>
+
 	* Released 0.3.0
 
-Fri Jul 23 14:56:00 2004  Bernhard Walle <bernhard.walle@gmx.de>
+2004-07-23  Bernhard Walle <bernhard.walle@gmx.de>
 	
 	* Changed icons to PNG format.
 	* Using stock icons from Gtk+.
@@ -154,8 +159,7 @@ Fri Jul 23 14:56:00 2004  Bernhard Walle <bernhard.walle@gmx.de>
 	* Added German translation.
 	* Added documentation.
 
-Sat Jun  5 15:24:54 2004  Bernhard Walle <bernhard.walle@gmx.de>
-        
+2004-06-05  Bernhard Walle <bernhard.walle@gmx.de>
+
 	* Beginning with logging the changes. 
 
-	
