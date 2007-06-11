@@ -28,12 +28,11 @@
 #include <unistd.h>
 #include <signal.h>
 #include <sys/types.h>
-#else
-#include <process.h>
 #endif
 
 #include "global.h"
 #include "singleapplication.h"
+#include "processinfo.h"
 
 QString SingleApplication::lockfile;
 QString SingleApplication::appName;
@@ -113,11 +112,10 @@ void SingleApplication::startup()
             textstream >> id;
         }
 
-#ifndef Q_WS_WIN
         // check if the process is running
         bool ok;
         int pid = id.toInt(&ok);
-        if (ok && kill(pid, 0) != 0 && errno == ESRCH)
+        if (ok && !ProcessInfo::isProcessRunning(pid))
         {
             // the process is not running
             // close the file
@@ -125,15 +123,12 @@ void SingleApplication::startup()
         }
         else
         {
-#endif
             QMessageBox::critical(0, appName, QObject::tr("You can only start one instance of "
                 "%1. If you are\nreally sure that no other instance is running, delete\nthe file %2 "
                 "and start again.\n\n(PID of the other %3 process should be %4.)").arg(appName).arg(
                 lockfile).arg(appName).arg(id), QMessageBox::Ok, QMessageBox::NoButton);
             std::exit(1);
-#ifndef Q_WS_WIN
         }
-#endif
     }
     
     
@@ -143,11 +138,7 @@ void SingleApplication::startup()
         return;
     }
     QTextStream textstream(&file);
-#ifndef Q_WS_WIN
-    textstream << getpid();
-#else
-    textstream << _getpid();
-#endif
+    textstream << ProcessInfo::getCurrentPid();
 }
 
 

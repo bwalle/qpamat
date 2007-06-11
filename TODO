@@ -1,7 +1,5 @@
 Bug fixes
 ---------
- - Win32: Trayicon is not transparent. (Solved this with a icon which doesn't need
-   transparency)
 
 
 Features

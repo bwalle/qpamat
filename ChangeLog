@@ -1,3 +1,8 @@
+2007-06-11  Bernhard Walle <bernhard.walle@gmx.de>
+
+	* implemented testing if the process that is specified in the lock
+	  file is still running also on Windows
+
 2007-06-10  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* get rid of multi-byte character constants in 

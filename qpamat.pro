@@ -84,6 +84,12 @@ unix:!mac {
     SOURCES += src/qpamatadaptor.cpp
 }
 
+unix {
+    SOURCES += src/util/processinfo_unix.cpp
+}
+windows {
+    SOURCES += src/util/processinfo_win.cpp
+}
 # -----------------------------------------------------------------------------
 
 HEADERS     =                                   \
@@ -127,6 +133,7 @@ HEADERS     =                                   \
     src/util/stringdisplay.h                    \
     src/util/singleapplication.h                \
     src/util/timeoutapplication.h               \
+    src/util/processinfo.h                      \
     src/datareadwriter.h                        \
     src/timerstatusmessage.h                    \
     src/treeentry.h                             \
