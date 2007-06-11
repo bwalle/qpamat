@@ -24,7 +24,7 @@
 
 bool ProcessInfo::isProcessRunning(q_pid_t pid)
 {
-    return kill(pid, 0);
+    return !kill(pid, 0);
 }
 
 q_pid_t ProcessInfo::getCurrentPid()
