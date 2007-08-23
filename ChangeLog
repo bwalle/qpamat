@@ -1,3 +1,7 @@
+2007-08-23  Bernhard Walle <bernhard.walle@gmx.de>
+
+	* fix spacing in configuration dialog with new Qt version
+
 2007-06-11  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* implemented testing if the process that is specified in the lock
