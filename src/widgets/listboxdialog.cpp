@@ -98,8 +98,9 @@ ListBoxDialog::ListBoxDialog(QWidget* parent, const char* name)
 {
     QVBoxLayout* vboxLayout = new QVBoxLayout(this, 8, 2, "ConfDlg-Vbox");
     Q3HBox* mainHBox = new Q3HBox(this, "ConfDlg-MainHBox");
-    QDialogButtonBox *buttonHBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, 
-            Qt::Horizontal, this);
+    QDialogButtonBox *buttonHBox = new QDialogButtonBox(
+		    QDialogButtonBox::Ok | QDialogButtonBox::Cancel, 
+		    Qt::Horizontal, this);
     
     m_listBox = new Q3ListBox(mainHBox, "ConfDlg-Listbox");
     m_listBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
@@ -120,6 +121,7 @@ ListBoxDialog::ListBoxDialog(QWidget* parent, const char* name)
     // layout
     mainHBox->setStretchFactor(m_listBox, 0);
     mainHBox->setStretchFactor(m_widgetStack, 2);
+    mainHBox->setSpacing(8);
     vboxLayout->addWidget(mainHBox);
     vboxLayout->addWidget(horizontalLine);
     vboxLayout->addWidget(buttonHBox);
