@@ -15,6 +15,8 @@
  *
  * ------------------------------------------------------------------------------------------------- 
  */
+#include <memory>
+
 #include <QApplication>
 #include <QTextDocument>
 #include <QAction>

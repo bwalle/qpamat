@@ -17,6 +17,7 @@
  */
 #include <stdexcept>
 #include <csignal>
+#include <cstdlib>
 #include <errno.h>
 
 #include <QObject>

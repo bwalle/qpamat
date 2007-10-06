@@ -17,6 +17,7 @@
  */
 #include <memory>
 #include <ctime>
+#include <cstdlib>
 
 #include <QThread>
 #include <QFile>
