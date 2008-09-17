@@ -116,7 +116,7 @@ ListBoxDialog::ListBoxDialog(QWidget* parent, const char* name)
     // layout
     mainHBox->setStretchFactor(m_listBox, 0);
     mainHBox->setStretchFactor(m_widgetStack, 2);
-    mainHBox->setSpacing(8);
+    mainHBox->setSpacing(10);
     vboxLayout->addWidget(mainHBox);
     vboxLayout->addWidget(horizontalLine);
     vboxLayout->addWidget(buttonHBox);
