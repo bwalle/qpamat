@@ -324,8 +324,8 @@ void Qpamat::initMenubar()
      
      // ----- Help ---------------------------------------------------------------------------------
      
-     // this is for Motif/CDE style, but doesn't work in Qt 4.1.0, so disable it
-     // menuBar()->insertSeparator();
+     // align the "Help" menu on the right in the Motif and CDE style
+     menuBar()->insertSeparator();
      QMenu* helpMenu = menuBar()->addMenu(tr("&Help"));
      helpMenu->addAction(m_actions.helpAction);
      helpMenu->insertSeparator();
