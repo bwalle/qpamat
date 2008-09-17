@@ -47,7 +47,6 @@ SOURCES     =                                   \
     src/widgets/focuslineedit.cpp               \
     src/widgets/listboxlabeledpict.cpp          \
     src/widgets/listboxdialog.cpp               \
-    src/widgets/cursor.cpp                      \
     src/security/encodinghelper.cpp             \
     src/security/passwordhash.cpp               \
     src/security/abstractencryptor.cpp          \
@@ -109,7 +108,6 @@ HEADERS     =                                   \
     src/widgets/focuslineedit.h                 \
     src/widgets/listboxlabeledpict.h            \
     src/widgets/listboxdialog.h                 \
-    src/widgets/cursor.h                        \
     src/global.h                                \
     src/security/encodinghelper.h               \
     src/security/passwordhash.h                 \

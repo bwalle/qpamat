@@ -29,7 +29,6 @@
 #include "global.h"
 #include "listboxdialog.h"
 #include "widgets/listboxlabeledpict.h"
-#include "widgets/cursor.h"
 
 /*!
     \class ListBoxDialogPage
@@ -107,11 +106,7 @@ ListBoxDialog::ListBoxDialog(QWidget* parent, const char* name)
     QFont f = m_listBox->font();
     f.setBold(true);
     m_listBox->setFont(f);
-#ifdef Q_WS_X11
-    m_listBox->setCursor(Cursor::handCursorWindows());
-#else
     m_listBox->setCursor(Qt::PointingHandCursor);
-#endif
     m_widgetStack = new Q3WidgetStack(mainHBox, "ConfDlg-Widget");
     
     // horizontal line
