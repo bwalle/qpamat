@@ -1057,8 +1057,7 @@ void Qpamat::initActions()
     aboutActionIcon.addPixmap(QPixmap(":/images/info_24.png"));
     m_actions.aboutAction = new QAction(aboutActionIcon, tr("&About..."), this);
     
-    QIcon aboutQtActionIcon(QPixmap(":/images/qt_16.png"));
-    m_actions.aboutQtAction = new QAction(aboutQtActionIcon,  tr("About &Qt..."), this);
+    m_actions.aboutQtAction = new QAction(tr("About &Qt..."), this);
     
     // ------ Toolbar ------------------------------------------------------------------------------
     QIcon addItemActionIcon(QPixmap(":/images/stock_add_16.png"));
