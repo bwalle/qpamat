@@ -41,7 +41,9 @@ ADD_DEFINITIONS(-DMINOR_VERSION=${MINOR_VERSION})
 ADD_DEFINITIONS(-DPATCH_VERSION=${PATCH_VERSION})
 
 # always print compiler warnings
-ADD_DEFINITIONS(-Wall -W -Wno-unused-parameter)
+IF (CMAKE_HOST_UNIX)
+    ADD_DEFINITIONS(-Wall -W -Wno-unused-parameter)
+ENDIF (CMAKE_HOST_UNIX)
 
 SET(qpamat_SRCS
     src/dialogs/passworddialog.cpp
