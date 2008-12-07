@@ -3,3 +3,4 @@ syntax: glob
 *moc*.cpp
 *moc*.cxx
 build
+doc/api
