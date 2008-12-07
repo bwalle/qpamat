@@ -36,7 +36,6 @@
     fillSettings() method gets called if necessary.
     
     \ingroup widgets
-    \author $Author$
 */
 
 /*!
@@ -76,7 +75,6 @@
     fillSettings() was not called. This increases performance.
     
     \ingroup widgets
-    \author $Author$
     
 */
 

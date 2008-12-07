@@ -37,7 +37,6 @@ const int ListBoxLabeledPict::RTTI = 10025;
     usual in KDE configuration dialogs.
 
     \ingroup gui
-    \author $Author$
 
     \sa QListBox, QListBoxItem
 */

@@ -57,7 +57,6 @@
     getMessage() method instead.
 
     \ingroup gui
-    \author $Author$
 */
 
 /*!
@@ -191,7 +190,6 @@
           writing fails with 62 00 error !??
 
     \ingroup gui
-    \author $Author$
 */
 
 /*!
