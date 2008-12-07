@@ -130,8 +130,37 @@ IF (CMAKE_HOST_UNIX)
 ENDIF (CMAKE_HOST_UNIX)
 
 IF (CMAKE_HOST_WIN32)
-    SET(qpamat_SRCS ${qpamat_SRCS} src/util/processinfo_win.cpp)
+    SET(qpamat_SRCS
+        ${qpamat_SRCS}
+        src/util/processinfo_win.cpp
+        share/win32/qpamat_win32.rc
+    )
+
+    # copy icons
+    CONFIGURE_FILE(
+       ${CMAKE_SOURCE_DIR}/share/win32/qpamat_34.ico
+       ${CMAKE_BINARY_DIR}/qpamat_34.ico
+       COPYONLY
+    )
+    CONFIGURE_FILE(
+       ${CMAKE_SOURCE_DIR}/share/win32/qpamat_16.ico
+       ${CMAKE_BINARY_DIR}/qpamat_16.ico
+       COPYONLY
+    )
+    CONFIGURE_FILE(
+       ${CMAKE_SOURCE_DIR}/share/win32/qpamat_48.ico
+       ${CMAKE_BINARY_DIR}/qpamat_48.ico
+       COPYONLY
+    )
 ENDIF (CMAKE_HOST_WIN32)
+
+# compiler for rc files
+IF (MINGW)
+  set(CMAKE_RC_COMPILER_INIT windres)
+  ENABLE_LANGUAGE(RC)
+  SET(CMAKE_RC_COMPILE_OBJECT
+    "<CMAKE_RC_COMPILER> --output-format=coff <FLAGS> <DEFINES> -o <OBJECT> <SOURCE>")
+ENDIF (MINGW)
 
 # translations
 QT4_CREATE_TRANSLATION(
@@ -150,25 +179,20 @@ QT4_ADD_RESOURCES(qpamat_RCC_SRCS qpamat.qrc)
 QT4_WRAP_CPP(qpamat_MOC_SRCS ${qpamat_MOCS})
 
 # build sources, moc'd sources, and rcc'd sources
-ADD_EXECUTABLE(qpamat
+ADD_EXECUTABLE(qpamat WIN32
     ${qpamat_SRCS} ${qpamat_MOC_SRCS} ${qpamat_RCC_SRCS} ${qpamat_qmfile}
 )
 
 TARGET_LINK_LIBRARIES (qpamat ${QT_LIBRARIES} ${OPENSSL_LIBRARIES})
 
 #
-# Build the Documentation
+# {{{ Build the Documentation
 #
 
 FIND_PROGRAM(XSLTPROC_EXECUTABLE xsltproc)
 
 # create target directories
 FILE(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/doc/user/en)
-CONFIGURE_FILE(
-    ${CMAKE_SOURCE_DIR}/doc/user/en/qpamat.css
-    ${CMAKE_BINARY_DIR}/doc/user/en/qpamat.css
-    COPYONLY
-)
 
 ADD_CUSTOM_COMMAND(
     OUTPUT
@@ -176,7 +200,10 @@ ADD_CUSTOM_COMMAND(
     COMMAND
         ${XSLTPROC_EXECUTABLE}
         ${CMAKE_SOURCE_DIR}/doc/user/en/qpamat.xsl
-        ${CMAKE_SOURCE_DIR}/doc/user/en/qpamat.xml
+        ${CMAKE_SOURCE_DIR}/doc/user/en/qpamat.xml &&
+        ${CMAKE_COMMAND} -E copy
+        ${CMAKE_SOURCE_DIR}/doc/user/en/qpamat.css
+        ${CMAKE_BINARY_DIR}/doc/user/en/qpamat.css
     DEPENDS
         ${CMAKE_SOURCE_DIR}/doc/user/en/qpamat.xml
     WORKING_DIRECTORY
@@ -194,9 +221,10 @@ ADD_DEPENDENCIES(
     doc
 )
 
+# }}}
 
 #
-# Installation
+# {{{ Installation
 #
 
 INSTALL(
@@ -233,4 +261,6 @@ INSTALL(
     FILES_MATCHING REGEX ".*.(html|css)"
 )
 
-# :tabSize=4:noTabs=true:indentSize=4:mode=cmake:
+# }}}
+
+# :tabSize=4:noTabs=true:indentSize=4:mode=cmake:folding=explicit:
