@@ -1,5 +1,10 @@
-<!DOCTYPE ARTICLE PUBLIC "-//OASIS//DTD DocBook V4.1//EN">
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+    "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd" [
+  <!ENTITY date "September 2007">
+  <!ENTITY version "0.1.4">
+  <!ENTITY application "TFLA-01">
+]>
 <article lang="en" id="index">
   
 <articleinfo>
@@ -9,17 +14,17 @@
     <firstname>Bernhard</firstname>
     <surname>Walle</surname>
     <affiliation>
-      <address><email>bernhard@bwalle.de</email></address>
+      <address><email>bernhard.walle@gmx.de</email></address>
     </affiliation>
   </author>
 
-  <pubdate>2007-06-09</pubdate>
+  <pubdate>2008-12-07</pubdate>
   
-  <releaseinfo>Version 0.5.3</releaseinfo>   
+  <releaseinfo>Version 0.5.4</releaseinfo>   
   
   <copyright>
-    <year>2003-2007</year>
-    <holder role="mailto:bernhard@bwalle.de">Bernhard Walle</holder>
+    <year>2003-2008</year>
+    <holder role="mailto:bernhard.walle@gmx.de">Bernhard Walle</holder>
   </copyright>
 
 </articleinfo>
@@ -107,20 +112,20 @@
     <sect3>
       <title>Features</title>
       
-      <ItemizedList spacing="compact">
-        <ListItem>
+      <itemizedlist spacing="compact">
+        <listitem>
           <para>Simple, fast and free program to store your passwords.</para>
-        </ListItem>
-        <ListItem>
+        </listitem>
+        <listitem>
           <para>Generation of random passwords</para>
-        </ListItem>
-        <ListItem>
+        </listitem>
+        <listitem>
           <para>Checking of password quality, customizable dictionary.</para>
-        </ListItem>
-        <ListItem>
+        </listitem>
+        <listitem>
           <para>Stores the passwords encrypted on the disk or on a smartcard.</para>
-        </ListItem>
-      </ItemizedList>
+        </listitem>
+      </itemizedlist>
     </sect3>
   </sect2>
 </sect1>
@@ -145,7 +150,7 @@
       <para>
         You have to have installed Qt4 on your computer. Qt3 does not work any more.
         If your distribution does not have Qt4 packages, get Qt4 from Trolltech
-        and build it yourself. It's easy and described in the <FileName>REAMDE</FileName>
+        and build it yourself. It's easy and described in the <filename>REAMDE</filename>
         file of the Qt distribution.
       </para>
       
@@ -154,7 +159,7 @@
         So, just install the packages using the following command:</para>
         
       <para>
-        <prompt>$ </prompt><userInput>rpm -Uvh qpamat-version-i586.rpm</userinput>
+        <prompt>$ </prompt><userinput>rpm -Uvh qpamat-version-i586.rpm</userinput>
       </para>
         
       <para>If not, you need to compile it from source. Make sure that
@@ -162,32 +167,32 @@
         contains the headers and the build tools like <command>qmake</command>.
         Also make sure that the environment variable <envar>QTDIR</envar>
         points to the right place, usually something like
-        <FileName>/usr/local/Trolltech/Qt-4.0.0</FileName>. You also need to have OpenSSL
+        <filename>/usr/local/Trolltech/Qt-4.0.0</filename>. You also need to have OpenSSL
         installed, including header files.</para>
 
       <para>
         You have to set also the <envar>QMAKESPEC</envar> variable to a correct value,
-        for example <FileName>/usr/local/Trolltech/Qt-4.0.0//mkspecs/linux-g++</FileName>.
+        for example <filename>/usr/local/Trolltech/Qt-4.0.0//mkspecs/linux-g++</filename>.
         <command>qmake</command> must be in <envar>PATH</envar>. Normally, just
-        include <FileName>$QTDIR/bin</FileName> in your <envar>PATH</envar> environment.
+        include <filename>$QTDIR/bin</filename> in your <envar>PATH</envar> environment.
       </para>
         
-      <para>You may edit <FileName>qpamat.pro</FileName> to change install
-        location if you don't like <FileName>/usr/local</FileName>.
+      <para>You may edit <filename>qpamat.pro</filename> to change install
+        location if you don't like <filename>/usr/local</filename>.
         To compile and install QPaMaT, run
       </para>
       
       <para>
-        <prompt>$ </prompt><userInput>qmake qpamat.pro</userinput>
+        <prompt>$ </prompt><userinput>qmake qpamat.pro</userinput>
       </para>
       <para>
-        <prompt>$ </prompt><userInput>make</userinput>
+        <prompt>$ </prompt><userinput>make</userinput>
       </para>
       <para>
-        <prompt>$ </prompt><userInput>lrelease qpamat.pro</userinput>
+        <prompt>$ </prompt><userinput>lrelease qpamat.pro</userinput>
       </para>
       <para>
-        <prompt># </prompt><userInput>make install</userinput>
+        <prompt># </prompt><userinput>make install</userinput>
       </para>
     </sect3>
     <sect3>
@@ -196,7 +201,7 @@
       <para>Just use the installer file which is available at the QPaMaT website.
         If you want to compile from source, you have to download the GPL version
         of Qt from the Trolltech website and basically perform the same steps as
-        on Unix. The file <FileName>WIN32.txt</FileName> in the top-level
+        on Unix. The file <filename>WIN32.txt</filename> in the top-level
         directory of the source distribution contains some more hints.</para>
 
     </sect3>
@@ -220,30 +225,30 @@
     <para>You can now create your entries. On the left you see the
       "Sites" tree. Because you've not created any entries, there's no
       tree but a white area. If you right-click somewhere in this are,
-      a menu opens. Choose <GUIMenuItem>Insert category</GUIMenuItem> and
+      a menu opens. Choose <guimenuitem>Insert category</guimenuitem> and
       enter a name, e.g. "Onlineshops" and press the
-      <KeySym>Return</KeySym> key. Now right-click on that item
-      and choose <GUIMenuItem>Insert Item</GUIMenuItem>. Enter a name
+      <keysym>Return</keysym> key. Now right-click on that item
+      and choose <guimenuitem>Insert Item</guimenuitem>. Enter a name
       such as "Amazon".</para>
       
     <para>Of course, you can now enter some data. On Amazon, you usually
       have a e-mail address for login, a password and the URL. On the
       right, you see the list of key-valuie pairs. The list is empty but
       you fill it now. Click somewhere in the list with the right mouse
-      button and choose <GUIMenuItem>New</GUIMenuItem>. On the bottom,
+      button and choose <guimenuitem>New</guimenuitem>. On the bottom,
       you can now edit the entry. Click on the combo box and choose
-      "Username". The cursor is set in the <GUILabel>Value</GUILabel> text
+      "Username". The cursor is set in the <guilabel>Value</guilabel> text
       field. Enter your mail address. If you would like, you can change
-      "Username" to "e-mail address" in the <GUILabel>Key</GUILabel> field.
+      "Username" to "e-mail address" in the <guilabel>Key</guilabel> field.
     </para>
     
     <para>
       Now enter a new item and choose "Password". Enter the password now
-      in the <GUILabel>Value</GUILabel> field. You'll see that the password
+      in the <guilabel>Value</guilabel> field. You'll see that the password
       is not displayed. To get it, double-click the password in the list
       above. You can also copy it to clipboard by clicking on it with
       the middle mouse button or, if you have a two-button mouse, right click
-      and choose <GUIMenuItem>Copy</GUIMenuItem>. After that, you can
+      and choose <guimenuitem>Copy</guimenuitem>. After that, you can
       enter the URL as third entry. If you double-click the URL in the
       list, a browser will be opened to show the URL. You can change the
       browser in the preferences.</para>
@@ -292,7 +297,7 @@
         <term>Auto Text</term>
         <listitem>
           <para>Text which is inserted automatically if you edit a key-value
-            pair of the list and you choose a <GUILabel>Type</GUILabel>.</para>
+            pair of the list and you choose a <guilabel>Type</guilabel>.</para>
         </listitem>
       </varlistentry>
     </variablelist>
@@ -342,7 +347,6 @@
     </variablelist>
   </sect2>
   
-  
   <sect2>
     <title>Security</title>
     
@@ -374,7 +378,8 @@
         </listitem>
       </varlistentry>
     </variablelist>
-    
+    </sect2>
+  
     <sect2>
     <title>Smart Card</title>
     
@@ -612,7 +617,7 @@
       <listitem>
         <para>
           Opens the settings dialog where you can configure
-            the behaviour of OPaMaT, see <xref linkend="config">.
+            the behaviour of OPaMaT, see <xref linkend="config" />.
         </para>
       </listitem>
     </varlistentry>
