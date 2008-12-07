@@ -45,3 +45,5 @@ class TimerStatusmessage : public QObject
 };
 
 #endif // TIMERSTATUSMESSAGE_H
+
+// :maxLineLen=100:

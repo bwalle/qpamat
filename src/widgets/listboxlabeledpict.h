@@ -52,3 +52,5 @@ class ListBoxLabeledPict : public Q3ListBoxItem
 };
 
 #endif // LISTBOXLABELEDPICT_H
+
+// :maxLineLen=100:

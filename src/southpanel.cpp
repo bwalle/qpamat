@@ -409,3 +409,5 @@ void SouthPanel::insertPassword(const QString& password)
 {
     m_valueLineEdit->insert(password);
 }
+
+// :maxLineLen=100:

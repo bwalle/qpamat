@@ -73,3 +73,5 @@
     message is returned by the what() method.
     \param error the error message
 */
+
+// :maxLineLen=100:

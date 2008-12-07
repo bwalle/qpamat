@@ -761,5 +761,4 @@ void DataReadWriter::crypt(QDomElement& n, StringEncryptor& enc, bool encrypt)
     }
 }
 
-
-
+// :maxLineLen=100:

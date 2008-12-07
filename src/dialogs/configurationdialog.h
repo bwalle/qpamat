@@ -35,3 +35,5 @@ class ConfigurationDialog : public ListBoxDialog
 };
 
 #endif // CONFIGURATIONDIALOG_H
+
+// :maxLineLen=100:

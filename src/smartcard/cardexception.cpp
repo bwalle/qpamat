@@ -177,3 +177,5 @@ int CardException::getRetryNumber() const
 {
     return m_retryNumber;
 }
+
+// :maxLineLen=100:

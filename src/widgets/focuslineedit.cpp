@@ -88,3 +88,5 @@ void FocusLineEdit::focusInEvent(QFocusEvent* evt)
     QLineEdit::focusInEvent(evt);
     emit gotFocus();
 }
+
+// :maxLineLen=100:

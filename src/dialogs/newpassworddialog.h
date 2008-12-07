@@ -54,3 +54,5 @@ class NewPasswordDialog : public QDialog
 };
 
 #endif // NEWPASSWORDDIALOG_H
+
+// :maxLineLen=100:

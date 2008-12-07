@@ -67,3 +67,5 @@ QTextStream& operator<<(QTextStream& ts, const RightPanel& panel);
 QTextStream& operator>>(QTextStream& ts, RightPanel& panel);
 
 #endif // RIGHTPANEL_H
+
+// :maxLineLen=100:

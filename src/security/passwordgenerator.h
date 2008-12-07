@@ -43,3 +43,5 @@ class PasswordGenerator
 };
 
 #endif // PASSWORDGENERATOR_H
+
+// :maxLineLen=100:

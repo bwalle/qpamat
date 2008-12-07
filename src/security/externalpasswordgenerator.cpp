@@ -105,3 +105,5 @@ bool ExternalPasswordGenerator::isSlow() const
 {
     return true;
 }
+
+// :maxLineLen=100:

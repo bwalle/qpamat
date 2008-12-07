@@ -96,3 +96,5 @@ class TreeEntry : public QObject, public Q3ListViewItem
 #include "treeentry.ipp"
 
 #endif // TREEENTRY_H
+
+// :maxLineLen=100:

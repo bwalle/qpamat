@@ -27,3 +27,5 @@ class StringDisplay
 };
 
 #endif // CONVERSION_H
+
+// :maxLineLen=100:

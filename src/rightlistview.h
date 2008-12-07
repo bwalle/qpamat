@@ -85,3 +85,5 @@ QTextStream& operator<<(QTextStream& ts, const RightListView& listview);
 QTextStream& operator>>(QTextStream& ts, RightListView& listview);
 
 #endif // RIGHTLISTVIEW_H
+
+// :maxLineLen=100:

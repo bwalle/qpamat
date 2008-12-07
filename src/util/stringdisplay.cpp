@@ -105,3 +105,5 @@ QString StringDisplay::displayTimeSuitable(double days)
         }
     }
 }
+
+// :maxLineLen=100:

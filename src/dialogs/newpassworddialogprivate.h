@@ -29,3 +29,5 @@ class PasswordValidator : public QValidator
 };
 
 #endif // NEWPASSWORDDIALOGPRIVATE_H
+
+// :maxLineLen=100:

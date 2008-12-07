@@ -166,3 +166,4 @@ QString PasswordGeneratorFactory::toString(PasswordGeneratorType type)
     }
 }
 
+// :maxLineLen=100:

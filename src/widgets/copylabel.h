@@ -51,3 +51,5 @@ class CopyLabel : public QWidget
 };
 
 #endif // COPYLABEL_H
+
+// :maxLineLen=100:

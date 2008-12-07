@@ -52,3 +52,5 @@ class Settings
 };
 
 #endif // SETTINGS_H
+
+// :maxLineLen=100:

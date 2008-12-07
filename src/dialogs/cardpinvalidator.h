@@ -31,6 +31,6 @@ class CardPINValidator : public QValidator
         State validate(QString& input, int& pos) const;
 };
 
-
-
 #endif // CARDPINVALIDATOR_H
+
+// :maxLineLen=100:

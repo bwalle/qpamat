@@ -135,3 +135,4 @@ ByteVector CollectEncryptor::getBytes()
     return m_bytes;
 }
 
+// :maxLineLen=100:

@@ -147,3 +147,4 @@ void ShowPasswordDialog::insertButtonHandler()
     emit insertPassword(m_passwordEdit->getContent());
 }
 
+// :maxLineLen=100:

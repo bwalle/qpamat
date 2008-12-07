@@ -160,3 +160,4 @@ void RandomPassword::requestPassword()
     delete checker;
 }
 
+// :maxLineLen=100:

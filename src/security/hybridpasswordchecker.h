@@ -54,3 +54,5 @@ bool string_length_less(const QString& a, const QString& b);
 bool string_length_greater(const QString& a, const QString& b);
 
 #endif // HYBRIDPASSWORDCHECKER_H
+
+// :maxLineLen=100:

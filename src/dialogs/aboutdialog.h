@@ -41,3 +41,5 @@ class AboutDialog : public QDialog
 };
  
 #endif // ABOUTDIALOG_H
+
+// :maxLineLen=100:

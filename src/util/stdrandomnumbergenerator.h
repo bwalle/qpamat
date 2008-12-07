@@ -34,3 +34,5 @@ class StdRandomNumberGenerator : public std::unary_function<type, type>
 #include "stdrandomnumbergenerator.ipp"
         
 #endif // STDRANDOMNUMBERGENERATOR_H
+
+// :maxLineLen=100:

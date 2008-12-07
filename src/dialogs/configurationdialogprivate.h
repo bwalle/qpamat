@@ -195,3 +195,5 @@ class ConfDlgPresentationTab : public ListBoxDialogPage
 
 
 #endif // CONFIGURATIONDIALOGPRIVATE_H
+
+// :maxLineLen=100:

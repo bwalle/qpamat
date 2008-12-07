@@ -80,3 +80,4 @@ CardPINValidator::State CardPINValidator::validate(QString& input, int& pos) con
     }
 }
 
+// :maxLineLen=100:

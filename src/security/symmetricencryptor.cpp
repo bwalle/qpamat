@@ -244,4 +244,4 @@ QString SymmetricEncryptor::getCurrentAlgorithm() const
     return m_currentAlgorithm;
 }
 
-
+// :maxLineLen=100:

@@ -35,3 +35,5 @@ class RandomPasswordGenerator : public PasswordGenerator
 };
 
 #endif // RANDOMPASSWORDGENERATOR_H
+
+// :maxLineLen=100:

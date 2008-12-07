@@ -91,3 +91,5 @@ class Property : public QObject
 };
 
 #endif // PROPERTY_H
+
+// :maxLineLen=100:

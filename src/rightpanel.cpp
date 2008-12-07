@@ -246,3 +246,5 @@ QTextStream& operator>>(QTextStream& ts, RightPanel& panel)
     ts >> *panel.m_listView;
     return ts;
 }
+
+// :maxLineLen=100:

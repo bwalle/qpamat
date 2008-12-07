@@ -104,3 +104,5 @@ class MemoryCard
 };
 
 #endif // MEMORYCARD_H
+
+// :maxLineLen=100:

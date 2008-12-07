@@ -62,3 +62,5 @@ class SymmetricEncryptor : public AbstractEncryptor
 };
 
 #endif // SYMMETRICENCRYPTOR_H
+
+// :maxLineLen=100:

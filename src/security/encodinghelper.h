@@ -41,3 +41,5 @@ class EncodingHelper
 };
 
 #endif // ENCODINGHELPER_H
+
+// :maxLineLen=100:

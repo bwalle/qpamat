@@ -147,4 +147,4 @@ void FileLineEdit::chooseFile()
     }
 }
 
-
+// :maxLineLen=100:

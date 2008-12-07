@@ -42,3 +42,5 @@ class PasswordHash
 };
 
 #endif // PASSWORDHASH_H
+
+// :maxLineLen=100:

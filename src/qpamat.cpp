@@ -1077,3 +1077,4 @@ void Qpamat::initActions()
     m_actions.showHideAction = new QAction(tr("&Show"), this);
 }
 
+// :maxLineLen=100:

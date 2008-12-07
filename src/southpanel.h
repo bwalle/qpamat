@@ -74,3 +74,5 @@ class SouthPanel : public Q3Frame
 };
 
 #endif // SOUTHPANEL_H
+
+// :maxLineLen=100:

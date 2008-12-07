@@ -49,3 +49,5 @@ class FontChooseBox : public QWidget
 };
 
 #endif // FONTCHOOSEBOX_H
+
+// :maxLineLen=100:

@@ -44,3 +44,5 @@ class CollectEncryptor : public StringEncryptor
 };
 
 #endif // COLLECTENCRYPTOR_H
+
+// :maxLineLen=100:

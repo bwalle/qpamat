@@ -138,3 +138,5 @@ void InsertCardDialog::pinEditHandler(const QString& text)
     
     m_okButton->setEnabled(m_pinEdit->hasAcceptableInput());
 }
+
+// :maxLineLen=100:

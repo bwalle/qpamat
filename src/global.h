@@ -109,3 +109,4 @@ typedef Q3ValueVector<QChar>     QCharVector;
 
 #endif
 
+// :maxLineLen=100:

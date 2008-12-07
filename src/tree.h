@@ -85,3 +85,5 @@ class Tree : public Q3ListView
 
 
 #endif // TREE_H
+
+// :maxLineLen=100:

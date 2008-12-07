@@ -68,3 +68,5 @@ class ListBoxDialog : public QDialog
 };
 
 #endif // LISTBOXDIALOG_H
+
+// :maxLineLen=100:

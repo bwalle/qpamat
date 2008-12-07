@@ -494,3 +494,5 @@ QTextStream& operator>>(QTextStream& ts, RightListView& listview)
     }
     return ts;
 }
+
+// :maxLineLen=100:

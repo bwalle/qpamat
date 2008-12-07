@@ -936,3 +936,5 @@ void ConfDlgSmartcardTab::testSmartCard()
 }
 
 #endif // DOXYGEN
+
+// :maxLineLen=100:

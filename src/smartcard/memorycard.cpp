@@ -775,5 +775,4 @@ void MemoryCard::checkInitialzed(const QString& functionName) const
     }
 }
 
-
-
+// :maxLineLen=100:

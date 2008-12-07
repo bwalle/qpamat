@@ -46,3 +46,5 @@ class InsertCardDialog : public QDialog
 
 
 #endif // INSERTCARDDIALOG_H
+
+// :maxLineLen=100:

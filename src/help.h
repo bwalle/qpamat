@@ -35,3 +35,5 @@ class Help : public QObject
 };
 
 #endif // HELP_H
+
+// :maxLineLen=100:

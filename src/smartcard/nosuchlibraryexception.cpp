@@ -52,3 +52,4 @@ NoSuchLibraryException::NoSuchLibraryException(const QString& error)
     : std::runtime_error(error.latin1())
 { }
 
+// :maxLineLen=100:

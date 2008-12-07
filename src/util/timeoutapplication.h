@@ -65,3 +65,5 @@ class TimeoutApplication : public QApplication
             
  
 #endif /* TIMEOUTAPPLICATION_H */
+
+// :maxLineLen=100:

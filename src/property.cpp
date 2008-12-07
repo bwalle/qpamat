@@ -358,3 +358,4 @@ void Property::appendFromXML(TreeEntry* parent, QDomElement& element)
     parent->appendProperty(new Property(key, value, type, encrypted, hidden));
 }
 
+// :maxLineLen=100:

@@ -30,3 +30,5 @@ void getX11Version(QString& protocolVersion, QString& vendorVersion);
 void sighandler(int signal = 0);
 
 #endif // MAIN_H
+
+// :maxLineLen=100:

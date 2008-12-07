@@ -137,3 +137,5 @@ extern Qpamat* qpamat;
 
 
 #endif // QPAMAT_H
+
+// :maxLineLen=100:

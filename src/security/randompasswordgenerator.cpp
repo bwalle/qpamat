@@ -107,3 +107,4 @@ bool RandomPasswordGenerator::isSlow() const
     return false;
 }
 
+// :maxLineLen=100:

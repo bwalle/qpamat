@@ -42,3 +42,5 @@ class FocusLineEdit : public QLineEdit
 };
 
 #endif // FOCUSLINEEDIT_H
+
+// :maxLineLen=100:

@@ -29,3 +29,5 @@ class MasterPasswordChecker : public PasswordChecker
 };
 
 #endif // MASTERPASSWORDCHECKER_H
+
+// :maxLineLen=100:

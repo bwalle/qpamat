@@ -39,4 +39,4 @@ class ProcessInfo
 
 #endif // PROCESSINFO_H
 
-/* vim: set sw=4 ts=4 et: */
+// vim: set sw=4 ts=4 et: :maxLineLen=100:

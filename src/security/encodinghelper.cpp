@@ -137,4 +137,4 @@ ByteVector EncodingHelper::fromBase64(const QString& string)
     return vector;
 }
 
-
+// :maxLineLen=100:

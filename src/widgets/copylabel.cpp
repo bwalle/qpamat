@@ -160,3 +160,4 @@ void CopyLabel::copyText()
     }
 }
 
+// :maxLineLen=100:

@@ -95,3 +95,4 @@ void TimerStatusmessage::disconnectSignalsAndSlots()
     m_connected = false;
 }
 
+// :maxLineLen=100:

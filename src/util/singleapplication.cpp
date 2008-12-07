@@ -203,3 +203,5 @@ void SingleApplication::shutdown()
         didShutdownAlready = true;
     }
 }
+
+// :maxLineLen=100:

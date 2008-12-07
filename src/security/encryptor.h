@@ -55,3 +55,5 @@ class Encryptor : public StringEncryptor
 };
 
 #endif // ENCRYPTOR_H
+
+// :maxLineLen=100:

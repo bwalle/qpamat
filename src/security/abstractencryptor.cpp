@@ -86,3 +86,5 @@ QString AbstractEncryptor::decryptStrFromStr(const QString& string)
 {
     return decryptStrFromBytes(EncodingHelper::fromBase64(string));
 }
+
+// :maxLineLen=100:

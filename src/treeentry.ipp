@@ -67,3 +67,4 @@ TreeEntry* TreeEntry::appendFromXML(T* parent, QDomElement& element)
     return returnvalue;
 }
 
+// :maxLineLen=100:

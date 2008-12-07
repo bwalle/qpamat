@@ -87,3 +87,5 @@ WaitDialog::WaitDialog(const QPixmap& icon, const QString& message, const QStrin
     }
     box->setStretchFactor(textLabel, 5);
 }
+
+// :maxLineLen=100:

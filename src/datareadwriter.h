@@ -94,3 +94,5 @@ class DataReadWriter
 };
 
 #endif // DATAREADWRITER_H
+
+// :maxLineLen=100:

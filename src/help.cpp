@@ -95,3 +95,5 @@ void Help::openURL(QWidget* parent, const QString& url)
             QMessageBox::Ok, QMessageBox::NoButton);
     }
 }
+
+// :maxLineLen=100:

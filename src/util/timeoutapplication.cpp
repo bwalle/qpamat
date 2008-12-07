@@ -315,4 +315,4 @@ bool TimeoutApplication::notify(QObject* receiver, QEvent* e)
     Signal that is emitted if the inactivity timeout occured.
 */
 
-
+// :maxLineLen=100:

@@ -32,3 +32,4 @@ class NotInitializedException : public std::runtime_error
 
 #endif // NOTINITIALIZEDEXCEPTION_H
 
+// :maxLineLen=100:

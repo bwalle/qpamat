@@ -314,3 +314,5 @@ bool string_length_greater(const QString& a, const QString& b)
 {
     return a.length() > b.length();
 }
+
+// :maxLineLen=100:

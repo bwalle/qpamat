@@ -419,3 +419,5 @@ void TreeEntry::dropped(QDropEvent *evt)
         delete src;
     }
 }
+
+// :maxLineLen=100:

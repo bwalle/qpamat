@@ -118,3 +118,4 @@ QString PasswordDialog::getPassword() const
     return m_passwordEdit->text();
 }
 
+// :maxLineLen=100:

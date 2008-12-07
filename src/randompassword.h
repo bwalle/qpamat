@@ -43,3 +43,5 @@ class RandomPassword : public QObject
 };
 
 #endif // RANDOMPASSWORD_H
+
+// :maxLineLen=100:

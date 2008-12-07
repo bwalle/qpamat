@@ -40,3 +40,5 @@ class ExternalPasswordGenerator : public PasswordGenerator
 };
 
 #endif // EXTERNALPASSWORDGENERATOR_H
+
+// :maxLineLen=100:

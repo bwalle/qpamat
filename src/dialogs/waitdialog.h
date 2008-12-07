@@ -32,3 +32,5 @@ class WaitDialog : public QDialog
 };
 
 #endif // WAITDIALOG_H
+
+// :maxLineLen=100:

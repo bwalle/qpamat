@@ -31,3 +31,5 @@ class NoSuchLibraryException : public std::runtime_error
 };
 
 #endif // NOSUCHLIBRARYEXCEPTION_H
+
+// :maxLineLen=100:

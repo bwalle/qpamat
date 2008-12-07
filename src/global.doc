@@ -81,3 +81,4 @@
     Prints a strace message if compiled with the \c TRACE define or just does nothing.
 */
 
+// :maxLineLen=100:

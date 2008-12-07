@@ -42,3 +42,5 @@ class PasswordChecker
 };
 
 #endif // PASSWORDCHECKER_H
+
+// :maxLineLen=100:

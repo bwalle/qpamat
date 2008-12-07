@@ -200,3 +200,5 @@ void ListBoxDialog::accept()
     }
     QDialog::accept();
 }
+
+// :maxLineLen=100:

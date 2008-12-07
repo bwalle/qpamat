@@ -35,3 +35,5 @@ class AbstractEncryptor : public Encryptor
 };
 
 #endif // ABSTRACTENCRYPTOR_H
+
+// :maxLineLen=100:

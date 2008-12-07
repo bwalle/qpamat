@@ -128,3 +128,4 @@ void AboutDialog::setupLicenseTab()
     m_tabWidget->addTab(licenseTab, tr("&License"));
 }
 
+// :maxLineLen=100:

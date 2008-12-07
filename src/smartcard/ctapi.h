@@ -62,6 +62,4 @@ char CT_data(
 
 #endif
 
-
-
-
+// :maxLineLen=100:

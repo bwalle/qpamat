@@ -58,3 +58,5 @@ class CardException : public std::runtime_error
 };
 
 #endif // CARDEXCEPTION_H
+
+// :maxLineLen=100:

@@ -49,3 +49,5 @@ class FileLineEdit : public QWidget
 };
 
 #endif // FILELINEEDIT_H
+
+// :maxLineLen=100:

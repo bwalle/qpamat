@@ -133,3 +133,4 @@ void FontChooseBox::chooseFont()
      }
 }
 
+// :maxLineLen=100:

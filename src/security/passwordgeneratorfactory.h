@@ -48,5 +48,6 @@ class PasswordGeneratorFactory
         static QString toString(PasswordGeneratorType type) throw (std::invalid_argument);
 };
 
-
 #endif // PASSWORDGENERATORFACTORY_H
+
+// :maxLineLen=100:

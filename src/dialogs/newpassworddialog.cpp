@@ -348,3 +348,5 @@ PasswordValidator::State PasswordValidator::validate(QString& input, int& pos) c
 }
 
 #endif // DOXYGEN
+
+// :maxLineLen=100:

@@ -272,3 +272,5 @@ QByteArray Settings::readByteArrayEntry(const QString& key, const QByteArray& de
     }
 }
 
+
+// :maxLineLen=100:

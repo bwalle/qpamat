@@ -25,3 +25,5 @@
 
 
 #endif // CONSTANTS_H
+
+// :maxLineLen=100:

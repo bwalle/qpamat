@@ -47,3 +47,5 @@ class SingleApplication : public QObject
 };
 
 #endif // SINGLEAPPLICATION_H
+
+// :maxLineLen=100:
