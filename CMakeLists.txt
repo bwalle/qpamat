@@ -152,6 +152,41 @@ ADD_EXECUTABLE(qpamat
 
 TARGET_LINK_LIBRARIES (qpamat ${QT_LIBRARIES} ${OPENSSL_LIBRARIES})
 
+#
+# Build the Documentation
+#
+
+FIND_PROGRAM(XSLTPROC_EXECUTABLE xsltproc)
+
+# create target directories
+FILE(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/doc/user/en)
+
+ADD_CUSTOM_COMMAND(
+    OUTPUT
+        ${CMAKE_BINARY_DIR}/doc/user/en/index.html # creates more files
+    COMMAND
+        ${XSLTPROC_EXECUTABLE}
+        ${CMAKE_SOURCE_DIR}/doc/user/en/qpamat.xsl
+        ${CMAKE_SOURCE_DIR}/doc/user/en/qpamat.xml &&
+        cp ${CMAKE_SOURCE_DIR}/doc/user/en/qpamat.css
+        ${CMAKE_BINARY_DIR}/doc/user/en/qpamat.css
+    DEPENDS
+        ${CMAKE_SOURCE_DIR}/doc/user/en/qpamat.xml
+    WORKING_DIRECTORY
+        ${CMAKE_BINARY_DIR}/doc/user/en
+)
+
+ADD_CUSTOM_TARGET(
+    doc
+    DEPENDS
+        ${CMAKE_BINARY_DIR}/doc/user/en/index.html
+)
+
+ADD_DEPENDENCIES(
+    qpamat
+    doc
+)
+
 
 #
 # Installation
@@ -181,6 +216,14 @@ INSTALL(
         ${CMAKE_SOURCE_DIR}/share/dicts/default.txt
     DESTINATION
         share/qpamat/dicts/
+)
+
+INSTALL(
+    DIRECTORY
+        ${CMAKE_BINARY_DIR}/doc/user/en
+    DESTINATION
+        share/qpamat/doc/
+    FILES_MATCHING REGEX ".*.(html|css)"
 )
 
 # :tabSize=4:noTabs=true:indentSize=4:mode=cmake:
