@@ -21,7 +21,9 @@ INCLUDE(FindOpenSSL)
 INCLUDE(FindQt4)
 SET(QT_USE_QT3SUPPORT 1)
 SET(QT_USE_QTXML      1)
-SET(QT_USE_QTDBUS     1)
+IF (CMAKE_HOST_UNIX AND NOT CMAKE_HOST_APPLE)
+    SET(QT_USE_QTDBUS     1)
+ENDIF (CMAKE_HOST_UNIX AND NOT CMAKE_HOST_APPLE)
 INCLUDE(${QT_USE_FILE})
 
 # include the current working directory
@@ -160,6 +162,11 @@ FIND_PROGRAM(XSLTPROC_EXECUTABLE xsltproc)
 
 # create target directories
 FILE(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/doc/user/en)
+CONFIGURE_FILE(
+    ${CMAKE_SOURCE_DIR}/doc/user/en/qpamat.css
+    ${CMAKE_BINARY_DIR}/doc/user/en/qpamat.css
+    COPYONLY
+)
 
 ADD_CUSTOM_COMMAND(
     OUTPUT
@@ -167,9 +174,7 @@ ADD_CUSTOM_COMMAND(
     COMMAND
         ${XSLTPROC_EXECUTABLE}
         ${CMAKE_SOURCE_DIR}/doc/user/en/qpamat.xsl
-        ${CMAKE_SOURCE_DIR}/doc/user/en/qpamat.xml &&
-        cp ${CMAKE_SOURCE_DIR}/doc/user/en/qpamat.css
-        ${CMAKE_BINARY_DIR}/doc/user/en/qpamat.css
+        ${CMAKE_SOURCE_DIR}/doc/user/en/qpamat.xml
     DEPENDS
         ${CMAKE_SOURCE_DIR}/doc/user/en/qpamat.xml
     WORKING_DIRECTORY
