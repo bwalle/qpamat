@@ -1,7 +1,4 @@
 /*
- * Id: $Id: filelineedit.h,v 1.6 2004/02/07 00:11:04 bwalle Exp $
- * -------------------------------------------------------------------------------------------------
- * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
  * GNU General Public License as published by the Free Software Foundation; You may only use 
  * version 2 of the License, you have no option to use any other version.
