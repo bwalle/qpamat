@@ -1,3 +1,8 @@
+2008-12-07  Bernhard Walle <bernhard.walle@gmx.de>
+
+	* Cleanup.
+	* Switch to cmake build system.
+
 2008-11-16  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Remove old Trolltech icon in the "About Qt" menu entry.
