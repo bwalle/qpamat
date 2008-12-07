@@ -47,8 +47,11 @@ const int ListBoxLabeledPict::RTTI = 10025;
     \param pixmap the pixmap
     \param string the string that is displayed
 */
-ListBoxLabeledPict::ListBoxLabeledPict(Q3ListBox* listbox, const QPixmap& pixmap, const QString& string)
-    : Q3ListBoxItem(listbox), m_pixmap(pixmap)
+ListBoxLabeledPict::ListBoxLabeledPict(Q3ListBox      *listbox,
+                                       const QPixmap  &pixmap,
+                                       const QString  &string)
+    : Q3ListBoxItem(listbox)
+    , m_pixmap(pixmap)
 {
     setText(string);
 }
