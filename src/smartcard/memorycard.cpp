@@ -370,7 +370,7 @@ void MemoryCard::resetCard(int* capacity, ProtocolType* protocolType) const
         int number = ((h2 >> 3) & 0x0F);
         if (number > 0)
         {
-            number = 1 << number + 6; // 2^{number+6}
+            number = 1 << (number + 6); // 2^{number+6}
         }
         int blocksize = 1 << (h2 & 0x07);
         *capacity = number * blocksize / 8;

@@ -218,6 +218,7 @@ int HybridPasswordChecker::findNumerOfCharsInClass(const QString& chars) const
     int ret = 0;
     bool hasDigits = false, hasLowercase = false, hasUppercase = false, hasUmlauts = false;
     bool hasSpecial = false, hasOther = false;
+
     for (int i = 0; i < chars.length(); ++i)
     {
         QChar c = chars[i];
@@ -226,28 +227,27 @@ int HybridPasswordChecker::findNumerOfCharsInClass(const QString& chars) const
         {
             return 255;
         }
-        else if (!hasDigits || c >= '0' && c <= '9' || c == ' ')
+        else if (!hasDigits && ((c >= '0' && c <= '9') || c == ' '))
         {
             hasDigits = true;
         }
-        else if (!hasLowercase || c >= 'a' && c <= 'z')
+        else if (!hasLowercase && c >= 'a' && c <= 'z')
         {
             hasLowercase = true;
         }
-        else if (!hasUppercase || c >= 'A' && c <= 'Z')
+        else if (!hasUppercase && c >= 'A' && c <= 'Z')
         {
             hasUppercase = true;
         }
-        else if (!hasSpecial || c == ',' || c == '.' || c == '-' || c == ';' || c == ':' || c == '_' 
-            || c == '='
-            || c == '(' || c == ')' || c == '*' || c == '+' || c == '?' || c == '"' || c == '$'
-            || c == '@' ||c == '#' || c == '%' || c == '&' || c == '/'
-            || c == '\\' || c == '{' || c == '}' || c == '[' || c == ']' || c == '!' || c == '^'
-            || c == '?' || c == '\'' || c == '?' || c == '`' || c == '~')
+        else if (!hasSpecial && (c == ',' || c == '.' || c == '-' || c == ';' || c == ':'
+                || c == '_' || c == '=' || c == '(' || c == ')' || c == '*' || c == '+' || c == '?'
+                || c == '"' || c == '$' || c == '@' ||c == '#' || c == '%' || c == '&' || c == '/'
+                || c == '\\' || c == '{' || c == '}' || c == '[' || c == ']' || c == '!' || c == '^'
+                || c == '?' || c == '\'' || c == '?' || c == '`' || c == '~'))
         {
             hasSpecial = true;
         }
-        else if (!hasUmlauts || (l1 >= 0xC0 && l1 <= 0xD6) || (l1 >= 0xD8 && l1 <= 0xFF))
+        else if (!hasUmlauts && ((l1 >= 0xC0 && l1 <= 0xD6) || (l1 >= 0xD8 && l1 <= 0xFF)))
         {
             hasUmlauts = true;
         }
