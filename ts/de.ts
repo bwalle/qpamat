@@ -624,7 +624,7 @@ It must consist of six hexadecimal digits:</source>
         <translation>%1 Stunden</translation>
     </message>
     <message>
-        <location filename="../src/util/singleapplication.cpp" line="131"/>
+        <location filename="../src/util/singleapplication.cpp" line="129"/>
         <source>You can only start one instance of %1. If you are
 really sure that no other instance is running, delete
 the file %2 and start again.
@@ -638,7 +638,7 @@ erneut.
 (PID des anderen %3 Prozesses ist %4.)</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="332"/>
+        <location filename="../src/datareadwriter.cpp" line="333"/>
         <source>There&apos;s no memory card in your reader.
 Use the test function in the configuration
 dialog to set up your reader properly.</source>
@@ -648,37 +648,37 @@ im Konfigurationsdialog um den Leser
 korrekt zu konfigurieren.</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="346"/>
+        <location filename="../src/datareadwriter.cpp" line="347"/>
         <source>&lt;qt&gt;It was not possible to select the file on the smartcard&lt;/qt&gt;</source>
         <translation>&lt;qt&gt;Es war nicht möglich die Datei auf der Chipkarte auszuwählen&lt;/qt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="382"/>
+        <location filename="../src/datareadwriter.cpp" line="383"/>
         <source>You inserted the wrong smartcard!</source>
         <translation>Sie haben eine falsche Chipkarte eingelegt!</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="397"/>
+        <location filename="../src/datareadwriter.cpp" line="398"/>
         <source>The given password was wrong.</source>
         <translation>Das Passwort war falsch.</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="419"/>
+        <location filename="../src/datareadwriter.cpp" line="420"/>
         <source>&lt;qt&gt;&lt;nobr&gt;The PIN you entered was wrong. You have&lt;/nobr&gt; &lt;b&gt;%1&lt;/b&gt; retries. After that, the card is destroyed!</source>
         <translation>&lt;qt&gt;&lt;nobr&gt;Die PIN, die Sie eingegeben habe, war falsch. Sie haben&lt;/nobr&gt; noch &lt;b&gt;%1&lt;/b&gt; Versuche. Nach diesen Versuchen wird die Karte zerstört!</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="426"/>
+        <location filename="../src/datareadwriter.cpp" line="427"/>
         <source>&lt;qt&gt;&lt;nobr&gt;There was a communication error while&lt;/nobr&gt; communicating with the smartcard terminal.&lt;p&gt;The error message was:&lt;br&gt;&lt;nobr&gt;%1&lt;/nobr&gt;</source>
         <translation>&lt;qt&gt;&lt;nobr&gt;Es trat ein Kommunikationsfehler mit dem &lt;/nobr&gt; Chipkartenleser auf.&lt;p&gt;Die Fehlermeldung war:&lt;br&gt;&lt;nobr&gt;%1&lt;/nobr&gt;</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="471"/>
+        <location filename="../src/datareadwriter.cpp" line="472"/>
         <source>&lt;qt&gt;&lt;nobr&gt;The data file is not writable. Change the file in&lt;/nobr&gt; the configuration dialog or change the permission of the file!&lt;/qt&gt;</source>
         <translation>&lt;qt&gt;&lt;nobr&gt;Die Datendatei ist nicht schreibbar. Ändern Sie die &lt;/nobr&gt; Datei im Konfigurationsdialog oder passen Sie die Zugriffsrechte der Datei an!&lt;/qt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="493"/>
+        <location filename="../src/datareadwriter.cpp" line="494"/>
         <source>The algorithm &apos;%1&apos; is not avaible on your system.
 Choose another crypto algorithm in the settings.
 The data is not saved!</source>
@@ -687,7 +687,7 @@ Wählen Sie einen anderen Algorithmus in den Einstellungen.
 Die Daten wurden nicht gespeichert!</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="519"/>
+        <location filename="../src/datareadwriter.cpp" line="520"/>
         <source>The data could not be saved. There was an
 error while creating the file:
 %1</source>
@@ -696,63 +696,63 @@ trat ein Fehler bei der Erstellung der Datei auf:
 %1</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="556"/>
+        <location filename="../src/datareadwriter.cpp" line="557"/>
         <source>The file %1 could not be opened:
 %2.</source>
         <translation>Die Datei %1 konnte nicht geöffnet werden:
 %2.</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="563"/>
+        <location filename="../src/datareadwriter.cpp" line="564"/>
         <source>The XML file (%1) may be corrupted and
 could not be read. Check the file with a text editor.</source>
         <translation>Die XML-Datei (%1) ist beschädigt und konnte nicht gelesen werden. Überprüfen Sie die Datei mit einem Texteditor.</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="573"/>
+        <location filename="../src/datareadwriter.cpp" line="574"/>
         <source>&lt;qt&gt;&lt;nobr&gt;The passwords of the current data file are stored&lt;/nobr&gt; on a smartcard but you did not configure QPaMaT for reading smartcards.&lt;p&gt;Change the settings and try again!&lt;/qt&gt;</source>
         <translation>&lt;qt&gt;&lt;nobr&gt;Die Passwörter in der aktuellen Datendatei sind &lt;/nobr&gt; auf einer Chipkarte gespeichert aber QPaMaT ist nicht für die Verwendung von Chipkarten konfiguriert.&lt;p&gt;Ändern Sie die Einstellungen und versuchen Sie es erneut!&lt;/qt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="584"/>
+        <location filename="../src/datareadwriter.cpp" line="585"/>
         <source>The password is incorrect.</source>
         <translation>Das Passwort ist falsch.</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="661"/>
+        <location filename="../src/datareadwriter.cpp" line="662"/>
         <source>The application was not set up correctly for using the smartcard. Call the configuration dialog and use the Test button for testing!&lt;p&gt;The error message was:&lt;br&gt;&lt;nobr&gt;%1&lt;/nobr&gt;</source>
         <translation>Die Anwendung wurde für die Verwendung von Chipkarten nicht korrekt eingerichtet. Rufen Sie den Konfigurationsdialg auf und verwenden Sie den Testen-Button zum Testen der Einstellungen!&lt;p&gt;Die Fehlermeldung war:&lt;br&gt;&lt;nobr&gt;%1&lt;/nobr&gt;</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="673"/>
+        <location filename="../src/datareadwriter.cpp" line="674"/>
         <source>Error in initializing the smart card reader:
 %1</source>
         <translation>Fehler bei der Initialisierung des Chipkartenlesers:
 %1</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="700"/>
+        <location filename="../src/datareadwriter.cpp" line="701"/>
         <source>&lt;b&gt;Writing&lt;/b&gt; to the smartcard...</source>
         <translation>&lt;b&gt;Schreiben&lt;/b&gt; auf die Chipkarte...</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="700"/>
+        <location filename="../src/datareadwriter.cpp" line="701"/>
         <source>&lt;b&gt;Reading&lt;/b&gt; from the smartcard...</source>
         <translation>&lt;b&gt;Lesen&lt;/b&gt; von der Chipkarte...</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="219"/>
+        <location filename="../src/main.cpp" line="217"/>
         <source>QPaMaT</source>
         <translation>QPaMaT</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="214"/>
+        <location filename="../src/main.cpp" line="212"/>
         <source>No more memory available. The application
 will be closed.</source>
         <translation>Nicht genug Speicher verfügbar. Die Anwendung wird geschlossen.</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="221"/>
+        <location filename="../src/main.cpp" line="219"/>
         <source>An unknown error occurred:
 %1
 The application will be closed.</source>
@@ -761,7 +761,7 @@ The application will be closed.</source>
 Die Anwendung wird geschlossen.</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="609"/>
+        <location filename="../src/datareadwriter.cpp" line="610"/>
         <source>The algorithm &apos;%1&apos; is not avaible on your system.
 It is impossible to read the file. Try to recompile or
 update your OpenSSL library.</source>
@@ -773,32 +773,32 @@ OpenSSL neu kompilieren oder zu aktualisieren.</translation>
 <context>
     <name>Qpamat</name>
     <message>
-        <location filename="../src/qpamat.cpp" line="132"/>
+        <location filename="../src/qpamat.cpp" line="134"/>
         <source>Sites</source>
         <translation>Seiten</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="254"/>
+        <location filename="../src/qpamat.cpp" line="256"/>
         <source>Application</source>
         <translation>Anwendung</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1074"/>
+        <location filename="../src/qpamat.cpp" line="1075"/>
         <source>Search</source>
         <translation>Suchen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="268"/>
+        <location filename="../src/qpamat.cpp" line="270"/>
         <source>Search:</source>
         <translation>Suchen:</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="285"/>
+        <location filename="../src/qpamat.cpp" line="287"/>
         <source>Edit</source>
         <translation>Bearbeiten</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="303"/>
+        <location filename="../src/qpamat.cpp" line="305"/>
         <source>&amp;File</source>
         <translation>&amp;Datei</translation>
     </message>
@@ -808,17 +808,17 @@ OpenSSL neu kompilieren oder zu aktualisieren.</translation>
         <translation type="obsolete">&amp;Ansicht</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="313"/>
+        <location filename="../src/qpamat.cpp" line="315"/>
         <source>&amp;Options</source>
         <translation>&amp;Optionen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="318"/>
+        <location filename="../src/qpamat.cpp" line="320"/>
         <source>&amp;Extras</source>
         <translation>&amp;Extras</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1051"/>
+        <location filename="../src/qpamat.cpp" line="1053"/>
         <source>&amp;Help</source>
         <translation>&amp;Hilfe</translation>
     </message>
@@ -828,89 +828,89 @@ OpenSSL neu kompilieren oder zu aktualisieren.</translation>
         <translation type="obsolete">QPaMaT XML-Dateien (*.xml)</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="683"/>
+        <location filename="../src/qpamat.cpp" line="685"/>
         <source>QPaMaT</source>
         <translation>QPaMaT</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="705"/>
+        <location filename="../src/qpamat.cpp" line="707"/>
         <source>There is modified data that was not saved.
 Do you want to save it now?</source>
         <translation>Daten wurden modifiziert aber nicht gespeichert.
 Wollen Sie jetzt speichern?</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="788"/>
+        <location filename="../src/qpamat.cpp" line="790"/>
         <source>Please enter a search criterion in the text field!</source>
         <translation>Bitte geben Sie in Suchkriterium in das Textfeld ein!</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="861"/>
+        <location filename="../src/qpamat.cpp" line="863"/>
         <source>QPaMaT - Password managing tool for Unix, Windows and MacOS X</source>
         <translation>QPaMaT - Passwort-Management-Tool für Unix, Windows und MacOS X</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="869"/>
+        <location filename="../src/qpamat.cpp" line="871"/>
         <source>page</source>
         <translation>Seite</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="994"/>
+        <location filename="../src/qpamat.cpp" line="996"/>
         <source>&amp;New</source>
         <translation>&amp;Neu</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1005"/>
+        <location filename="../src/qpamat.cpp" line="1007"/>
         <source>E&amp;xit</source>
         <translation>&amp;Beenden</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1009"/>
+        <location filename="../src/qpamat.cpp" line="1011"/>
         <source>&amp;Login</source>
         <translation>&amp;Einloggen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="529"/>
+        <location filename="../src/qpamat.cpp" line="531"/>
         <source>&amp;Logout</source>
         <translation>&amp;Ausloggen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1014"/>
+        <location filename="../src/qpamat.cpp" line="1016"/>
         <source>&amp;Save</source>
         <translation>&amp;Speichern</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1019"/>
+        <location filename="../src/qpamat.cpp" line="1021"/>
         <source>&amp;Export...</source>
         <translation>&amp;Exportieren...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1023"/>
+        <location filename="../src/qpamat.cpp" line="1025"/>
         <source>&amp;Print...</source>
         <translation>&amp;Drucken...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1027"/>
+        <location filename="../src/qpamat.cpp" line="1029"/>
         <source>&amp;Change Password...</source>
         <translation>&amp;Passwort ändern...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1031"/>
+        <location filename="../src/qpamat.cpp" line="1033"/>
         <source>&amp;Settings...</source>
         <translation>&amp;Einstellungen...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1035"/>
+        <location filename="../src/qpamat.cpp" line="1037"/>
         <source>&amp;Random Password...</source>
         <translation>&amp;Zufallspasswort...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1038"/>
+        <location filename="../src/qpamat.cpp" line="1040"/>
         <source>&amp;Show password strength</source>
         <translation>&amp;Passwortstärke anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1045"/>
+        <location filename="../src/qpamat.cpp" line="1047"/>
         <source>&amp;Clear clipboard</source>
         <translation>&amp;Zwischenablage löschen</translation>
     </message>
@@ -920,22 +920,22 @@ Wollen Sie jetzt speichern?</translation>
         <translation type="obsolete">&amp;Kontexthilfe</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1056"/>
+        <location filename="../src/qpamat.cpp" line="1058"/>
         <source>&amp;About...</source>
         <translation>&amp;Über...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1059"/>
+        <location filename="../src/qpamat.cpp" line="1060"/>
         <source>About &amp;Qt...</source>
         <translation>Über &amp;Qt...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1064"/>
+        <location filename="../src/qpamat.cpp" line="1065"/>
         <source>Add item</source>
         <translation>Eintrag hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1069"/>
+        <location filename="../src/qpamat.cpp" line="1070"/>
         <source>Remove item</source>
         <translation>Eintrag entfernen</translation>
     </message>
@@ -945,7 +945,7 @@ Wollen Sie jetzt speichern?</translation>
         <translation type="obsolete">Suchfeld &amp;fokussieren</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="652"/>
+        <location filename="../src/qpamat.cpp" line="654"/>
         <source>The file you&apos;ve choosen exists. Do you overwrite it?</source>
         <translation>Die gewählte Datei existiert bereits. Soll sie überschrieben werden?</translation>
     </message>
@@ -955,42 +955,42 @@ Wollen Sie jetzt speichern?</translation>
         <translation type="obsolete">&amp;Überschreiben</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="684"/>
+        <location filename="../src/qpamat.cpp" line="686"/>
         <source>An error occured while saving the file.</source>
         <translation>Ein Fehler ist beim Speichern aufgetreten.</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="636"/>
+        <location filename="../src/qpamat.cpp" line="638"/>
         <source>QPaMaT XML files (*.xml);;Text files with cleartext password (*.txt)</source>
         <translation>QPaMaT XML-Dateien (*.xml);;Textdateien mit Klartextpasswort (*.txt)</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="653"/>
+        <location filename="../src/qpamat.cpp" line="655"/>
         <source>&amp;Overwrite</source>
         <translation>&amp;Überschreiben</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="653"/>
+        <location filename="../src/qpamat.cpp" line="655"/>
         <source>&amp;Don&apos;t export</source>
         <translation>&amp;Nicht exportieren</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="530"/>
+        <location filename="../src/qpamat.cpp" line="532"/>
         <source>Logout</source>
         <translation>Ausloggen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="539"/>
+        <location filename="../src/qpamat.cpp" line="541"/>
         <source>Login</source>
         <translation>Einloggen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1076"/>
+        <location filename="../src/qpamat.cpp" line="1077"/>
         <source>&amp;Show</source>
         <translation>&amp;Anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="430"/>
+        <location filename="../src/qpamat.cpp" line="432"/>
         <source>&amp;Hide</source>
         <translation>&amp;Verbergen</translation>
     </message>
