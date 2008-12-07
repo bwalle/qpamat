@@ -2,6 +2,7 @@
 
 	* Cleanup.
 	* Switch to cmake build system.
+    * Switch from Docbook/SGML to Docbook/XML for the documentation.
 
 2008-11-16  Bernhard Walle <bernhard.walle@gmx.de>
 
