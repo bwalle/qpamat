@@ -41,8 +41,6 @@
     
     \ingroup security
     \author Bernhard Walle
-    \version $Revision: 1.4 $
-    \date $Date$
 */
 
 /*!

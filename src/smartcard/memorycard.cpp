@@ -67,8 +67,6 @@ int MemoryCard::m_lastNumber = 1;
     
     \ingroup smartcard
     \author Bernhard Walle
-    \version $Revision: 1.10 $
-    \date $Date$
 */
 
 /*!

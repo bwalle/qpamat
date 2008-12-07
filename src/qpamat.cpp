@@ -80,8 +80,6 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.52 $
-    \date $Date$
  */
 
 /*! 

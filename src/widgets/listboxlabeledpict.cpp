@@ -38,8 +38,6 @@ const int ListBoxLabeledPict::RTTI = 10025;
 
     \ingroup gui
     \author $Author$
-    \version $Revision: 1.1 $
-    \date $Date$
 
     \sa QListBox, QListBoxItem
 */

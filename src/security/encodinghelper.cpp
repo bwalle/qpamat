@@ -63,8 +63,6 @@ const char EncodingHelper::reverseBase64Alphabet[] = {
     
     \ingroup security
     \author Bernhard Walle
-    \version $Revision: 1.4 $
-    \date $Date$
 */
 
 /*!

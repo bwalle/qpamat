@@ -32,8 +32,6 @@
 
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.12 $
-    \date $Date$
 */
 
 /*!

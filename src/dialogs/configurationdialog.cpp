@@ -82,8 +82,6 @@
     
     \ingroup dialogs
     \author Bernhard Walle
-    \version $Revision: 1.29 $
-    \date $Date$
  */
 
 /*!
@@ -132,8 +130,6 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.29 $
-    \date $Date$
 */
 
 /*!
@@ -174,8 +170,6 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.29 $
-    \date $Date$
 */
 
 
@@ -279,8 +273,6 @@ void ConfDlgGeneralTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.29 $
-    \date $Date$
 */
 
 
@@ -528,8 +520,6 @@ void ConfDlgPasswordTab::sortDictionary()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.29 $
-    \date $Date$
 */
 
 /*!
@@ -637,8 +627,6 @@ void ConfDlgSecurityTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.29 $
-    \date $Date$
 */
 
 
@@ -747,8 +735,6 @@ void ConfDlgPresentationTab::applySettings()
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.29 $
-    \date $Date$
 */
 
 /*!

@@ -40,8 +40,6 @@
     
     \ingroup dialogs
     \author Bernhard Walle
-    \version $Revision: 1.2 $
-    \date $Date$
 */
 
 /*!

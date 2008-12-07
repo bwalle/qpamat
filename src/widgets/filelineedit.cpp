@@ -31,8 +31,6 @@
     
     \ingroup widgets
     \author Bernhard Walle
-    \version $Revision: 1.9 $
-    \date $Date$
 */
 
 /*!

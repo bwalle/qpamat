@@ -58,9 +58,6 @@
 
     \ingroup gui
     \author $Author$
-    \version $Revision: 1.8 $
-    \date $Date$
-    
 */
 
 /*!
@@ -195,8 +192,6 @@
 
     \ingroup gui
     \author $Author$
-    \version $Revision: 1.8 $
-    \date $Date$
 */
 
 /*!

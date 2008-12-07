@@ -24,9 +24,7 @@
     inherited NoSuchLibraryException::what() method to get the error message.
     
     \ingroup smartcard
-    \version $Revision: 1.1 $
     \author Bernhard Walle
-    \date $Date: 2003/12/28 23:49:49 $
 */
 
 /*!

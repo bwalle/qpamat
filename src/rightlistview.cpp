@@ -39,8 +39,6 @@
     \brief Represents the list view on the right where the key-value pairs are displayed.
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.15 $
-    \date $Date$
 */
 
 /*!

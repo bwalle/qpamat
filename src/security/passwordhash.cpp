@@ -52,8 +52,6 @@ const int PasswordHash::MAX_HASH_LENGTH = 40;
     \brief Helping functions for dealing with passwords and hashes.
     \ingroup security
     \author Bernhard Walle
-    \version $Revision: 1.4 $
-    \date $Date$
 */
 
 /*!

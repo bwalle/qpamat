@@ -29,8 +29,6 @@
     
     \ingroup smartcard
     \author Bernhard Walle
-    \version $Revision: 1.6 $
-    \date $Date: 2004/01/15 22:06:35 $
 */
 
 /*!

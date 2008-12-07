@@ -36,8 +36,6 @@ const uint PasswordChecker::CRACKS_PER_SECOND = 500000;
     
     \ingroup security
     \author Bernhard Walle
-    \version $Revision: 1.1 $
-    \date $Date: 2003/12/29 10:59:16 $
 */
 
 /*!
@@ -68,9 +66,7 @@ const uint PasswordChecker::CRACKS_PER_SECOND = 500000;
     program failed. Another reason could be that a specified file does not exist.
     
     \ingroup security
-    \version $Revision: 1.1 $
     \author Bernhard Walle
-    \date $Date: 2003/12/29 10:59:16 $
 */
 
 /*!

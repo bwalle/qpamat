@@ -57,8 +57,6 @@ const int     PasswordGeneratorFactory::DEFAULT_LENGTH = 8;
     
     \ingroup security
     \author Bernhard Walle
-    \version $Revision: 1.3 $
-    \date $Date: 2003/12/29 10:59:16 $
 */
 
 /*!

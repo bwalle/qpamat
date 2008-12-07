@@ -45,8 +45,6 @@
     
     \ingroup dialogs
     \author Bernhard Walle
-    \version $Revision: 1.12 $
-    \date $Date$
 */
 
 
@@ -310,8 +308,6 @@ void NewPasswordDialog::checkOkEnabled() const
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.12 $
-    \date $Date$
 */
 
 /*!

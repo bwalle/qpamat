@@ -51,8 +51,6 @@ QMap<int, int>  HybridPasswordChecker::m_lengthBeginMap;
     
     \ingroup security
     \author Bernhard Walle
-    \version $Revision: 1.5 $
-    \date $Date$
 */
 
 

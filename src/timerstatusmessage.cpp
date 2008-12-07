@@ -33,8 +33,6 @@
     
     \ingroup gui
     \author Bernhard Walle
-    \version $Revision: 1.1 $
-    \date $Date$
 */
 
 /*!

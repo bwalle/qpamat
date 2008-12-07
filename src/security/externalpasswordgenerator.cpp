@@ -41,8 +41,6 @@ const int ExternalPasswordGenerator::TIMEOUT = 5*1000;
     
     \ingroup security
     \author Bernhard Walle
-    \version $Revision: 1.3 $
-    \date $Date$
 */
 
 /*!

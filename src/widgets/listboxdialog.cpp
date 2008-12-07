@@ -37,8 +37,6 @@
     
     \ingroup widgets
     \author $Author$
-    \version $Revision: 1.3 $
-    \date $Date$
 */
 
 /*!
@@ -79,8 +77,6 @@
     
     \ingroup widgets
     \author $Author$
-    \version $Revision: 1.3 $
-    \date $Date$
     
 */
 
