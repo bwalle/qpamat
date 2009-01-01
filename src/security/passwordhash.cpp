@@ -17,10 +17,11 @@
 #include <limits>
 #include <iterator>
 
-#include <openssl/evp.h>
-
+#include <QDebug>
 #include <QString>
 #include <Q3CString>
+
+#include <openssl/evp.h>
 
 #include "global.h"
 #include "constants.h"
@@ -70,7 +71,7 @@ bool PasswordHash::isCorrect(QString password, const QString& hash)
     }
     catch (const std::invalid_argument& e)
     {
-        PRINT_DBG("Caught invalid_argument: %s", e.what());
+        qDebug() << CURRENT_FUNCTION << "Caught invalid_argument:" << e.what();
     }
     return correct;
 }

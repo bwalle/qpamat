@@ -15,6 +15,7 @@
 #include <QSettings>
 #include <QDir>
 #include <QApplication>
+#include <QDebug>
 
 #include "security/symmetricencryptor.h"
 #include "security/passwordgeneratorfactory.h"
@@ -168,12 +169,11 @@ QString Settings::readEntry(const QString & key, const QString& def)
     {
         return m_stringMap[key];
     }
-#ifdef DEBUG
     else if (!read && def.isNull())
     {
-        PRINT_DBG("Implicit default returned, key = %s", key.latin1());
+        qDebug() << CURRENT_FUNCTION << "Implicit default returned, key =" << key;
     }
-#endif
+
     return string;
 }
 
@@ -191,12 +191,11 @@ int Settings::readNumEntry (const QString & key, int def)
     {
         return m_intMap[key];
     }
-#ifdef DEBUG
     else if (!read && def == 0)
     {
-        PRINT_TRACE("Implicit default returned, key = %s", key.latin1());
+        qDebug() << CURRENT_FUNCTION << "Implicit default returned, key =" << key;
     }
-#endif
+
     return number;
 }
 
@@ -214,12 +213,11 @@ double Settings::readDoubleEntry(const QString & key, double def) const
     {
         return m_doubleMap[key];
     }
-#ifdef DEBUG
     else if (!read && def == 0.0)
     {
-        PRINT_TRACE("Implicit default returned, key = %s", key.latin1());
+        qDebug() << CURRENT_FUNCTION << "Implicit default returned, key = %s" << key;
     }
-#endif
+
     return number;
 }
 
@@ -237,12 +235,11 @@ bool Settings::readBoolEntry(const QString & key, bool def) const
     {
         return m_boolMap[key];
     }
-#ifdef DEBUG
     else if (!read && !def)
     {
-        PRINT_TRACE("Implicit default returned, key = %s", key.latin1());
+        qDebug() << CURRENT_FUNCTION << "Implicit default returned, key =" << key;
     }
-#endif
+
     return res;
 }
 

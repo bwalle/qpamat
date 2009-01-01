@@ -21,6 +21,7 @@
 #include <QTextStream>
 #include <QDir>
 #include <QMessageBox>
+#include <QDebug>
 
 #ifndef Q_WS_WIN
 #include <unistd.h>
@@ -130,7 +131,7 @@ void SingleApplication::startup()
 
     if (!file.open(QIODevice::WriteOnly))
     {
-        PRINT_DBG("Could not open the file %s for writing.", lockfile.latin1());
+        qDebug() << CURRENT_FUNCTION << "Could not open the file " << lockfile << "for writing.";
         return;
     }
     QTextStream textstream(&file);
@@ -164,7 +165,7 @@ void SingleApplication::registerStandardExitHandlers()
 */
 void SingleApplication::shutdown(int signal)
 {
-    PRINT_DBG("Caught signal %d", signal)
+    qDebug() << CURRENT_FUNCTION << "Caught signal" << signal;
 
     if (signal == SIGABRT
 #ifndef Q_WS_WIN
@@ -188,12 +189,13 @@ void SingleApplication::shutdown(int signal)
 */
 void SingleApplication::shutdown()
 {
-    PRINT_DBG("Shutting down ...%s", "");
+    qDebug() << CURRENT_FUNCTION << "Shutting down ...";
+
     if (!didShutdownAlready) // prevents multiple calls
     {
         if (!QFile::remove(lockfile))
         {
-            PRINT_DBG("Could not remove the lockfile %s", lockfile.latin1());
+            qDebug() << CURRENT_FUNCTION << "Could not remove the lockfile" << lockfile;
         }
         didShutdownAlready = true;
     }

@@ -35,6 +35,7 @@
 #include <QDropEvent>
 #include <Q3PopupMenu>
 #include <QDateTime>
+#include <QDebug>
 
 #include "qpamat.h"
 
@@ -271,7 +272,7 @@ void Tree::showContextMenu(Q3ListViewItem* item, const QPoint& point)
         case -1:
             break;
         default:
-            PRINT_DBG("Error in showContextMenu%s\n", "");
+            qDebug() << CURRENT_FUNCTION << "Error in showContextMenu";
             break;
     }
 }
@@ -361,7 +362,7 @@ void Tree::deleteCurrent()
 
             if (below)
             {
-                PRINT_TRACE("setSelected: %s", below->text(0).latin1());
+                qDebug() << CURRENT_FUNCTION << "setSelected:" << below->text(0);
                 setSelected(below, true);
             }
             emit stateModified();
@@ -580,7 +581,7 @@ void Tree::recomputePasswordStrength(bool* error)
                 {
                     propIt.current()->updatePasswordStrength();
                     progress.setProgress(progr++);
-                    PRINT_DBG("progr = %d", progr);
+                    qDebug() << CURRENT_FUNCTION << "progr =" << progr;
                     qApp->processEvents();
                 }
                 ++propIt;
@@ -648,7 +649,7 @@ void Tree::updatePasswordStrengthView()
                         it.current()->setPixmap(0, QPixmap(":/images/traffic_gray_16.png"));
                         break;
                     default:
-                        PRINT_DBG("Value out of range: %d", strength);
+                        qDebug() << CURRENT_FUNCTION << "Value out of range:" << strength;
                         break;
                 }
                 ++it;

@@ -16,6 +16,7 @@
 #include <algorithm>
 #include <cmath>
 
+#include <QDebug>
 #include <QString>
 #include <Q3ValueVector>
 #include <QFile>
@@ -75,7 +76,7 @@ HybridPasswordChecker::HybridPasswordChecker(const QString& dictFileName)
     // do we need to re-read
     if (m_words.isEmpty() || (m_fileName != dictFileName))
     {
-        PRINT_TRACE("!!!! Re-reading the file !!!!!");
+        qDebug() << CURRENT_FUNCTION << "!!!! Re-reading the file !!!!!";
 
         QFile file(dictFileName);
         if (!file.open(QIODevice::ReadOnly))
@@ -144,9 +145,6 @@ double HybridPasswordChecker::passwordQuality(const QString& password) throw ()
         W = 1;
     }
     uint P = !longest.isNull() ? (password.length() - longest.length() + 1 ) : password.length();
-
-    PRINT_TRACE("-----------------------------------------------------");
-    PRINT_TRACE("Z = %d, L = %d, W = %d, P = %d", Z, L, W, P);
 
     return std::pow(double(Z), double(L)) * W * P / CRACKS_PER_SECOND / 86400;
 }
@@ -280,7 +278,6 @@ int HybridPasswordChecker::findNumerOfCharsInClass(const QString& chars) const
         ret += 118;
     }
 
-    PRINT_TRACE("Ret is %d", ret);
     return ret;
 }
 

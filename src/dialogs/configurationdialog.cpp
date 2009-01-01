@@ -42,6 +42,7 @@
 #include <QDir>
 #include <QGridLayout>
 #include <QVBoxLayout>
+#include <QDebug>
 
 #include "global.h"
 #include "configurationdialog.h"
@@ -578,7 +579,8 @@ void ConfDlgSecurityTab::createAndLayout()
 */
 void ConfDlgSecurityTab::fillSettings()
 {
-    PRINT_TRACE("Insert algorithm");
+    qDebug() << CURRENT_FUNCTION << "Insert algorithm";
+
     m_algorithmCombo->insertStringList(SymmetricEncryptor::getAlgorithms());
     m_algorithmCombo->setCurrentText( qpamat->set().readEntry( "Security/CipherAlgorithm" ));
 

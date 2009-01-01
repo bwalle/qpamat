@@ -42,7 +42,7 @@ class ReadWriteException : public std::runtime_error
         ReadWriteException(const QString& error, Category category = COtherError,
             Severity severity = WARNING) : std::runtime_error(error.isNull() ? "" : error.latin1()),
             m_message(error), m_severity(severity), m_category(category)
-            { PRINT_TRACE("EXception generated"); }
+            {  }
 
         ~ReadWriteException() throw () {};
 

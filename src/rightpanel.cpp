@@ -12,6 +12,7 @@
  *
  * -------------------------------------------------------------------------------------------------
  */
+#include <QDebug>
 #include <Q3ListView>
 #include <QLayout>
 #include <Q3Header>
@@ -118,7 +119,7 @@ void RightPanel::itemDeletedHandler(int item)
         return;
     }
 
-    PRINT_TRACE("item = %d, numberOfChilds = %d", item, numberOfChilds);
+    qDebug() << CURRENT_FUNCTION << "item =" << item << "numberOfChilds = " << numberOfChilds;
 
     // if the last one was deleted, select the previous one
     if (item == numberOfChilds)

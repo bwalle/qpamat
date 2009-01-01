@@ -14,6 +14,7 @@
  */
 #include <memory>
 
+#include <QDebug>
 #include <QApplication>
 #include <QTextDocument>
 #include <QAction>
@@ -436,7 +437,7 @@ void Qpamat::handleTrayiconClick(QSystemTrayIcon::ActivationReason reason)
  */
 void Qpamat::login()
 {
-    PRINT_TRACE("Calling login()");
+    qDebug() << CURRENT_FUNCTION << "Calling login()";
 
     std::auto_ptr<PasswordDialog> dlg(new PasswordDialog(this));
     QDomDocument doc;
@@ -513,7 +514,7 @@ void Qpamat::login()
  */
 void Qpamat::setLogin(bool loggedIn)
 {
-    PRINT_TRACE("Caling setLogin = %d", loggedIn);
+    qDebug() << CURRENT_FUNCTION << "Caling setLogin =" << loggedIn;
     m_loggedIn = loggedIn;
 
     // toggle action
@@ -695,7 +696,7 @@ bool Qpamat::logout()
     // save the data
     if (m_modified)
     {
-        PRINT_TRACE("Disable timeout action temporary");
+        qDebug() << CURRENT_FUNCTION << "Disable timeout action temporary";
         dynamic_cast<TimeoutApplication*>(qApp)->setTemporaryDisabled(true);
 
         int ret = QMessageBox::question(this, "QPaMaT", tr("There is modified data that was not saved."
@@ -715,7 +716,7 @@ bool Qpamat::logout()
                 break;
         }
 
-        PRINT_TRACE("Enable timeout action again");
+        qDebug() << CURRENT_FUNCTION << "Enable timeout action again";
         dynamic_cast<TimeoutApplication*>(qApp)->setTemporaryDisabled(false);
     }
 

@@ -24,6 +24,7 @@
 #include <Q3Frame>
 #include <QPixmap>
 #include <QHBoxLayout>
+#include <QDebug>
 
 #include "qpamat.h"
 
@@ -340,7 +341,8 @@ void SouthPanel::insertAutoText()
                 newTxt = qpamat->set().readEntry("AutoText/URL");
                 break;
             default:
-                PRINT_DBG("Value is out of range: %d", m_typeCombo->currentItem() );
+                qDebug() << CURRENT_FUNCTION << "Value is out of range:"
+                         << m_typeCombo->currentItem();
                 break;
         }
         m_keyLineEdit->setText(newTxt);

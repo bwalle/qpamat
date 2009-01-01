@@ -12,6 +12,7 @@
  *
  * -------------------------------------------------------------------------------------------------
  */
+#include <QDebug>
 #include <Q3ListView>
 #include <QWidget>
 #include <Q3Header>
@@ -480,7 +481,7 @@ QTextStream& operator>>(QTextStream& ts, RightListView& listview)
     QStringList list = rx.capturedTexts();
     if (list.size() != 3)
     {
-        PRINT_DBG("Wrong input\n%s", text.latin1());
+        qDebug() << CURRENT_FUNCTION << "Wrong input" << text;
     }
     else
     {

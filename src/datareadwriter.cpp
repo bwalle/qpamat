@@ -28,6 +28,7 @@
 #include <QDateTime>
 #include <QPixmap>
 #include <QTextStream>
+#include <QDebug>
 
 #include "qpamat.h"
 #include "datareadwriter.h"
@@ -327,7 +328,7 @@ void ReadWriteThread::run()
         if (m_write && !m_pin.isNull())
         {
             // try to unlock
-            PRINT_DBG("Trying to unlock the card ...%s", "");
+            qDebug() << CURRENT_FUNCTION << "Trying to unlock the card ...";
             m_card.verify(m_pin);
         }
 
@@ -343,7 +344,7 @@ void ReadWriteThread::run()
             // write the random number
             ByteVector byteVector(1);
             byteVector[0] = m_randomNumber;
-            PRINT_DBG("Writing random = %d", byteVector[0])
+            qDebug() << CURRENT_FUNCTION << "Writing random =" << byteVector[0];
             m_card.write(0, byteVector);
 
             // write the password hash and include a length information
@@ -351,7 +352,7 @@ void ReadWriteThread::run()
             pwHash.insert(pwHash.begin(), pwHash.size());
             m_card.write(1, pwHash);
 
-            PRINT_TRACE("Password hash length = %d", pwHash.size()-1);
+            qDebug() << CURRENT_FUNCTION << "Password hash length = " << (pwHash.size()-1);
 
             // then write the number of bytes
             int numberOfBytes = m_bytes.size();
@@ -375,13 +376,13 @@ void ReadWriteThread::run()
                 return;
             }
 
-            PRINT_DBG("Read randomNumber = %d", m_randomNumber)
+            qDebug() << CURRENT_FUNCTION << "Read randomNumber =" << m_randomNumber;
 
             // read the password hash, check the password and throw a exception if necessary
             byte len = m_card.read(1, 1)[0];
             ByteVector pwHash = m_card.read(2, len);
 
-            PRINT_TRACE("Password hash length = %d", len);
+            qDebug() << CURRENT_FUNCTION << "Password hash length =" << len;
 
             if (!PasswordHash::isCorrect(m_password, pwHash))
             {
@@ -394,7 +395,7 @@ void ReadWriteThread::run()
             ByteVector vec = m_card.read(PasswordHash::MAX_HASH_LENGTH + 2, 2);
             int numberOfBytes = (vec[0] << 8) + (vec[1]);
 
-            PRINT_DBG("Read numberOfBytes = %d", numberOfBytes);
+            qDebug() << CURRENT_FUNCTION << "Read numberOfBytes =" << numberOfBytes;
 
             Q_ASSERT(numberOfBytes >= 0);
 
@@ -534,7 +535,7 @@ void DataReadWriter::writeXML(const QDomDocument& document, const QString& passw
 QDomDocument DataReadWriter::readXML(const QString& password)
     throw (ReadWriteException)
 {
-    PRINT_TRACE("Function called");
+    qDebug() << CURRENT_FUNCTION;
 
     const QString& fileName = qpamat->set().readEntry("General/Datafile");
     bool smartcard = qpamat->set().readBoolEntry("Smartcard/UseCard");

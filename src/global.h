@@ -15,100 +15,96 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
+#include <boost/current_function.hpp>
+
 #include <Q3ValueVector>
 #include <QMap>
 #include <QString>
 
+/*!
+    \file global.h
+    \ingroup gui
+
+    \brief Defines some types and functions used in the whole application.
+
+    Defines some types and functions used in the whole application.
+*/
+
+
+/*!
+    \typedef unsigned char byte
+
+    We use unsigned char in meaning of a byte.
+*/
 typedef unsigned char byte;
 
+/*!
+    \typedef QValueVector<byte> ByteVector
+
+    This is a byte vector.
+*/
 typedef Q3ValueVector<byte>      ByteVector;
+
+/*!
+    \typedef QValueVector<QString> StringVector
+
+    This is a vector of QString objects.
+*/
 typedef Q3ValueVector<QString>   StringVector;
+
+/*!
+    \typedef QValueVector<uint> UIntVector
+
+    Vector for unsigned integer.
+*/
 typedef Q3ValueVector<uint>      UIntVector;
+
+/*!
+    \typedef QValueVector<int> IntVector
+
+    Vector for integer.
+*/
 typedef Q3ValueVector<int>       IntVector;
 
+/*!
+    \typedef QMap<QString, QString> StringMap
+
+    This is a map that maps strings to strings
+*/
 typedef QMap<QString, QString>  StringMap;
+
+/*!
+    \typedef QValueVector<QChar> QCharVector
+
+    Vector for Unicode characters.
+*/
 typedef Q3ValueVector<QChar>     QCharVector;
 
-/**
- * Unused parameters.
- *
- * @param param the unused parameter
- */
+/*!
+     Unused parameters.
+
+     \param param the unused parameter
+*/
 #define UNUSED(param) (void)param;
 
+/*!
+    Macro for the current function with signature included in brackets. Example:
 
-// Copyright (c) 2003 Benedikt Meurer (benedikt.meurer@unix-ag.uni-siegen.de)
-// xfwm4: debug.h
+\code
+[ void Qpamat::setLogin(bool) ]
+\endcode
 
+    Since the streaming operators are used, that only works for straming objects. Examples:
 
-#if !defined(DOXYGEN) && (defined(DEBUG) || defined(TRACE))
+\code
+std::cout << BOOST_CURRENT_FUNCTION << "Hello!" << std::endl;
+qDebug() << BOOST_CURRENT_FUNCTION << "Hello!";
+\endcode
 
-#if defined(__NetBSD__) || (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L)
-#define __DBG_FUNC__    __func__
-#elif defined(__GNUC__) && __GNUC__ >= 3
-#define __DBG_FUNC__	__FUNCTION__
-#else
-#define __DBG_FUNC__    "??"
-#endif
-
-#endif // !defined(DOXYGEN) && (defined(DEBUG) || defined(TRACE))
-
-
-#ifdef DEBUG
-
-#  ifdef _MSC_VER
-#    define PRINT_DBG(fmt, args)                                  \
-     {                                                            \
-         qDebug("DEBUG[%s:%d] %s(): "fmt, __FILE__, __LINE__,     \
-                 __DBG_FUNC__, ##args);                           \
-     }
-#  else
-#    define PRINT_DBG(fmt, ...)                                   \
-     {                                                            \
-         qDebug("DEBUG[%s:%d] %s(): "fmt, __FILE__, __LINE__,     \
-                __DBG_FUNC__, ## __VA_ARGS__);                    \
-     }
-
-#  endif
-
-#else
-
-#  ifdef _MSC_VER
-#    define PRINT_DBG(fmt, args)   { do {} while(0); }
-#  else
-#    define PRINT_DBG(fmt, ...)   { do {} while(0); }
-#  endif
-
-#endif
-
-
-#ifdef TRACE
-
-#  ifdef _MSC_VER
-#    define PRINT_TRACE(fmt, args)                                \
-     {                                                            \
-         qDebug("TRACE[%s:%d] %s(): "fmt, __FILE__, __LINE__,     \
-                 __DBG_FUNC__, ##args);                           \
-     }
-#  else
-#    define PRINT_TRACE(fmt, ...)                                 \
-     {                                                            \
-         qDebug("TRACE[%s:%d] %s(): "fmt, __FILE__, __LINE__,     \
-                __DBG_FUNC__, ## __VA_ARGS__);                    \
-     }
-
-#  endif
-
-#else
-
-#  ifdef _MSC_VER
-#    define PRINT_TRACE(fmt, args)   { do {} while(0); }
-#  else
-#    define PRINT_TRACE(fmt, ...)   { do {} while(0); }
-#  endif
-
-#endif
+*/
+#define CURRENT_FUNCTION \
+        "[" << BOOST_CURRENT_FUNCTION << "]"
 
 #endif // GLOBAL_H
 
-// :maxLineLen=100:
+// :maxLineLen=100:tabSize=4:shiftWidth=4:

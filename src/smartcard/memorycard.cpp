@@ -16,9 +16,10 @@
 #include <cmath>
 #include <algorithm>
 
-#include <qstring.h>
-#include <qlibrary.h>
-#include <qapplication.h>
+#include <QDebug>
+#include <QString>
+#include <QLibrary>
+#include <QApplication>
 
 #include "memorycard.h"
 #include "global.h"
@@ -170,11 +171,11 @@ MemoryCard::~MemoryCard()
         }
         catch (const std::exception& ex)
         {
-            PRINT_DBG("Caught exception in destructor: %s", ex.what());
+            qDebug() << CURRENT_FUNCTION << "Caught exception in destructor: %s" << ex.what();
         }
         catch (...)
         {
-            PRINT_DBG("Caught general exception in destructor.", "");
+            qDebug() << CURRENT_FUNCTION << "Caught general exception in destructor.";
         }
     }
 }
@@ -583,7 +584,7 @@ void MemoryCard::write(ushort offset, const ByteVector& data)
 
         if (ret != OK)
         {
-            PRINT_DBG("Throwing exception with error code %d", ret)
+            qDebug() << CURRENT_FUNCTION << "Throwing exception with error code" << ret;
             throw CardException(CardException::ErrorCode(ret));
         }
 
@@ -591,7 +592,7 @@ void MemoryCard::write(ushort offset, const ByteVector& data)
 
         if (sw1sw2 != 0x9000)
         {
-            PRINT_DBG("Throwing card exception with error code %x", sw1sw2);
+            qDebug() << CURRENT_FUNCTION << "Throwing card exception with error code" << sw1sw2;
             throw CardException(CardException::ErrorCode(sw1sw2));
         }
 
@@ -643,7 +644,7 @@ void MemoryCard::verify(const QString& pin) const
 
     ushort sw1sw2 = (response[0] << 8) + response[1];
 
-    PRINT_TRACE("Verfiy repsonse %X", sw1sw2)
+    qDebug() << CURRENT_FUNCTION << "Verfiy repsonse" << sw1sw2;
 
     if (sw1sw2 != 0x9000)
     {
@@ -704,7 +705,7 @@ void MemoryCard::changeVerificationData(const QString& oldPin, const QString& ne
 
     ushort sw1sw2 = (response[0] << 8) + response[1];
 
-    PRINT_TRACE("Verfiy repsonse %X", sw1sw2)
+    qDebug() << CURRENT_FUNCTION << "Verfiy repsonse %X" << sw1sw2;
 
     if (sw1sw2 != 0x9000)
     {
