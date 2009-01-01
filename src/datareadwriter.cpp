@@ -481,6 +481,7 @@ void DataReadWriter::writeXML(const QDomDocument& document, const QString& passw
     }
     catch (const NoSuchAlgorithmException& e)
     {
+        UNUSED(e);
         throw ReadWriteException(QObject::tr("The algorithm '%1' is not avaible on "
             "your system.\nChoose another crypto algorithm in the settings.\nThe data "
             "is not saved!").arg(algorithm), ReadWriteException::CNoAlgorithm);
@@ -597,6 +598,7 @@ QDomDocument DataReadWriter::readXML(const QString& password)
     }
     catch (const NoSuchAlgorithmException& ex)
     {
+        UNUSED(ex);
         throw ReadWriteException(QObject::tr("The algorithm '%1' is not avaible on "
                 "your system.\nIt is impossible to read the file. Try to recompile or\n"
                 "update your OpenSSL library.").arg(algorithm), ReadWriteException::CNoAlgorithm);
