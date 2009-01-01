@@ -1,16 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
- * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; You may only use
  * version 2 of the License, you have no option to use any other version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
  * the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program; if 
+ * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * ------------------------------------------------------------------------------------------------- 
+ * -------------------------------------------------------------------------------------------------
  */
 #include <memory>
 
@@ -31,19 +31,19 @@
 
 /*!
     \class RandomPassword
-    
+
     \brief This class handles RandomPasswords in the QPaMaT application.
-    
+
     It doesn't generate RandomPasswords but it manages displaying and sending them to other
     widgets.
-    
+
     \ingroup gui
     \author Bernhard Walle
 */
 
 /*!
     \fn RandomPassword::insertPassword(const QString&)
-    
+
     This signal is emitted every time the user wants to insert the password at current
     position.
     \param password the password
@@ -84,7 +84,7 @@ void RandomPassword::requestPassword()
         checker = new HybridPasswordChecker(qpamat->set().readEntry("Security/DictionaryFile"));
         passwordgen = PasswordGeneratorFactory::getGenerator(
             qpamat->set().readEntry( "Security/PasswordGenerator" ),
-            qpamat->set().readEntry( "Security/PasswordGenAdditional" ) 
+            qpamat->set().readEntry( "Security/PasswordGenAdditional" )
         );
     }
     catch (const std::exception& exc)
@@ -96,12 +96,12 @@ void RandomPassword::requestPassword()
         delete checker;
         return;
     }
-    
+
     if (passwordgen->isSlow())
     {
         QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
     }
-    
+
     bool ok = false;
     QString password;
     for (int i = 0; !ok && i < 200; ++i)
@@ -109,7 +109,7 @@ void RandomPassword::requestPassword()
         try
         {
             password = passwordgen->getPassword(
-                qpamat->set().readNumEntry("Security/Length"), 
+                qpamat->set().readNumEntry("Security/Length"),
                 qpamat->set().readEntry("Security/AllowedCharacters")
             );
             double quality = checker->passwordQuality(password);
@@ -127,16 +127,16 @@ void RandomPassword::requestPassword()
             break;
         }
     }
-    
+
     if (passwordgen->isSlow())
     {
         QApplication::restoreOverrideCursor();
     }
-    
-    ShowPasswordDialog::DialogType dialogType = m_insertEnabled 
-            ? ShowPasswordDialog::TRandomPasswordDlgInsert 
+
+    ShowPasswordDialog::DialogType dialogType = m_insertEnabled
+            ? ShowPasswordDialog::TRandomPasswordDlgInsert
             : ShowPasswordDialog::TRandomPasswordDlg;
-    
+
     ShowPasswordDialog* dlg = new ShowPasswordDialog(m_parent, dialogType, "RandomPwDialog");
     if (ok)
     {

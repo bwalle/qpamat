@@ -1,16 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
- * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; You may only use
  * version 2 of the License, you have no option to use any other version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
  * the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program; if 
+ * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * ------------------------------------------------------------------------------------------------- 
+ * -------------------------------------------------------------------------------------------------
  */
 #include <stdexcept>
 #include <algorithm>
@@ -39,16 +39,16 @@ QMap<int, int>  HybridPasswordChecker::m_lengthBeginMap;
 
 /*!
     \class HybridPasswordChecker
-    
+
     \brief Hybrid password checker.
-    
-    This password checker works according to the algorithm described at 
+
+    This password checker works according to the algorithm described at
     https://passwortcheck.datenschutz.ch (only in German).
-    
-    The dictionary file consists of single word in each line. It needs to be \b sorted according 
+
+    The dictionary file consists of single word in each line. It needs to be \b sorted according
     to the length of the words. The first word must be the longest word and the last word must
     be the shortest word.
-    
+
     \ingroup security
     \author Bernhard Walle
 */
@@ -57,7 +57,7 @@ QMap<int, int>  HybridPasswordChecker::m_lengthBeginMap;
 /*!
     Creates a new instance of a HybridPasswordChecker. Caching is performed, i.e. only
     the first creation of the object reads the file. Following instantiations check the
-    modification time (see \p checkModtime) and if it is still the same, the cached data 
+    modification time (see \p checkModtime) and if it is still the same, the cached data
     is used. This increases performance dramatically but needs more memory. Since modern
     computers have much memory this is better than having a slow program.
     \param dictFileName the name of the dictionary.
@@ -71,24 +71,24 @@ HybridPasswordChecker::HybridPasswordChecker(const QString& dictFileName)
         throw PasswordCheckException( QString("The file %1 does not exist.").arg(
             dictFileName).latin1());
     }
-    
+
     // do we need to re-read
     if (m_words.isEmpty() || (m_fileName != dictFileName))
     {
         PRINT_TRACE("!!!! Re-reading the file !!!!!");
-        
+
         QFile file(dictFileName);
         if (!file.open(QIODevice::ReadOnly))
         {
             throw PasswordCheckException( QString("Could not open the file %1.").arg(
                 dictFileName).latin1() );
         }
-        
+
         // read in memory
         QByteArray bytes = file.readAll();
         file.close();
         m_fileName = dictFileName;
-        
+
         // check the number of lines to increase speed
         uint numberOfLines = 0;
         for (int i = 0; i < bytes.size(); ++i)
@@ -98,7 +98,7 @@ HybridPasswordChecker::HybridPasswordChecker(const QString& dictFileName)
                 ++numberOfLines;
             }
         }
-        
+
         m_words.reserve(numberOfLines+5);
         QTextStream fileStream(bytes, QIODevice::ReadOnly);
         int oldLength = 0;
@@ -127,7 +127,7 @@ HybridPasswordChecker::HybridPasswordChecker(const QString& dictFileName)
 /*!
     Checks the password.
     \param password the password to check
-    \return the number of days that a cracker needs to crack according to the password 
+    \return the number of days that a cracker needs to crack according to the password
             checker
 */
 double HybridPasswordChecker::passwordQuality(const QString& password) throw ()
@@ -144,10 +144,10 @@ double HybridPasswordChecker::passwordQuality(const QString& password) throw ()
         W = 1;
     }
     uint P = !longest.isNull() ? (password.length() - longest.length() + 1 ) : password.length();
-    
+
     PRINT_TRACE("-----------------------------------------------------");
     PRINT_TRACE("Z = %d, L = %d, W = %d, P = %d", Z, L, W, P);
-    
+
     return std::pow(double(Z), double(L)) * W * P / CRACKS_PER_SECOND / 86400;
 }
 
@@ -170,7 +170,7 @@ QString HybridPasswordChecker::findLongestWord(const QString& password) const
         return "";
     }
     initialPosition = m_lengthBeginMap[pwLength];
-    
+
     for (StringVector::iterator it = m_words.begin() + initialPosition; it != m_words.end(); ++it)
     {
         if (password.contains(*it, false))
@@ -254,7 +254,7 @@ int HybridPasswordChecker::findNumerOfCharsInClass(const QString& chars) const
             hasOther = true;
         }
     }
-    
+
     if (hasDigits)
     {
         ret += 11;
@@ -279,7 +279,7 @@ int HybridPasswordChecker::findNumerOfCharsInClass(const QString& chars) const
     {
         ret += 118;
     }
-    
+
     PRINT_TRACE("Ret is %d", ret);
     return ret;
 }

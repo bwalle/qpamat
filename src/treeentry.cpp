@@ -1,16 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
- * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; You may only use
  * version 2 of the License, you have no option to use any other version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
  * the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program; if 
+ * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * ------------------------------------------------------------------------------------------------- 
+ * -------------------------------------------------------------------------------------------------
  */
 #include <QString>
 #include <QDomDocument>
@@ -26,22 +26,22 @@
 
 /*!
     \class TreeEntry
-    
+
     \brief Represents an entry in the tree.
-    
+
     \ingroup gui
     \author Bernhard Walle
 */
 
 /*!
     \typedef TreeEntry::PropertyIterator
-    
+
     The iterator for the proeprties
 */
 
 /*!
     \fn TreeEntry::propertyAppended()
-    
+
     Fired is a property was added.
 */
 
@@ -78,7 +78,7 @@ Property::PasswordStrength TreeEntry::weakestChildrenPassword() const throw (Pas
         bool hadPasswords = false;
         PropertyIterator it = propertyIterator();
         Property* current;
-        while ( (current = it.current()) != 0 ) 
+        while ( (current = it.current()) != 0 )
         {
             ++it;
             if (current->getType() == Property::PASSWORD)
@@ -96,7 +96,7 @@ Property::PasswordStrength TreeEntry::weakestChildrenPassword() const throw (Pas
             }
         }
     }
-    
+
     return lowest;
 }
 
@@ -167,7 +167,7 @@ void TreeEntry::setText(int column, const QString& text)
 void TreeEntry::movePropertyOneUp(uint index)
 {
     Q_ASSERT( index < m_properties.count() - 1);
-    
+
     m_properties.setAutoDelete(false);
     Property* h = m_properties.at(index+1);
     m_properties.insert(index, h);
@@ -183,7 +183,7 @@ void TreeEntry::movePropertyOneUp(uint index)
 void TreeEntry::movePropertyOneDown(uint index)
 {
     Q_ASSERT( index > 0 && index < m_properties.count() );
-    
+
     m_properties.setAutoDelete(false);
     Property* h = m_properties.at(index);
     m_properties.insert(index-1, h);
@@ -243,7 +243,7 @@ QString TreeEntry::toRichTextForPrint() const
     {
         return QString("");
     }
-    
+
     QString catString;
     const Q3ListViewItem* item = this;
     while ((item = item->parent()))
@@ -254,10 +254,10 @@ QString TreeEntry::toRichTextForPrint() const
     ret += QString("<table width=\"100%\"><tr><td bgcolor=grey cellpadding=\"3\">"
             "&nbsp;<b>%1</b></td></tr><tr><td>"
             "<table border=\"0\">").arg(catString + m_name);
-    
+
     PropertyIterator it = propertyIterator();
     Property* current;
-    while ( (current = it.current()) != 0 ) 
+    while ( (current = it.current()) != 0 )
     {
         ++it;
         ret += current->toRichTextForPrint();
@@ -270,7 +270,7 @@ QString TreeEntry::toRichTextForPrint() const
 /*!
     Appends the tree entry as text representation to the given stream. The text is formatted for
     export.
-    
+
     \param stream the stream where the text is appended
 */
 void TreeEntry::appendTextForExport(QTextStream& stream)
@@ -279,27 +279,27 @@ void TreeEntry::appendTextForExport(QTextStream& stream)
     {
         return;
     }
-    
+
     QString catString;
     const Q3ListViewItem* item = this;
     while ((item = item->parent()))
     {
         catString = catString.prepend( dynamic_cast<const TreeEntry*>(item)->getName() + ": ");
     }
-    
+
     stream << "--------------------------------------------------------------------------------\n";
     stream << catString + m_name << "\n";
     stream << "--------------------------------------------------------------------------------\n";
     stream << "\n";
-    
+
     PropertyIterator it = propertyIterator();
     Property* current;
-    while ( (current = it.current()) != 0 ) 
+    while ( (current = it.current()) != 0 )
     {
         ++it;
         current->appendTextForExport(stream);
     }
-    
+
     stream << "\n\n";
 }
 
@@ -317,7 +317,7 @@ void TreeEntry::appendXML(QDomDocument& document, QDomNode& parent) const
         newElement = document.createElement("category");
         newElement.setAttribute("wasOpen", isOpen());
         TreeEntry* child = dynamic_cast<TreeEntry*>(firstChild());
-        while(child) 
+        while(child)
         {
             child->appendXML(document, newElement);
             child = dynamic_cast<TreeEntry*>(child->nextSibling());
@@ -326,7 +326,7 @@ void TreeEntry::appendXML(QDomDocument& document, QDomNode& parent) const
     else
     {
         newElement = document.createElement("entry");
-        
+
         PropertyIterator it(m_properties);
         Property* property;
         while ( (property = it.current()) != 0 )
@@ -353,7 +353,7 @@ QString TreeEntry::toXML() const
     QDomDocument doc;
     appendXML(doc, doc);
     doc.documentElement().setAttribute(QString("memoryAddress"), (qlonglong)this);
-    
+
     return doc.toString();
 }
 
@@ -362,7 +362,7 @@ QString TreeEntry::toXML() const
     Checks if the item can accept drops of the type QMimeSource. The MIME type accepted is
     <tt>application/x-qpamat</tt>. Only categories accept drops.
     \param mime the QMimeSource object
-    \return \c true if the item can accept drops of type QMimeSource mime; otherwise 
+    \return \c true if the item can accept drops of type QMimeSource mime; otherwise
             \c false.
 */
 bool TreeEntry::acceptDrop(const QMimeSource* mime) const
@@ -384,15 +384,15 @@ void TreeEntry::dropped(QDropEvent *evt)
         QDomDocument doc;
         doc.setContent(xml);
         QDomElement elem = doc.documentElement();
-        
+
         Q3ListViewItem* src = reinterpret_cast<TreeEntry*>(elem.attribute("memoryAddress").toLong());
-        
+
         if (src == this)
         {
             qpamat->message(tr("Cannot dray to itself."));
             return;
         }
-        
+
         TreeEntry* item = m_isCategory ? this : dynamic_cast<TreeEntry*>(parent());
         TreeEntry* appended = 0;
         if (item)
@@ -403,12 +403,12 @@ void TreeEntry::dropped(QDropEvent *evt)
         {
             appended = appendFromXML(listView(), elem);
         }
-        
+
         if (!isOpen())
         {
             setOpen(true);
         }
-        
+
         listView()->setSelected(appended, true);
         dynamic_cast<Tree*>(listView())->updatePasswordStrengthView();
         delete src;

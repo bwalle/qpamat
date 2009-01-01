@@ -1,19 +1,19 @@
 /*
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
- * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; You may only use
  * version 2 of the License, you have no option to use any other version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
  * the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program; if 
+ * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * ------------------------------------------------------------------------------------------------- 
+ * -------------------------------------------------------------------------------------------------
  */
 #include <stdexcept>
- 
+
 #include <QString>
 
 #include <openssl/bio.h>
@@ -27,7 +27,7 @@
 // -------------------------------------------------------------------------------------------------
 
 /*!
-    The Base 64 alphabet from 0 to 63 described in RFC 2045 
+    The Base 64 alphabet from 0 to 63 described in RFC 2045
     (http://www.faqs.org/rfcs/rfc2045.html). The index is the number and
     the result is the corresponding character.
 */
@@ -46,7 +46,7 @@ const char EncodingHelper::base64Alphabet[] = {
     the corresponding number.
 */
 const char EncodingHelper::reverseBase64Alphabet[] = {
-     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
+     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63,
      52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -1, -1, -1, -2, -1, -1,
@@ -58,9 +58,9 @@ const char EncodingHelper::reverseBase64Alphabet[] = {
 
 /*!
     \class EncodingHelper
-    
+
     \brief Helper class for dealing with encodings.
-    
+
     \ingroup security
     \author Bernhard Walle
 */
@@ -75,7 +75,7 @@ QString EncodingHelper::toBase64(const ByteVector& vector)
     QString result;
     unsigned char a, b, c;
     int lenMod3;
-    
+
     for (int i = 0; i < vector.size(); i += 3)
     {
         lenMod3 = ((i+3) > vector.size()) ? (vector.size() % 3) : 3;
@@ -114,11 +114,11 @@ ByteVector EncodingHelper::fromBase64(const QString& string)
         b = reverseBase64Alphabet[ (int)stringAscii[i+1] ];
         c = reverseBase64Alphabet[ (int)stringAscii[i+2] ];
         d = reverseBase64Alphabet[ (int)stringAscii[i+3] ];
-        
+
         vector.push_back(((a << 2) | (b >> 4)));
         vector.push_back(((b & 0x0F) << 4) | (c >> 2));
         vector.push_back((((c & 0x03) << 6) | d));
-        
+
         if (d == -2)
         {
             vector.pop_back();
@@ -128,7 +128,7 @@ ByteVector EncodingHelper::fromBase64(const QString& string)
             }
         }
     }
-    
+
     return vector;
 }
 

@@ -1,23 +1,23 @@
 /*
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
- * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; You may only use
  * version 2 of the License, you have no option to use any other version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
  * the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program; if 
+ * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * ------------------------------------------------------------------------------------------------- 
+ * -------------------------------------------------------------------------------------------------
  */
 
 /*!
     \class StringEncryptor
-    
+
     \brief An interface for an object that encrypts bytes.
-    
+
     \ingroup security
     \author Bernhard Walle
     \version $Revision: 1.1 $
@@ -26,14 +26,14 @@
 
 /*!
     \fn StringEncryptor::~StringEncryptor
-    
+
     Destroys a StringEncryptor object.
 */
 
 
 /*!
     \fn StringEncryptor::encryptStrToStr(const QString&)
-    
+
     Encrypts the given string and returns a base 64 encoded string.
     \param string the string to encrypt
     \return the encrypted bytes
@@ -42,7 +42,7 @@
 
 /*!
     \fn StringEncryptor::decryptStrFromStr(const QString&)
-    
+
     Decrypts the given Base 64 string. Call this method only if you are sure that
     the string is a result of Encryptor::encryptBase64()!
     \param string the encryted Base-64-encoded string
@@ -53,10 +53,10 @@
 
 /*!
     \class NoSuchAlgorithmException
-    
-    \brief Exception that is thrown if QPaMaT has not included the necessary algorithm 
+
+    \brief Exception that is thrown if QPaMaT has not included the necessary algorithm
     for encryption.
-    
+
     \ingroup security
     \version $Revision: 1.1 $
     \author Bernhard Walle
@@ -65,7 +65,7 @@
 
 /*!
     \fn NoSuchAlgorithmException::NoSuchAlgorithmException(const std::string&)
-    
+
     Creates a new instance of the exception and includes the error message. This
     message is returned by the what() method.
     \param error the error message

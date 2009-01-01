@@ -1,16 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
- * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; You may only use
  * version 2 of the License, you have no option to use any other version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
  * the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program; if 
+ * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * ------------------------------------------------------------------------------------------------- 
+ * -------------------------------------------------------------------------------------------------
  */
 #include <QDialog>
 #include <QLineEdit>
@@ -32,17 +32,17 @@
 
 /*!
     \class NewPasswordDialog
-    
+
     \brief Password to enter a new password for new files.
-    
+
     This dialog was made to enter a new password or to change the existing password. The
     mode depends on the argument \p oldPassword of the constructor. If it is QString::null,
     a new password can be made.
-    
+
     This class uses not the dictionary-based checker but the MasterPasswordChecker. This is
     because maybe the user has not setup a dictionary at this time and because here the
     user cannot use a random password but must memorize the password.
-    
+
     \ingroup dialogs
     \author Bernhard Walle
 */
@@ -58,20 +58,20 @@ NewPasswordDialog::NewPasswordDialog(QWidget* parent, const QString& oldPassword
     : QDialog(parent), m_oldPassword(oldPassword)
 {
     setCaption("QPaMaT");
-    
+
     createAndLayout();
-    
+
     // validators
     PasswordValidator* validator = new PasswordValidator(this);
     m_firstPasswordEdit->setValidator(validator);
     m_secondPasswordEdit->setValidator(validator);
-    
+
     // communication
     connect(m_okButton, SIGNAL(clicked()), SLOT(accept()));
     connect(m_cancelButton, SIGNAL(clicked()), SLOT(reject()));
     connect(m_firstPasswordEdit, SIGNAL(textChanged(const QString&)), SLOT(checkOkEnabled()));
     connect(m_secondPasswordEdit, SIGNAL(textChanged(const QString&)), SLOT(checkOkEnabled()));
-    
+
     if (!qpamat->set().readBoolEntry("Password/NoGrabbing"))
     {
         if (!m_oldPassword.isNull())
@@ -79,7 +79,7 @@ NewPasswordDialog::NewPasswordDialog(QWidget* parent, const QString& oldPassword
             connect(m_oldPasswordEdit, SIGNAL(gotFocus()), SLOT(grabOldPassword()));
             connect(m_oldPasswordEdit, SIGNAL(lostFocus()), SLOT(release()));
         }
-        
+
         connect(m_firstPasswordEdit, SIGNAL(gotFocus()), SLOT(grabFirstPassword()));
         connect(m_firstPasswordEdit, SIGNAL(lostFocus()), SLOT(release()));
         connect(m_secondPasswordEdit, SIGNAL(gotFocus()), SLOT(grabSecondPassword()));
@@ -99,15 +99,15 @@ void NewPasswordDialog::createAndLayout()
         m_oldPasswordEdit->setEchoMode(QLineEdit::Password);
         m_oldPasswordEdit->setMinimumWidth(250);
     }
-    
+
     m_firstPasswordEdit = new FocusLineEdit(this);
     m_firstPasswordEdit->setEchoMode(QLineEdit::Password);
     m_firstPasswordEdit->setMinimumWidth(250);
-    
+
     m_secondPasswordEdit = new FocusLineEdit(this);
     m_secondPasswordEdit->setEchoMode(QLineEdit::Password);
     m_secondPasswordEdit->setMinimumWidth(250);
-    
+
     // TODO: autowrapping doesn't work, spaces are too high, need to investigate ...
     const QString changeText = tr("Enter the <b>old passphrase</b> once and the <b>new "
         "passphrase</b><br> two times for verification. The minimum length must be six<br> characters, "
@@ -115,7 +115,7 @@ void NewPasswordDialog::createAndLayout()
     const QString newText = tr("Enter the <b>passphrase</b> two times for verification. The "
         "minimum length<br> must be six characters, but for security reasons more than two<br> "
         "words are good!");
-    
+
     // labels
     QLabel* label = new QLabel((m_oldPassword.isNull() ? newText : changeText), this);
     QLabel* old = 0;
@@ -128,8 +128,8 @@ void NewPasswordDialog::createAndLayout()
     first->setBuddy(m_firstPasswordEdit);
     QLabel* second = new QLabel(tr("&Verification:"), this);
     second->setBuddy(m_secondPasswordEdit);
-    
-    
+
+
     // buttons
     QDialogButtonBox *dialogButtons = new QDialogButtonBox(
             QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
@@ -138,13 +138,13 @@ void NewPasswordDialog::createAndLayout()
     m_okButton->setEnabled(false);
     m_okButton->setDefault(true);
     m_cancelButton = dialogButtons->button(QDialogButtonBox::Cancel);
-    
-    
+
+
     // create layouts
     QVBoxLayout* layout = new QVBoxLayout(this);
     QGridLayout* textfields = new QGridLayout(0);//, 2, (m_oldPassword.isNull() ? 2 : 3), 0, 6);
-    
-    
+
+
     int i = 0;
     if (!m_oldPassword.isNull())
     {
@@ -156,7 +156,7 @@ void NewPasswordDialog::createAndLayout()
     textfields->addWidget(m_firstPasswordEdit, i+0, 1);
     textfields->addWidget(second, i+1, 0);
     textfields->addWidget(m_secondPasswordEdit, i+1, 1);
-    
+
     layout->addWidget(label);
     layout->addLayout(textfields);
     layout->addSpacing(7);
@@ -189,11 +189,11 @@ void NewPasswordDialog::accept()
         m_oldPasswordEdit->selectAll();
         return;
     }
-    
+
     MasterPasswordChecker checker;
     const QString& password = m_secondPasswordEdit->text();
     bool ok;
-    
+
     try
     {
         double quality = checker.passwordQuality(password);
@@ -207,7 +207,7 @@ void NewPasswordDialog::accept()
             QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
         return;
     }
-    
+
     if (!ok)
     {
         QMessageBox::warning(this, "QPaMaT",
@@ -217,7 +217,7 @@ void NewPasswordDialog::accept()
         m_firstPasswordEdit->setFocus();
         return;
     }
-    
+
     QDialog::accept();
 }
 
@@ -289,7 +289,7 @@ void NewPasswordDialog::checkOkEnabled() const
     else
     {
         m_okButton->setEnabled(false);
-    } 
+    }
 }
 
 #ifndef DOXYGEN
@@ -300,12 +300,12 @@ void NewPasswordDialog::checkOkEnabled() const
 
 /*!
     \class PasswordValidator
-    
+
     \brief Validator for the passwords in the NewPasswordDialog dialog.
-    
+
     The validator simply checks if the password has less than six characters. It is used to
     enable or disable the Ok button.
-    
+
     \ingroup gui
     \author Bernhard Walle
 */

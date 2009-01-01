@@ -1,16 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
- * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; You may only use
  * version 2 of the License, you have no option to use any other version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
  * the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program; if 
+ * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * ------------------------------------------------------------------------------------------------- 
+ * -------------------------------------------------------------------------------------------------
  */
 #include <Q3ListView>
 #include <QLayout>
@@ -31,30 +31,30 @@
 
 /*!
     \class RightPanel
-    
+
     \brief Represents the panel on the right which contains the entry list.
-    
+
     \ingroup gui
-    
+
     \author Bernhard Walle
 */
 
 /*!
     \fn RightPanel::stateModified()
-    
+
     If something was modified, need to determine if saving is necessary.
 */
 
 /*!
     \fn RightPanel::passwordLineEditGotFocus(bool)
-    
+
     This signal is emitted if the password field got this focus.
     \param focus \c true if it got the focus, \c false if the focus is lost
 */
 
 /*!
     \fn RightPanel::passwordStrengthUpdated()
-    
+
     This signal is emitted if the password strength of an item has changed an therefore
     the displaying must be updated.
 */
@@ -71,20 +71,20 @@ RightPanel::RightPanel(Qpamat* parent) : Q3Frame(parent, "RightPanel")
     layout->addWidget(m_listView);
     layout->setStretchFactor(m_listView, 10);
     layout->addWidget(m_southPanel);
-    
+
     setEnabled(false);
-    
+
     connect(m_listView, SIGNAL(selectionChanged(Q3ListViewItem*)),
         this, SLOT(selectionChangeHandler(Q3ListViewItem*)));
     connect(m_listView, SIGNAL(itemDeleted(int)), SLOT(itemDeletedHandler(int)));
     connect(m_listView, SIGNAL(stateModified()), SIGNAL(stateModified()));
     connect(m_southPanel, SIGNAL(moveUp()), m_listView, SLOT(moveUp()));
     connect(m_southPanel, SIGNAL(moveDown()), m_listView, SLOT(moveDown()));
-    connect(m_listView, SIGNAL(enableMoving(bool, bool)), 
+    connect(m_listView, SIGNAL(enableMoving(bool, bool)),
         m_southPanel, SLOT(setMovingEnabled(bool, bool)));
-    connect(m_southPanel, SIGNAL(passwordLineEditGotFocus(bool)), 
+    connect(m_southPanel, SIGNAL(passwordLineEditGotFocus(bool)),
         SIGNAL(passwordLineEditGotFocus(bool)));
-    connect(parent, SIGNAL(insertPassword(const QString&)), 
+    connect(parent, SIGNAL(insertPassword(const QString&)),
         m_southPanel, SLOT(insertPassword(const QString&)));
     connect(m_southPanel, SIGNAL(stateModified()), SIGNAL(stateModified()));
     connect(m_southPanel, SIGNAL(passwordStrengthUpdated()), SIGNAL(passwordStrengthUpdated()));
@@ -119,7 +119,7 @@ void RightPanel::itemDeletedHandler(int item)
     }
 
     PRINT_TRACE("item = %d, numberOfChilds = %d", item, numberOfChilds);
-    
+
     // if the last one was deleted, select the previous one
     if (item == numberOfChilds)
     {
@@ -156,14 +156,14 @@ void RightPanel::setItem(Q3ListViewItem* item)
 {
     clear();
     m_currentItem = dynamic_cast<TreeEntry*>(item);
-    
+
     if (m_currentItem == 0)
     {
         return;
     }
-    
+
     m_listView->setItem(m_currentItem);
-    
+
     setEnabled(!m_currentItem->isCategory());
 }
 
@@ -175,11 +175,11 @@ void RightPanel::setItem(Q3ListViewItem* item)
 void RightPanel::selectionChangeHandler(Q3ListViewItem* item)
 {
     disconnect(m_listView, SLOT(updateSelected(Property*)));
-    
+
     Property* currentProperty = m_currentItem->getProperty(item->text(2).toInt(0));
     m_southPanel->setItem(currentProperty);
-    
-    connect(currentProperty, SIGNAL(propertyChanged(Property*)), 
+
+    connect(currentProperty, SIGNAL(propertyChanged(Property*)),
         m_listView, SLOT(updateSelected(Property*)));
 }
 
@@ -221,7 +221,7 @@ bool RightPanel::isFocusInside() const
 
 /*!
     \relates RightPanel
-    
+
     Stores the width of the columns of the listview.
 */
 QTextStream& operator<<(QTextStream& ts, const RightPanel& panel)
@@ -233,7 +233,7 @@ QTextStream& operator<<(QTextStream& ts, const RightPanel& panel)
 
 /*!
     \relates RightPanel
-    
+
     Reads the width of the columns of the listview.
 */
 QTextStream& operator>>(QTextStream& ts, RightPanel& panel)

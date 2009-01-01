@@ -24,9 +24,9 @@ char CT_init (
 
 char CT_close(
       unsigned short Ctn                  /* Terminal Number */
-      );                 
+      );
 
-char CT_data( 
+char CT_data(
        unsigned short ctn,                /* Terminal Number */
        unsigned char  *dad,               /* Destination */
        unsigned char  *sad,               /* Source */

@@ -1,13 +1,13 @@
 /*
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
- * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; You may only use
  * version 2 of the License, you have no option to use any other version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
  * the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program; if 
+ * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * -------------------------------------------------------------------------------------------------
@@ -41,7 +41,7 @@
 #include <unistd.h>
 #include <sys/utsname.h>
 #include <sys/types.h>
-namespace X11 
+namespace X11
 {
     #include <X11/Xlib.h>
 };
@@ -55,8 +55,8 @@ Qpamat* qpamat;
 */
 void printCommandlineOptions()
 {
-    std::cerr 
-        << "\n" 
+    std::cerr
+        << "\n"
         << "This is QPaMaT " << VERSION_STRING << ", a password managing tool for Unix, MacOS X\n"
         << "and Windows using the Qt programming library from Trolltech.\n\n"
         << "Options: -h            prints this help\n"
@@ -83,7 +83,7 @@ void printVersion()
     getX11Version(X11protocolVersion, X11vendorVersion);
 #endif
 
-    std::cerr 
+    std::cerr
         << "QPaMaT version   " << VERSION_STRING << "\n"
         << "\nBased on software of this version: \n"
         << "  Qt version     " << QT_VERSION_STR << "\n"
@@ -149,7 +149,7 @@ int main(int argc, char** argv)
 {
     TimeoutApplication app(argc, argv);
     parseCommandLine(argc, argv);
-    
+
     // translation
     QTranslator translator(0), ttranslator(0);
     QString loc = QTextCodec::locale();
@@ -173,15 +173,15 @@ int main(int argc, char** argv)
 
     app.installTranslator(&translator);
     app.installTranslator(&ttranslator);
-    
+
     SingleApplication::init(QDir::homeDirPath(), "QPaMaT");
     std::auto_ptr<Qpamat> qp;
-    
+
     try
     {
         SingleApplication::startup();
         SingleApplication::registerStandardExitHandlers();
-        
+
         qp = std::auto_ptr<Qpamat>(new Qpamat());
         qpamat = qp.get();
         app.setMainWidget(qpamat);
@@ -191,8 +191,8 @@ int main(int argc, char** argv)
 	new QpamatAdaptor(qpamat);
 	QDBusConnection::sessionBus().registerService("de.berlios.Qpamat");
 	QDBusConnection::sessionBus().registerObject("/Qpamat", qpamat);
-#endif	
-        
+#endif
+
         QObject::connect(qpamat, SIGNAL(quit()), &app, SLOT(quit()));
         if (!(qpamat->set().readBoolEntry("Presentation/StartHidden")
                         && qpamat->set().readBoolEntry("Presentation/SystemTrayIcon")))
@@ -200,14 +200,14 @@ int main(int argc, char** argv)
         {
             qpamat->show();
         }
-        
+
         return app.exec();
     }
     catch (const std::bad_alloc& e)
     {
-        QMessageBox::warning(0, QObject::tr("QPaMaT"), 
+        QMessageBox::warning(0, QObject::tr("QPaMaT"),
             QObject::tr("No more memory available. The application\nwill be closed."),
-            QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton); 
+            QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
     }
     catch (const std::exception& e)
     {

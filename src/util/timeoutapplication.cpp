@@ -1,13 +1,13 @@
 /*
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
- * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; You may only use
  * version 2 of the License, you have no option to use any other version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
  * the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program; if 
+ * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * -------------------------------------------------------------------------------------------------
@@ -27,12 +27,12 @@
 
 /*!
     \class TimeoutApplication
-    
+
     \brief Support for a application that wants to trigger an inactivity action after a timeout
-    
+
     Some applications wants to perform an action after some time of inactivity of the user.
-    A user is active if the application receives mouse and/or key events. 
-    
+    A user is active if the application receives mouse and/or key events.
+
     \ingroup misc
     \author Bernhard Walle
 */
@@ -97,7 +97,7 @@ void setTrayOwnerWindow(Display *dsp)
 	// obtain the Window handle for the new tray owner
 	XGrabServer(dsp);
 	tray_owner = XGetSelectionOwner(dsp, tray_selection_atom);
-    
+
 	// we have to be able to spot DestroyNotify messages on the tray owner
 	if (tray_owner != None)
 	{
@@ -111,10 +111,10 @@ void setTrayOwnerWindow(Display *dsp)
 
 
 /*!
-    Creates a new TimeoutApplication object. 
-    
+    Creates a new TimeoutApplication object.
+
     See QApplication::QApplication(int&, char**) for details.
-    
+
     \param argc the args of the main() function
     \param argv the argv of the main() function
 */
@@ -126,10 +126,10 @@ TimeoutApplication::TimeoutApplication(int& argc, char** argv)
 
 
 /*!
-    Creates a new TimeoutApplication object. 
-    
+    Creates a new TimeoutApplication object.
+
     See QApplication::QApplication(int&, char**, bool) for details.
-    
+
     \param argc the args of the main() function
     \param argv the argv of the main() function
     \param guiEnabled if it is a GUI application
@@ -148,7 +148,7 @@ void TimeoutApplication::init()
 {
     m_timer = new QTimer(this);
     connect(m_timer, SIGNAL(timeout()), SIGNAL(timedOut()));
-    
+
 #ifdef Q_WS_X11
     const int max = 20;
     Atom* atoms[max];
@@ -171,7 +171,7 @@ void TimeoutApplication::init()
 
     // get the selection type we'll use to locate the notification tray
     char buf[32];
-    snprintf(buf, sizeof(buf), "_NET_SYSTEM_TRAY_S%d", 
+    snprintf(buf, sizeof(buf), "_NET_SYSTEM_TRAY_S%d",
         XScreenNumberOfScreen( XDefaultScreenOfDisplay(dsp) ));
     tray_selection_atom = XInternAtom(dsp, buf, false);
 
@@ -191,14 +191,14 @@ void TimeoutApplication::init()
 
 /*!
     \property TimeoutApplication::timeout
-    
+
     The inactivity timeout after that the timedOut signal should be triggered. The value
     must be positive, negative values are not permitted.
 */
 
 /*!
-    Returns the timeout value in minutes. Zero means the timeout feature is disabled. 
-    
+    Returns the timeout value in minutes. Zero means the timeout feature is disabled.
+
     \return the timeout
 */
 int TimeoutApplication::getTimeout() const
@@ -210,7 +210,7 @@ int TimeoutApplication::getTimeout() const
 /*!
     Sets the timeout. Zero means that the timeout feature is disabled. Negative values are
     not permitted.
-    
+
     \param timeout the timeout in milliseconds
 */
 void TimeoutApplication::setTimeout(int timeout)
@@ -228,7 +228,7 @@ void TimeoutApplication::setTimeout(int timeout)
 
 /*!
     Checks if the TimeoutApplication is disabled temporary.
-    
+
     \return \c true if it is disabled, \c false if not
 */
 bool TimeoutApplication::isTemporaryDisabled() const
@@ -238,7 +238,7 @@ bool TimeoutApplication::isTemporaryDisabled() const
 
 /*!
     Sets the timeout function to disabled temporary.
-    
+
     \param disabled \c true if it should be disabled, \c false if not
 */
 void TimeoutApplication::setTemporaryDisabled(bool disabled)
@@ -263,7 +263,7 @@ void TimeoutApplication::addReceiverToIgnore(void* receiver)
 
 
 /*!
-    Removes receivers to ignore from timeout. See also 
+    Removes receivers to ignore from timeout. See also
     TimeoutApplication::addReceiverToIgnore().
 
     \param receiver the receiver to remove
@@ -285,20 +285,20 @@ void TimeoutApplication::clearReceiversToIgnore()
 
 /*!
     Overwrites QApplication::nofity(QObject*, QEvent*). Restarts the timer if necessary.
-    
+
     \param receiver the receiver
     \param e the event
 */
 bool TimeoutApplication::notify(QObject* receiver, QEvent* e)
 {
-    if (!m_temporaryDisabled && m_timeout != 0 && 
+    if (!m_temporaryDisabled && m_timeout != 0 &&
             (e->type() == QEvent::MouseButtonPress || e->type() == QEvent::MouseButtonRelease
               || e->type() == QEvent::MouseMove || e->type() == QEvent::KeyPress) &&
             !m_receiversToIgnore.contains(receiver))
     {
         m_timer->start(m_timeout*1000*60);
     }
-    
+
     return QApplication::notify(receiver, e);
 }
 
@@ -306,7 +306,7 @@ bool TimeoutApplication::notify(QObject* receiver, QEvent* e)
 
 /*!
     \fn TimeoutApplication::timedOut()
-    
+
     Signal that is emitted if the inactivity timeout occured.
 */
 

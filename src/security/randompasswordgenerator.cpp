@@ -1,16 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
- * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; You may only use
  * version 2 of the License, you have no option to use any other version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
  * the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program; if 
+ * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * ------------------------------------------------------------------------------------------------- 
+ * -------------------------------------------------------------------------------------------------
  */
 #include <QString>
 
@@ -23,11 +23,11 @@
 
 /*!
     \class RandomPasswordGenerator
-    
-    \brief Object to generate random passwords. 
+
+    \brief Object to generate random passwords.
 
     The passwords are \b really random since it is used the OpenSSL library for randomness.
-    
+
     \ingroup security
     \author Bernhard Walle
 */
@@ -45,15 +45,15 @@
     \return the password
     \exception PasswordGenerateException if the object was not seeded
 */
-QString RandomPasswordGenerator::getPassword(uint length, const QString& pAllowedChars) 
+QString RandomPasswordGenerator::getPassword(uint length, const QString& pAllowedChars)
         throw (PasswordGenerateException)
 {
     QString ret;
     byte buffer[1];
     QString allowedChars = pAllowedChars;
-    
+
     bool allAllowed = allowedChars.isNull();
-    
+
     // build the list of allowed characters
     if (!allAllowed)
     {
@@ -61,7 +61,7 @@ QString RandomPasswordGenerator::getPassword(uint length, const QString& pAllowe
         allowedChars.replace("A-Z", "ABCDEFGHIJKLMNOPQRSTUVWXZY");
         allowedChars.replace("0-9", "0123456789");
     }
-    
+
     while (ret.length() < (int)length)
     {
         if (RAND_bytes(buffer, 1) == 0)
@@ -70,13 +70,13 @@ QString RandomPasswordGenerator::getPassword(uint length, const QString& pAllowe
                 "random password");
         }
         char c = char(buffer[0]);
-        
+
         if (allowedChars.contains(c))
         {
             ret += c;
         }
     }
-    
+
     return ret;
 }
 

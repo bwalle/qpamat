@@ -1,16 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
- * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; You may only use
  * version 2 of the License, you have no option to use any other version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
  * the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program; if 
+ * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * ------------------------------------------------------------------------------------------------- 
+ * -------------------------------------------------------------------------------------------------
  */
 #include <QWidget>
 #include <QLayout>
@@ -34,43 +34,43 @@
 
 /*!
     \class SouthPanel
-    
+
     \brief Represents the south panel.
-    
+
     \ingroup gui
     \author Bernhard Walle
 */
 
 /*!
     \fn SouthPanel::moveUp
-    
+
     This signal is emitted if the user pressed the "Up" button to move an item one
     step up.
 */
 
 /*!
     \fn SouthPanel::moveDown
-    
+
     This signal is emitted if the user pressed the "Down" button to move an item one
     step down.
 */
 
 /*!
     \fn SouthPanel::passwordLineEditGotFocus(bool)
-    
+
     This signal is emitted if the password field got this focus.
     \param focus \c true if it got the focus, \c false if the focus is lost
 */
 
 /*!
     \fn SouthPanel::stateModified()
-    
+
     If something was modified, need to determine if saving is necessary.
 */
 
 /*!
     \fn SouthPanel::passwordStrengthUpdated()
-    
+
     This signal is emitted if the password strength of an item has changed an therefore
     the displaying must be updated.
 */
@@ -79,14 +79,14 @@
     Creates a new instance of the south panel.
     \param parent the parent
 */
-SouthPanel::SouthPanel(QWidget* parent) 
+SouthPanel::SouthPanel(QWidget* parent)
     : Q3Frame(parent), m_lastStrength(Property::PUndefined)
 {
     QHBoxLayout* hLayout = new QHBoxLayout(this, 0, 10, "SouthPanel-QHBoxLayout");
     Q3GroupBox* group = new Q3GroupBox(2, Qt::Horizontal, tr("&Properties"), this, "SouthPanel-GroupBox");
-    
+
     m_updatePasswordQualityTimer = new QTimer(this, "Timer");
-    
+
     // Type
     QLabel* typeLabel = new QLabel(tr("&Type"), group);
     m_typeCombo = new QComboBox(false, group);
@@ -96,23 +96,23 @@ SouthPanel::SouthPanel(QWidget* parent)
     m_typeCombo->insertItem(tr("Password"));
     m_typeCombo->insertItem(tr("URL"));
     typeLabel->setBuddy(m_typeCombo);
-    
+
     // Key
     QLabel* keyLabel = new QLabel(tr("&Key"), group);
     m_keyLineEdit = new QLineEdit(group);
     keyLabel->setBuddy(m_keyLineEdit);
-    
+
     // Value
     QLabel* valueLabel = new QLabel(tr("&Value"), group);
     m_valueLineEdit = new FocusLineEdit(group);
     valueLabel->setBuddy(m_valueLineEdit);
-    
+
     hLayout->addWidget(group);
-    
+
     // button group box
     Q3VBox* vbox = new Q3VBox(this, "SouthPanel vertical box");
     vbox->setSpacing(6);
-    
+
     // up button
     m_upButton = new QToolButton(vbox, "SouthPanel up button");
     QIcon upIcon(QPixmap(":/images/stock_up_arrow_16.png"));
@@ -120,7 +120,7 @@ SouthPanel::SouthPanel(QWidget* parent)
     m_upButton->setIconSet(upIcon);
     //m_upButton->setUsesBigPixmap(true);
     m_upButton->setIconSize(QSize(22, 22));
-    
+
     // down button
     m_downButton = new QToolButton(vbox, "SouthPanel down button");
     QIcon downIcon(QPixmap(":/images/stock_down_arrow_16.png"));
@@ -128,25 +128,25 @@ SouthPanel::SouthPanel(QWidget* parent)
     m_downButton->setIconSet(downIcon);
     m_downButton->setIconSize(QSize(22, 22));
     //m_downButton->setUsesBigPixmap(true);
-    
+
     // filler widget
     QWidget* filler = new QWidget(vbox);
     vbox->setStretchFactor(filler, 1);
-    
+
     // indicator
     m_indicatorLabel = new QLabel(vbox, "Indicator label", Qt::WRepaintNoErase);
     m_indicatorLabel->setAlignment(Qt::AlignHCenter);
     m_indicatorLabel->setFixedHeight(28);
-    
+
     hLayout->addWidget(vbox);
-    
+
     setEnabled(false);
     setFocusPolicy(Qt::NoFocus);
-    
+
     // disable the two buttons
     m_upButton->setEnabled(false);
     m_downButton->setEnabled(false);
-    
+
     connect(m_typeCombo, SIGNAL(activated(int)), SLOT(updateData()));
     connect(m_typeCombo, SIGNAL(activated(int)), SLOT(comboBoxChanged(int)));
     connect(m_keyLineEdit, SIGNAL(textChanged(const QString&)), SLOT(updateData()));
@@ -190,7 +190,7 @@ void SouthPanel::clear()
 void SouthPanel::setItem (Property* property)
 {
     clear();
-    
+
     if (property != 0)
     {
         blockSignals(true);
@@ -207,7 +207,7 @@ void SouthPanel::setItem (Property* property)
     }
     m_currentProperty = property;
     updateIndicatorLabel(false);
-    
+
     setEnabled(property != 0);
 }
 
@@ -246,7 +246,7 @@ void SouthPanel::updateIndicatorLabel(bool recompute)
                         break;
                 }
             }
-        
+
             QString timeString = StringDisplay::displayTimeSuitable(m_currentProperty->daysToCrack());
             QString tooltipString = QString("Crack time: %1").arg(timeString);
             QToolTip::add(m_indicatorLabel, tooltipString);
@@ -257,7 +257,7 @@ void SouthPanel::updateIndicatorLabel(bool recompute)
             // A bit unclean ???
             /* QMessageBox* mb = new QMessageBox("QPaMaT", tr("<qt><nobr>Failed to calculate the password "
                 "strength. The error message</nobr> was:<p>%1<p>Check your configuration!</qt>")
-                .arg(e.what()), QMessageBox::Warning, QMessageBox::Ok, QMessageBox::NoButton, 
+                .arg(e.what()), QMessageBox::Warning, QMessageBox::Ok, QMessageBox::NoButton,
                 QMessageBox::NoButton, this, 0, true, WDestructiveClose);
             mb->show(); */
             QMessageBox::warning(this, "QPaMaT", tr("<qt><nobr>Failed to calculate the password "
@@ -288,7 +288,7 @@ void SouthPanel::updateData()
         m_updatePasswordQualityTimer->start(200, true);
         m_currentProperty->setKey(m_keyLineEdit->text());
         m_valueLineEdit->setEchoMode(
-            m_currentProperty->isHidden() 
+            m_currentProperty->isHidden()
                 ? QLineEdit::Password
                 : QLineEdit::Normal );
     }
@@ -300,17 +300,17 @@ void SouthPanel::updateData()
 */
 void SouthPanel::comboBoxChanged(int newChoice)
 {
-    
+
     if (m_oldComboValue != newChoice)
     {
         insertAutoText();
-        
+
         if (m_oldComboValue == Property::PASSWORD)
         {
             m_currentProperty->setValue("");
             m_valueLineEdit->setText("");
         }
-        
+
         updateIndicatorLabel(false);
     }
     m_oldComboValue = newChoice;

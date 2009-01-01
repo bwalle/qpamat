@@ -1,16 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
- * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; You may only use
  * version 2 of the License, you have no option to use any other version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
  * the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program; if 
+ * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * ------------------------------------------------------------------------------------------------- 
+ * -------------------------------------------------------------------------------------------------
  */
 #include <algorithm>
 
@@ -56,20 +56,20 @@
 
 /*!
     \class ConfigurationDialog
-    
+
     \brief This dialog displays the configuration and lets the user change it.
-    
+
     The whole configuration is done by this dialog. There's not very much to say, the
     dialog has four tabs:
-    
+
      - \b General which describes general display options
      - \b Password which does the password settings
      - \b Security which does the security settings
      - \b SmartCard which controls all stuff about smartcards
      - \b Presentation which holds all about printing and some other things
-    
+
     Just use following to use the dialog:
-    
+
     \code
   std::auto_ptr<ConfigurationDialog> dlg(new ConfigurationDialog(this));
   if (dlg->exec() == QDialog::Accepted)
@@ -77,9 +77,9 @@
       // do something
   }
     \endcode
-    
+
     Using std::auto_ptr here is a good idea but not neccessary.
-    
+
     \ingroup dialogs
     \author Bernhard Walle
  */
@@ -91,27 +91,27 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     : ListBoxDialog(parent)
 {
     setCaption("QPaMaT");
-    
+
     // Add the general tab
     ConfDlgGeneralTab* generalTab = new ConfDlgGeneralTab(this, "GeneralTab");
     addPage(generalTab, QPixmap(":/images/general_34.png"), tr("General"));
-    
+
     // Add the password tab
     ConfDlgPasswordTab* passwordTab = new ConfDlgPasswordTab(this, "PasswordTab");
     addPage(passwordTab, QPixmap(":/images/password_34.png"), tr("Password"));
-    
+
     // Add the security tab
     ConfDlgSecurityTab* securityTab = new ConfDlgSecurityTab(this, "SecurityTab");
     addPage(securityTab, QPixmap(":/images/qpamat_34.png"), tr("Security"));
-    
+
     // Add the smartcard tab
     ConfDlgSmartcardTab* smartCardTab = new ConfDlgSmartcardTab(this, "SmartCardTab");
     addPage(smartCardTab, QPixmap(":/images/smartcard_34.png"), tr("Smart Card"));
-    
+
     // Add the presentation tab
     ConfDlgPresentationTab* presentationTab = new ConfDlgPresentationTab(this, "PresTab");
     addPage(presentationTab, QPixmap(":/images/presentation_34.png"), tr("Presentation"));
-    
+
     adjustSize();
 }
 
@@ -123,18 +123,18 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
 
 /*!
     \class ConfDlgTab
-    
+
     \brief Base class for all tabs displayed in the configuration dialog
-    
+
     This is a interface that all tabs in the configuration dialog must implement.
-    
+
     \ingroup gui
     \author Bernhard Walle
 */
 
 /*!
     \fn ConfDlgTab::ConfDlgTab(QWidget*, const char*)
-    
+
     Creates a new instance of a ConfDlgTab
     \param parent the parent widget
     \param name the name of the widget
@@ -142,14 +142,14 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
 
 /*!
     \fn ConfDlgTab::fillSettings()
-    
+
     This function reads all settings from the global Settings object and fills the GUI with
     this values.
 */
 
 /*!
     \fn ConfDlgTab::applySettings()
-    
+
     This function stores all settings made in the GUI to the global Settings object.
 */
 
@@ -159,15 +159,15 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
 
 /*!
     \class ConfDlgGeneralTab
-    
+
     \brief Represents general settings in the configuration dialog
-    
-    This tab holds all general settings 
-    
+
+    This tab holds all general settings
+
      - startup (AutoLogin)
      - locations of external applications
      - AutoText function
-    
+
     \ingroup gui
     \author Bernhard Walle
 */
@@ -194,13 +194,13 @@ void ConfDlgGeneralTab::createAndLayout()
     Q3GroupBox* startupGroup = new Q3GroupBox(1, Qt::Vertical, tr("Startup"), this);
     Q3GroupBox* locationsGroup = new Q3GroupBox(4, Qt::Vertical, tr("Locations"), this);
     Q3GroupBox* autoTextGroup = new Q3GroupBox(4, Qt::Vertical, tr("AutoText"), this);
-    
+
     // auto login
     m_autoLoginCheckbox = new QCheckBox(tr("Enable &AutoLogin on startup"), startupGroup);
-    
+
     QLabel* datafileLabel = new QLabel(tr("&Data File:"), locationsGroup);
     m_datafileEdit = new FileLineEdit(locationsGroup, true);
-    
+
     // auto text
     QLabel* miscLabel = new QLabel(tr("&Misc"), autoTextGroup);
     m_miscEdit = new QLineEdit(autoTextGroup);
@@ -210,19 +210,19 @@ void ConfDlgGeneralTab::createAndLayout()
     m_usernameEdit = new QLineEdit(autoTextGroup);
     QLabel* urlLabel = new QLabel(tr("&URL"), autoTextGroup);
     m_urlEdit = new QLineEdit(autoTextGroup);
-    
+
     // set buddys
     datafileLabel->setBuddy(m_datafileEdit);
     miscLabel->setBuddy(m_miscEdit);
     usernameLabel->setBuddy(m_usernameEdit);
     passwordLabel->setBuddy(m_passwordEdit);
     urlLabel->setBuddy(m_urlEdit);
-    
+
     mainLayout->addWidget(startupGroup);
     mainLayout->addWidget(locationsGroup);
     mainLayout->addWidget(autoTextGroup);
     mainLayout->addStretch(5);
-    
+
     QWidget::setTabOrder(m_miscEdit, m_usernameEdit);
     QWidget::setTabOrder(m_usernameEdit, m_passwordEdit);
     QWidget::setTabOrder(m_passwordEdit, m_urlEdit);
@@ -263,14 +263,14 @@ void ConfDlgGeneralTab::applySettings()
 
 /*!
     \class ConfDlgPasswordTab
-    
+
     \brief Represents password settings in the configuration dialog
-    
-    This tab holds security general settings 
-    
+
+    This tab holds security general settings
+
      - settings for generated passwords
      - password strength settings
-    
+
     \ingroup gui
     \author Bernhard Walle
 */
@@ -281,12 +281,12 @@ void ConfDlgGeneralTab::applySettings()
     \param parent the parent widget
 */
 ConfDlgPasswordTab::ConfDlgPasswordTab(QWidget* parent, const char* name)
-    : ListBoxDialogPage(parent, name), m_lengthSpinner(0), m_externalEdit(0), m_allowedCharsEdit(0), 
+    : ListBoxDialogPage(parent, name), m_lengthSpinner(0), m_externalEdit(0), m_allowedCharsEdit(0),
       m_useExternalCB(0), m_weakSlider(0), m_strongSlider(0), m_weakLabel(0), m_strongLabel(0),
       m_sortButton(0)
 {
     createAndLayout();
-    
+
     connect(m_useExternalCB, SIGNAL(toggled(bool)), SLOT(checkboxHandler(bool)));
     connect(m_weakSlider, SIGNAL(valueChanged(int)), SLOT(weakSliderHandler(int)));
     connect(m_strongSlider, SIGNAL(valueChanged(int)), SLOT(strongSliderHandler(int)));
@@ -303,14 +303,14 @@ void ConfDlgPasswordTab::createAndLayout()
     QVBoxLayout* mainLayout = new QVBoxLayout(this, 0, 6);
     Q3GroupBox* passwordGroup = new Q3GroupBox(5, Qt::Vertical, tr("Generated Passwords"), this);
     Q3GroupBox* checkerGroup = new Q3GroupBox(6, Qt::Vertical, tr("Password checker"), this);
-    
+
     QWidget* ensureGrid = new QWidget(passwordGroup, "EnsureGrid");
     QGridLayout* ensureGridLayout = new QGridLayout(ensureGrid, 2, 3, 0, 6, "EnsureGridLayout");
     QLabel* lengthLabel = new QLabel(tr("L&ength:"), ensureGrid);
     QLabel* allowedLabel = new QLabel(tr("&Allowed characters:"), ensureGrid);
     m_lengthSpinner = new QSpinBox(6, 20, 1, ensureGrid, "LengthSpinner");
     m_allowedCharsEdit = new QLineEdit(ensureGrid, "AllowedLineEdit");
-    
+
     // layout the grid
     ensureGridLayout->setColStretch(0, 4);
     ensureGridLayout->setColStretch(1, 0);
@@ -320,11 +320,11 @@ void ConfDlgPasswordTab::createAndLayout()
     ensureGridLayout->addWidget(allowedLabel,         3, 2);
     ensureGridLayout->addWidget(m_lengthSpinner,      4, 0);
     ensureGridLayout->addWidget(m_allowedCharsEdit,   4, 2);
-    
+
     m_useExternalCB = new QCheckBox(tr("Use external application for generation:"), passwordGroup,
         "ExternalCB");
     m_externalEdit = new FileLineEdit(passwordGroup, "ExternalEdit");
-    
+
     // checker stuff
     new QLabel(tr("Limits for weak - acceptable - strong (cracking days):"), checkerGroup, "WeakLabel");
     Q3HBox* weakSliderBox = new Q3HBox(checkerGroup, "WeakSliderBox");
@@ -333,15 +333,15 @@ void ConfDlgPasswordTab::createAndLayout()
     m_weakLabel = new QLCDNumber(3, weakSliderBox);
     m_weakLabel->setSmallDecimalPoint(true);
     m_weakLabel->setLineWidth(0);
-    
+
     Q3HBox* strongSliderBox = new Q3HBox(checkerGroup, "WeakSliderBox");
     strongSliderBox->setSpacing(4);
     m_strongSlider = new QSlider(0, 100, 1, 15, Qt::Horizontal, strongSliderBox, "WeakSlider");
     m_strongLabel = new QLCDNumber(3, strongSliderBox);
     m_strongLabel->setSmallDecimalPoint(true);
     m_strongLabel->setLineWidth(0);
-    
-    QLabel* dictLabel = new QLabel(tr("&Dictionary file (must be sorted once):"), 
+
+    QLabel* dictLabel = new QLabel(tr("&Dictionary file (must be sorted once):"),
             checkerGroup, "DictLabel");
     m_dictionaryEdit = new FileLineEdit(checkerGroup, false, "DictEdit");
 
@@ -349,19 +349,19 @@ void ConfDlgPasswordTab::createAndLayout()
     Q3HBox* box = new Q3HBox(checkerGroup, "Hbox");
     m_sortButton = new QPushButton(tr("&Sort dictionary"), box, "SortBtn");
     m_sortButton->setAutoDefault(false);
-    
+
     QWidget* dummy = new QWidget(box);
     box->setStretchFactor(dummy, 10);
-    
+
     // buddys
     lengthLabel->setBuddy(m_lengthSpinner);
     allowedLabel->setBuddy(m_allowedCharsEdit);
     dictLabel->setBuddy(m_dictionaryEdit);
-    
+
     mainLayout->addWidget(passwordGroup);
     mainLayout->addWidget(checkerGroup);
     mainLayout->addStretch(5);
-    
+
     // help
     Q3WhatsThis::add(m_sortButton, tr("<qt>For performance reasons, the dictionary file needs "
         "to be sorted by the length of the words. This function does that!<p>It saves also a "
@@ -394,7 +394,7 @@ void ConfDlgPasswordTab::fillSettings()
     m_useExternalCB->setChecked(qpamat->set().readEntry("Security/PasswordGenerator") =="EXTERNAL");
     m_externalEdit->setContent(qpamat->set().readEntry("Security/PasswordGenAdditional"));
     m_dictionaryEdit->setContent(qpamat->set().readEntry("Security/DictionaryFile"));
-    
+
     checkboxHandler(m_useExternalCB->isChecked());
     weakSliderHandler(m_weakSlider->value());
     strongSliderHandler(m_strongSlider->value());
@@ -448,43 +448,43 @@ void ConfDlgPasswordTab::strongSliderHandler(int value)
 
 /*!
     Sorts the dictionary that was specified in the dictionary line edit. Stores a backup
-    copy of the file in filename.bak. 
+    copy of the file in filename.bak.
 */
 void ConfDlgPasswordTab::sortDictionary()
 {
     StringVector words;
     QFile file(m_dictionaryEdit->getContent());
-    if (!file.open(QIODevice::ReadOnly)) 
+    if (!file.open(QIODevice::ReadOnly))
     {
         QMessageBox::warning(this, "QPaMaT", tr("The file you wanted to sort does not exist!"),
             QMessageBox::Ok, QMessageBox::NoButton);
         return;
     }
-    
+
     QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
-    
+
     QTextStream stream(&file);
-    while (!stream.atEnd()) 
+    while (!stream.atEnd())
     {
         words.append(stream.readLine());
     }
     file.close();
-    
+
     std::sort(words.begin(), words.end(), string_length_greater);
-    
+
     // save the old file
     if (!QDir::root().rename(file.name(), file.name() + ".bak"))
     {
         QApplication::restoreOverrideCursor();
         if (QMessageBox::question(this, "QPaMaT", tr("Failed to create a backup file. Do you want\n"
-            "to continue without a backup?"), QMessageBox::Yes, 
+            "to continue without a backup?"), QMessageBox::Yes,
             QMessageBox::No | QMessageBox::Default) != QMessageBox::Yes)
         {
             return;
         }
         QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
     }
-    
+
     if (!file.open(QIODevice::WriteOnly))
     {
         QApplication::restoreOverrideCursor();
@@ -492,14 +492,14 @@ void ConfDlgPasswordTab::sortDictionary()
             QMessageBox::Ok, QMessageBox::NoButton);
         return;
     }
-    
+
     QTextStream writestream(&file);
-    
+
     for (StringVector::iterator it = words.begin(); it != words.end(); ++it)
     {
         writestream << *it << endl;
     }
-    
+
     QApplication::restoreOverrideCursor();
 }
 
@@ -510,14 +510,14 @@ void ConfDlgPasswordTab::sortDictionary()
 
 /*!
     \class ConfDlgPasswordTab
-    
+
     \brief Represents security settings in the configuration dialog
-    
-    This tab holds security general settings 
-    
+
+    This tab holds security general settings
+
      - cipher algorithm
      - automatic logout
-    
+
     \ingroup gui
     \author Bernhard Walle
 */
@@ -525,7 +525,7 @@ void ConfDlgPasswordTab::sortDictionary()
 /*!
     Maps combo box index to minutes.
 */
-const int ConfDlgSecurityTab::m_minuteMap[] = 
+const int ConfDlgSecurityTab::m_minuteMap[] =
 {
     0,          /*!< disabled */
     15,         /*!< 15 minutes */
@@ -554,19 +554,19 @@ void ConfDlgSecurityTab::createAndLayout()
     QVBoxLayout* mainLayout = new QVBoxLayout(this, 0, 6);
     Q3GroupBox* encryptionGroup = new Q3GroupBox(1, Qt::Vertical, tr("Encryption"), this);
     Q3GroupBox* logoutGroup = new Q3GroupBox(1, Qt::Vertical, tr("Logout"), this);
-    
+
     // algorithm stuff
     m_algorithmLabel = new QLabel(tr("Cipher &algorithm:"), encryptionGroup);
     m_algorithmCombo = new QComboBox(false, encryptionGroup);
-    
+
     // logout
     m_logoutLabel = new QLabel(tr("Auto &logout after inactivity:"), logoutGroup);
     m_logoutCombo = new QComboBox(false, logoutGroup);
-    
+
     // buddys
     m_algorithmLabel->setBuddy(m_algorithmCombo);
     m_logoutLabel->setBuddy(m_logoutCombo);
-    
+
     mainLayout->addWidget(encryptionGroup);
     mainLayout->addWidget(logoutGroup);
     mainLayout->addStretch(5);
@@ -581,18 +581,18 @@ void ConfDlgSecurityTab::fillSettings()
     PRINT_TRACE("Insert algorithm");
     m_algorithmCombo->insertStringList(SymmetricEncryptor::getAlgorithms());
     m_algorithmCombo->setCurrentText( qpamat->set().readEntry( "Security/CipherAlgorithm" ));
-    
+
     // Combo box
     m_logoutCombo->insertItem(tr("Disabled"));
     m_logoutCombo->insertItem(tr("15 minutes"));
     m_logoutCombo->insertItem(tr("30 minutes"));
     m_logoutCombo->insertItem(tr("1 hour"));
     m_logoutCombo->insertItem(tr("2 hours"));
-    
+
     int logout = qpamat->set().readNumEntry( "Security/AutoLogout" );
     int size = sizeof(ConfDlgSecurityTab::m_minuteMap)/sizeof(int);
     const int* val = qFind(
-        ConfDlgSecurityTab::m_minuteMap, 
+        ConfDlgSecurityTab::m_minuteMap,
         ConfDlgSecurityTab::m_minuteMap + size,
         logout
     );
@@ -617,14 +617,14 @@ void ConfDlgSecurityTab::applySettings()
 
 /*!
     \class ConfDlgPresentationTab
-    
+
     \brief Represents presentation settings in the configuration dialog
-    
-    This tab holds all presentation settings 
-    
+
+    This tab holds all presentation settings
+
      - displaying of passwords in the RandomPasswordDialog
      - fonts used for printing
-    
+
     \ingroup gui
     \author Bernhard Walle
 */
@@ -638,7 +638,7 @@ ConfDlgPresentationTab::ConfDlgPresentationTab(QWidget* parent, const char* name
     : ListBoxDialogPage(parent, name), m_nograbCB(0)
 {
     createAndLayout();
-    
+
     connect(m_systrayCB, SIGNAL(toggled(bool)), m_hiddenCB, SLOT(setEnabled(bool)));
 }
 
@@ -653,17 +653,17 @@ void ConfDlgPresentationTab::createAndLayout()
     Q3GroupBox* passwordGroup = new Q3GroupBox(2, Qt::Vertical, tr("Passwords"), this);
     Q3GroupBox* fontGroup = new Q3GroupBox(4, Qt::Vertical, tr("Printing Fonts"), this);
     Q3GroupBox* systemTrayGroup = new Q3GroupBox(2, Qt::Vertical, tr("System tray"), this);
-    
+
     QLabel* normalLabel = new QLabel(tr("&Normal font:"), fontGroup);
     m_normalFontEdit = new FontChooseBox(fontGroup);
     QLabel* footerLabel = new QLabel(tr("&Footer font:"), fontGroup);
     m_footerFontEdit = new FontChooseBox(fontGroup);
-    
-    m_hidePasswordCB = new QCheckBox(tr("Hide passwords in Random Password Dialog"), 
+
+    m_hidePasswordCB = new QCheckBox(tr("Hide passwords in Random Password Dialog"),
         passwordGroup, "HidePasswords");
     m_nograbCB = new QCheckBox(tr("Don't &grab keyboard focus in the password dialog"),
         passwordGroup, "Nograb");
-    
+
     // Systray
     m_systrayCB = new QCheckBox(tr("Show icon in system tray (needs restart!)"),
         systemTrayGroup, "IconInSystemtray");
@@ -672,16 +672,16 @@ void ConfDlgPresentationTab::createAndLayout()
         m_systrayCB->setEnabled(false);
     }
     m_hiddenCB = new QCheckBox(tr("Start hidden"), systemTrayGroup, "StartHidden");
-    
+
     // buddys
     normalLabel->setBuddy(m_normalFontEdit);
     footerLabel->setBuddy(m_footerFontEdit);
-    
+
     mainLayout->addWidget(passwordGroup);
     mainLayout->addWidget(fontGroup);
     mainLayout->addWidget(systemTrayGroup);
     mainLayout->addStretch(5);
-    
+
 }
 
 
@@ -724,24 +724,24 @@ void ConfDlgPresentationTab::applySettings()
 
 /*!
     \class ConfDlgSmartcardTab
-    
+
     \brief Represents smartcard settings in the configuration dialog
-    
-    This tab holds all smartcard settings 
-    
+
+    This tab holds all smartcard settings
+
      - library
      - port
      - testing faclity
-    
+
     \ingroup gui
     \author Bernhard Walle
 */
 
 /*!
     \enum ConfDlgSmartcardTab::SmartcardEnabled
-    
+
     Enumeration type to represent enabled/not enabled as radio button group.
-*/ 
+*/
 
 /*!
     Creates a new instance of an ConfDlgSmartcardTab object.
@@ -751,7 +751,7 @@ ConfDlgSmartcardTab::ConfDlgSmartcardTab(QWidget* parent, const char* name)
         : ListBoxDialogPage(parent, name)
 {
     createAndLayout();
-    
+
     connect(m_useCardCB, SIGNAL(toggled(bool)), this, SLOT(setUseSmartcardEnabled(bool)));
     connect(m_testButton, SIGNAL(clicked()), this, SLOT(testSmartCard()));
 }
@@ -764,34 +764,34 @@ void ConfDlgSmartcardTab::createAndLayout()
 {
     // create layouts
     QVBoxLayout* mainLayout = new QVBoxLayout(this, 0, 6);
-    
+
     Q3GroupBox* smartCardGroup = new Q3GroupBox(2, Qt::Vertical, tr("Smartcard"), this);
     m_settingsGroup = new Q3GroupBox(4, Qt::Vertical, tr("Settings"), this);
     m_testGroup = new Q3ButtonGroup(2, Qt::Vertical, tr("Testing"), this);
-    
+
     m_useCardCB = new QCheckBox(tr("&Use a smartcard"), smartCardGroup);
     m_usePinCB = new QCheckBox(tr("Card has &write-protection"), smartCardGroup);;
-    
+
     QLabel* libraryLabel = new QLabel(tr("CT-&API Chipcard Driver:"), m_settingsGroup);
     m_libraryEdit = new FileLineEdit(m_settingsGroup, false);
-    
+
     QLabel* portLabel = new QLabel(tr("Chipcard Terminal &Port:"), m_settingsGroup);
     m_portCombo = new QComboBox(false, m_settingsGroup);
-    
+
     new QLabel(tr("Insert a card and click on this button to test your settings:"), m_testGroup);
     Q3HBox* box = new Q3HBox(m_testGroup);
     m_testButton = new QPushButton(tr("&Test"), box);
     m_testButton->setAutoDefault(false);
-    
+
     QWidget* dummy = new QWidget(box);
     box->setStretchFactor(dummy, 10);
-    
+
     mainLayout->addWidget(smartCardGroup);
     mainLayout->addWidget(m_settingsGroup);
     mainLayout->addWidget(m_testGroup);
     mainLayout->addStretch(5);
-    
-    
+
+
     // the case discrimination if rom Qt's code, so it should be correct
 #if defined Q_WS_WIN
     m_libraryEdit->setFilter(tr("CT-API-Driver (*.dll)"));
@@ -802,11 +802,11 @@ void ConfDlgSmartcardTab::createAndLayout()
 #else
     m_libraryEdit->setFilter(tr("CT-API-Driver (*.so)"));
 #endif
-    
+
     // set buddys
     libraryLabel->setBuddy(m_libraryEdit);
     portLabel->setBuddy(m_portCombo);
-    
+
 }
 
 
@@ -829,18 +829,18 @@ void ConfDlgSmartcardTab::setUseSmartcardEnabled(bool enabled)
 void ConfDlgSmartcardTab::fillSettings()
 {
     m_portCombo->clear();
-    const char* ports[] = { QT_TR_NOOP("Special (Port 0)"), QT_TR_NOOP("COM1/USB/Keyboard"), 
+    const char* ports[] = { QT_TR_NOOP("Special (Port 0)"), QT_TR_NOOP("COM1/USB/Keyboard"),
         QT_TR_NOOP("COM2"), QT_TR_NOOP("COM3"), QT_TR_NOOP("COM4") };
     for (int i = 0; i < 5; ++i)
     {
         m_portCombo->insertItem(tr(ports[i]));
     }
-    
+
     m_libraryEdit->setContent(qpamat->set().readEntry("Smartcard/Library"));
     m_portCombo->setCurrentItem(qpamat->set().readNumEntry("Smartcard/Port"));
     m_useCardCB->setChecked(qpamat->set().readBoolEntry("Smartcard/UseCard"));
     m_usePinCB->setChecked(qpamat->set().readBoolEntry("Smartcard/HasWriteProtection"));
-    
+
     if (!m_useCardCB->isChecked())
     {
         setUseSmartcardEnabled(false);
@@ -873,12 +873,12 @@ void ConfDlgSmartcardTab::testSmartCard()
         MemoryCard card(m_libraryEdit->getContent());
         card.init(m_portCombo->currentItem());
         MemoryCard::CardType type = card.getType();
-        
+
         if (type == MemoryCard::TMemoryCard)
         {
             int capacity = 0;
             card.resetCard(&capacity);
-            
+
             QApplication::restoreOverrideCursor();
             QMessageBox::information(this, "QPaMaT", QString("<qt>"+tr(
                 "<p>Detected a card with %1 kBytes memory.</p><p>If you think this is "
@@ -895,7 +895,7 @@ void ConfDlgSmartcardTab::testSmartCard()
                 "it for saving your password. Buy a memory card and try again!</p>")),
                 QMessageBox::Ok | QMessageBox::Default, Qt::NoButton);
         }
-        
+
         // if we don't access this point the destructor closes it. So no problem here!
         card.close();
     }

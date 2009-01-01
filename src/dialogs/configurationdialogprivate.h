@@ -1,16 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
- * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; You may only use
  * version 2 of the License, you have no option to use any other version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
  * the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program; if 
+ * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * ------------------------------------------------------------------------------------------------- 
+ * -------------------------------------------------------------------------------------------------
  */
 #ifndef CONFIGURATIONDIALOGPRIVATE_H
 #define CONFIGURATIONDIALOGPRIVATE_H
@@ -34,19 +34,19 @@
 class ConfDlgGeneralTab : public ListBoxDialogPage
 {
     Q_OBJECT
-    
+
     friend class ConfigurationDialog;
-    
+
     public:
         ConfDlgGeneralTab (QWidget* parent, const char* name);
-        
+
     protected:
         void fillSettings();
         void applySettings();
-        
+
     private:
         void createAndLayout();
-        
+
     private:
         QCheckBox*      m_autoLoginCheckbox;
         FileLineEdit*   m_datafileEdit;
@@ -61,27 +61,27 @@ class ConfDlgGeneralTab : public ListBoxDialogPage
 class ConfDlgPasswordTab : public ListBoxDialogPage
 {
     Q_OBJECT
-    
+
     friend class ConfigurationDialog;
-    
+
     public:
         ConfDlgPasswordTab(QWidget* parent, const char* name = 0);
-        
+
     protected slots:
         void checkboxHandler(bool on);
-        
+
     protected:
         void fillSettings();
         void applySettings();
-         
+
     private slots:
         void weakSliderHandler(int value);
         void strongSliderHandler(int value);
         void sortDictionary();
-        
+
     private:
         void createAndLayout();
-        
+
     private:
         // passwords
         QSpinBox*       m_lengthSpinner;
@@ -102,22 +102,22 @@ class ConfDlgPasswordTab : public ListBoxDialogPage
 class ConfDlgSecurityTab : public ListBoxDialogPage
 {
     Q_OBJECT
-    
+
     friend class ConfigurationDialog;
-    
+
     public:
         ConfDlgSecurityTab(QWidget* parent, const char* name = 0);
-    
+
     protected:
         void fillSettings();
         void applySettings();
-        
+
     private:
         void createAndLayout();
-        
+
     protected:
         static const int m_minuteMap[];
-        
+
     private:
         // algorithm
         QComboBox*      m_algorithmCombo;
@@ -133,28 +133,28 @@ class ConfDlgSecurityTab : public ListBoxDialogPage
 class ConfDlgSmartcardTab : public ListBoxDialogPage
 {
     Q_OBJECT
-    
+
     friend class ConfigurationDialog;
-    
+
     public:
         enum SmartcardEnabled { NotEnabled = 0, Enabled = 1 };
-    
+
     public:
         ConfDlgSmartcardTab(QWidget* parent, const char* name = 0);
-    
+
     protected slots:
         void testSmartCard();
-        
+
     protected:
         void fillSettings();
         void applySettings();
-        
+
     private slots:
         void setUseSmartcardEnabled(bool enabled);
-        
+
     private:
         void createAndLayout();
-        
+
     private:
         QCheckBox*      m_useCardCB;
         QCheckBox*      m_usePinCB;
@@ -170,17 +170,17 @@ class ConfDlgSmartcardTab : public ListBoxDialogPage
 class ConfDlgPresentationTab : public ListBoxDialogPage
 {
     Q_OBJECT
-    
+
     public:
         ConfDlgPresentationTab(QWidget* parent, const char* name = 0);
-    
+
     protected:
         void fillSettings();
         void applySettings();
-        
+
     private:
         void createAndLayout();
-        
+
     private:
         FontChooseBox*  m_normalFontEdit;
         FontChooseBox*  m_footerFontEdit;

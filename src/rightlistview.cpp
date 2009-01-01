@@ -1,16 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
- * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; You may only use
  * version 2 of the License, you have no option to use any other version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
  * the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program; if 
+ * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * ------------------------------------------------------------------------------------------------- 
+ * -------------------------------------------------------------------------------------------------
  */
 #include <Q3ListView>
 #include <QWidget>
@@ -35,7 +35,7 @@
 
 /*!
     \class RightListView
-    
+
     \brief Represents the list view on the right where the key-value pairs are displayed.
     \ingroup gui
     \author Bernhard Walle
@@ -43,19 +43,19 @@
 
 /*!
     \enum RightListView::MenuID
-    
+
     Enumeration for menu.
 */
 
 /*!
     \fn RightListView::itemAppended()
-    
+
     This signal is emitted if an item was appended.
 */
 
 /*!
     \fn RightListView::itemDeleted(int)
-    
+
     This signal is emitted if an item was deleted.
 
     \param item the number of the deleted item (first item = 0)
@@ -63,13 +63,13 @@
 
 /*!
     \fn RightListView::stateModified()
-    
+
     If something was modified, need to determine if saving is necessary.
 */
 
 /*!
     \fn RightListView::enableMoving(bool, bool)
-    
+
     This signal is emitted always if the selection changes.
     \param up if moving up is enabled
     \param down if moving down is enabled
@@ -84,16 +84,16 @@ RightListView::RightListView(QWidget* parent)
 {
     addColumn(tr("Key"), 250);
     addColumn(tr("Value"), 250);
-    
+
     setResizeMode(LastColumn);
     header()->setMovingEnabled(false);
     setSorting(-1);
     setSortColumn(-1);
     setAllColumnsShowFocus(true);
-    
+
     initContextMenu();
-    
-    connect(this, SIGNAL(contextMenuRequested(Q3ListViewItem*, const QPoint&, int)), 
+
+    connect(this, SIGNAL(contextMenuRequested(Q3ListViewItem*, const QPoint&, int)),
         SLOT(showContextMenu(Q3ListViewItem*, const QPoint&)));
     connect(this, SIGNAL(itemAppended()), SLOT(updateView()));
     connect(this, SIGNAL(itemAppended()), SLOT(itemAppendedHandler()));
@@ -116,12 +116,12 @@ void RightListView::initContextMenu()
 {
     m_contextMenu = new Q3PopupMenu(this);
     m_contextMenu->insertItem(QIcon(QPixmap(":/images/stock_add_16.png")), tr("&New"), M_NEW);
-    m_contextMenu->insertItem(QIcon(QPixmap(":/images/stock_remove_16.png")), 
+    m_contextMenu->insertItem(QIcon(QPixmap(":/images/stock_remove_16.png")),
         tr("&Delete") + "\t" + QString(QKeySequence(Qt::Key_Delete)), M_DELETE);
     m_contextMenu->insertSeparator();
     m_contextMenu->insertItem(QIcon(QPixmap(":/images/stock_copy_16.png")),
         tr("&Copy") + "\t" + QString(QKeySequence(Qt::CTRL|Qt::Key_C)), M_COPY);
-    m_contextMenu->insertItem(QIcon(QPixmap(":/images/eye_16.png")), 
+    m_contextMenu->insertItem(QIcon(QPixmap(":/images/eye_16.png")),
         tr("Show &password..."), M_SHOW_PW);
 }
 
@@ -131,7 +131,7 @@ void RightListView::initContextMenu()
     \param item the list view item
     \param point the coordinates of the click
 */
-void RightListView::showContextMenu(Q3ListViewItem* item, const QPoint& point) 
+void RightListView::showContextMenu(Q3ListViewItem* item, const QPoint& point)
 {
     if (!isEnabled())
     {
@@ -139,11 +139,11 @@ void RightListView::showContextMenu(Q3ListViewItem* item, const QPoint& point)
     }
     bool passw = item != 0 && m_currentItem->getProperty(item->text(2).toInt(0))->getType()
         == Property::PASSWORD;
-    
+
     m_contextMenu->setItemEnabled(M_DELETE, item != 0);
     m_contextMenu->setItemEnabled(M_COPY, item != 0);
     m_contextMenu->setItemEnabled(M_SHOW_PW, passw);
-    
+
     int id = m_contextMenu->exec(point);
     switch (id)
     {
@@ -177,13 +177,13 @@ void RightListView::showContextMenu(Q3ListViewItem* item, const QPoint& point)
 void RightListView::setSelectedIndex(uint index)
 {
     Q_ASSERT(index <= uint(childCount()));
-    
+
     Q3ListViewItem* item = firstChild();
     for (uint i = 0; i < index; ++i)
     {
         item = item->nextSibling();
     }
-    
+
     setSelected(item, true);
 }
 
@@ -196,7 +196,7 @@ void RightListView::keyPressEvent(QKeyEvent* evt)
 {
     Q3ListViewItem* selected = selectedItem();
     int key = evt->key();
-    
+
     if (key == Qt::Key_Delete)
     {
         deleteCurrent();
@@ -267,7 +267,7 @@ void RightListView::doubleClickHandler(Q3ListViewItem* item)
     \param point the coordinares
     \param col the column
 */
-void RightListView::mouseButtonClickedHandler(int but, Q3ListViewItem* item, 
+void RightListView::mouseButtonClickedHandler(int but, Q3ListViewItem* item,
                                               const QPoint& point, int col)
 {
     UNUSED(point);
@@ -285,21 +285,21 @@ void RightListView::mouseButtonClickedHandler(int but, Q3ListViewItem* item,
 void RightListView::updateView()
 {
     clear();
-    
+
     if (! m_currentItem->isCategory())
     {
         TreeEntry::PropertyIterator it = m_currentItem->propertyIterator();
-        
+
         Property* current;
         int i = 0;
         while ( (current = it.current()) != 0 )
         {
-            new Q3ListViewItem(this, lastItem(), current->getKey(), current->getVisibleValue(), 
+            new Q3ListViewItem(this, lastItem(), current->getKey(), current->getVisibleValue(),
                 QString::number(i++));
             ++it;
         }
     }
-    
+
     setEnabled(true);
 }
 
@@ -311,7 +311,7 @@ void RightListView::updateView()
 void RightListView::updateSelected(Property* property)
 {
     Q3ListViewItem* item = selectedItem();
-    
+
     if (item != 0)
     {
         item->setText(0, property->getKey());
@@ -433,7 +433,7 @@ void RightListView::moveUp()
 
 
 /*!
-    Sets the move state correct, i.e. whether moving up or down is enabled. Emits the 
+    Sets the move state correct, i.e. whether moving up or down is enabled. Emits the
     enableMoving() signal.
 */
 void RightListView::setMoveStateCorrect()
@@ -441,7 +441,7 @@ void RightListView::setMoveStateCorrect()
     bool up = false;
     bool down = false;
     Q3ListViewItem* selected = selectedItem();
-    
+
     if (selected)
     {
         int index = selected->text(2).toInt(0);
@@ -455,7 +455,7 @@ void RightListView::setMoveStateCorrect()
 
 /*!
     \relates RightListView
-    
+
     Writes the widths of the column to the text stream.
 */
 QTextStream& operator<<(QTextStream& ts, const RightListView& listview)
@@ -468,7 +468,7 @@ QTextStream& operator<<(QTextStream& ts, const RightListView& listview)
 
 /*!
     \related RightListView
-    
+
     Restores the widths of the columns from the text stream.
 */
 QTextStream& operator>>(QTextStream& ts, RightListView& listview)
@@ -485,7 +485,7 @@ QTextStream& operator>>(QTextStream& ts, RightListView& listview)
     else
     {
         listview.setColumnWidth(0, list[1].toInt());
-        listview.setColumnWidth(1, list[2].toInt()); 
+        listview.setColumnWidth(1, list[2].toInt());
     }
     return ts;
 }

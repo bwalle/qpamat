@@ -1,16 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
- * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; You may only use
  * version 2 of the License, you have no option to use any other version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
  * the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program; if 
+ * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * ------------------------------------------------------------------------------------------------- 
+ * -------------------------------------------------------------------------------------------------
  */
 #include <QString>
 #include <QDomDocument>
@@ -27,7 +27,7 @@
 
 /*!
     \class Property
-    
+
     \brief Represents one property.
 
     \ingroup gui
@@ -36,29 +36,29 @@
 
 /*!
     \enum Property::Type
-    
+
     Type of the property that can be stored. QPaMaT has special features for special types.
 */
 
 /*!
     \enum Property::PasswordStrength
-    
+
     Enumeration type for the passwords strength. The meaning of these types depends on the
     settings.
-    
+
     The meaning depends on the user setting. \c PUndefined is a escape value.
 */
 
 /*!
     \fn Property::propertyChanged(Property*)
-    
+
     This signal is emited if some property is changed.
     \param current the this pointer
 */
 
 /*!
     Creates a new Property.
-    
+
     \param key the key of the property
     \param value the value of a property
     \param type the type of the property
@@ -69,7 +69,7 @@ Property::Property(const QString& key, const QString& value, Type type, bool enc
     : m_key(key), m_value(value), m_type(type), m_encrypted(encrypted), m_hidden(hidden),
       m_passwordStrength(PUndefined), m_daysToCrack(-1.0)
 {
-    
+
     setValue(value);
 }
 
@@ -128,7 +128,7 @@ QString Property::getVisibleValue() const
     Sets the value of the property.
     \param value the new value
 */
-void Property::setValue(const QString& value) 
+void Property::setValue(const QString& value)
 {
     m_value = value;
     emit propertyChanged(this);
@@ -278,7 +278,7 @@ QString Property::toRichTextForPrint() const
 /*!
     Appends the tree entry as text representation to the given stream. The text is formatted for
     export.
-    
+
     \param stream the stream where the text is appended
 */
 void Property::appendTextForExport(QTextStream& stream)
@@ -297,12 +297,12 @@ void Property::appendXML(QDomDocument& document, QDomNode& parent) const
 {
     QDomElement property = document.createElement("property");
     QString value = m_value;
-    
+
     property.setAttribute("key", m_key);
     property.setAttribute("value", value);
     property.setAttribute("hidden", m_hidden);
     property.setAttribute("encrypted", m_encrypted);
-    
+
     QString type;
     switch (m_type)
     {
@@ -312,7 +312,7 @@ void Property::appendXML(QDomDocument& document, QDomNode& parent) const
         case URL     :  type = "URL"     ;      break;
     }
     property.setAttribute("type", type);
-    
+
     parent.appendChild(property);
 }
 
@@ -325,13 +325,13 @@ void Property::appendXML(QDomDocument& document, QDomNode& parent) const
 void Property::appendFromXML(TreeEntry* parent, QDomElement& element)
 {
     Q_ASSERT( element.tagName() == "property" );
-    
+
     QString key = element.attribute("key");
     QString value = element.attribute("value");
     bool hidden = element.attribute("hidden") == "1";
     bool encrypted = element.attribute("encrypted") == "1";
     QString typeString = element.attribute("type");
-    
+
     Property::Type type;
     if (typeString == "USERNAME")
     {
@@ -349,7 +349,7 @@ void Property::appendFromXML(TreeEntry* parent, QDomElement& element)
     {
         type = MISC;
     }
-    
+
     parent->appendProperty(new Property(key, value, type, encrypted, hidden));
 }
 

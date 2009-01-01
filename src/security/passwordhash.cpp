@@ -1,16 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
- * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; You may only use
  * version 2 of the License, you have no option to use any other version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
  * the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program; if 
+ * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * ------------------------------------------------------------------------------------------------- 
+ * -------------------------------------------------------------------------------------------------
  */
 #include <cstdlib>
 #include <algorithm>
@@ -38,7 +38,7 @@ const int PasswordHash::numberOfRandomBytes = 8;
     This constant describes the maximal length of the hash. The current implementation uses
     8 byte of salt and 20 bytes (160 bit) of hash data, that makes 28 bytes. Since SHA1 has the
     same length, a change from RIPE-MD160 to SHA1 doesn't affect the length.
-    
+
     This value is used for the alignment on the chipcard. We need fixed alignments, so a
     change of this constant makes old chipcards unusable. That is the reason why I don't use
     the constant \c EVP_MAX_MD_SIZE here. I use an assertion to check that the actual value
@@ -48,7 +48,7 @@ const int PasswordHash::MAX_HASH_LENGTH = 40;
 
 /*!
     \class PasswordHash
-    
+
     \brief Helping functions for dealing with passwords and hashes.
     \ingroup security
     \author Bernhard Walle
@@ -88,19 +88,19 @@ bool PasswordHash::isCorrect(QString password, const QString& hash)
 bool PasswordHash::isCorrect(QString password, const ByteVector& hash)
 {
     ByteVector output;
-    
+
     Q_ASSERT(hash.size() > numberOfRandomBytes);
-    
+
     // attach the random bytes
     ByteVector passwordBytes(numberOfRandomBytes);
     std::copy(hash.begin(), hash.begin() + numberOfRandomBytes, passwordBytes.begin());
-    
+
     // convert the password to a byte vector
     QByteArray passwordCString = password.toUtf8();
     std::copy(passwordCString.begin(), passwordCString.end(), std::back_inserter(passwordBytes));
-    
+
     attachHashWithoutSalt(output, passwordBytes);
-    
+
     return std::equal(output.begin(), output.end(), hash.begin() + numberOfRandomBytes);
 }
 
@@ -115,20 +115,20 @@ ByteVector PasswordHash::generateHash(QString password)
 {
     StdRandomNumberGenerator<byte> rand;
     ByteVector output(numberOfRandomBytes);
-    
+
     // generate the random bytes and copy them to the output, too
     ByteVector passwordBytes(numberOfRandomBytes);
-    std::generate(output.begin(), output.end(), rand); 
+    std::generate(output.begin(), output.end(), rand);
     std::copy(output.begin(), output.end(), passwordBytes.begin());
-    
+
     // attach the password
     QByteArray passwordCString = password.toUtf8();
     std::copy(passwordCString.begin(), passwordCString.end(), std::back_inserter(passwordBytes));
-    
+
     attachHashWithoutSalt(output, passwordBytes);
-    
+
     Q_ASSERT(output.size() <= MAX_HASH_LENGTH);
-    
+
     return output;
 }
 
@@ -155,16 +155,16 @@ void PasswordHash::attachHashWithoutSalt(ByteVector& output, const ByteVector& p
     EVP_MD_CTX mdctx;
     unsigned char md_value[EVP_MAX_MD_SIZE];
     uint md_len;
-    
+
     int len = passwordBytes.size();
     byte* password = new byte[len];
     std::copy(passwordBytes.begin(), passwordBytes.end(), password);
-    
+
     EVP_DigestInit(&mdctx, HASH_ALGORITHM);
     EVP_DigestUpdate(&mdctx, password, len);
     EVP_DigestFinal(&mdctx, md_value, &md_len);
     delete[] password;
-    
+
     std::copy(md_value, md_value + md_len, std::back_inserter(output));
 }
 

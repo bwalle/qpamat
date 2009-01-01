@@ -1,16 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
- * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; You may only use
  * version 2 of the License, you have no option to use any other version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
  * the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program; if 
+ * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * ------------------------------------------------------------------------------------------------- 
+ * -------------------------------------------------------------------------------------------------
  */
 #include <string>
 #include <cmath>
@@ -34,18 +34,18 @@ int MemoryCard::m_lastNumber = 1;
 
 /*!
     \class MemoryCard
-    
+
     \brief Class for handling memory cards.
-    
+
     Here's some background information about programming with smartcards etc.
     The information which was used to program this class is from following sources:
-    
-     - Manual pages ctapi(3) and ctbcs(3) from the Towitoko CT-API driver at 
+
+     - Manual pages ctapi(3) and ctbcs(3) from the Towitoko CT-API driver at
        http://www.geocities.com/cprados/ .
      - Official CT-API specification at http://www.panstruga.de/ct-api/spec/spec_v09.html .
      - c't (very good German computer magazine) article "Kartenspiele", "Grundlagen der
        Chipkartenprogrammierung", Kai-Uwe Mrkor, c't 8/2000, page 208.
-    
+
     A very good overview about the different APIs for programming with chipcards was in the
     article "Karten-Spiele", "Smartcard-Programmierung unter Linux", Frank Haubenschild in
     the German magazine "Linux-Magazin" 06/2002 which is also available online at
@@ -53,51 +53,51 @@ int MemoryCard::m_lastNumber = 1;
     the CT-API because there was a driver available for my reader, this API is wide-spread in
     Germany, it's available on both *nix and Windows and my homebanking programme Moneyplex
     from Matrica also uses this API and chipcard communication works well.
-    
+
     There's no need to start a server on machine and the user only has to specify one library.
     You don't need root permissions if you have access to the serial port, of course.
-    
+
     \par Normal Usage:
-    
+
      - At first you have to create a new object,
-     - then you have to call the init() method with the right port. 
+     - then you have to call the init() method with the right port.
      - After that you have to request the type of the card.
      - Now you can call the read() or write() method.
      - After this you have to call the close() method or simply let the destructor do the work!
-    
+
     \ingroup smartcard
     \author Bernhard Walle
 */
 
 /*!
     \typedef char (*MemoryCard::CT_init_ptr) (ushort ctn, ushort pn);
-    
+
     Typedef for the init function of the CT-API.
 */
 
 /*!
-    \typedef typedef char (*MemoryCard::CT_data_ptr) (ushort ctn, uchar* dad, uchar* sad, ushort lenc, 
+    \typedef typedef char (*MemoryCard::CT_data_ptr) (ushort ctn, uchar* dad, uchar* sad, ushort lenc,
                                           uchar* command, ushort* lenr, uchar* response);
-    
+
     Typedef for the data function of the CT-API.
 */
 
 /*!
     \typedef char (*MemoryCard::CT_close_ptr) (ushort ctn);
-    
+
     Typedef for the close function of the CT-API.
 */
 
 /*!
     \enum MemoryCard::CardSlot
-    
+
     The cards in slot 1 to slot 14, used for destination adresses. If the destination is
     the terminal, use CT from ctapi.h.
 */
 
 /*!
     \enum MemoryCard::CardType
-    
+
     The card type.
 */
 /*!
@@ -115,7 +115,7 @@ int MemoryCard::m_lastNumber = 1;
 
 /*!
     \enum MemoryCard::ProtocolType
-    
+
     The protocol type.
 */
 
@@ -132,12 +132,12 @@ MemoryCard::MemoryCard(QString library) throw (NoSuchLibraryException)
     {
         throw NoSuchLibraryException("The library \""+ library + "\" could not be loaded." );
     }
-    
+
     // initialize the functions ...
     m_CT_init_function = (CT_init_ptr)m_library.resolve("CT_init");
     m_CT_data_function = (CT_data_ptr)m_library.resolve("CT_data");
     m_CT_close_function = (CT_close_ptr)m_library.resolve("CT_close");
-    
+
     if (!m_CT_init_function)
     {
         throw NoSuchLibraryException("\""+ library +"\" is not a CT-API driver. It lacks the "
@@ -152,7 +152,7 @@ MemoryCard::MemoryCard(QString library) throw (NoSuchLibraryException)
     {
         throw NoSuchLibraryException("\""+ library +"\" is not a CT-API driver. It lacks the "
             " CT_close() function.");
-    } 
+    }
 }
 
 
@@ -170,7 +170,7 @@ MemoryCard::~MemoryCard()
         }
         catch (const std::exception& ex)
         {
-            PRINT_DBG("Caught exception in destructor: %s", ex.what()); 
+            PRINT_DBG("Caught exception in destructor: %s", ex.what());
         }
         catch (...)
         {
@@ -186,7 +186,7 @@ MemoryCard::~MemoryCard()
     \param portNumber the port number. According to CT-API the mapping between
                       port number and real hardware port is manufactor specific.
                       There are some defines in ctapi.h like COM_1 which may work or
-                      may not work. On Unix often 1 is mapped to COM1 (/dev/ttyS0), on 
+                      may not work. On Unix often 1 is mapped to COM1 (/dev/ttyS0), on
                       Windows it is COM2. For USB or PS/2 there's no rule at all. Just
                       let the user test all possibilities. :-)
     \exception CardException if an exception occurred
@@ -197,13 +197,13 @@ void MemoryCard::init(int portNumber) throw (CardException)
     {
         qWarning("init() before close()");
     }
-    
+
     char ret = m_CT_init_function(m_lastNumber, portNumber);
     if (ret != OK)
     {
         throw CardException(CardException::ErrorCode(ret));
     }
-    
+
     m_portNumber = portNumber;
     m_cardTerminalNumber = m_lastNumber++;
     m_initialized = true;
@@ -218,7 +218,7 @@ void MemoryCard::init(int portNumber) throw (CardException)
 void MemoryCard::close() throw (CardException, NotInitializedException)
 {
     checkInitialzed("close");
-    
+
     char ret = m_CT_close_function(m_cardTerminalNumber);
     if (ret != OK)
     {
@@ -256,26 +256,26 @@ void MemoryCard::setWaitTime(uchar newTime)
 MemoryCard::CardType MemoryCard::getType() const throw (CardException, NotInitializedException)
 {
     checkInitialzed();
-    
+
     //                     CLA   INS   P1    P2    LEN  WAIT
     byte REQUEST_ICC[] = { 0x20, 0x12, 0x01, 0x00, 1,  m_waitTime };
-    
+
     byte sad = HOST;      // source
     byte dad = CT;        // destination
-    
+
     byte response[100];
     ushort lenr = sizeof(response);
-    
-    char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(REQUEST_ICC), 
+
+    char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(REQUEST_ICC),
         REQUEST_ICC, &lenr, response);
-    
+
     if (ret != OK)
     {
         throw CardException(CardException::ErrorCode(ret));
     }
-    
+
     ushort sw1sw2 = (response[0] << 8) + response[1];
-    
+
     switch (sw1sw2)
     {
         case 0x9000: return TMemoryCard;
@@ -299,25 +299,25 @@ void MemoryCard::resetCard(int* capacity, ProtocolType* protocolType) const
     throw (CardException, NotInitializedException)
 {
     checkInitialzed();
-    
+
     //                  CLA   INS   P1    P2    LEN
     byte RESET_CT[] = { 0x20, 0x11, 0x01, 0x01, 0};
-    
+
     byte sad = HOST;      // source
     byte dad = CT;        // destination
-    
+
     byte response[100];
     ushort lenr = sizeof(response);
-    
-    char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(RESET_CT), 
+
+    char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(RESET_CT),
         RESET_CT, &lenr, response);
-    
+
     if (ret != OK)
     {
         throw CardException(CardException::ErrorCode(ret));
     }
-    
-    
+
+
     if (lenr < 4)
     {
         qDebug("Return length is not 2, this is invalid. It was %d.\n", lenr);
@@ -330,11 +330,11 @@ void MemoryCard::resetCard(int* capacity, ProtocolType* protocolType) const
             *protocolType = TOther;
         }
     }
-    
-    
+
+
     byte h1 =  response[0]; // protocol type
     byte protocol = (h1 >> 4) & 0x0F;
-    
+
     if (protocolType != NULL)
     {
         if (protocol < 0x08)
@@ -360,11 +360,11 @@ void MemoryCard::resetCard(int* capacity, ProtocolType* protocolType) const
             }
         };
     }
-    
+
     if (capacity != 0)
     {
         byte h2 = response[1]; // size
-        
+
         int number = ((h2 >> 3) & 0x0F);
         if (number > 0)
         {
@@ -378,7 +378,7 @@ void MemoryCard::resetCard(int* capacity, ProtocolType* protocolType) const
 
 /*!
     Reads some status information from the chipcard terminal. This information is not
-    card dependand but depends on the terminal. The information is returned by setting 
+    card dependand but depends on the terminal. The information is returned by setting
     the paramters to a sensible value.
     \param manufacturer 5 characters, the first two are the country code and the following
                         3 are the manufacturer acronym
@@ -386,46 +386,46 @@ void MemoryCard::resetCard(int* capacity, ProtocolType* protocolType) const
     \param software     the software version which is manufacturer dependant, too.
     \param discrData    additional, optional information
 */
-void MemoryCard::getStatusInformation(QString* manufacturer, QString* terminalType, 
+void MemoryCard::getStatusInformation(QString* manufacturer, QString* terminalType,
         QString* software, QString* discrData) throw (CardException, NotInitializedException)
 {
     checkInitialzed();
-    
-    
+
+
     //                        CLA   INS   P1    P2    LEN
     byte REQUEST_STATUS[] = { 0x20, 0x13, 0x00, 0x46, 0 };
-    
+
     byte sad = HOST;      // source
     byte dad = CT;        // destination
-    
+
     byte response[100];
     ushort lenr = sizeof(response);
-    
-    char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(REQUEST_STATUS), 
+
+    char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(REQUEST_STATUS),
         REQUEST_STATUS, &lenr, response);
-    
+
     if (ret != OK)
     {
         throw CardException(CardException::ErrorCode(ret));
     }
-    
+
     QString resp = QString::fromLatin1(reinterpret_cast<char*>(response), lenr);
-    
+
     if (manufacturer != 0)
     {
         *manufacturer = resp.left(5);
     }
-    
+
     if (terminalType != 0)
     {
         *terminalType = resp.mid(5, 5);
     }
-    
+
     if (software != 0)
     {
         *software = resp.mid(10, 5);
     }
-    
+
     if (discrData != 0)
     {
         *discrData = resp.right(lenr - 15);
@@ -435,7 +435,7 @@ void MemoryCard::getStatusInformation(QString* manufacturer, QString* terminalTy
 
 /*!
     This selects a file on the chipcard. It is implemented in a way that selects the whole
-    data area on the chipcard. The return value of this function indicates the success. 
+    data area on the chipcard. The return value of this function indicates the success.
     \return \c true if the command was successfull, \c false otherwise.
     \exception CardException if an exception occurred while selecting the file
     \exception NotInitializedException if the object was not initialized
@@ -443,27 +443,27 @@ void MemoryCard::getStatusInformation(QString* manufacturer, QString* terminalTy
 bool MemoryCard::selectFile() const throw (CardException, NotInitializedException)
 {
     checkInitialzed();
-    
+
     //                     CLA   INS   P1    P2    LEN -- total --
     byte SELECT_FILE[] = { 0x00, 0xA4, 0x00, 0x00, 2,  0x3F, 0x00 };
 
     byte sad = HOST;      // source
     byte dad = ICC1;         // destination
-    
-    
+
+
     byte response[2];
     ushort lenr = sizeof(response);
-    
-    char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(SELECT_FILE), 
+
+    char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(SELECT_FILE),
         SELECT_FILE, &lenr, response);
-    
+
     if (ret != OK)
     {
         throw CardException(CardException::ErrorCode(ret));
     }
-    
+
     ushort sw1sw2 = (response[0] << 8) + response[1];
-    
+
     return sw1sw2 == 0x9000;
 }
 
@@ -476,65 +476,65 @@ bool MemoryCard::selectFile() const throw (CardException, NotInitializedExceptio
     \exception CardException if an exception occurred while reading
     \exception NotInitializedException if the object was not initialized
 */
-ByteVector MemoryCard::read(ushort offset, ushort length) 
+ByteVector MemoryCard::read(ushort offset, ushort length)
     throw (CardException, NotInitializedException)
 {
     checkInitialzed();
-    
+
     byte read_binary[5];
     read_binary[0] = 0x00; // CLA
     read_binary[1] = 0xB0; // INS
-    
+
     ByteVector vec(length);
     int readBytes = 0;
-    
+
     int dataOffset = 0;
     int stillToRead = length;
     const int max = 255;
-    
+
     while (stillToRead > 0)
     {
         int dataToRead = std::min(stillToRead, max);
-        
+
         read_binary[2] = (offset + dataOffset) >> 8;
         read_binary[3] = (offset + dataOffset) & 0xFF;
         read_binary[4] = dataToRead;
-        
+
         byte sad = HOST;      // source
         byte dad = ICC1;      // destination
-        
+
         byte response[max+2];
         ushort lenr = dataToRead + 2;
-        
-        char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(read_binary), 
+
+        char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(read_binary),
             read_binary, &lenr, response);
-        
+
         if (ret != OK)
         {
             throw CardException(CardException::ErrorCode(ret));
         }
-        
+
         ushort sw1sw2 = (response[lenr-2] << 8) + response[lenr-1];
-        
+
         if (sw1sw2 != 0x9000)
         {
             throw CardException(CardException::ErrorCode(sw1sw2));
         }
-        
+
         readBytes += lenr - 2;
         qCopy(response, response + lenr - 2, vec.begin() + dataOffset);
-        
+
         stillToRead -= max;
         dataOffset += max;
     }
-    
+
     // truncate if not all could be read
     vec.resize(readBytes);
     if (readBytes != length)
     {
         throw CardException(CardException::EndReached);
     }
-    
+
     return vec;
 }
 
@@ -550,51 +550,51 @@ void MemoryCard::write(ushort offset, const ByteVector& data)
     throw (CardException, NotInitializedException)
 {
     checkInitialzed();
-    
+
     int dataOffset = 0;
     int len = data.size();
     const int max = 255;
-    
+
     byte update_binary[max+5];
     update_binary[0] = 0x00; // CLA
     update_binary[1] = 0xD6; // INS
-        
+
     while (len > 0)
     {
         int written_bytes = std::min(len, max);
-        
+
         update_binary[2] = (offset + dataOffset) >> 8; // P1
         update_binary[3] = (offset + dataOffset) & 0xFF; // P2
         update_binary[4] = written_bytes; // LEN
-        
+
         // fill the array
         ByteVector::const_iterator realBegin = data.begin() + dataOffset;
-        
+
         qCopy(realBegin, realBegin + written_bytes, update_binary + 5);
-        
+
         byte sad = HOST;      // source
         byte dad = ICC1;      // destination
-        
+
         byte response[100];
         ushort lenr = sizeof(response);
-        
-        char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, written_bytes+5, 
+
+        char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, written_bytes+5,
             update_binary, &lenr, response);
-        
+
         if (ret != OK)
         {
             PRINT_DBG("Throwing exception with error code %d", ret)
             throw CardException(CardException::ErrorCode(ret));
         }
-        
+
         ushort sw1sw2 = (response[lenr-2] << 8) + response[lenr-1];
-        
+
         if (sw1sw2 != 0x9000)
         {
             PRINT_DBG("Throwing card exception with error code %x", sw1sw2);
             throw CardException(CardException::ErrorCode(sw1sw2));
         }
-        
+
         len -= max;
         dataOffset += max;
     }
@@ -606,45 +606,45 @@ void MemoryCard::write(ushort offset, const ByteVector& data)
     to a protected smartcard. A exception is thrown if the verfification was unsuccessfull.
     The command is only sensible with protected smartcards but it is always successful on
     "normal" memory cards, so there's no problem if you call it in this case.
-    
+
     Be careful: The memory card contains a counter, normally beginning with 8. If a verification
-    was unsuccessful, the counter is decreased by one. If the counter is zero, the card is 
+    was unsuccessful, the counter is decreased by one. If the counter is zero, the card is
     de-facto \b waste!
-    
+
     \param pin the PIN as string with a hexadecimal number of six (or less) characters. If the
            length is less than six, "F"s are appended
     \exception std::invalid_argument if the \p pin contains invalid characters or if it is too
                long (more than six characters). Allowed are \c 0-9, \c A-F and \c a-f.
-    
+
 */
-void MemoryCard::verify(const QString& pin) const 
+void MemoryCard::verify(const QString& pin) const
     throw (std::invalid_argument, NotInitializedException, CardException)
 {
     checkInitialzed();
-    
+
     //                CLA   INS   P1    P2    LEN -- PIN --
     byte VERIFY[] = { 0x00, 0x20, 0x00, 0x00, 3,  0x00, 0x00, 0x00 };
-    
+
     createPIN(pin, VERIFY + 5);
-    
+
     byte sad = HOST;      // source
     byte dad = ICC1;      // destination
-    
+
     byte response[2];
     ushort lenr = sizeof(response);
-    
-    char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(VERIFY), 
+
+    char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(VERIFY),
         VERIFY, &lenr, response);
-    
+
     if (ret != OK)
     {
         throw CardException(CardException::ErrorCode(ret));
     }
-    
+
     ushort sw1sw2 = (response[0] << 8) + response[1];
-    
+
     PRINT_TRACE("Verfiy repsonse %X", sw1sw2)
-    
+
     if (sw1sw2 != 0x9000)
     {
         if (sw1sw2 >= 0x63C0 && sw1sw2 <= 0x63CF)
@@ -653,7 +653,7 @@ void MemoryCard::verify(const QString& pin) const
             ex.setRetryNumber( sw1sw2 & 0x000F );
             throw ex;
         }
-        else 
+        else
         {
             throw CardException(CardException::ErrorCode(sw1sw2));
         }
@@ -664,48 +664,48 @@ void MemoryCard::verify(const QString& pin) const
 /*!
     Changes the verification data on the smartcard. This is only possible with memory cards
     that have a write protection, see MemoryCard::verify().
-    
+
     A exception is thrown if the change was unsuccessfull, i.e. if \p oldPin was wrong.
     Be careful: The memory card contains a counter, normally beginning with 8. If a verification
-    was unsuccessful, the counter is decreased by one. If the counter is zero, the card is 
+    was unsuccessful, the counter is decreased by one. If the counter is zero, the card is
     de-facto \b waste!
-    
-    \param oldPin the old PIN as string with a hexadecimal number of six (or less) characters. 
+
+    \param oldPin the old PIN as string with a hexadecimal number of six (or less) characters.
                   If the length is less than six, "F"s are appended
     \param newPin the new PIN, the same rules as for the \p oldPin are valid here
     \exception std::invalid_argument if the \p pin contains invalid characters or if it is too
                long (more than six characters). Allowed are \c 0-9, \c A-F and \c a-f.
-    
+
 */
-void MemoryCard::changeVerificationData(const QString& oldPin, const QString& newPin) 
+void MemoryCard::changeVerificationData(const QString& oldPin, const QString& newPin)
     throw (NotInitializedException, CardException)
 {
      checkInitialzed();
-    
+
     //                CLA   INS   P1    P2    LEN -- old PIN -----  -- new PIN -----
     byte VERIFY[] = { 0x00, 0x24, 0x00, 0x00, 6,  0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-    
+
     createPIN(oldPin, VERIFY + 5);
     createPIN(newPin, VERIFY + 8);
-    
+
     byte sad = HOST;      // source
     byte dad = ICC1;      // destination
-    
+
     byte response[2];
     ushort lenr = sizeof(response);
-    
-    char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(VERIFY), 
+
+    char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(VERIFY),
         VERIFY, &lenr, response);
-    
+
     if (ret != OK)
     {
         throw CardException(CardException::ErrorCode(ret));
     }
-    
+
     ushort sw1sw2 = (response[0] << 8) + response[1];
-    
+
     PRINT_TRACE("Verfiy repsonse %X", sw1sw2)
-    
+
     if (sw1sw2 != 0x9000)
     {
         if (sw1sw2 >= 0x63C0 && sw1sw2 <= 0x63CF)
@@ -714,7 +714,7 @@ void MemoryCard::changeVerificationData(const QString& oldPin, const QString& ne
             ex.setRetryNumber( sw1sw2 & 0x000F );
             throw ex;
         }
-        else 
+        else
         {
             throw CardException(CardException::ErrorCode(sw1sw2));
         }
@@ -723,9 +723,9 @@ void MemoryCard::changeVerificationData(const QString& oldPin, const QString& ne
 
 
 /*!
-    Savely copies a PIN of six characters which was specified as hexadecimal string into a 
-    byte array of exactly three bytes three bytes. If the pin is too long, a std::invalid_argument 
-    exception is thrown. If it is to short, 'F' is appended.    
+    Savely copies a PIN of six characters which was specified as hexadecimal string into a
+    byte array of exactly three bytes three bytes. If the pin is too long, a std::invalid_argument
+    exception is thrown. If it is to short, 'F' is appended.
     \param pin the pin as string
     \param std::invalid_argument if the string contains illegal characters or has not the right
            length
@@ -736,13 +736,13 @@ void MemoryCard::createPIN(QString pin, byte* pinBytes) const throw (std::invali
     {
         throw std::invalid_argument("Length of PIN must be less than characters");
     }
-    
+
     // make six characters out of the PIN
     while (pin.length() != 6)
     {
         pin.append('F');
     }
-    
+
     bool ok;
     for (int i = 0; i < 3; ++i)
     {

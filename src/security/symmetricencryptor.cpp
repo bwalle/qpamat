@@ -1,16 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
- * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; You may only use
  * version 2 of the License, you have no option to use any other version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
  * the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program; if 
+ * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * ------------------------------------------------------------------------------------------------- 
+ * -------------------------------------------------------------------------------------------------
  */
 #include <iostream>
 
@@ -38,7 +38,7 @@ StringMap SymmetricEncryptor::m_algorithms = initAlgorithmsMap();
 
 /*!
     \class SymmetricEncryptor
-    
+
     \brief A object which encrypts bytes.
 
     \ingroup security
@@ -48,17 +48,17 @@ StringMap SymmetricEncryptor::m_algorithms = initAlgorithmsMap();
 /*!
     Creates an instance of a new Encryptor for the given algorithm.
     Following algorithms may be supported:
-    
+
      - Blowfish (\c BLOWFISH)
      - International Data Encryption Algorithm (\c IDEA)
      - CAST (\c CAST)
      - Triple-Data Encryption Standard (\c 3DES)
      - Advances Encryption Standard (\c AES)
-    
+
     Which algorithms are available in reality depends on OpenSSL. It can only be
     checked at runtime. You cat a list of available algorithms using the
     getAlgorithms() function in this class.
-    
+
     \param algorithm the algorithm as string
     \param password The password for encryption and decryption.
     \exception NoSuchAlgorithmException if the algorithm is not supported
@@ -75,7 +75,7 @@ SymmetricEncryptor::SymmetricEncryptor(const QString& algorithm, const QString& 
     {
         throw NoSuchAlgorithmException(("Algorithm "+algorithm+" not supported").latin1());
     }
-    
+
     // set the password
     setPassword(password);
     m_currentAlgorithm = algorithm;
@@ -90,13 +90,13 @@ SymmetricEncryptor::SymmetricEncryptor(const QString& algorithm, const QString& 
 QStringList SymmetricEncryptor::getAlgorithms()
 {
     QStringList algorithms;
-    
+
     for (StringMap::iterator it = m_algorithms.begin(); it != m_algorithms.end(); ++it)
     {
         algorithms += it.key();
     }
-    
-    
+
+
     return algorithms;
 }
 
@@ -114,7 +114,7 @@ QString SymmetricEncryptor::getSuggestedAlgorithm()
     vec.push_back("BLOWFISH");
     vec.push_back("AES");
     vec.push_back("CAST5");
-    
+
     for (StringVector::Iterator it = vec.begin(); it != vec.end(); ++it)
     {
         if (m_algorithms.contains(*it))
@@ -134,7 +134,7 @@ StringMap SymmetricEncryptor::initAlgorithmsMap()
 {
     StringMap map, returned;
     OpenSSL_add_all_algorithms();
-    
+
     // add all algorithms that could be used
     // names are listed in EVP_EncryptInit.pod
     map["BLOWFISH"]     = "bf";
@@ -142,7 +142,7 @@ StringMap SymmetricEncryptor::initAlgorithmsMap()
     map["CAST5"]        = "cast5";
     map["IDEA"]         = "idea";
     map["3DES"]         = "des3";
-    
+
     for (StringMap::iterator it = map.begin(); it != map.end(); ++it)
     {
         if (EVP_get_cipherbyname(*it))
@@ -173,8 +173,8 @@ ByteVector SymmetricEncryptor::decrypt(const ByteVector& vector)
 
 
 /*!
-    \enum SymmetricEncryptor::OperationType 
-    
+    \enum SymmetricEncryptor::OperationType
+
     The operation type that indicates whether it should be encrypted (\c ENCRYPT) or
     decrypted (\c DECRYPT).
 */
@@ -192,7 +192,7 @@ ByteVector SymmetricEncryptor::crypt(const ByteVector& vector, OperationType ope
     ByteVector::ConstIterator beginOfVector = vector.begin();
     uint sizeOfVector = vector.size();
     EVP_CipherInit(&ectx, m_cipher_algorithm, m_key, m_iv, operation);
-    
+
     for (uint i = 0; i < sizeOfVector; i += BUFLEN)
     {
         int readLen = (i + BUFLEN >= sizeOfVector)
@@ -200,20 +200,20 @@ ByteVector SymmetricEncryptor::crypt(const ByteVector& vector, OperationType ope
             : BUFLEN;
         qCopy(beginOfVector + i, beginOfVector + i + readLen, buf);
         EVP_CipherUpdate(&ectx, ebuf, &ebuflen, buf, readLen);
-        
+
         int oldSize = output.size();
         output.resize(oldSize + ebuflen);
         qCopy( ebuf, ebuf + ebuflen, output.begin() + oldSize);
     }
-    
+
     EVP_CipherFinal(&ectx, ebuf, &ebuflen);
-    
+
     int oldSize = output.size();
     output.resize(oldSize + ebuflen);
     qCopy( ebuf, ebuf + ebuflen, output.begin() + oldSize);
-    
+
     EVP_CIPHER_CTX_cleanup(&ectx);
-    
+
     return output;
 }
 
@@ -225,7 +225,7 @@ ByteVector SymmetricEncryptor::crypt(const ByteVector& vector, OperationType ope
 void SymmetricEncryptor::setPassword(const QString& password)
 {
     Q3CString pwUtf8 = password.utf8();
-    EVP_BytesToKey(m_cipher_algorithm, HASH_ALGORITHM, 0, 
+    EVP_BytesToKey(m_cipher_algorithm, HASH_ALGORITHM, 0,
         (byte*)pwUtf8.operator const char*(), pwUtf8.length(), 1, m_key, m_iv);
 }
 

@@ -1,16 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
- * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; You may only use
  * version 2 of the License, you have no option to use any other version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
  * the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program; if 
+ * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * ------------------------------------------------------------------------------------------------- 
+ * -------------------------------------------------------------------------------------------------
  */
 #include <QString>
 #include <QStatusBar>
@@ -21,22 +21,22 @@
 
 /*!
     \class TimerStatusmessage
-    
+
     \brief Class for displaying a status message for a fixed amount of time.
 
     This class makes it possible to display a status message for a fixed amount of time.
     If another class changes the status text, this class re-changes it to the old value.
     Of course this is a hack, but it works.
-    
+
     Create a new instance and set the statusbar. Then call the message() method each time
     you want to display the message.
-    
+
     \ingroup gui
     \author Bernhard Walle
 */
 
 /*!
-    Creates a new TimerStatusmessage object. 
+    Creates a new TimerStatusmessage object.
     \param statusbar the statusbar on which the message should be displayed
 */
 TimerStatusmessage::TimerStatusmessage(QStatusBar* statusbar)

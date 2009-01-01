@@ -1,16 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
- * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; You may only use
  * version 2 of the License, you have no option to use any other version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
  * the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program; if 
+ * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * ------------------------------------------------------------------------------------------------- 
+ * -------------------------------------------------------------------------------------------------
  */
 #include <QString>
 #include <QStringList>
@@ -20,13 +20,13 @@
 
 /*!
     \class CollectEncryptor
-    
+
     \brief This encryptor just collects the encrypted bytes in a ByteArray.
 
     It is used for writing encrypted passwords to a smartcard. There are to modes of an encrytor
     encrypting and decrypting. The real encrypting and decrypting operations are passed to the
     real encryptor which is passed to the constructor of this object at initialization time.
-    
+
     In encrypt mode the CollectEncryptor takes a string, encrypts it and appends the encrypted
     value in the byte vector. At the beginning, the vector is empty. The return value of the
     CollectEncryptor::encryptString() method is a string like following: \c SMARTCARD:0:27.
@@ -34,11 +34,11 @@
     in the byte array. The first string gets the offset \c 0, of course. The second number is
     the length, i.e. the number of bytes. This means that the byte vector now has a length of \c 27
     bytes.
-    
+
     In decrypt mode the CollectEncryptor does the opposite. It gets a string of the form \c
     SMARTCARD:o:l, takes the bytes according to this specification from the byte array (which must
     be set previously!) and tries to decrypt the value.
-    
+
     \ingroup security
     \author Bernhard Walle
 */
@@ -58,7 +58,7 @@ CollectEncryptor::CollectEncryptor(Encryptor& encryptor)
 QString CollectEncryptor::encryptStrToStr(const QString& string)
 {
     ByteVector vec = m_realEncryptor.encryptStrToBytes(string);
-    
+
     int oldSize = m_bytes.size();
     m_bytes.resize(oldSize + vec.size());
     qCopy(vec.begin(), vec.end(), m_bytes.begin() + oldSize);
@@ -98,7 +98,7 @@ QString CollectEncryptor::decryptStrFromStr(const QString& string)
         throw std::invalid_argument("CollectEncryptor::decryptStrFromStr: list[1] is not a "
             "positive integer");
     }
-    
+
     if (m_bytes.size() < offset + length)
     {
         throw std::invalid_argument(QString("CollectEncryptor::decryptStrFromStr: m_bytes is too "
@@ -107,7 +107,7 @@ QString CollectEncryptor::decryptStrFromStr(const QString& string)
     }
     ByteVector vec(length);
     ByteVector::iterator beg = m_bytes.begin() + offset;
-    qCopy(beg, beg + length, vec.begin()); 
+    qCopy(beg, beg + length, vec.begin());
     return m_realEncryptor.decryptStrFromBytes(vec);
 }
 

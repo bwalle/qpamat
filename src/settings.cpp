@@ -1,16 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
- * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; You may only use
  * version 2 of the License, you have no option to use any other version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
  * the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program; if 
+ * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * ------------------------------------------------------------------------------------------------- 
+ * -------------------------------------------------------------------------------------------------
  */
 #include <QSettings>
 #include <QDir>
@@ -24,9 +24,9 @@
 
 /*!
     \class Settings
-    
+
     \brief Singleton for storing settings in registry (MS Windows) or ini-file (Unix).
-    
+
     \ingroup gui
     \author Bernhard Walle
 */
@@ -37,12 +37,12 @@
 Settings::Settings()
 {
     m_qSettings.setPath( "qpamat", "qpamat", QSettings::User );
-    
+
 #define DEF_STRING(a, b) ( m_stringMap.insert( (a), (b) ) )
 #define DEF_INTEGE(a, b) ( m_intMap.insert( (a), (b) ) )
 #define DEF_DOUBLE(a, b) ( m_doubleMap.insert( (a), (b) ) )
 #define DEF_BOOLEA(a, b) ( m_boolMap.insert( (a), (b) ) )
-    
+
     DEF_BOOLEA("Main Window/maximized",          false);
     DEF_STRING("Main Window/SearchHistory",      "");
     DEF_STRING("Main Window/Layout",             "");
@@ -68,18 +68,18 @@ Settings::Settings()
     DEF_BOOLEA("Smartcard/HasWriteProtection",   false);
     DEF_BOOLEA("Smartcard/UseCard",              false);
     DEF_BOOLEA("Password/NoGrabbing",            false);
-#ifdef Q_WS_WIN                                       
+#ifdef Q_WS_WIN
     DEF_STRING("Presentation/NormalFont",        "Times New Roman,10");
     DEF_STRING("Presentation/FooterFont",        "Arial,9");
-#else                                                 
+#else
     DEF_STRING("Presentation/NormalFont",        "Times,10");
     DEF_STRING("Presentation/FooterFont",        "Helvetica,9");
 #endif
     DEF_BOOLEA("Presentation/HideRandomPass",    false);
     DEF_BOOLEA("Presentation/SystemTrayIcon",    false);
     DEF_BOOLEA("Presentation/StartHidden",       false);
-    
-    
+
+
 #undef DEF_STRING
 #undef DEF_INTEGE
 #undef DEF_DOUBLE
@@ -89,7 +89,7 @@ Settings::Settings()
 
 /*!
     \fn Settings::~Settings()
-    
+
     Destructor
 */
 
@@ -143,7 +143,7 @@ bool Settings::writeEntry(const QString & key, bool value)
 
 /*!
     Stores a byte array.
-    
+
     \param key the key
     \param bytes the value
     \return if the entry was written
@@ -151,7 +151,7 @@ bool Settings::writeEntry(const QString & key, bool value)
 bool Settings::writeEntry(const QString& key, const QByteArray& bytes)
 {
     return m_qSettings.writeEntry(key, QString::fromUtf8(bytes.toBase64()));
-    
+
 }
 
 
@@ -250,7 +250,7 @@ bool Settings::readBoolEntry(const QString & key, bool def) const
 /*!
     Writes a QByteArray entry. If the entry does not exist, the default value is returned.
     There's no automatic default value for QByteArrays.
-    
+
     \param key the key to look for
     \param def the default value if the key does not exist
     \return the entry
