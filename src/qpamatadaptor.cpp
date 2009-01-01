@@ -15,13 +15,29 @@
 #include "qpamatadaptor.h"
 #include "qpamat.h"
 
+/*!
+    \class QpamatAdaptor
+    \ingroup gui
 
+    \brief Adaptor class used for the D-BUS communication.
+
+    \author Bernhard Walle
+*/
+
+/*!
+    Creates a new instance of QpamatAdaptor.
+
+    \param qpamat the Qpamat main class
+*/
 QpamatAdaptor::QpamatAdaptor(Qpamat *qpamat)
     : QDBusAbstractAdaptor(qpamat)
 {
     m_qpamat = qpamat;
 }
 
+/*!
+    Shows or hides the application.
+*/
 void QpamatAdaptor::showHideApplication()
 {
     m_qpamat->handleTrayiconClick();

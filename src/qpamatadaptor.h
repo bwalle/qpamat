@@ -16,7 +16,7 @@
 #define QPAMATADAPTOR_H
 
 #include <QObject>
-#ifdef Q_WS_X11
+#if defined(Q_WS_X11) || defined(DOXYGEN)
 
 #include <QtDBus>
 #include <QDBusConnection>
