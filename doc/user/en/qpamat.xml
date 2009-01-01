@@ -6,10 +6,10 @@
   <!ENTITY application "TFLA-01">
 ]>
 <article lang="en" id="index">
-  
+
 <articleinfo>
   <title>QPaMaT-Manual</title>
-  
+
   <author>
     <firstname>Bernhard</firstname>
     <surname>Walle</surname>
@@ -18,12 +18,12 @@
     </affiliation>
   </author>
 
-  <pubdate>2008-12-07</pubdate>
-  
-  <releaseinfo>Version 0.5.4</releaseinfo>   
-  
+  <pubdate>2009-01-01</pubdate>
+
+  <releaseinfo>Version 0.6.0</releaseinfo>
+
   <copyright>
-    <year>2003-2008</year>
+    <year>2003-2009</year>
     <holder role="mailto:bernhard.walle@gmx.de">Bernhard Walle</holder>
   </copyright>
 
@@ -33,85 +33,85 @@
 
 <sect1>
   <title>Introduction</title>
-  
+
   <sect2>
     <title>The name</title>
-    
-    <para>First of all: What does this stupid name 
+
+    <para>First of all: What does this stupid name
       <application>QPaMaT</application>
       mean? Well, it's an abbreviation -- the "Q" stands for Qt, the toolkit
       I used to build the application, "PaMaT" stands for "password managing
       tool". I liked this name because it rhymes to "Automat".</para>
-      
+
   </sect2>
-  
+
   <sect2>
     <title>History and Future</title>
-    
+
     <sect3>
       <title>History</title>
-      
+
       <para>Because QPaMaT is an open-source application, I want to write
         a bit about this history. A few years ago, I looked for a tool to
         store my passwords which is free and runs on Linux. I found many tools
         but they all didn't fit my requiremends, so I wrote my own one. I used
-        Perl/Tk for that and it was done in a few days. Of course, the code was 
+        Perl/Tk for that and it was done in a few days. Of course, the code was
         not very good to maintain. But it worked
         for about two years (and, of course, it still works) without loosing
         any data. For encryption, I used <command>gpg</command>.</para>
-        
+
       <para>The program had some small bugs and I liked a tree instead of a
         simple list for the sites. Perl/Tk has no tree widget, Tk is not what
         I expect from a modern user interface and Perl is no language for bigger
         programs (esp. GUIs). So I decided to re-implement my password tool from
         scratch. I wanted to learn Qt and improve my C++ programming skills.</para>
     </sect3>
-    
+
     <sect3>
       <title>Future</title>
-      
+
       <para>Since QPaMaT does what I expect I don't plan to add lots of
         features in future. Of course, bugs will be fixed, translations
         and ports to other operating systems are welcome. And I plan to
         maintain QPaMaT in future.</para>
     </sect3>
   </sect2>
-  
+
   <sect2>
     <title>Description</title>
-    
+
     <sect3>
       <title>Basic usage</title>
-      
+
       <para>QPaMaT is a tool to manage your passwords and other data such as
-        customer numbers, corresponding URLs and so on. It has a simple 
+        customer numbers, corresponding URLs and so on. It has a simple
         structure: On the left you see a tree which represents all your
         data. Each tree entry represends a sites (or a category with children
         that represents sites). So a category could be "Onlineshops", and a
         site could be "Amazon" or "Bookzilla", for example. On the right
         you find a list with key-value-pairs. Keys could be "password",
         "login", "URL", "account number". And the value is the corresponding
-        value, of course. Each pair has a category: If it is a password, 
+        value, of course. Each pair has a category: If it is a password,
         it needs to be encrypted, a URL can be double-clicked to open a
         web browser and so on.</para>
-      
+
       <para>Because QPaMaT is a tool to store passwords, it cannot store the
         data in a simple text file. The passwords have to be encrypted.
         QPaMaT uses the OpenSSL library for that task. This is a C library
-        which is used by many programs (including the Konqueror web browser), 
+        which is used by many programs (including the Konqueror web browser),
         so it has proven to be mature, stable and secure.</para>
-        
+
       <para>You can store the password file on the disk (well, on any path,
         so this includes network files, floppys, etc.) and you can additionally
         store the passwords (and only the passwords) on a memory card. The
         card must be a simple memory card which can be bought by electronic
         sellers such as Reichelt <ulink url="http://www.reichelt.de"></ulink>
         in Germany.</para>
-      
+
     </sect3>
     <sect3>
       <title>Features</title>
-      
+
       <itemizedlist spacing="compact">
         <listitem>
           <para>Simple, fast and free program to store your passwords.</para>
@@ -132,10 +132,10 @@
 
 <sect1>
   <title>Getting started</title>
-  
+
   <sect2>
     <title>Installation</title>
-      
+
     <para>QPaMaT is very protable. It is written in C++ programming language
       using the Qt toolkit from Trolltech. This toolkit is avaiable for all
       major operating systems: Unix (including Linux, Solaris, HP-UX and
@@ -143,7 +143,7 @@
 
     <para>QPaMaT also uses the OpenSSL crypto library which is available
       for much platforms, too.</para>
-    
+
     <sect3>
       <title>Unix</title>
 
@@ -156,16 +156,41 @@
       <para>
         First try to find a binary package for your Unix. The <ulink
         url="http://qpamat.berlios.de">QPaMaT homepage</ulink> contains some references to binary
-        packages for Linux distribution.
-        If not, you need to compile it from source. Make sure that Qt is installed properly,
-        including developer packages which contains the headers and the build tools like
-        <command>qmake</command>, <command>lupdate</command> or <command>lrelease</command>.
-        You also need to have OpenSSL installed, including header files.
+        packages for Linux distribution. If there are no binary packages, make sure that you
+        have following software installed before trying to compile
+        <application>qpamat</application>:
       </para>
+
+      <itemizedlist spacing="compact">
+        <listitem>
+          <para>
+            The GUI framework <ulink url="http://www.trolltech.com">Qt</ulink> at least version 4.2.0
+            (the systray implementation came with 4.2.0).
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            The C++ library <ulink url="http://www.boost.org">Boost</ulink>, tested with 1.36.0 and
+            1.37.0 on both Windows and Linux.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            The crypo library <ulink url="http://www.openssl.org">OpenSSL</ulink>; any version that
+            is younger than 4 years should work.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            And finally the build system <ulink url="http://www.cmake.org">CMake</ulink>
+            in at least version 2.6.0.
+          </para>
+        </listitem>
+      </itemizedlist>
 
       <para>
         While previous versions of <application>qpamat</application> used <command>qmake</command>
-        to build, we now use the <ulink url="http://www.cmake.org">CMake</ulink> build system.
+        to build, we now use the <application>cmake</application> build system.
         This is much more powerful and also platform-independent, but must be installed in addition
         to plain Qt. On most current Linux distributions there should be a package that contains
         <application>cmake</application>. If not, the advantage of <application>cmake</application>
@@ -173,11 +198,11 @@
         be installed easily from sources and especially for proprietary Unix variants and Microsoft
         Windows, there are also binary packages available.
       </para>
-        
+
       <para>
         To compile and install QPaMaT, run
       </para>
-      
+
       <para>
         <prompt>% </prompt><userinput>mkdir build ; cd build</userinput>
       </para>
@@ -189,6 +214,17 @@
       </para>
       <para>
         <prompt># </prompt><userinput>make install</userinput>
+      </para>
+
+      <para>
+        While that may sound complicated, really every Linux distribution should include that
+        packages. If not, honestly, switch your distribution. If you use any other Unix flavour
+        the chances are lower that everything is available. However, every piece of software listed
+        here is known to be very portable (and doesn't have much dependencies itself), so even
+        installing Qt, CMake and Boost from sources on that platform (OpenSSL should be really in
+        place since that's the most widespread SSL library) from sources there should be not a
+        major effort. That's not a GNOME program that requires CVS versions from some libraries
+        to work. <literal>:-)</literal>
       </para>
 
       <para>
@@ -211,7 +247,7 @@
   </sect2>
   <sect2>
     <title>First startup</title>
-    
+
     <para>QPaMaT is multi-user aware. On operating systems with different
       users (such as Unix or Windows NT), each user has different settings.
       QPaMaT stores its settings in the home directory or in the
@@ -220,11 +256,11 @@
       to encrypt all your other passwords. So be careful and choose a
       good password. If the password is too simple, QPaMaT declines it.
       If the password is accepted, you find a empty windows.</para>
-  
+
   </sect2>
   <sect2>
     <title>Normal usage</title>
-    
+
     <para>You can now create your entries. On the left you see the
       "Sites" tree. Because you've not created any entries, there's no
       tree but a white area. If you right-click somewhere in this are,
@@ -233,7 +269,7 @@
       <keysym>Return</keysym> key. Now right-click on that item
       and choose <guimenuitem>Insert Item</guimenuitem>. Enter a name
       such as "Amazon".</para>
-      
+
     <para>Of course, you can now enter some data. On Amazon, you usually
       have a e-mail address for login, a password and the URL. On the
       right, you see the list of key-valuie pairs. The list is empty but
@@ -244,7 +280,7 @@
       field. Enter your mail address. If you would like, you can change
       "Username" to "e-mail address" in the <guilabel>Key</guilabel> field.
     </para>
-    
+
     <para>
       Now enter a new item and choose "Password". Enter the password now
       in the <guilabel>Value</guilabel> field. You'll see that the password
@@ -255,13 +291,13 @@
       enter the URL as third entry. If you double-click the URL in the
       list, a browser will be opened to show the URL. You can change the
       browser in the preferences.</para>
-    
-    <para>After that, you want to save the data. Just choose 
+
+    <para>After that, you want to save the data. Just choose
       <menuchoice><guimenu>File</guimenu> <guimenuitem>Save</guimenuitem>
       </menuchoice> and the
       data will be saved in a XML file in your home directory. You can
       change the location in the preferences.</para>
-      
+
     <para>If you exit the application and start it again, just enter
       your password and you'll see that same screen as you saw it before
       you closed the application.</para>
@@ -270,14 +306,14 @@
 
 <sect1 id="config">
   <title>Configuration</title>
-  
+
   <para>All configuration settings can be done by
     <menuchoice><guimenu>Options</guimenu><guimenuitem>Settings</guimenuitem>
     </menuchoice></para>
-  
+
   <sect2>
     <title>General</title>
-    
+
     <variablelist>
       <varlistentry>
         <term>Enable AutoLogin on startup</term>
@@ -305,10 +341,10 @@
       </varlistentry>
     </variablelist>
   </sect2>
-  
+
   <sect2>
     <title>Passwords</title>
-    
+
     <variablelist>
       <varlistentry>
         <term>Generated passwords</term>
@@ -324,7 +360,7 @@
         <term>Limits for password checker</term>
         <listitem>
           <para>Set the limits when a password is treated as "weak" or
-            "strong". The unit is the estimated number of days to crack 
+            "strong". The unit is the estimated number of days to crack
             for a brute-force attack.</para>
         </listitem>
       </varlistentry>
@@ -349,25 +385,25 @@
       </varlistentry>
     </variablelist>
   </sect2>
-  
+
   <sect2>
     <title>Security</title>
-    
+
     <variablelist>
       <varlistentry>
         <term>Cipher algorithm</term>
         <listitem>
-          <para>Only change this if you know what you do. The 
-            algorithms are provided by the OpenSSL library and the availability 
-            is determined at runtime. You can read a file encrypted with 
-            <emphasis>X</emphasis> only if the computer on which 
+          <para>Only change this if you know what you do. The
+            algorithms are provided by the OpenSSL library and the availability
+            is determined at runtime. You can read a file encrypted with
+            <emphasis>X</emphasis> only if the computer on which
             you read it is able to handle algorithm <emphasis>X</emphasis>.
             </para>
-          
-          <para>Blowfish is a good choise because 
-            it's free and available everywhere. IDEA is patended (but secure, 
-            PGP uses it!) and AES (the successor of DES) is only available at 
-            new versions of OpenSSL. Read a book about cryptography if 
+
+          <para>Blowfish is a good choise because
+            it's free and available everywhere. IDEA is patended (but secure,
+            PGP uses it!) and AES (the successor of DES) is only available at
+            new versions of OpenSSL. Read a book about cryptography if
             you're interested in this algorithms.</para>
         </listitem>
       </varlistentry>
@@ -382,10 +418,10 @@
       </varlistentry>
     </variablelist>
     </sect2>
-  
+
     <sect2>
     <title>Smart Card</title>
-    
+
     <variablelist>
       <varlistentry>
         <term>Use a smartcard</term>
@@ -403,7 +439,7 @@
           <para>Use this if the card has a hardware write-protection. You
             have to enter the PIN before some data is stored. This feature
             is experimental since it doesn't work here, but I'm quite
-            sure that this is a bug of the smartcard driver. However, I 
+            sure that this is a bug of the smartcard driver. However, I
             recommend to buy normal memory cards without write protection
             since it does not give more security (reading cannot be protected
             this way).
@@ -443,10 +479,10 @@
       </varlistentry>
     </variablelist>
   </sect2>
-  
+
   <sect2>
     <title>Presentation</title>
-    
+
     <variablelist>
       <varlistentry>
         <term>Hide passwords in the random password dialog</term>
@@ -460,9 +496,9 @@
       <varlistentry>
         <term>Don't grab keyboard focus in the password dialog</term>
         <listitem>
-          <para>Normally, QPaMaT gabs the keyboard if a dialog is displayed 
-            where the user should enter a password. This is fore security 
-            reasons since it is more difficult for another applications to 
+          <para>Normally, QPaMaT gabs the keyboard if a dialog is displayed
+            where the user should enter a password. This is fore security
+            reasons since it is more difficult for another applications to
             read what you type in this text field. However, if you don't like
             this for usability issues, you can disable it here.</para>
         </listitem>
@@ -495,10 +531,10 @@
     </variablelist>
   </sect2>
 </sect1>
-  
+
 <sect1>
   <title>Command reference</title>
-  
+
   <variablelist>
     <varlistentry>
       <term>
@@ -526,8 +562,8 @@
           Asks you for the password and opens the current set of
           stored passwords. The data file which will be opened is set in the
           configuration dialog.</para>
-        
-        <para>Else, it offers the "Logout" action: 
+
+        <para>Else, it offers the "Logout" action:
           Closes the current set of stored passwords. If you didn't save
           it and you made changes, QPaMaT will ask you to do so. After that,
           all passwords are delected from memory (not form disk where they
@@ -558,13 +594,13 @@
       <listitem>
         <para>Exports the data. There are two export methods: XML and text.
         </para>
-        
+
         <para>Exporting as text is mainly the same as "Save",
           but there are two differences: You can choose the file name directly
-          in a file chooser, and if you configured QPaMaT to use a smart card, 
+          in a file chooser, and if you configured QPaMaT to use a smart card,
           this function stores the password in the XML file nevertheless. This
           function is useful for backup. </para>
-        
+
         <para>Exporting as text exports the data in a clear text files, with
           readable passwords.</para>
       </listitem>
@@ -727,22 +763,22 @@
       </listitem>
     </varlistentry>
   </variablelist>
-  
+
 </sect1>
 
 <sect1>
   <title>Remote API (X11 only)</title>
-  
+
   <sect2>
     <title>D-BUS?</title>
-    
+
     <para>To remote-control <application>QPaMaT</application>, D-Bus is used.
       D-Bus is a simple, popular inter process communication mechanism on Linux
       and other Unix flavours.  For now, it doesn't exist on Windows and MacOS.
       This means that the D-Bus API is only available on Unix.
     </para>
 
-    <para>For more information, see 
+    <para>For more information, see
       <ulink url="http://dbus.freedesktop.org">http://dbus.freedesktop.org</ulink>
       or <ulink
         url="http://en.wikipedia.org/wiki/D-Bus">http://en.wikipedia.org/wiki/D-Bus</ulink>.
