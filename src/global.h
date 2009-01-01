@@ -12,6 +12,9 @@
  *
  * -------------------------------------------------------------------------------------------------
  */
+#ifndef GLOBAL_H
+#define GLOBAL_H
+
 #include <Q3ValueVector>
 #include <QMap>
 #include <QString>
@@ -105,5 +108,7 @@ typedef Q3ValueVector<QChar>     QCharVector;
 #  endif
 
 #endif
+
+#endif // GLOBAL_H
 
 // :maxLineLen=100:
