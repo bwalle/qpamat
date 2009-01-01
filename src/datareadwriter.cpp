@@ -12,9 +12,10 @@
  *
  * -------------------------------------------------------------------------------------------------
  */
-#include <memory>
 #include <ctime>
 #include <cstdlib>
+
+#include <boost/scoped_ptr.hpp>
 
 #include <QThread>
 #include <QFile>
@@ -464,18 +465,18 @@ void DataReadWriter::writeXML(const QDomDocument& document, const QString& passw
     }
 
     // set up the needed encryptors
-    std::auto_ptr<StringEncryptor> enc;
-    std::auto_ptr<Encryptor> realEncryptor;
+    boost::scoped_ptr<StringEncryptor> enc;
+    boost::scoped_ptr<Encryptor> realEncryptor;
     try
     {
         if (smartcard)
         {
-            realEncryptor = std::auto_ptr<Encryptor>(new SymmetricEncryptor(algorithm, password));
-            enc = std::auto_ptr<StringEncryptor>(new CollectEncryptor(*realEncryptor));
+            realEncryptor.reset(new SymmetricEncryptor(algorithm, password));
+            enc.reset(new CollectEncryptor(*realEncryptor));
         }
         else
         {
-            enc = std::auto_ptr<StringEncryptor>(new SymmetricEncryptor(algorithm, password));
+            enc.reset(new SymmetricEncryptor(algorithm, password));
         }
     }
     catch (const NoSuchAlgorithmException& e)
@@ -580,18 +581,18 @@ QDomDocument DataReadWriter::readXML(const QString& password)
 
 
     QString algorithm = appData.namedItem("crypt-algorithm").toElement().text();
-    std::auto_ptr<StringEncryptor> enc;
-    std::auto_ptr<Encryptor> realEncryptor;
+    boost::scoped_ptr<StringEncryptor> enc;
+    boost::scoped_ptr<Encryptor> realEncryptor;
     try
     {
         if (smartcard)
         {
-            realEncryptor = std::auto_ptr<Encryptor>(new SymmetricEncryptor(algorithm, password));
-            enc = std::auto_ptr<StringEncryptor>(new CollectEncryptor(*realEncryptor));
+            realEncryptor.reset(new SymmetricEncryptor(algorithm, password));
+            enc.reset(new CollectEncryptor(*realEncryptor));
         }
         else
         {
-            enc = std::auto_ptr<SymmetricEncryptor>(new SymmetricEncryptor(algorithm, password));
+            enc.reset(new SymmetricEncryptor(algorithm, password));
         }
     }
     catch (const NoSuchAlgorithmException& ex)
@@ -639,11 +640,10 @@ void DataReadWriter::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& r
         randomNumber = byte((double(std::rand())/RAND_MAX)*256);
     }
 
-    std::auto_ptr<MemoryCard> card;
+    boost::scoped_ptr<MemoryCard> card;
     try
     {
-        card = std::auto_ptr<MemoryCard>(new MemoryCard(
-            qpamat->set().readEntry("Smartcard/Library")) );
+        card.reset(new MemoryCard(qpamat->set().readEntry("Smartcard/Library")) );
     }
     catch (const NoSuchLibraryException& e)
     {
@@ -670,7 +670,7 @@ void DataReadWriter::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& r
 
     QString pin;
     bool havePin = qpamat->set().readBoolEntry("Smartcard/HasWriteProtection") && write;
-    std::auto_ptr<InsertCardDialog> dlg(new InsertCardDialog(havePin, m_parent, "InsertCardDlg"));
+    boost::scoped_ptr<InsertCardDialog> dlg(new InsertCardDialog(havePin, m_parent, "InsertCardDlg"));
     if (dlg->exec() != QDialog::Accepted)
     {
         throw ReadWriteException(0, ReadWriteException::CAbort);
@@ -690,7 +690,7 @@ void DataReadWriter::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& r
     QString dlgText = write
         ? QObject::tr("<b>Writing</b> to the smartcard...")
         : QObject::tr("<b>Reading</b> from the smartcard...");
-    std::auto_ptr<WaitDialog> msg(new WaitDialog(QPixmap(
+    boost::scoped_ptr<WaitDialog> msg(new WaitDialog(QPixmap(
         QPixmap(":/images/smartcard_24.png")), dlgText,
          "QPaMaT", m_parent, "Wait dialog"));
     msg->show();

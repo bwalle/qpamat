@@ -12,7 +12,7 @@
  *
  * -------------------------------------------------------------------------------------------------
  */
-#include <memory>
+#include <boost/scoped_ptr.hpp>
 
 #include <QDebug>
 #include <QApplication>
@@ -439,7 +439,7 @@ void Qpamat::login()
 {
     qDebug() << CURRENT_FUNCTION << "Calling login()";
 
-    std::auto_ptr<PasswordDialog> dlg(new PasswordDialog(this));
+    boost::scoped_ptr<PasswordDialog> dlg(new PasswordDialog(this));
     QDomDocument doc;
     bool ok = false;
 
@@ -731,7 +731,7 @@ bool Qpamat::logout()
  */
 void Qpamat::newFile()
 {
-    std::auto_ptr<NewPasswordDialog> dialog(new NewPasswordDialog(this));
+    boost::scoped_ptr<NewPasswordDialog> dialog(new NewPasswordDialog(this));
 
     if (dialog->exec() == QDialog::Accepted)
     {
@@ -752,7 +752,7 @@ void Qpamat::newFile()
  */
 void Qpamat::changePassword()
 {
-    std::auto_ptr<NewPasswordDialog> dlg(new NewPasswordDialog(this, m_password));
+    boost::scoped_ptr<NewPasswordDialog> dlg(new NewPasswordDialog(this, m_password));
     if (dlg->exec() == QDialog::Accepted)
     {
         m_password = dlg->getPassword();
@@ -766,7 +766,7 @@ void Qpamat::changePassword()
  */
 void Qpamat::configure()
 {
-    std::auto_ptr<ConfigurationDialog> dlg(new ConfigurationDialog(this));
+    boost::scoped_ptr<ConfigurationDialog> dlg(new ConfigurationDialog(this));
     if (dlg->exec() == QDialog::Accepted)
     {
         emit settingsChanged();

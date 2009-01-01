@@ -12,8 +12,6 @@
  *
  * -------------------------------------------------------------------------------------------------
  */
-#include <memory>
-
 #include <QObject>
 #include <QString>
 #include <QMessageBox>

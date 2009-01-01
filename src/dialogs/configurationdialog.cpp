@@ -72,14 +72,15 @@
     Just use following to use the dialog:
 
     \code
-  std::auto_ptr<ConfigurationDialog> dlg(new ConfigurationDialog(this));
-  if (dlg->exec() == QDialog::Accepted)
-  {
+#include <boost/scoped_ptr.h>
+
+boost::scoped_ptr<ConfigurationDialog> dlg(new ConfigurationDialog(this));
+if (dlg->exec() == QDialog::Accepted) {
       // do something
-  }
+}
     \endcode
 
-    Using std::auto_ptr here is a good idea but not neccessary.
+    Using std::auto_ptr or even boost::scoped_ptr here is a good idea but not neccessary.
 
     \ingroup dialogs
     \author Bernhard Walle

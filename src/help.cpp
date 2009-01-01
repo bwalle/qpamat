@@ -12,7 +12,7 @@
  *
  * -------------------------------------------------------------------------------------------------
  */
-#include <memory>
+#include <boost/scoped_ptr.hpp>
 
 #include <QObject>
 #include <QApplication>
@@ -44,7 +44,7 @@
 */
 void Help::showAbout()
 {
-    std::auto_ptr<AboutDialog> dlg(new AboutDialog(qApp->mainWidget(), "About Dialog"));
+    boost::scoped_ptr<AboutDialog> dlg(new AboutDialog(qApp->mainWidget(), "About Dialog"));
 
     dlg->exec();
 }

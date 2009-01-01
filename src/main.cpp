@@ -16,7 +16,7 @@
 #include <stdexcept>
 #include <cstdlib>
 #include <cstdio>
-#include <memory>
+#include <boost/scoped_ptr.hpp>
 
 #include <QApplication>
 #include <QTextStream>
@@ -175,14 +175,14 @@ int main(int argc, char** argv)
     app.installTranslator(&ttranslator);
 
     SingleApplication::init(QDir::homeDirPath(), "QPaMaT");
-    std::auto_ptr<Qpamat> qp;
+    boost::scoped_ptr<Qpamat> qp;
 
     try
     {
         SingleApplication::startup();
         SingleApplication::registerStandardExitHandlers();
 
-        qp = std::auto_ptr<Qpamat>(new Qpamat());
+        qp.reset(new Qpamat());
         qpamat = qp.get();
         app.setMainWidget(qpamat);
 
