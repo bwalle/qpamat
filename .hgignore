@@ -4,3 +4,4 @@ syntax: glob
 *moc*.cxx
 build
 doc/api
+*.marks
