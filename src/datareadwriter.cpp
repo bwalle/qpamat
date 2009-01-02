@@ -261,13 +261,15 @@ class ReadWriteThread : public QThread
             : m_card(card), m_bytes(bytes), m_write(write), m_randomNumber(randomNumber),
               m_password(password), m_exception(0), m_pin(pin) { }
 
-        ~ReadWriteThread()
-            { delete m_exception; }
+        virtual ~ReadWriteThread();
 
         ReadWriteException* getException() const
-            { return m_exception; }
+        throw ();
+
     protected:
-        void run();
+        void run()
+        throw ();
+
     private:
         MemoryCard&         m_card;
         ByteVector&         m_bytes;
@@ -315,6 +317,7 @@ class ReadWriteThread : public QThread
     Runs the operation.
 */
 void ReadWriteThread::run()
+    throw ()
 {
     try
     {
@@ -422,6 +425,25 @@ void ReadWriteThread::run()
     }
 }
 
+/*!
+    Deletes the object. If an exception is set, that object is deleted.
+*/
+ReadWriteThread::~ReadWriteThread()
+{
+    delete m_exception;
+}
+
+/*!
+    Returns the exception of the ReadWriteException.
+
+    \return the exception. The caller doesn't have to free the exception object, that is done
+            by the descructor of the ReadWriteThread.
+*/
+ReadWriteException* ReadWriteThread::getException() const
+    throw ()
+{
+    return m_exception;
+}
 
 /*!
     \fn ReadWriteThread::getException() const
@@ -754,4 +776,4 @@ void DataReadWriter::crypt(QDomElement& n, StringEncryptor& enc, bool encrypt)
     }
 }
 
-// :maxLineLen=100:
+// :maxLineLen=100:indentSize=4:tabSize=4:noTabs=true:
