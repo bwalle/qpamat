@@ -12,11 +12,19 @@
  *
  * -------------------------------------------------------------------------------------------------
  */
+#include <cstring>
+
 #include <QObject>
 #include <QtTest/QtTest>
 
 #include <util/securestring.h>
 #include <tests/securestring.h>
+
+#ifdef __linux__
+#  define TEST_LOCKED 1
+#else
+#  define TEST_LOCKED 0
+#endif
 
 /*!
     \class TestSecureString
@@ -27,10 +35,41 @@
     \author Bernhard Walle
 */
 
+
+/*!
+    Tests the copy constructor.
+*/
+void TestSecureString::testCtor() const
+{
+    SecureString a("blubb");
+    std::string bStd("blubb");
+    SecureString b(bStd);
+    QString cQstring("blubb");
+    SecureString c(cQstring);
+
+    QVERIFY(a == b);
+    QVERIFY(b == c);
+    QVERIFY(a == c);
+}
+
+/*!
+    Tests the return operators.
+*/
+void TestSecureString::testConversion() const
+{
+    const char aChar[] = "blubb";
+    SecureString a(aChar);
+    QString bQString("blubb");
+    SecureString b(bQString);
+
+    QVERIFY(b.qString() == bQString);
+    QVERIFY(strcmp(a.utf8est(), aChar) == 0);
+}
+
 /*!
     Tests the equal operator of SecureString.
 */
-void TestSecureString::testEqual()
+void TestSecureString::testEqual() const
 {
     SecureString a("blaFasel");
     SecureString b("blaFasel");
@@ -40,6 +79,43 @@ void TestSecureString::testEqual()
     QVERIFY(b == a);
     QVERIFY(a != c);
     QVERIFY(b != c);
+}
+
+/*!
+    Tests the assignment operator.
+*/
+void TestSecureString::testAssignment() const
+{
+    SecureString a("blaFasel");
+    a = "blub";
+
+    QVERIFY(a == "blub");
+}
+
+/*!
+    Tests the copy constructor.
+*/
+void TestSecureString::testCopyCtor() const
+{
+    SecureString a("blaFaSel");
+    SecureString b(a);
+
+    QVERIFY(a == b);
+#if TEST_LOCKED
+    QVERIFY(a.isLocked());
+    QVERIFY(b.isLocked());
+#endif
+}
+
+/*!
+    Checks if the memory is actually locked.
+*/
+void TestSecureString::testLocking() const
+{
+#if TEST_LOCKED
+    SecureString s("bla");
+    QVERIFY(s.isLocked());
+#endif // TEST_LOCKED
 }
 
 QTEST_MAIN(TestSecureString)

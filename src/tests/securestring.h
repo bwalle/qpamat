@@ -21,7 +21,12 @@ class TestSecureString : public QObject {
     Q_OBJECT
 
     private slots:
-        void testEqual();
+        void testCtor() const;
+        void testConversion() const;
+        void testEqual() const;
+        void testAssignment() const;
+        void testCopyCtor() const;
+        void testLocking() const;
 };
 
 // :maxLineLen=100:shiftWidth=4:tabSize=4:noTabs=true:
