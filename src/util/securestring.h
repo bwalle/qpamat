@@ -43,10 +43,10 @@ class SecureString : private boost::totally_ordered<SecureString> {
         SecureString &operator=(const SecureString &text)
         throw (std::bad_alloc);
 
-        bool operator<(const SecureString &text)
+        bool operator<(const SecureString &text) const
         throw ();
 
-        bool operator==(const SecureString &text)
+        bool operator==(const SecureString &text) const
         throw ();
 
     public:

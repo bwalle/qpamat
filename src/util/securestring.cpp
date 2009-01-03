@@ -136,7 +136,7 @@ SecureString &SecureString::operator=(const SecureString& text)
     \param text the SecureString to compare with
     \return \c true if \p text is less than this string, \c false otherwise
 */
-bool SecureString::operator<(const SecureString &text)
+bool SecureString::operator<(const SecureString &text) const
     throw ()
 {
     return strcmp(utf8(), text.utf8()) < 0;
@@ -150,7 +150,7 @@ bool SecureString::operator<(const SecureString &text)
     \param text the SecureString to compare with
     \return \c true if \p text is equal than this string, \c false otherwise
 */
-bool SecureString::operator==(const SecureString &text)
+bool SecureString::operator==(const SecureString &text) const
     throw ()
 {
     return strcmp(utf8(), text.utf8()) == 0;
