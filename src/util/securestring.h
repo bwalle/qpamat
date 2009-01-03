@@ -50,6 +50,10 @@ class SecureString : private boost::totally_ordered<SecureString> {
         throw ();
 
     public:
+        static bool platformSupportsLocking()
+        throw ();
+
+    public:
         bool isLocked() const
         throw ();
 

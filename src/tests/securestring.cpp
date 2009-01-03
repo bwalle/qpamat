@@ -20,12 +20,6 @@
 #include <util/securestring.h>
 #include <tests/securestring.h>
 
-#ifdef __linux__
-#  define TEST_LOCKED 1
-#else
-#  define TEST_LOCKED 0
-#endif
-
 /*!
     \class TestSecureString
 
@@ -101,10 +95,10 @@ void TestSecureString::testCopyCtor() const
     SecureString b(a);
 
     QVERIFY(a == b);
-#if TEST_LOCKED
-    QVERIFY(a.isLocked());
-    QVERIFY(b.isLocked());
-#endif
+    if (SecureString::platformSupportsLocking()) {
+        QVERIFY(a.isLocked());
+        QVERIFY(b.isLocked());
+    }
 }
 
 /*!
@@ -112,10 +106,11 @@ void TestSecureString::testCopyCtor() const
 */
 void TestSecureString::testLocking() const
 {
-#if TEST_LOCKED
+    if (!SecureString::platformSupportsLocking())
+        return;
+
     SecureString s("bla");
     QVERIFY(s.isLocked());
-#endif // TEST_LOCKED
 }
 
 QTEST_MAIN(TestSecureString)

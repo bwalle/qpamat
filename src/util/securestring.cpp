@@ -46,6 +46,23 @@
 */
 
 /*!
+    Checks if the current platform (operating system) supports memory locking.
+
+    Currently only Linux and a few other Unices supports memory locking.
+
+    \return \c true if memory locking is supported, \c false otherwise
+*/
+bool SecureString::platformSupportsLocking()
+    throw ()
+{
+#ifdef _POSIX_MEMLOCK_RANGE
+    return true;
+#else
+    return false;
+#endif
+}
+
+/*!
     Creates a new SecureString from a C string representation.
 
     \param text the C-String representation
@@ -260,8 +277,6 @@ void SecureString::lock()
         qDebug() << "Cannot lock memory " << strerror(errno);
     else
         m_locked = true;
-#else
-    qDebug() << "Cannot use mlock() on that platform";
 #endif
 }
 
@@ -282,8 +297,6 @@ void SecureString::unlock()
     int ret = munlock(m_text, strlen(m_text)+1);
     if (ret != 0)
         qDebug() << "Cannot unlock memory " << strerror(errno);
-#else
-    qDebug() << "Cannot use munlock() on that platform";
 #endif
 }
 
