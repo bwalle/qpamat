@@ -46,6 +46,13 @@ IF (CMAKE_HOST_UNIX)
     ADD_DEFINITIONS(-Wall -W -Wno-unused-parameter)
 ENDIF (CMAKE_HOST_UNIX)
 
+# MSVC++ ignores all exception specifications except '()' [i.e. no exception]
+# we can safely ignore that warning when compiling on MS Windows
+IF (MSVC)
+    ADD_DEFINITIONS("/w44290")
+ENDIF (MSVC)
+
+
 SET(qpamat_SRCS
     src/dialogs/passworddialog.cpp
     src/dialogs/newpassworddialog.cpp
