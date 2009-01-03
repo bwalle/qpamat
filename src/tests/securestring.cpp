@@ -63,7 +63,7 @@ void TestSecureString::testConversion() const
     SecureString b(bQString);
 
     QVERIFY(b.qString() == bQString);
-    QVERIFY(strcmp(a.utf8est(), aChar) == 0);
+    QVERIFY(strcmp(a.utf8(), aChar) == 0);
 }
 
 /*!
