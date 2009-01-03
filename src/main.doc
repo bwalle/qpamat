@@ -74,4 +74,12 @@
     This group contains classes that don't belong to the other groups logically.
 */
 
-// :maxLineLen=100:
+/*!
+    \defgroup unittest UnitTests
+
+    Unit Tests
+
+    This group contains all Unit test classes, developed with the QTest framework.
+*/
+
+// :maxLineLen=100:shiftWidth=4:tabSize=4:noTabs=true:

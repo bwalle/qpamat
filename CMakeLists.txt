@@ -19,9 +19,11 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
 INCLUDE(FindOpenSSL)
 INCLUDE(FindQt4)
+INCLUDE(CTest)
 SET(QT_USE_QT3SUPPORT 1)
 SET(QT_USE_QTXML      1)
 SET(QT_USE_QTMAIN     1) # only Windows
+SET(QT_USE_QTTEST     1)
 IF (CMAKE_HOST_UNIX AND NOT CMAKE_HOST_APPLE)
     SET(QT_USE_QTDBUS     1)
 ENDIF (CMAKE_HOST_UNIX AND NOT CMAKE_HOST_APPLE)
@@ -30,6 +32,7 @@ INCLUDE(${QT_USE_FILE})
 # include the current working directory
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src)
 INCLUDE_DIRECTORIES(${OPENSSL_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${CMAKE_BINARY_DIR}/src)
 
 # version
 SET(VERSION_STRING  "0.5.4")
@@ -218,6 +221,35 @@ ADD_EXECUTABLE(qpamat WIN32
 
 TARGET_LINK_LIBRARIES(qpamat ${QT_LIBRARIES} ${OPENSSL_LIBRARIES})
 TARGET_LINK_LIBRARIES(qpamat ${Boost_LIBRARIES})
+
+#
+# {{{ Tests
+#
+
+IF (BUILD_TESTING)
+    SET(testsecurestring_SRCS
+        src/util/securestring.cpp
+        src/tests/securestring.cpp
+    )
+
+    SET(testsecurestring_MOCS
+        src/tests/securestring.h
+    )
+
+    QT4_WRAP_CPP(testsecurestring_MOC_SRCS ${testsecurestring_MOCS})
+    ADD_EXECUTABLE(testsecurestring
+        ${testsecurestring_SRCS}
+        ${testsecurestring_MOCS}
+        ${testsecurestring_MOC_SRCS}
+    )
+    TARGET_LINK_LIBRARIES(testsecurestring
+        ${QT_LIBRARIES}
+    )
+ENDIF (BUILD_TESTING)
+
+ADD_TEST(SecureString testsecurestring)
+
+# }}}
 
 #
 # {{{ Build the Documentation
