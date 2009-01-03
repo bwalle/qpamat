@@ -79,6 +79,7 @@ SET(qpamat_SRCS
     src/util/stringdisplay.cpp
     src/util/singleapplication.cpp
     src/util/timeoutapplication.cpp
+    src/util/securestring.cpp
     src/datareadwriter.cpp
     src/timerstatusmessage.cpp
     src/randompassword.cpp
