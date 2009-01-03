@@ -205,6 +205,7 @@ int main(int argc, char** argv)
     }
     catch (const std::bad_alloc& e)
     {
+        UNUSED(e);
         QMessageBox::warning(0, QObject::tr("QPaMaT"),
             QObject::tr("No more memory available. The application\nwill be closed."),
             QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
