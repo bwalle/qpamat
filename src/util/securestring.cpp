@@ -167,6 +167,26 @@ SecureString::~SecureString()
 }
 
 /*!
+    Checks if the SecureString is really locked into memory.
+
+    If the string is not locked into memory, that can have multiple reasons:
+
+    - Memory locking is not implemented in SecureString for that operating system.
+    - Memory locking is implemented, but the current user doesn't have sufficient permission to lock
+      memory.
+    - The quota for locking memory for the current user and/or process is full.
+
+    The method never throws.
+
+    \return \c true if the string is locked into memory, \c false otherwise
+*/
+bool SecureString::isLocked() const
+    throw ()
+{
+    return m_locked;
+}
+
+/*!
     Returns an UTF-8 representation of the stored text. Please note that this points to an internal
     pointer of the SecureString. This means that the memory is valid as long as the SecureString is
     valid, but not longer. Don't call free(), delete or delete[] on the returned string.
