@@ -55,6 +55,10 @@ IF (MSVC)
     # instead of Standard C functions (which is quite right because the standard C functions
     # are not safe, but we have no alternative in portable code)
     ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS=1)
+
+    # also get rid of warnings "Function call with parameters that may be unsafe"
+    # the code is correct C++!
+    ADD_DEFINITIONS(-D_SCL_SECURE_NO_WARNINGS=1)
 ENDIF (MSVC)
 
 
