@@ -1,16 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
- * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; You may only use
  * version 2 of the License, you have no option to use any other version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
  * the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program; if 
+ * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * ------------------------------------------------------------------------------------------------- 
+ * -------------------------------------------------------------------------------------------------
  */
 #include <QLayout>
 #include <QFileDialog>
@@ -23,12 +23,12 @@
 
 /*!
     \class FileLineEdit
-    
+
     \brief This class provides a QLineEdit combined with a "..." button.
 
-    The additional button lets the user choose a file on the hard disk with the file 
+    The additional button lets the user choose a file on the hard disk with the file
     chooser dialog of Qt.
-    
+
     \ingroup widgets
     \author Bernhard Walle
 */
@@ -45,25 +45,25 @@ FileLineEdit::FileLineEdit(QWidget* parent, bool save, const char* name)
 {
     QHBoxLayout* boxLayout = new QHBoxLayout(this, 0, 2);
     m_lineEdit = new QLineEdit(this);
-    
+
     // we need a tool button because it has no border and it looks better in this size
     // in Platin style
     m_fileDialogButton = new QToolButton(this);
     m_fileDialogButton->setIconSet(QIcon(QPixmap(":/images/stock_directory_16.png")));
-    
+
     boxLayout->addWidget(m_lineEdit);
     boxLayout->addWidget(m_fileDialogButton);
-    
+
     connect(m_fileDialogButton, SIGNAL(clicked()), this, SLOT(chooseFile()));
     m_fileDialogButton->setFocusPolicy(Qt::TabFocus);
-    
+
     setFocusProxy(m_lineEdit);
-    
+
 }
 
 /*!
     \property FileLineEdit::content
-    
+
     The content, i. e. the current file, of the line edit.
 */
 
@@ -88,7 +88,7 @@ QString FileLineEdit::getContent() const
 
 /*!
     \property FileLineEdit::filter
-    
+
     The current filter.
 */
 
@@ -123,7 +123,7 @@ void FileLineEdit::chooseFile()
     {
         startWith = QDir::homeDirPath();
     }
-    
+
     QString selected;
     if (m_save)
     {
@@ -135,7 +135,7 @@ void FileLineEdit::chooseFile()
         selected = QFileDialog::getOpenFileName (startWith, m_filter, this, "File Dialog",
             tr("QPaMaT"));
     }
-        
+
     if (selected != QString::null)
     {
         m_lineEdit->setText(selected);

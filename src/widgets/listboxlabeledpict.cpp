@@ -1,16 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
- * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; You may only use
  * version 2 of the License, you have no option to use any other version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
  * the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program; if 
+ * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * ------------------------------------------------------------------------------------------------- 
+ * -------------------------------------------------------------------------------------------------
  */
 #include <QString>
 #include <QApplication>
@@ -30,7 +30,7 @@ const int ListBoxLabeledPict::RTTI = 10025;
 
 /*!
     \class ListBoxLabeledPict
-    
+
     \brief The ListBoxLabeledPict class provides list box items with a pixmap and text.
 
     This class provides a QListBoxItem with a (big) picture and some text as
@@ -76,7 +76,7 @@ ListBoxLabeledPict::ListBoxLabeledPict(const QPixmap& pixmap, const QString& tex
     \param text the text
     \param after the iterm after which this new item should be inserted
 */
-ListBoxLabeledPict::ListBoxLabeledPict(Q3ListBox* listbox, const QPixmap& pixmap, 
+ListBoxLabeledPict::ListBoxLabeledPict(Q3ListBox* listbox, const QPixmap& pixmap,
             const QString& text, Q3ListBoxItem *after)
     : Q3ListBoxItem(listbox, after), m_pixmap(pixmap)
 {
@@ -102,18 +102,18 @@ void ListBoxLabeledPict::paint( QPainter *painter )
     int xPos, yPos;
 
     const QPixmap* pm = pixmap();
-    if ( pm && ! pm->isNull() ) 
+    if ( pm && ! pm->isNull() )
     {
         xPos = ( itemWidth - pm->width() ) / 2;
         painter->drawPixmap( xPos, 4, *pm);
     }
 
-    
+
     QFontMetrics fm = painter->fontMetrics();
     xPos = ( itemWidth - fm.width(text()) ) / 2;
     yPos = 5 + fm.height() + pm->width();
     painter->drawText( xPos, yPos, text() );
-    
+
 }
 
 /*!

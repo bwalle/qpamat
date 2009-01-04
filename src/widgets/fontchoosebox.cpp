@@ -1,16 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
- * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; You may only use
  * version 2 of the License, you have no option to use any other version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
  * the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program; if 
+ * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * ------------------------------------------------------------------------------------------------- 
+ * -------------------------------------------------------------------------------------------------
  */
 #include <QLayout>
 #include <QFont>
@@ -25,18 +25,18 @@
 
 /*!
     \class FontChooseBox
-    
+
     \brief This class provides a not-editable QLineEdit combined with a button.
 
     The additional button lets the user choose a font which is available on the system.
-    
+
     \ingroup widgets
     \author Bernhard Walle
 */
 
 /*!
     \fn FontChooseBox::fontChanged(const QFont&)
-    
+
     This signal is emitted if the font has changed.
     \param font the new font
 */
@@ -51,24 +51,24 @@ FontChooseBox::FontChooseBox(QWidget* parent, const char* name)
 {
     QHBoxLayout* boxLayout = new QHBoxLayout(this, 0, 2);
     m_lineEdit = new QLineEdit(this);
-    
+
     // we need a tool button because it has no border and it looks better in this size
     // in Platin style
     m_fileDialogButton = new QToolButton(this);
     m_fileDialogButton->setIconSet(QIcon(QPixmap(":/images/stock_font_16.png")));
-    
+
     boxLayout->addWidget(m_lineEdit);
     boxLayout->addWidget(m_fileDialogButton);
-    
+
     connect(m_fileDialogButton, SIGNAL(clicked()), this, SLOT(chooseFont()));
-    
+
     setFocusProxy(m_lineEdit);
-    
+
     // make it read-only
     m_lineEdit->setReadOnly(true);
-    
+
     m_fileDialogButton->setFocusPolicy(Qt::TabFocus);
-    
+
     // connect
     connect(this, SIGNAL(fontChanged(const QFont&)), this, SLOT(setDisplayFont(const QFont&)));
 }
@@ -76,7 +76,7 @@ FontChooseBox::FontChooseBox(QWidget* parent, const char* name)
 
 /*!
     \property FontChooseBox::font
-    
+
     Current font.
 */
 
@@ -121,8 +121,8 @@ void FontChooseBox::chooseFont()
 {
      bool ok;
      QFont font = QFontDialog::getFont(&ok, m_font, this );
-     
-     if ( ok ) 
+
+     if ( ok )
      {
          setFont(font);
      }

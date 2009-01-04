@@ -1,16 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
- * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; You may only use
  * version 2 of the License, you have no option to use any other version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
  * the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program; if 
+ * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * ------------------------------------------------------------------------------------------------- 
+ * -------------------------------------------------------------------------------------------------
  */
 #include <QWidget>
 #include <QLayout>
@@ -29,53 +29,53 @@
 
 /*!
     \class ListBoxDialogPage
-    
+
     \brief Represents a page in a ListBoxDialog
-    
+
     Each page of the ListBoxDialog must be a subclass of this class. The applySettings() and
     fillSettings() method gets called if necessary.
-    
+
     \ingroup widgets
 */
 
 /*!
     \fn ListBoxDialogPage::ListBoxDialogPage(QWidget*, const char*)
-    
+
     Creates a new instance of a ListBoxDialogPage.
-    
+
     \param parent the parent widget
     \param name the name of the widget
 */
 
 /*!
     \fn ListBoxDialogPage::applySettings()
-    
+
     This method is called if the user pressed Ok on the dialog. It should store the settings.
 */
 
 /*!
     \fn ListBoxDialogPage::fillSettings()
-    
+
     This method is called if the page should be shown. It should fill the page with the current
     settings.
 */
 
 /*!
-    \class ListBoxDialog 
-    
+    \class ListBoxDialog
+
     \brief Dialog with several pages that are choosen in a listbox
-    
+
     This dialog normally is used for configuration issues. It has a listbox with big icons
     and labels on the left and pages on the right, just like normal KDE configuration dialogs.
-    
+
     Each page on the right must be a subclass of ListBoxDialogPage and must be added with
     the addPage() method in the constructor of the subclassing dialog. The fillSettings()
     method of the page is called before it is shown and the applySettings() method is called
     if the user pressed Ok and the page was shown previously, so it's never called if the
     fillSettings() was not called. This increases performance.
-    
+
     \ingroup widgets
-    
+
 */
 
 /*!
@@ -89,9 +89,9 @@ ListBoxDialog::ListBoxDialog(QWidget* parent, const char* name)
     QVBoxLayout* vboxLayout = new QVBoxLayout(this, 8, 2, "ConfDlg-Vbox");
     Q3HBox* mainHBox = new Q3HBox(this, "ConfDlg-MainHBox");
     QDialogButtonBox *buttonHBox = new QDialogButtonBox(
-		    QDialogButtonBox::Ok | QDialogButtonBox::Cancel, 
+		    QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
 		    Qt::Horizontal, this);
-    
+
     m_listBox = new Q3ListBox(mainHBox, "ConfDlg-Listbox");
     m_listBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
     QFont f = m_listBox->font();
@@ -99,7 +99,7 @@ ListBoxDialog::ListBoxDialog(QWidget* parent, const char* name)
     m_listBox->setFont(f);
     m_listBox->setCursor(Qt::PointingHandCursor);
     m_widgetStack = new Q3WidgetStack(mainHBox, "ConfDlg-Widget");
-    
+
     // horizontal line
     QLabel* horizontalLine = new QLabel(this, "ConfDlg-Hline");
     horizontalLine->setFrameStyle(Q3Frame::HLine | Q3Frame::Sunken);
@@ -116,10 +116,10 @@ ListBoxDialog::ListBoxDialog(QWidget* parent, const char* name)
 
     // set default button
     buttonHBox->button(QDialogButtonBox::Ok)->setDefault(true);
-    
+
     // signals & slots
     connect(buttonHBox, SIGNAL(accepted()), SLOT(accept()));
-    connect(buttonHBox, SIGNAL(rejected()), SLOT(reject())); 
+    connect(buttonHBox, SIGNAL(rejected()), SLOT(reject()));
     connect(m_listBox, SIGNAL(highlighted(int)), m_widgetStack, SLOT(raiseWidget(int)));
     connect(m_widgetStack, SIGNAL(aboutToShow(QWidget*)), SLOT(aboutToShowHandler(QWidget*)));
 }
@@ -161,7 +161,7 @@ bool ListBoxDialog::event(QEvent* e)
 
 
 /*!
-    Handles aboutToShow() signals from the widget stack. The widget gets filled, i.e. the 
+    Handles aboutToShow() signals from the widget stack. The widget gets filled, i.e. the
     fillSettings() method of the corresponding page is called.
     \param widget the widget which gets shown
 */

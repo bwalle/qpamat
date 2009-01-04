@@ -1,16 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
- * GNU General Public License as published by the Free Software Foundation; You may only use 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; You may only use
  * version 2 of the License, you have no option to use any other version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
  * the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program; if 
+ * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * ------------------------------------------------------------------------------------------------- 
+ * -------------------------------------------------------------------------------------------------
  */
 #include <QLayout>
 #include <QPushButton>
@@ -28,11 +28,11 @@
 
 /*!
     \class CopyLabel
-    
+
     \brief This class provides a QLineEdit combined with a copy button.
 
     The copy buttons lets the user copy the displayed text chooser dialog of Qt.
-    
+
     \ingroup widgets
     \author Bernhard Walle
 */
@@ -69,19 +69,19 @@ void CopyLabel::init()
     QHBoxLayout* boxLayout = new QHBoxLayout(this, 0, 2);
     m_label = new QLabel(this);
     m_label->setFrameStyle( Q3Frame::Panel | Q3Frame::Sunken );
-    
+
     // we need a tool button because it has no border and it looks better in this size
     // in Platin style
     m_copyButton = new QToolButton(this);
     m_copyButton->setIconSet(QIcon(QPixmap(":/images/stock_copy_16.png")));
-    
+
     boxLayout->addWidget(m_label);
     boxLayout->addWidget(m_copyButton);
     boxLayout->setStretchFactor(m_label, 5);
     boxLayout->setStretchFactor(m_copyButton, 0);
-    
+
     connect(m_copyButton, SIGNAL(clicked()), SLOT(copyText()));
-    
+
     QAction* copy = new QAction(tr("Copy"), this);
     copy->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_C));
     connect(copy, SIGNAL(activated()), SLOT(copyText()));
@@ -90,7 +90,7 @@ void CopyLabel::init()
 
 /*!
     \property CopyLabel::content
-    
+
     The content of the label.
 */
 
@@ -128,7 +128,7 @@ QString CopyLabel::getContent() const
 
 /*!
     \property CopyLabel::hidden
-    
+
     Whether the text is displayed hidden.
 */
 
