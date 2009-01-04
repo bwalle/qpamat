@@ -12,6 +12,8 @@
  *
  * -------------------------------------------------------------------------------------------------
  */
+#include <boost/any.hpp>
+
 #include <QString>
 #include <QDomDocument>
 #include <Q3ListView>
@@ -20,6 +22,7 @@
 
 #include "qpamat.h"
 
+#include "util/securestring.h"
 #include "security/hybridpasswordchecker.h"
 #include "property.h"
 #include "security/encodinghelper.h"
@@ -66,8 +69,13 @@
     \param hidden whether the propertyp should be displayed as password on the screen
 */
 Property::Property(const QString& key, const QString& value, Type type, bool encrypted, bool hidden)
-    : m_key(key), m_value(value), m_type(type), m_encrypted(encrypted), m_hidden(hidden),
-      m_passwordStrength(PUndefined), m_daysToCrack(-1.0)
+    : m_key(key)
+    , m_value(value)
+    , m_type(type)
+    , m_encrypted(encrypted)
+    , m_hidden(hidden)
+    , m_passwordStrength(PUndefined)
+    , m_daysToCrack(-1.0)
 {
 
     setValue(value);
@@ -101,7 +109,10 @@ void Property::setKey(const QString& key)
 */
 QString Property::getValue() const
 {
-    return m_value;
+    if (m_hidden)
+        return boost::any_cast<SecureString>(m_value).qString();
+    else
+        return boost::any_cast<QString>(m_value);
 }
 
 
@@ -111,16 +122,12 @@ QString Property::getValue() const
 */
 QString Property::getVisibleValue() const
 {
-    if (m_hidden)
-    {
+    if (m_hidden) {
         QString s;
-        s.fill('*', m_value.length());
+        s.fill('*',boost::any_cast<SecureString>(m_value).length());
         return s;
-    }
-    else
-    {
-        return m_value;
-    }
+    } else
+        return boost::any_cast<QString>(m_value);
 }
 
 
@@ -130,7 +137,10 @@ QString Property::getVisibleValue() const
 */
 void Property::setValue(const QString& value)
 {
-    m_value = value;
+    if (m_hidden)
+        m_value = SecureString(value);
+    else
+        m_value = value;
     emit propertyChanged(this);
 }
 
@@ -147,9 +157,7 @@ void Property::setValue(const QString& value)
 Property::PasswordStrength Property::getPasswordStrength() throw (PasswordCheckException)
 {
     if (m_passwordStrength == PUndefined)
-    {
         updatePasswordStrength();
-    }
     return m_passwordStrength;
 }
 
@@ -174,27 +182,20 @@ double Property::daysToCrack() const
 */
 void Property::updatePasswordStrength() throw (PasswordCheckException)
 {
-    if (m_type == PASSWORD)
-    {
+    if (m_type == PASSWORD) {
         QString ensured = qpamat->set().readEntry("Security/EnsuredCharacters");
         double days = -1.0;
         HybridPasswordChecker checker(qpamat->set().readEntry("Security/DictionaryFile"));
-        days = checker.passwordQuality(m_value);
+        days = checker.passwordQuality(boost::any_cast<SecureString>(m_value).qString()); // XXX
         m_daysToCrack = days;
         double weakLimit = qpamat->set().readDoubleEntry("Security/WeakPasswordLimit");
         double strongLimit = qpamat->set().readDoubleEntry("Security/StrongPasswordLimit");
         if (m_daysToCrack < weakLimit)
-        {
             m_passwordStrength = PWeak;
-        }
         else if (m_daysToCrack >= weakLimit && m_daysToCrack < strongLimit)
-        {
             m_passwordStrength = PAcceptable;
-        }
         else
-        {
             m_passwordStrength = PStrong;
-        }
     }
 }
 
@@ -271,7 +272,7 @@ void Property::setEncrypted(bool encrypted)
 QString Property::toRichTextForPrint() const
 {
     return QString("<tr><td width=\"25%\">%1</td><td width=\"75%\">%2</td></tr>")
-        .arg(m_key, m_value);
+        .arg(m_key, getValue());
 }
 
 
@@ -283,7 +284,7 @@ QString Property::toRichTextForPrint() const
 */
 void Property::appendTextForExport(QTextStream& stream)
 {
-    stream << qSetFieldWidth(20) << m_key + ": " << qSetFieldWidth(0) << m_value << "\n";
+    stream << qSetFieldWidth(20) << m_key + ": " << qSetFieldWidth(0) << getValue() << "\n";
 }
 
 
@@ -296,7 +297,7 @@ void Property::appendTextForExport(QTextStream& stream)
 void Property::appendXML(QDomDocument& document, QDomNode& parent) const
 {
     QDomElement property = document.createElement("property");
-    QString value = m_value;
+    QString value = getValue();
 
     property.setAttribute("key", m_key);
     property.setAttribute("value", value);
@@ -304,12 +305,22 @@ void Property::appendXML(QDomDocument& document, QDomNode& parent) const
     property.setAttribute("encrypted", m_encrypted);
 
     QString type;
-    switch (m_type)
-    {
-        case MISC    :  type = "MISC"    ;      break;
-        case PASSWORD:  type = "PASSWORD";      break;
-        case USERNAME:  type = "USERNAME";      break;
-        case URL     :  type = "URL"     ;      break;
+    switch (m_type) {
+        case MISC    :
+            type = "MISC";
+            break;
+
+        case PASSWORD:
+            type = "PASSWORD";
+            break;
+
+        case USERNAME:
+            type = "USERNAME";
+            break;
+
+        case URL:
+            type = "URL";
+            break;
     }
     property.setAttribute("type", type);
 
@@ -334,21 +345,13 @@ void Property::appendFromXML(TreeEntry* parent, QDomElement& element)
 
     Property::Type type;
     if (typeString == "USERNAME")
-    {
         type = USERNAME;
-    }
     else if (typeString == "PASSWORD")
-    {
         type = PASSWORD;
-    }
     else if (typeString == "URL")
-    {
         type = URL;
-    }
     else
-    {
         type = MISC;
-    }
 
     parent->appendProperty(new Property(key, value, type, encrypted, hidden));
 }

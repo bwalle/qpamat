@@ -15,6 +15,8 @@
 #ifndef PROPERTY_H
 #define PROPERTY_H
 
+#include <boost/any.hpp>
+
 #include <QString>
 #include <QDomDocument>
 #include <QObject>
@@ -79,7 +81,7 @@ class Property : public QObject
 
     private:
         QString          m_key;
-        QString          m_value;
+        boost::any       m_value;
         Type             m_type;
         bool             m_encrypted;
         bool             m_hidden;
