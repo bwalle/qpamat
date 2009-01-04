@@ -63,6 +63,12 @@ class SecureString : private boost::totally_ordered<SecureString> {
         QString qString() const
         throw ();
 
+        size_t length() const
+        throw ();
+
+        size_t size() const
+        throw ();
+
     protected:
         void fromCString(const char *text)
         throw (std::bad_alloc);

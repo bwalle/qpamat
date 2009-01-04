@@ -18,6 +18,8 @@
 #include <cerrno>
 #include <algorithm>
 
+#include <boost/lambda/lambda.hpp>
+
 // before the include of <sys/mman.h> to get the Q_WS_X11 define
 #include <QDebug>
 
@@ -26,7 +28,6 @@
 #endif
 
 #include "securestring.h"
-
 
 /*!
     \class SecureString
@@ -232,6 +233,40 @@ QString SecureString::qString() const
     throw ()
 {
     return QString::fromUtf8(utf8());
+}
+
+/*!
+    Returns the number of characters that it takes to display that SecureString on the screen.
+
+    It's important that this is not the number of bytes in UTF-8 encoding. It's the number of
+    user-visible characters. Of course, when you use UCS-4 (or practially: UCS-2), the number is
+    equal.
+
+    \return the number of characters
+*/
+size_t SecureString::length() const
+    throw ()
+{
+    // according to the Unicode FAQ [http://www.cl.cam.ac.uk/~mgk25/unicode.html]
+    // we have to count characters not in the range [0x80; 0xBF].
+    return std::count_if(
+                reinterpret_cast<unsigned char *>(m_text),
+                reinterpret_cast<unsigned char *>(m_text) + strlen(m_text),
+                boost::lambda::_1 < 0x80 || boost::lambda::_1 > 0xBF);
+}
+
+/*!
+    Returns the size (in bytes) of the SecureString in UTF-8 encoding.
+
+    Consider the function SecureString::length() if you need the length that it takes to display
+    the string on the screen.
+
+    \return the number of bytes
+*/
+size_t SecureString::size() const
+    throw ()
+{
+    return strlen(m_text);
 }
 
 /*!

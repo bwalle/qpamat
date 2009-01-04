@@ -27,6 +27,7 @@ class TestSecureString : public QObject {
         void testAssignment() const;
         void testCopyCtor() const;
         void testLocking() const;
+        void testSize() const;
 };
 
 // :maxLineLen=100:shiftWidth=4:tabSize=4:noTabs=true:

@@ -113,6 +113,18 @@ void TestSecureString::testLocking() const
     QVERIFY(s.isLocked());
 }
 
+/*!
+    Checks if the size() operator actually returns the number of bytes.
+*/
+void TestSecureString::testSize() const
+{
+    const char teststring[5] = { 0x54, 0xc3, 0xa4, 0x73, 0x74 }; // "Täst" in UTF-8
+    SecureString s(teststring);
+
+    QVERIFY(s.length() == 4);
+    QVERIFY(s.size() == 5);
+}
+
 QTEST_MAIN(TestSecureString)
 
 // :maxLineLen=100:shiftWidth=4:tabSize=4:noTabs=true:
