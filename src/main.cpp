@@ -152,6 +152,7 @@ int main(int argc, char** argv)
 
     QString dirs[] = {
             QString("/usr/share/qt4/translations"),
+            QString("/usr/share/qt/translations"),
             QString(getenv("QTDIR")) + "/translations/",
             qApp->applicationDirPath() + "/../share/qpamat/translations/"
     };
