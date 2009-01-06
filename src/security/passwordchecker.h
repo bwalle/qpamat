@@ -30,7 +30,7 @@ class PasswordCheckException : public std::runtime_error
 class PasswordChecker
 {
     public:
-        static const uint CRACKS_PER_SECOND;
+        static const unsigned int CRACKS_PER_SECOND;
 
     public:
         virtual ~PasswordChecker() { };

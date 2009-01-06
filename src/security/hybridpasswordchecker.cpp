@@ -86,7 +86,7 @@ HybridPasswordChecker::HybridPasswordChecker(const QString& dictFileName)
         m_fileName = dictFileName;
 
         // check the number of lines to increase speed
-        uint numberOfLines = 0;
+        unsigned int numberOfLines = 0;
         for (int i = 0; i < bytes.size(); ++i)
             if (bytes[i] == '\n')
                 ++numberOfLines;
@@ -124,12 +124,12 @@ double HybridPasswordChecker::passwordQuality(const QString& password) throw ()
     int pos = password.find(longest, 0, false);
     QString rest = password;
     rest.remove(pos, longest.length());
-    uint Z = findNumerOfCharsInClass(rest);
-    uint L = rest.length();
-    uint W = getNumberOfWordsWithSameOrShorterLength(longest);
+    unsigned int Z = findNumerOfCharsInClass(rest);
+    unsigned int L = rest.length();
+    unsigned int W = getNumberOfWordsWithSameOrShorterLength(longest);
     if (W == 0)
         W = 1;
-    uint P = !longest.isNull() ? (password.length() - longest.length() + 1 ) : password.length();
+    unsigned int P = !longest.isNull() ? (password.length() - longest.length() + 1 ) : password.length();
 
     return std::pow(double(Z), double(L)) * W * P / CRACKS_PER_SECOND / 86400;
 }

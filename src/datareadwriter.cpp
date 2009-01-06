@@ -697,7 +697,7 @@ void DataReadWriter::crypt(QDomElement& n, StringEncryptor& enc, bool encrypt)
 {
     QDomNodeList list = n.childNodes();
     if (list.length() != 0) {
-        for (uint i = 0; i < list.length(); ++i) {
+        for (unsigned int i = 0; i < list.length(); ++i) {
             QDomElement n = list.item(i).toElement();
             crypt(n, enc, encrypt);
         }

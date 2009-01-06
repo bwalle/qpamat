@@ -23,7 +23,7 @@
     value will be increased. It is irrelevant how fast the computer on which QPaMaT runs
     is, the cracker uses another machine!
 */
-const uint PasswordChecker::CRACKS_PER_SECOND = 500000;
+const unsigned int PasswordChecker::CRACKS_PER_SECOND = 500000;
 
 /*!
     \class PasswordChecker

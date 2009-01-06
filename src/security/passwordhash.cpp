@@ -152,7 +152,7 @@ void PasswordHash::attachHashWithoutSalt(ByteVector& output, const ByteVector& p
 {
     EVP_MD_CTX mdctx;
     unsigned char md_value[EVP_MAX_MD_SIZE];
-    uint md_len;
+    unsigned int md_len;
 
     int len = passwordBytes.size();
     byte* password = new byte[len];

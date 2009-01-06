@@ -43,7 +43,7 @@ class TreeEntry : public QObject, public Q3ListViewItem
         QString getName() const;
         bool isCategory() const;
 
-        Property* getProperty(uint index);
+        Property* getProperty(unsigned int index);
         void appendProperty(Property* property);
         PropertyIterator propertyIterator() const;
 
@@ -65,9 +65,9 @@ class TreeEntry : public QObject, public Q3ListViewItem
         static TreeEntry* appendFromXML(T* parent, QDomElement& element);
 
     public slots:
-        void movePropertyOneUp(uint index);
-        void movePropertyOneDown(uint index);
-        void deleteProperty(uint index);
+        void movePropertyOneUp(unsigned int index);
+        void movePropertyOneDown(unsigned int index);
+        void deleteProperty(unsigned int index);
         void deleteAllProperties();
 
     signals:

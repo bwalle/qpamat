@@ -53,11 +53,11 @@ typedef Q3ValueVector<byte>      ByteVector;
 typedef Q3ValueVector<QString>   StringVector;
 
 /*!
-    \typedef QValueVector<uint> UIntVector
+    \typedef QValueVector<unsigned int> UIntVector
 
     Vector for unsigned integer.
 */
-typedef Q3ValueVector<uint>      UIntVector;
+typedef Q3ValueVector<unsigned int>      UIntVector;
 
 /*!
     \typedef QValueVector<int> IntVector

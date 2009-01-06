@@ -42,7 +42,7 @@ class RightListView : public Q3ListView
 
         void setItem(Q3ListViewItem* item);
         bool isFocusInside() const;
-        void setSelectedIndex(uint index);
+        void setSelectedIndex(unsigned int index);
 
     public slots:
         void deleteCurrent();

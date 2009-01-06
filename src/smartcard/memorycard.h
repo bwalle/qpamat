@@ -29,10 +29,11 @@
 class MemoryCard
 {
     public:
-        typedef char (*CT_init_ptr) (ushort ctn, ushort pn);
-        typedef char (*CT_data_ptr) (ushort ctn, uchar* dad, uchar* sad, ushort lenc,
-                             uchar* command, ushort* lenr, uchar* response);
-        typedef char (*CT_close_ptr) (ushort ctn);
+        typedef char (*CT_init_ptr) (unsigned short ctn, unsigned short pn);
+        typedef char (*CT_data_ptr) (unsigned short ctn, unsigned char* dad, unsigned char* sad,
+                                     unsigned short lenc, unsigned char* command,
+                                     unsigned short* lenr, unsigned char* response);
+        typedef char (*CT_close_ptr) (unsigned short ctn);
 
         enum CardSlot {
             ICC1 = 0x00,
@@ -69,8 +70,8 @@ class MemoryCard
         MemoryCard(QString library) throw (NoSuchLibraryException);
         virtual ~MemoryCard();
 
-        void setWaitTime(uchar newTime);
-        uchar getWaitTime() const;
+        void setWaitTime(unsigned char newTime);
+        unsigned char getWaitTime() const;
 
         void init(int portNumber) throw (CardException);
         void close() throw (CardException, NotInitializedException);
@@ -93,10 +94,10 @@ class MemoryCard
         void changeVerificationData(const QString& oldPin, const QString& newPin)
             throw (NotInitializedException, CardException);
 
-        ByteVector read(ushort offset, ushort length)
+        ByteVector read(unsigned short offset, unsigned short length)
             throw (CardException, NotInitializedException);
 
-        void write(ushort offset, const ByteVector& data)
+        void write(unsigned short offset, const ByteVector& data)
             throw (CardException, NotInitializedException);
 
     private:
@@ -108,10 +109,10 @@ class MemoryCard
         CT_init_ptr     m_CT_init_function;
         CT_data_ptr     m_CT_data_function;
         CT_close_ptr    m_CT_close_function;
-        ushort          m_portNumber;           // pn in CT-API jargon
-        ushort          m_cardTerminalNumber;   // ctnin CT-API jargon
+        unsigned short  m_portNumber;           // pn in CT-API jargon
+        unsigned short  m_cardTerminalNumber;   // ctnin CT-API jargon
         bool            m_initialized;
-        uchar           m_waitTime;
+        unsigned char   m_waitTime;
 
     private:
         static int      m_lastNumber;

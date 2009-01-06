@@ -177,10 +177,10 @@ ByteVector SymmetricEncryptor::crypt(const ByteVector& vector, OperationType ope
     EVP_CIPHER_CTX ectx;
     int ebuflen;
     ByteVector::ConstIterator beginOfVector = vector.begin();
-    uint sizeOfVector = vector.size();
+    unsigned int sizeOfVector = vector.size();
     EVP_CipherInit(&ectx, m_cipher_algorithm, m_key, m_iv, operation);
 
-    for (uint i = 0; i < sizeOfVector; i += BUFLEN) {
+    for (unsigned int i = 0; i < sizeOfVector; i += BUFLEN) {
         int readLen = (i + BUFLEN >= sizeOfVector)
             ? sizeOfVector - i
             : BUFLEN;

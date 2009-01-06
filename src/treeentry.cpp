@@ -112,9 +112,9 @@ bool TreeEntry::isCategory() const
     Returns an iterator to the first entry of the properties list.
     \return the iterator
 */
-Property* TreeEntry::getProperty(uint index)
+Property* TreeEntry::getProperty(unsigned int index)
 {
-    Q_ASSERT( index < m_properties.count() );
+    Q_ASSERT(index < m_properties.count());
     return m_properties.at(index);
 }
 
@@ -153,7 +153,7 @@ void TreeEntry::setText(int column, const QString& text)
     Moves the given property one step up.
     \param index the index of the property
 */
-void TreeEntry::movePropertyOneUp(uint index)
+void TreeEntry::movePropertyOneUp(unsigned int index)
 {
     Q_ASSERT( index < m_properties.count() - 1);
 
@@ -169,7 +169,7 @@ void TreeEntry::movePropertyOneUp(uint index)
     Moves the given property one step down.
     \param index the index of the property
 */
-void TreeEntry::movePropertyOneDown(uint index)
+void TreeEntry::movePropertyOneDown(unsigned int index)
 {
     Q_ASSERT( index > 0 && index < m_properties.count() );
 
@@ -185,7 +185,7 @@ void TreeEntry::movePropertyOneDown(uint index)
     Deletes the property with the specified index
     \param index the index
 */
-void TreeEntry::deleteProperty(uint index)
+void TreeEntry::deleteProperty(unsigned int index)
 {
     Q_ASSERT( index < m_properties.count() );
     m_properties.remove(index);

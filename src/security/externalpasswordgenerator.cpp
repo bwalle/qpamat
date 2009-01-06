@@ -59,7 +59,7 @@ ExternalPasswordGenerator::ExternalPasswordGenerator(const QString& applicationN
     \return the password
     \exception PasswordGenerateException if launching the external application failed
 */
-QString ExternalPasswordGenerator::getPassword(uint length, const QString&)
+QString ExternalPasswordGenerator::getPassword(unsigned int length, const QString&)
         throw (PasswordGenerateException)
 {
     if (m_applicationName.isNull())

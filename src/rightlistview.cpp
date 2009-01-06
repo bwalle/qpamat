@@ -175,12 +175,12 @@ void RightListView::showContextMenu(Q3ListViewItem* item, const QPoint& point)
     Sets the selected index.
     \param index the index
 */
-void RightListView::setSelectedIndex(uint index)
+void RightListView::setSelectedIndex(unsigned int index)
 {
-    Q_ASSERT(index <= uint(childCount()));
+    Q_ASSERT(index <= (unsigned int)childCount());
 
     Q3ListViewItem* item = firstChild();
-    for (uint i = 0; i < index; ++i)
+    for (unsigned int i = 0; i < index; ++i)
         item = item->nextSibling();
 
     setSelected(item, true);

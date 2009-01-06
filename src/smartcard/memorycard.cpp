@@ -71,20 +71,22 @@ int MemoryCard::m_lastNumber = 1;
 */
 
 /*!
-    \typedef char (*MemoryCard::CT_init_ptr) (ushort ctn, ushort pn);
+    \typedef char (*MemoryCard::CT_init_ptr) (unsigned short ctn, unsigned short pn);
 
     Typedef for the init function of the CT-API.
 */
 
 /*!
-    \typedef typedef char (*MemoryCard::CT_data_ptr) (ushort ctn, uchar* dad, uchar* sad, ushort lenc,
-                                          uchar* command, ushort* lenr, uchar* response);
+    \typedef typedef char (*MemoryCard::CT_data_ptr) (unsigned short ctn, uchar* dad,
+                                          unsigned char* sad, unsigned short lenc,
+                                          unsigned char* command, unsigned short* lenr,
+                                          unsigned char* response);
 
     Typedef for the data function of the CT-API.
 */
 
 /*!
-    \typedef char (*MemoryCard::CT_close_ptr) (ushort ctn);
+    \typedef char (*MemoryCard::CT_close_ptr) (unsigned short ctn);
 
     Typedef for the close function of the CT-API.
 */
@@ -214,7 +216,7 @@ void MemoryCard::close() throw (CardException, NotInitializedException)
     Returns the time that the program wiats for the user to insert the card in the terminal.
     \return the time in seconds.
 */
-uchar MemoryCard::getWaitTime() const
+unsigned char MemoryCard::getWaitTime() const
 {
     return m_waitTime;
 }
@@ -224,7 +226,7 @@ uchar MemoryCard::getWaitTime() const
     Sets the time that the program waits for the user to insert the card in the terminal.
     \param newTime the time in seconds
 */
-void MemoryCard::setWaitTime(uchar newTime)
+void MemoryCard::setWaitTime(unsigned char newTime)
 {
     m_waitTime = newTime;
 }
@@ -246,7 +248,7 @@ MemoryCard::CardType MemoryCard::getType() const throw (CardException, NotInitia
     byte dad = CT;        // destination
 
     byte response[100];
-    ushort lenr = sizeof(response);
+    unsigned short lenr = sizeof(response);
 
     char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(REQUEST_ICC),
         REQUEST_ICC, &lenr, response);
@@ -254,7 +256,7 @@ MemoryCard::CardType MemoryCard::getType() const throw (CardException, NotInitia
     if (ret != OK)
         throw CardException(CardException::ErrorCode(ret));
 
-    ushort sw1sw2 = (response[0] << 8) + response[1];
+    unsigned short sw1sw2 = (response[0] << 8) + response[1];
 
     switch (sw1sw2) {
         case 0x9000:
@@ -291,7 +293,7 @@ void MemoryCard::resetCard(int* capacity, ProtocolType* protocolType) const
     byte dad = CT;        // destination
 
     byte response[100];
-    ushort lenr = sizeof(response);
+    unsigned short lenr = sizeof(response);
 
     char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(RESET_CT),
         RESET_CT, &lenr, response);
@@ -371,7 +373,7 @@ void MemoryCard::getStatusInformation(QString* manufacturer, QString* terminalTy
     byte dad = CT;        // destination
 
     byte response[100];
-    ushort lenr = sizeof(response);
+    unsigned short lenr = sizeof(response);
 
     char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(REQUEST_STATUS),
         REQUEST_STATUS, &lenr, response);
@@ -414,7 +416,7 @@ bool MemoryCard::selectFile() const throw (CardException, NotInitializedExceptio
 
 
     byte response[2];
-    ushort lenr = sizeof(response);
+    unsigned short lenr = sizeof(response);
 
     char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(SELECT_FILE),
         SELECT_FILE, &lenr, response);
@@ -422,7 +424,7 @@ bool MemoryCard::selectFile() const throw (CardException, NotInitializedExceptio
     if (ret != OK)
         throw CardException(CardException::ErrorCode(ret));
 
-    ushort sw1sw2 = (response[0] << 8) + response[1];
+    unsigned short sw1sw2 = (response[0] << 8) + response[1];
 
     return sw1sw2 == 0x9000;
 }
@@ -436,7 +438,7 @@ bool MemoryCard::selectFile() const throw (CardException, NotInitializedExceptio
     \exception CardException if an exception occurred while reading
     \exception NotInitializedException if the object was not initialized
 */
-ByteVector MemoryCard::read(ushort offset, ushort length)
+ByteVector MemoryCard::read(unsigned short offset, unsigned short length)
     throw (CardException, NotInitializedException)
 {
     checkInitialzed();
@@ -463,7 +465,7 @@ ByteVector MemoryCard::read(ushort offset, ushort length)
         byte dad = ICC1;      // destination
 
         byte response[max+2];
-        ushort lenr = dataToRead + 2;
+        unsigned short lenr = dataToRead + 2;
 
         char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(read_binary),
             read_binary, &lenr, response);
@@ -471,7 +473,7 @@ ByteVector MemoryCard::read(ushort offset, ushort length)
         if (ret != OK)
             throw CardException(CardException::ErrorCode(ret));
 
-        ushort sw1sw2 = (response[lenr-2] << 8) + response[lenr-1];
+        unsigned short sw1sw2 = (response[lenr-2] << 8) + response[lenr-1];
 
         if (sw1sw2 != 0x9000)
             throw CardException(CardException::ErrorCode(sw1sw2));
@@ -499,7 +501,7 @@ ByteVector MemoryCard::read(ushort offset, ushort length)
     \exception CardException if an exception occurred while writing
     \exception NotInitializedException if the object was not initialized
 */
-void MemoryCard::write(ushort offset, const ByteVector& data)
+void MemoryCard::write(unsigned short offset, const ByteVector& data)
     throw (CardException, NotInitializedException)
 {
     checkInitialzed();
@@ -528,7 +530,7 @@ void MemoryCard::write(ushort offset, const ByteVector& data)
         byte dad = ICC1;      // destination
 
         byte response[100];
-        ushort lenr = sizeof(response);
+        unsigned short lenr = sizeof(response);
 
         char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, written_bytes+5,
             update_binary, &lenr, response);
@@ -538,7 +540,7 @@ void MemoryCard::write(ushort offset, const ByteVector& data)
             throw CardException(CardException::ErrorCode(ret));
         }
 
-        ushort sw1sw2 = (response[lenr-2] << 8) + response[lenr-1];
+        unsigned short sw1sw2 = (response[lenr-2] << 8) + response[lenr-1];
 
         if (sw1sw2 != 0x9000) {
             qDebug() << CURRENT_FUNCTION << "Throwing card exception with error code" << sw1sw2;
@@ -581,7 +583,7 @@ void MemoryCard::verify(const QString& pin) const
     byte dad = ICC1;      // destination
 
     byte response[2];
-    ushort lenr = sizeof(response);
+    unsigned short lenr = sizeof(response);
 
     char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(VERIFY),
         VERIFY, &lenr, response);
@@ -589,7 +591,7 @@ void MemoryCard::verify(const QString& pin) const
     if (ret != OK)
         throw CardException(CardException::ErrorCode(ret));
 
-    ushort sw1sw2 = (response[0] << 8) + response[1];
+    unsigned short sw1sw2 = (response[0] << 8) + response[1];
 
     qDebug() << CURRENT_FUNCTION << "Verfiy repsonse" << sw1sw2;
 
@@ -636,7 +638,7 @@ void MemoryCard::changeVerificationData(const QString& oldPin, const QString& ne
     byte dad = ICC1;      // destination
 
     byte response[2];
-    ushort lenr = sizeof(response);
+    unsigned short lenr = sizeof(response);
 
     char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(VERIFY),
         VERIFY, &lenr, response);
@@ -644,7 +646,7 @@ void MemoryCard::changeVerificationData(const QString& oldPin, const QString& ne
     if (ret != OK)
         throw CardException(CardException::ErrorCode(ret));
 
-    ushort sw1sw2 = (response[0] << 8) + response[1];
+    unsigned short sw1sw2 = (response[0] << 8) + response[1];
 
     qDebug() << CURRENT_FUNCTION << "Verfiy repsonse %X" << sw1sw2;
 

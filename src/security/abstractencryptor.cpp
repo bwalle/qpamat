@@ -39,7 +39,7 @@
 ByteVector AbstractEncryptor::encryptStrToBytes(const QString& string)
 {
     Q3CString utf8CString = string.utf8();
-    uint utf8Length = utf8CString.length();
+    unsigned int utf8Length = utf8CString.length();
     ByteVector vector(utf8Length);
     const byte* utf8 = (const byte*)utf8CString.data();
     qCopy(utf8, utf8 + utf8Length, vector.begin());
@@ -63,7 +63,7 @@ QString AbstractEncryptor::decryptStrFromBytes(const ByteVector& vector)
 {
     QString result;
     ByteVector decrypted = decrypt(vector);
-    uint size = decrypted.size();
+    unsigned int size = decrypted.size();
     char* decryptedBytes = new char[size + 1];
     decryptedBytes[size] = 0;
     qCopy(decrypted.begin(), decrypted.end(), decryptedBytes);
