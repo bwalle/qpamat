@@ -66,7 +66,7 @@ bool SecureString::platformSupportsLocking()
 /*!
     Creates a new SecureString from a C string representation.
 
-    \param text the C-String representation
+    \param [in] text the C-String representation
     \throw std::bad_alloc if the memory of the string cannot be allocated
 */
 SecureString::SecureString(const char *text)
@@ -86,7 +86,7 @@ std::string mystring("bla");
 SecureString str(bla.c_str());
     \endcode
 
-    \param text the std::string represenation
+    \param [in] text the std::string represenation
     \throw std::bad_alloc if the memory of the string cannot be allocated
 */
 SecureString::SecureString(const std::string &text)
@@ -102,7 +102,7 @@ SecureString::SecureString(const std::string &text)
 
     Internally, we call lock() after allocating the space for the string.
 
-    \param text the QString representation of the string
+    \param [in] text the QString representation of the string
     \throw std::bad_alloc if the memory of the string cannot be allocated
 */
 SecureString::SecureString(const QString &text)
@@ -127,7 +127,7 @@ SecureString::SecureString(const SecureString &text)
 /*!
     Assignment of a SecureString to a SecureString.
 
-    \param text SecureString the other SecureString that should be assigned to the current SecureString
+    \param [in] text SecureString the other SecureString that should be assigned to the current SecureString
     \throw std::bad_alloc if the memory of the string cannot be allocated
 */
 SecureString &SecureString::operator=(const SecureString& text)
@@ -151,7 +151,7 @@ SecureString &SecureString::operator=(const SecureString& text)
 
     The method does not throw.
 
-    \param text the SecureString to compare with
+    \param [in] text the SecureString to compare with
     \return \c true if \p text is less than this string, \c false otherwise
 */
 bool SecureString::operator<(const SecureString &text) const
@@ -165,7 +165,7 @@ bool SecureString::operator<(const SecureString &text) const
 
     The method does not throw.
 
-    \param text the SecureString to compare with
+    \param [in] text the SecureString to compare with
     \return \c true if \p text is equal than this string, \c false otherwise
 */
 bool SecureString::operator==(const SecureString &text) const
@@ -274,7 +274,7 @@ size_t SecureString::size() const
     calling of another constructor in the constructor. So we use that implementation to share
     code. <tt>:-)</tt>
 
-    \param text the text as C-String represenation
+    \param [in] text the text as C-String represenation
     \throw std::bad_alloc if we couldn't allocate the necessary memory
 */
 void SecureString::fromCString(const char *text)
