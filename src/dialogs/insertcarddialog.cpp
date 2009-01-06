@@ -53,7 +53,8 @@
     \param name the widget's name
 */
 InsertCardDialog::InsertCardDialog(bool pin, QWidget* parent, const char* name)
-    : QDialog(parent, name), m_pinEdit(0)
+    : QDialog(parent, name)
+    , m_pinEdit(0)
 {
     const char* strings[] = {
         QT_TR_NOOP("Insert the card in the reader."),
@@ -73,8 +74,7 @@ InsertCardDialog::InsertCardDialog(bool pin, QWidget* parent, const char* name)
             QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
             Qt::Horizontal, this);
 
-    if (pin)
-    {
+    if (pin) {
         m_pinEdit = new QLineEdit(this, "LineEdit");
         m_pinEdit->setValidator(new CardPINValidator(this, "PINValidator"));
         m_pinEdit->setEchoMode(QLineEdit::Password);
@@ -92,9 +92,7 @@ InsertCardDialog::InsertCardDialog(bool pin, QWidget* parent, const char* name)
     //rightLayout->addSpacing(3);
     rightLayout->addWidget(label, 0, Qt::AlignHCenter | Qt::AlignTop);
     if (pin)
-    {
         rightLayout->addWidget(m_pinEdit);
-    }
     rightLayout->addSpacing(10);
     //rightLayout->addStretch();
     rightLayout->addWidget(dialogButtons);
@@ -102,8 +100,7 @@ InsertCardDialog::InsertCardDialog(bool pin, QWidget* parent, const char* name)
     connect(m_okButton, SIGNAL(clicked()), SLOT(accept()));
     connect(m_cancelButton, SIGNAL(clicked()), SLOT(reject()));
 
-    if (pin)
-    {
+    if (pin) {
         connect(m_pinEdit, SIGNAL(textChanged(const QString&)),
             SLOT(pinEditHandler(const QString&)));
         m_okButton->setEnabled(false);

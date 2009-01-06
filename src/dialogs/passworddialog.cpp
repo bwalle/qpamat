@@ -73,8 +73,7 @@ PasswordDialog::PasswordDialog(QWidget* parent, const char* name)
     connect(dialogButtons, SIGNAL(accepted()), SLOT(accept()));
     connect(dialogButtons, SIGNAL(rejected()), SLOT(reject()));
 
-    if (!qpamat->set().readBoolEntry("Password/NoGrabbing"))
-    {
+    if (!qpamat->set().readBoolEntry("Password/NoGrabbing")) {
         connect(m_passwordEdit, SIGNAL(gotFocus()), SLOT(grab()));
         connect(m_passwordEdit, SIGNAL(lostFocus()), SLOT(release()));
     }
@@ -98,9 +97,7 @@ void PasswordDialog::grab()
 void PasswordDialog::release()
 {
     if (QWidget* widget = keyboardGrabber())
-    {
         widget->releaseKeyboard();
-    }
 }
 
 

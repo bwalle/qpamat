@@ -283,9 +283,16 @@ void ConfDlgGeneralTab::applySettings()
     \param parent the parent widget
 */
 ConfDlgPasswordTab::ConfDlgPasswordTab(QWidget* parent, const char* name)
-    : ListBoxDialogPage(parent, name), m_lengthSpinner(0), m_externalEdit(0), m_allowedCharsEdit(0),
-      m_useExternalCB(0), m_weakSlider(0), m_strongSlider(0), m_weakLabel(0), m_strongLabel(0),
-      m_sortButton(0)
+    : ListBoxDialogPage(parent, name)
+    , m_lengthSpinner(0)
+    , m_externalEdit(0)
+    , m_allowedCharsEdit(0)
+    , m_useExternalCB(0)
+    , m_weakSlider(0)
+    , m_strongSlider(0)
+    , m_weakLabel(0)
+    , m_strongLabel(0)
+    , m_sortButton(0)
 {
     createAndLayout();
 
@@ -378,9 +385,7 @@ void ConfDlgPasswordTab::checkboxHandler(bool on)
 {
     m_externalEdit->setEnabled(on);
     if (!on)
-    {
         m_externalEdit->clearFocus();
-    }
 }
 
 
@@ -426,9 +431,7 @@ void ConfDlgPasswordTab::applySettings()
 void ConfDlgPasswordTab::weakSliderHandler(int value)
 {
     if (m_strongSlider->value() < value)
-    {
         m_strongSlider->setValue(value);
-    }
     m_weakLabel->display(QString::number(value/2.0, 'f', 1));
 }
 
@@ -441,9 +444,7 @@ void ConfDlgPasswordTab::weakSliderHandler(int value)
 void ConfDlgPasswordTab::strongSliderHandler(int value)
 {
     if (m_weakSlider->value() > value)
-    {
         m_weakSlider->setValue(value);
-    }
     m_strongLabel->display(QString::number(value/2.0, 'f', 1));
 }
 
@@ -456,8 +457,7 @@ void ConfDlgPasswordTab::sortDictionary()
 {
     StringVector words;
     QFile file(m_dictionaryEdit->getContent());
-    if (!file.open(QIODevice::ReadOnly))
-    {
+    if (!file.open(QIODevice::ReadOnly)) {
         QMessageBox::warning(this, "QPaMaT", tr("The file you wanted to sort does not exist!"),
             QMessageBox::Ok, QMessageBox::NoButton);
         return;
@@ -467,28 +467,22 @@ void ConfDlgPasswordTab::sortDictionary()
 
     QTextStream stream(&file);
     while (!stream.atEnd())
-    {
         words.append(stream.readLine());
-    }
     file.close();
 
     std::sort(words.begin(), words.end(), string_length_greater);
 
     // save the old file
-    if (!QDir::root().rename(file.name(), file.name() + ".bak"))
-    {
+    if (!QDir::root().rename(file.name(), file.name() + ".bak")) {
         QApplication::restoreOverrideCursor();
         if (QMessageBox::question(this, "QPaMaT", tr("Failed to create a backup file. Do you want\n"
-            "to continue without a backup?"), QMessageBox::Yes,
-            QMessageBox::No | QMessageBox::Default) != QMessageBox::Yes)
-        {
+                "to continue without a backup?"), QMessageBox::Yes,
+                QMessageBox::No | QMessageBox::Default) != QMessageBox::Yes)
             return;
-        }
         QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
     }
 
-    if (!file.open(QIODevice::WriteOnly))
-    {
+    if (!file.open(QIODevice::WriteOnly)) {
         QApplication::restoreOverrideCursor();
         QMessageBox::warning(this, "QPaMaT", tr("Could not open the file for writing!"),
             QMessageBox::Ok, QMessageBox::NoButton);
@@ -498,9 +492,7 @@ void ConfDlgPasswordTab::sortDictionary()
     QTextStream writestream(&file);
 
     for (StringVector::iterator it = words.begin(); it != words.end(); ++it)
-    {
         writestream << *it << endl;
-    }
 
     QApplication::restoreOverrideCursor();
 }
@@ -527,8 +519,7 @@ void ConfDlgPasswordTab::sortDictionary()
 /*!
     Maps combo box index to minutes.
 */
-const int ConfDlgSecurityTab::m_minuteMap[] =
-{
+const int ConfDlgSecurityTab::m_minuteMap[] = {
     0,          /*!< disabled */
     15,         /*!< 15 minutes */
     30,         /*!< 30 minutes */
@@ -541,7 +532,8 @@ const int ConfDlgSecurityTab::m_minuteMap[] =
     \param parent the parent widget
 */
 ConfDlgSecurityTab::ConfDlgSecurityTab(QWidget* parent, const char* name)
-    : ListBoxDialogPage(parent, name), m_algorithmCombo(0)
+    : ListBoxDialogPage(parent, name)
+    , m_algorithmCombo(0)
 {
     createAndLayout();
 }
@@ -638,7 +630,8 @@ void ConfDlgSecurityTab::applySettings()
     \param parent the parent widget
 */
 ConfDlgPresentationTab::ConfDlgPresentationTab(QWidget* parent, const char* name)
-    : ListBoxDialogPage(parent, name), m_nograbCB(0)
+    : ListBoxDialogPage(parent, name)
+    , m_nograbCB(0)
 {
     createAndLayout();
 
@@ -671,9 +664,7 @@ void ConfDlgPresentationTab::createAndLayout()
     m_systrayCB = new QCheckBox(tr("Show icon in system tray (needs restart!)"),
         systemTrayGroup, "IconInSystemtray");
     if (!QSystemTrayIcon::isSystemTrayAvailable())
-    {
         m_systrayCB->setEnabled(false);
-    }
     m_hiddenCB = new QCheckBox(tr("Start hidden"), systemTrayGroup, "StartHidden");
 
     // buddys
@@ -832,12 +823,16 @@ void ConfDlgSmartcardTab::setUseSmartcardEnabled(bool enabled)
 void ConfDlgSmartcardTab::fillSettings()
 {
     m_portCombo->clear();
-    const char* ports[] = { QT_TR_NOOP("Special (Port 0)"), QT_TR_NOOP("COM1/USB/Keyboard"),
-        QT_TR_NOOP("COM2"), QT_TR_NOOP("COM3"), QT_TR_NOOP("COM4") };
+    const char *ports[] = {
+        QT_TR_NOOP("Special (Port 0)"),
+        QT_TR_NOOP("COM1/USB/Keyboard"),
+        QT_TR_NOOP("COM2"),
+        QT_TR_NOOP("COM3"),
+        QT_TR_NOOP("COM4")
+    };
+
     for (int i = 0; i < 5; ++i)
-    {
         m_portCombo->insertItem(tr(ports[i]));
-    }
 
     m_libraryEdit->setContent(qpamat->set().readEntry("Smartcard/Library"));
     m_portCombo->setCurrentItem(qpamat->set().readNumEntry("Smartcard/Port"));
@@ -845,9 +840,7 @@ void ConfDlgSmartcardTab::fillSettings()
     m_usePinCB->setChecked(qpamat->set().readBoolEntry("Smartcard/HasWriteProtection"));
 
     if (!m_useCardCB->isChecked())
-    {
         setUseSmartcardEnabled(false);
-    }
 }
 
 
@@ -871,14 +864,12 @@ void ConfDlgSmartcardTab::applySettings()
 void ConfDlgSmartcardTab::testSmartCard()
 {
     QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
-    try
-    {
+    try {
         MemoryCard card(m_libraryEdit->getContent());
         card.init(m_portCombo->currentItem());
         MemoryCard::CardType type = card.getType();
 
-        if (type == MemoryCard::TMemoryCard)
-        {
+        if (type == MemoryCard::TMemoryCard) {
             int capacity = 0;
             card.resetCard(&capacity);
 
@@ -888,9 +879,7 @@ void ConfDlgSmartcardTab::testSmartCard()
                 "enough memory you can use this card for storing your passwords!</p>")+"</qt>").arg(
                 QString::number(capacity / 1024.0)),
                 QMessageBox::Ok | QMessageBox::Default, Qt::NoButton);
-        }
-        else
-        {
+        } else {
             QApplication::restoreOverrideCursor();
             QMessageBox::warning(this, "QPaMaT", QString("<qt>"+tr(
                 "<p>The communication to your chipcard terminal seems to work.<p>"
@@ -901,18 +890,14 @@ void ConfDlgSmartcardTab::testSmartCard()
 
         // if we don't access this point the destructor closes it. So no problem here!
         card.close();
-    }
-    catch (const NoSuchLibraryException& ex)
-    {
+    } catch (const NoSuchLibraryException& ex) {
         QApplication::restoreOverrideCursor();
         QApplication::restoreOverrideCursor();
         QMessageBox::critical(this, "QPaMaT", QString("<qt>"+tr(
                 "<p>A problem occurred while loading the specified CT-API (chipcard) driver."
                 " The error message was:</p><p>%1</p>")+"</qt>").arg(ex.what()),
                QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
-    }
-    catch (const CardException& ex)
-    {
+    } catch (const CardException& ex) {
         QApplication::restoreOverrideCursor();
         QMessageBox::critical(this, "QPaMaT", QString("<qt>"+tr(
                 "<p>An error occurred while communicating with the chipcard terminal."

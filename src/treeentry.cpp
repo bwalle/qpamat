@@ -56,42 +56,31 @@
 Property::PasswordStrength TreeEntry::weakestChildrenPassword() const throw (PasswordCheckException)
 {
     Property::PasswordStrength lowest = Property::PUndefined;
-    if (m_isCategory)
-    {
+
+    if (m_isCategory) {
         TreeEntry* item = dynamic_cast<TreeEntry*>(firstChild());
-        while (item)
-        {
+        while (item) {
             Property::PasswordStrength strength = item->weakestChildrenPassword();
-            if (strength < lowest)
-            {
+            if (strength < lowest) {
                 lowest = strength;
                 if (lowest == Property::PWeak)
-                {
                     break;
-                }
             }
             item = dynamic_cast<TreeEntry*>(item->nextSibling());
         }
-    }
-    else
-    {
+    } else {
         bool hadPasswords = false;
         PropertyIterator it = propertyIterator();
         Property* current;
-        while ( (current = it.current()) != 0 )
-        {
+        while ( (current = it.current()) != 0 ) {
             ++it;
-            if (current->getType() == Property::PASSWORD)
-            {
+            if (current->getType() == Property::PASSWORD) {
                 hadPasswords = true;
                 Property::PasswordStrength strength = current->getPasswordStrength();
-                if (strength < lowest)
-                {
+                if (strength < lowest) {
                     lowest = strength;
                     if (lowest == Property::PWeak)
-                    {
                         break;
-                    }
                 }
             }
         }
@@ -240,16 +229,13 @@ TreeEntry::PropertyIterator TreeEntry::propertyIterator() const
 QString TreeEntry::toRichTextForPrint() const
 {
     if (m_isCategory)
-    {
         return QString("");
-    }
 
     QString catString;
     const Q3ListViewItem* item = this;
     while ((item = item->parent()))
-    {
         catString = catString.prepend( dynamic_cast<const TreeEntry*>(item)->getName() + ": ");
-    }
+
     QString ret;
     ret += QString("<table width=\"100%\"><tr><td bgcolor=grey cellpadding=\"3\">"
             "&nbsp;<b>%1</b></td></tr><tr><td>"
@@ -257,11 +243,11 @@ QString TreeEntry::toRichTextForPrint() const
 
     PropertyIterator it = propertyIterator();
     Property* current;
-    while ( (current = it.current()) != 0 )
-    {
+    while ( (current = it.current()) != 0 ) {
         ++it;
         ret += current->toRichTextForPrint();
     }
+
     ret += "</table></td></tr></table<p>&nbsp;<p>";
     return ret;
 }
@@ -276,16 +262,12 @@ QString TreeEntry::toRichTextForPrint() const
 void TreeEntry::appendTextForExport(QTextStream& stream)
 {
     if (m_isCategory)
-    {
         return;
-    }
 
     QString catString;
     const Q3ListViewItem* item = this;
     while ((item = item->parent()))
-    {
         catString = catString.prepend( dynamic_cast<const TreeEntry*>(item)->getName() + ": ");
-    }
 
     stream << "--------------------------------------------------------------------------------\n";
     stream << catString + m_name << "\n";
@@ -294,8 +276,7 @@ void TreeEntry::appendTextForExport(QTextStream& stream)
 
     PropertyIterator it = propertyIterator();
     Property* current;
-    while ( (current = it.current()) != 0 )
-    {
+    while ((current = it.current()) != 0) {
         ++it;
         current->appendTextForExport(stream);
     }
@@ -312,25 +293,21 @@ void TreeEntry::appendTextForExport(QTextStream& stream)
 void TreeEntry::appendXML(QDomDocument& document, QDomNode& parent) const
 {
     QDomElement newElement;
-    if (m_isCategory)
-    {
+    if (m_isCategory) {
         newElement = document.createElement("category");
         newElement.setAttribute("wasOpen", isOpen());
         TreeEntry* child = dynamic_cast<TreeEntry*>(firstChild());
-        while(child)
-        {
+
+        while(child) {
             child->appendXML(document, newElement);
             child = dynamic_cast<TreeEntry*>(child->nextSibling());
         }
-    }
-    else
-    {
+    } else {
         newElement = document.createElement("entry");
 
         PropertyIterator it(m_properties);
         Property* property;
-        while ( (property = it.current()) != 0 )
-        {
+        while ( (property = it.current()) != 0 ) {
             ++it;
             property->appendXML(document, newElement);
         }
@@ -377,8 +354,7 @@ bool TreeEntry::acceptDrop(const QMimeSource* mime) const
 */
 void TreeEntry::dropped(QDropEvent *evt)
 {
-    if (evt->provides("application/x-qpamat"))
-    {
+    if (evt->provides("application/x-qpamat")) {
         evt->accept();
         QString xml = QString::fromUtf8(evt->encodedData("application/x-qpamat"));
         QDomDocument doc;
@@ -387,8 +363,7 @@ void TreeEntry::dropped(QDropEvent *evt)
 
         Q3ListViewItem* src = reinterpret_cast<TreeEntry*>(elem.attribute("memoryAddress").toLong());
 
-        if (src == this)
-        {
+        if (src == this) {
             qpamat->message(tr("Cannot dray to itself."));
             return;
         }
@@ -396,18 +371,12 @@ void TreeEntry::dropped(QDropEvent *evt)
         TreeEntry* item = m_isCategory ? this : dynamic_cast<TreeEntry*>(parent());
         TreeEntry* appended = 0;
         if (item)
-        {
             appended = appendFromXML(item, elem);
-        }
         else
-        {
             appended = appendFromXML(listView(), elem);
-        }
 
         if (!isOpen())
-        {
             setOpen(true);
-        }
 
         listView()->setSelected(appended, true);
         dynamic_cast<Tree*>(listView())->updatePasswordStrengthView();

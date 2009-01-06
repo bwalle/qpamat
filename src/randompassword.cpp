@@ -77,16 +77,13 @@ void RandomPassword::requestPassword()
     PasswordGenerator* passwordgen = 0;
     QString allowed = qpamat->set().readEntry("Security/AllowedCharacters");
     PasswordChecker* checker = 0;
-    try
-    {
+    try {
         checker = new HybridPasswordChecker(qpamat->set().readEntry("Security/DictionaryFile"));
         passwordgen = PasswordGeneratorFactory::getGenerator(
             qpamat->set().readEntry( "Security/PasswordGenerator" ),
             qpamat->set().readEntry( "Security/PasswordGenAdditional" )
         );
-    }
-    catch (const std::exception& exc)
-    {
+    } catch (const std::exception& exc) {
         QMessageBox::warning(m_parent, "QPaMaT",
                 tr("Failed to create a password checker or generator:\n\n%1\n\nAdjust the settings!")
                 .arg(exc.what()), QMessageBox::Ok, QMessageBox::NoButton);
@@ -96,29 +93,25 @@ void RandomPassword::requestPassword()
     }
 
     if (passwordgen->isSlow())
-    {
         QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
-    }
 
     bool ok = false;
     QString password;
-    for (int i = 0; !ok && i < 200; ++i)
-    {
-        try
-        {
+
+    for (int i = 0; !ok && i < 200; ++i) {
+
+        try {
             password = passwordgen->getPassword(
                 qpamat->set().readNumEntry("Security/Length"),
                 qpamat->set().readEntry("Security/AllowedCharacters")
             );
             double quality = checker->passwordQuality(password);
             ok = quality > qpamat->set().readDoubleEntry("StrongPasswordLimit");
-        }
-        catch (const std::exception& exc)
-        {
+
+        } catch (const std::exception& exc) {
             if (passwordgen->isSlow())
-            {
                 QApplication::restoreOverrideCursor();
-            }
+
             QMessageBox::warning(m_parent, "QPaMaT",
                 tr("<qt><nobr>An error occurred while generating the password:</nobr><br>%1</qt>")
                 .arg(exc.what()), QMessageBox::Ok, QMessageBox::NoButton);
@@ -127,27 +120,22 @@ void RandomPassword::requestPassword()
     }
 
     if (passwordgen->isSlow())
-    {
         QApplication::restoreOverrideCursor();
-    }
 
     ShowPasswordDialog::DialogType dialogType = m_insertEnabled
             ? ShowPasswordDialog::TRandomPasswordDlgInsert
             : ShowPasswordDialog::TRandomPasswordDlg;
 
     ShowPasswordDialog* dlg = new ShowPasswordDialog(m_parent, dialogType, "RandomPwDialog");
-    if (ok)
-    {
+    if (ok) {
         dlg->setPassword(password);
         connect(dlg, SIGNAL(insertPassword(const QString&)), SIGNAL(insertPassword(const QString&)));
         dlg->exec();
-    }
-    else
-    {
+    } else
         QMessageBox::information(m_parent, "QPaMaT", tr("<qt><nobr>Failed to create a random "
             "password with the current</nobr> generator and the current password checker. "
             "Adjust the settings!"), QMessageBox::Ok, QMessageBox::NoButton);
-    }
+
     delete dlg;
     delete passwordgen;
     delete checker;

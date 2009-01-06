@@ -78,7 +78,8 @@ ListBoxLabeledPict::ListBoxLabeledPict(const QPixmap& pixmap, const QString& tex
 */
 ListBoxLabeledPict::ListBoxLabeledPict(Q3ListBox* listbox, const QPixmap& pixmap,
             const QString& text, Q3ListBoxItem *after)
-    : Q3ListBoxItem(listbox, after), m_pixmap(pixmap)
+    : Q3ListBoxItem(listbox, after)
+    , m_pixmap(pixmap)
 {
     setText(text);
 }
@@ -102,8 +103,7 @@ void ListBoxLabeledPict::paint( QPainter *painter )
     int xPos, yPos;
 
     const QPixmap* pm = pixmap();
-    if ( pm && ! pm->isNull() )
-    {
+    if ( pm && ! pm->isNull() ) {
         xPos = ( itemWidth - pm->width() ) / 2;
         painter->drawPixmap( xPos, 4, *pm);
     }

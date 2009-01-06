@@ -107,16 +107,12 @@ void printVersion()
 */
 void parseCommandLine(int& argc, char**& argv)
 {
-    for (int i = 1; i < argc; ++i)
-    {
+    for (int i = 1; i < argc; ++i) {
         QString string = QString::fromLatin1(argv[i]);
-        if (string == "-h" || string == "--help" || string == "-help")
-        {
+        if (string == "-h" || string == "--help" || string == "-help") {
             printCommandlineOptions();
             std::exit(0);
-        }
-        else if (string == "v" || string == "--version" || string == "-version")
-        {
+        } else if (string == "v" || string == "--version" || string == "-version") {
             printVersion();
             std::exit(0);
         }
@@ -135,8 +131,7 @@ void getX11Version(QString& protocolVersion, QString& vendorVersion)
 #ifdef Q_WS_X11
     using X11::_XPrivDisplay;
     X11::Display* dpy = X11::XOpenDisplay(0);
-    if (dpy)
-    {
+    if (dpy) {
         protocolVersion = QString("%1.%2").arg(QString::number(ProtocolVersion (dpy))).
             arg(ProtocolRevision (dpy));
         vendorVersion = QString::number(VendorRelease (dpy));
@@ -161,11 +156,9 @@ int main(int argc, char** argv)
             qApp->applicationDirPath() + "/../share/qpamat/translations/"
     };
 
-    for (unsigned int i = 0; i < sizeof(dirs)/sizeof(dirs[0]); i++)
-    {
+    for (unsigned int i = 0; i < sizeof(dirs)/sizeof(dirs[0]); i++) {
         QDir test(dirs[i]);
-        if (test.exists())
-        {
+        if (test.exists()) {
             ttranslator.load(QString("qt_") + loc, dirs[i]);
             break;
         }
@@ -177,8 +170,7 @@ int main(int argc, char** argv)
     SingleApplication::init(QDir::homeDirPath(), "QPaMaT");
     boost::scoped_ptr<Qpamat> qp;
 
-    try
-    {
+    try {
         SingleApplication::startup();
         SingleApplication::registerStandardExitHandlers();
 
@@ -196,22 +188,16 @@ int main(int argc, char** argv)
         QObject::connect(qpamat, SIGNAL(quit()), &app, SLOT(quit()));
         if (!(qpamat->set().readBoolEntry("Presentation/StartHidden")
                         && qpamat->set().readBoolEntry("Presentation/SystemTrayIcon")))
-
-        {
             qpamat->show();
-        }
 
         return app.exec();
-    }
-    catch (const std::bad_alloc& e)
-    {
+
+    } catch (const std::bad_alloc& e) {
         UNUSED(e);
         QMessageBox::warning(0, QObject::tr("QPaMaT"),
             QObject::tr("No more memory available. The application\nwill be closed."),
             QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
-    }
-    catch (const std::exception& e)
-    {
+    } catch (const std::exception& e) {
         QMessageBox::warning(0, QObject::tr("QPaMaT"),
             QObject::tr("An unknown error occurred:\n%1\nThe application will be closed.")
             .arg(e.what()),

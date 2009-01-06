@@ -55,7 +55,8 @@
                        QString::null if a new password should be entered.
 */
 NewPasswordDialog::NewPasswordDialog(QWidget* parent, const QString& oldPassword)
-    : QDialog(parent), m_oldPassword(oldPassword)
+    : QDialog(parent)
+    , m_oldPassword(oldPassword)
 {
     setCaption("QPaMaT");
 
@@ -72,10 +73,8 @@ NewPasswordDialog::NewPasswordDialog(QWidget* parent, const QString& oldPassword
     connect(m_firstPasswordEdit, SIGNAL(textChanged(const QString&)), SLOT(checkOkEnabled()));
     connect(m_secondPasswordEdit, SIGNAL(textChanged(const QString&)), SLOT(checkOkEnabled()));
 
-    if (!qpamat->set().readBoolEntry("Password/NoGrabbing"))
-    {
-        if (!m_oldPassword.isNull())
-        {
+    if (!qpamat->set().readBoolEntry("Password/NoGrabbing")) {
+        if (!m_oldPassword.isNull()) {
             connect(m_oldPasswordEdit, SIGNAL(gotFocus()), SLOT(grabOldPassword()));
             connect(m_oldPasswordEdit, SIGNAL(lostFocus()), SLOT(release()));
         }
@@ -93,8 +92,7 @@ NewPasswordDialog::NewPasswordDialog(QWidget* parent, const QString& oldPassword
 void NewPasswordDialog::createAndLayout()
 {
     // text fields
-    if (!m_oldPassword.isNull())
-    {
+    if (!m_oldPassword.isNull()) {
         m_oldPasswordEdit = new FocusLineEdit(this);
         m_oldPasswordEdit->setEchoMode(QLineEdit::Password);
         m_oldPasswordEdit->setMinimumWidth(250);
@@ -119,8 +117,7 @@ void NewPasswordDialog::createAndLayout()
     // labels
     QLabel* label = new QLabel((m_oldPassword.isNull() ? newText : changeText), this);
     QLabel* old = 0;
-    if (!m_oldPassword.isNull())
-    {
+    if (!m_oldPassword.isNull()) {
         old = new QLabel(tr("&Old password:"), this);
         old->setBuddy(m_oldPasswordEdit);
     }
@@ -146,8 +143,7 @@ void NewPasswordDialog::createAndLayout()
 
 
     int i = 0;
-    if (!m_oldPassword.isNull())
-    {
+    if (!m_oldPassword.isNull()) {
         textfields->addWidget(old, 0, 0);
         textfields->addWidget(m_oldPasswordEdit, 0, 1);
         ++i;
@@ -171,16 +167,15 @@ void NewPasswordDialog::createAndLayout()
 */
 void NewPasswordDialog::accept()
 {
-    if (m_secondPasswordEdit->text()!= m_secondPasswordEdit->text())
-    {
+    if (m_secondPasswordEdit->text()!= m_secondPasswordEdit->text()) {
         QMessageBox::warning(this, "QPaMaT",
                "<qt>"+tr("The confirmation passphrase was not the same as the first one. "
                "Re-enter the confirmation or both.")+"</qt>",
                QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
         return;
     }
-    if (!m_oldPassword.isNull() && m_oldPassword != m_oldPasswordEdit->text())
-    {
+
+    if (!m_oldPassword.isNull() && m_oldPassword != m_oldPasswordEdit->text()) {
         QMessageBox::warning(this, "QPaMaT",
                "<qt>"+tr("The old password was incorrect. Without the old password, "
                "the password cannot be changed.")+"</qt>",
@@ -194,13 +189,10 @@ void NewPasswordDialog::accept()
     const QString& password = m_secondPasswordEdit->text();
     bool ok;
 
-    try
-    {
+    try {
         double quality = checker.passwordQuality(password);
         ok = quality > qpamat->set().readDoubleEntry("Security/StrongPasswordLimit");
-    }
-    catch (const std::exception& exc)
-    {
+    } catch (const std::exception& exc) {
         QMessageBox::warning(this, "QPaMaT",
             ("<qt>"+tr("An error occurred while checking the password:<br>%1")+"</qt>").
             arg(exc.what()),
@@ -208,8 +200,7 @@ void NewPasswordDialog::accept()
         return;
     }
 
-    if (!ok)
-    {
+    if (!ok) {
         QMessageBox::warning(this, "QPaMaT",
                "<qt>"+tr("<nobr>The passphrase is too simple. See the</nobr> Security settings "
                "for details about the conditions a valid password must met.")+"</qt>",
@@ -259,9 +250,7 @@ void NewPasswordDialog::release()
 {
     QWidget* widget = keyboardGrabber();
     if (widget)
-    {
         widget->releaseKeyboard();
-    }
 }
 
 
@@ -283,13 +272,9 @@ void NewPasswordDialog::checkOkEnabled() const
 {
     if (m_firstPasswordEdit->hasAcceptableInput() && m_secondPasswordEdit->hasAcceptableInput()
             && m_firstPasswordEdit->text().length() == m_secondPasswordEdit->text().length())
-    {
         m_okButton->setEnabled(true);
-    }
     else
-    {
         m_okButton->setEnabled(false);
-    }
 }
 
 #ifndef DOXYGEN
@@ -331,13 +316,9 @@ PasswordValidator::State PasswordValidator::validate(QString& input, int& pos) c
     UNUSED(pos);
 
     if (input.length() < 6)
-    {
         return QValidator::Intermediate;
-    }
     else
-    {
         return QValidator::Acceptable;
-    }
 }
 
 #endif // DOXYGEN

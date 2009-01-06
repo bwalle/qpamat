@@ -28,14 +28,20 @@
 class ReadWriteException : public std::runtime_error
 {
     public:
-        enum Severity
-        {
-            CRITICAL, WARNING
+        enum Severity {
+            CRITICAL,
+            WARNING
         };
-        enum Category
-        {
-            CWrongPassword, CInvalidData, CIOError, CSmartcardError, CNoAlgorithm,
-            CConfigurationError, COtherError, CAbort
+
+        enum Category {
+            CWrongPassword,
+            CInvalidData,
+            CIOError,
+            CSmartcardError,
+            CNoAlgorithm,
+            CConfigurationError,
+            COtherError,
+            CAbort
         };
 
     public:

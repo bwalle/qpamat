@@ -57,22 +57,14 @@ CardPINValidator::State CardPINValidator::validate(QString& input, int& pos) con
     // invalid characters
     QRegExp hex("^[0-9a-fA-F]*$");
     if (!hex.exactMatch(input))
-    {
         return Invalid;
-    }
 
     if (input.length() < 6)
-    {
         return Intermediate;
-    }
     else if (input.length() == 6)
-    {
         return Acceptable;
-    }
     else
-    {
         return Invalid;
-    }
 }
 
 // :maxLineLen=100:

@@ -143,20 +143,16 @@ void ListBoxDialog::addPage(ListBoxDialogPage* widget, const QPixmap& pixmap, co
 */
 bool ListBoxDialog::event(QEvent* e)
 {
-    if (e->type() == QEvent::Polish)
-    {
+    if (e->type() == QEvent::Polish) {
         QWidget* w = m_widgetStack->widget(0);
-        if (w)
-        {
+        if (w) {
             aboutToShowHandler(w);
             m_listBox->setSelected(0, true);
         }
         return true;
     }
     else
-    {
         return QDialog::event(e);
-    }
 }
 
 
@@ -167,10 +163,8 @@ bool ListBoxDialog::event(QEvent* e)
 */
 void ListBoxDialog::aboutToShowHandler(QWidget* widget)
 {
-    if (ListBoxDialogPage* t = static_cast<ListBoxDialogPage*>(widget))
-    {
-        if ( m_filledTabs.find(t) == m_filledTabs.end() )
-        {
+    if (ListBoxDialogPage* t = static_cast<ListBoxDialogPage*>(widget)) {
+        if ( m_filledTabs.find(t) == m_filledTabs.end() ) {
             t->fillSettings();
             m_filledTabs.insert(t);
         }
@@ -186,9 +180,7 @@ void ListBoxDialog::accept()
 {
     typedef std::set<ListBoxDialogPage*>::iterator ListBoxDlgPgSetIt;
     for (ListBoxDlgPgSetIt it = m_filledTabs.begin(); it != m_filledTabs.end(); ++it)
-    {
         (*it)->applySettings();
-    }
     QDialog::accept();
 }
 

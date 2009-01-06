@@ -68,22 +68,17 @@ HybridPasswordChecker::HybridPasswordChecker(const QString& dictFileName)
             throw (PasswordCheckException)
 {
     if (!QFile::exists(dictFileName))
-    {
         throw PasswordCheckException( QString("The file %1 does not exist.").arg(
             dictFileName).latin1());
-    }
 
     // do we need to re-read
-    if (m_words.isEmpty() || (m_fileName != dictFileName))
-    {
+    if (m_words.isEmpty() || (m_fileName != dictFileName)) {
         qDebug() << CURRENT_FUNCTION << "!!!! Re-reading the file !!!!!";
 
         QFile file(dictFileName);
         if (!file.open(QIODevice::ReadOnly))
-        {
             throw PasswordCheckException( QString("Could not open the file %1.").arg(
                 dictFileName).latin1() );
-        }
 
         // read in memory
         QByteArray bytes = file.readAll();
@@ -93,28 +88,20 @@ HybridPasswordChecker::HybridPasswordChecker(const QString& dictFileName)
         // check the number of lines to increase speed
         uint numberOfLines = 0;
         for (int i = 0; i < bytes.size(); ++i)
-        {
             if (bytes[i] == '\n')
-            {
                 ++numberOfLines;
-            }
-        }
 
         m_words.reserve(numberOfLines+5);
         QTextStream fileStream(bytes, QIODevice::ReadOnly);
         int oldLength = 0;
         int length = 0;
         int index = 0;
-        while (!fileStream.atEnd())
-        {
+        while (!fileStream.atEnd()) {
             QString text = fileStream.readLine();
             length = text.length();
-            if (length != oldLength)
-            {
+            if (length != oldLength) {
                 if (length == 1)
-                {
                     break;
-                }
                 m_lengthBeginMap.insert(length, index);
                 oldLength = length;
             }
@@ -141,9 +128,7 @@ double HybridPasswordChecker::passwordQuality(const QString& password) throw ()
     uint L = rest.length();
     uint W = getNumberOfWordsWithSameOrShorterLength(longest);
     if (W == 0)
-    {
         W = 1;
-    }
     uint P = !longest.isNull() ? (password.length() - longest.length() + 1 ) : password.length();
 
     return std::pow(double(Z), double(L)) * W * P / CRACKS_PER_SECOND / 86400;
@@ -160,22 +145,17 @@ QString HybridPasswordChecker::findLongestWord(const QString& password) const
     int initialPosition = 0;
     int pwLength = password.length();
     while (!m_lengthBeginMap.contains(pwLength) && pwLength >= 0)
-    {
         --pwLength;
-    }
+
     if (pwLength < 0)
-    {
         return "";
-    }
     initialPosition = m_lengthBeginMap[pwLength];
 
-    for (StringVector::iterator it = m_words.begin() + initialPosition; it != m_words.end(); ++it)
-    {
+    for (StringVector::iterator it = m_words.begin() + initialPosition; it != m_words.end(); ++it) {
         if (password.contains(*it, false))
-        {
             return *it;
-        }
     }
+
     return "";
 }
 
@@ -190,13 +170,11 @@ int HybridPasswordChecker::getNumberOfWordsWithSameOrShorterLength(const QString
 {
     int len = word.length();
     while (!m_lengthBeginMap.contains(len) && len >= 0)
-    {
         --len;
-    }
+
     if (len < 0)
-    {
         return 0;
-    }
+
     return m_lengthBeginMap[len];
 }
 
@@ -215,68 +193,42 @@ int HybridPasswordChecker::findNumerOfCharsInClass(const QString& chars) const
     bool hasDigits = false, hasLowercase = false, hasUppercase = false, hasUmlauts = false;
     bool hasSpecial = false, hasOther = false;
 
-    for (int i = 0; i < chars.length(); ++i)
-    {
+    for (int i = 0; i < chars.length(); ++i) {
         QChar c = chars[i];
 	int l1 = c.latin1() & 0xff;
+
         if (c.latin1() == 0)
-        {
             return 255;
-        }
         else if (!hasDigits && ((c >= '0' && c <= '9') || c == ' '))
-        {
             hasDigits = true;
-        }
         else if (!hasLowercase && c >= 'a' && c <= 'z')
-        {
             hasLowercase = true;
-        }
         else if (!hasUppercase && c >= 'A' && c <= 'Z')
-        {
             hasUppercase = true;
-        }
         else if (!hasSpecial && (c == ',' || c == '.' || c == '-' || c == ';' || c == ':'
                 || c == '_' || c == '=' || c == '(' || c == ')' || c == '*' || c == '+' || c == '?'
                 || c == '"' || c == '$' || c == '@' ||c == '#' || c == '%' || c == '&' || c == '/'
                 || c == '\\' || c == '{' || c == '}' || c == '[' || c == ']' || c == '!' || c == '^'
                 || c == '?' || c == '\'' || c == '?' || c == '`' || c == '~'))
-        {
             hasSpecial = true;
-        }
         else if (!hasUmlauts && ((l1 >= 0xC0 && l1 <= 0xD6) || (l1 >= 0xD8 && l1 <= 0xFF)))
-        {
             hasUmlauts = true;
-        }
         else
-        {
             hasOther = true;
-        }
     }
 
     if (hasDigits)
-    {
         ret += 11;
-    }
     if (hasLowercase)
-    {
         ret += 26;
-    }
     if (hasUppercase)
-    {
         ret += 26;
-    }
     if (hasUmlauts)
-    {
         ret += 13;
-    }
     if (hasSpecial)
-    {
         ret += 30;
-    }
     if (hasOther)
-    {
         ret += 118;
-    }
 
     return ret;
 }

@@ -84,12 +84,13 @@ const int     PasswordGeneratorFactory::DEFAULT_LENGTH = 8;
 PasswordGenerator* PasswordGeneratorFactory::getGenerator(PasswordGeneratorType type,
     const QString& additionalArgument) throw (std::invalid_argument)
 {
-    switch (type)
-    {
+    switch (type) {
         case TRandomPasswordGenerator:
             return new RandomPasswordGenerator();
+
         case TExternalPasswordGenerator:
             return new ExternalPasswordGenerator(additionalArgument);
+
         default:
             throw std::invalid_argument("PasswordGeneratorFactory::getChecker: "
                 "type is out of range");
@@ -125,18 +126,12 @@ PasswordGeneratorFactory::PasswordGeneratorType PasswordGeneratorFactory::fromSt
 {
     type = type.upper();
     if (type == "RANDOM")
-    {
         return TRandomPasswordGenerator;
-    }
     else if (type == "EXTERNAL")
-    {
         return TExternalPasswordGenerator;
-    }
     else
-    {
         throw std::invalid_argument(QString("PasswordGeneratorFactory::fromString: Type '%1' "
             "is not valid.").arg(type).latin1());
-    }
 }
 
 
@@ -150,12 +145,13 @@ PasswordGeneratorFactory::PasswordGeneratorType PasswordGeneratorFactory::fromSt
 QString PasswordGeneratorFactory::toString(PasswordGeneratorType type)
             throw (std::invalid_argument)
 {
-    switch (type)
-    {
+    switch (type) {
         case TRandomPasswordGenerator:
             return "RANDOM";
+
         case TExternalPasswordGenerator:
             return "EXTERNAL";
+
         default:
             throw std::invalid_argument("PasswordGeneratorFactory::toString: type is out of range");
     }

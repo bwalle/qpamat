@@ -63,29 +63,27 @@ QString ExternalPasswordGenerator::getPassword(uint length, const QString&)
         throw (PasswordGenerateException)
 {
     if (m_applicationName.isNull())
-    {
         throw PasswordGenerateException("In ExternalPasswordGenerator::getPassword: No program set.");
-    }
+
     Q3Process* proc = new Q3Process(0);
     proc->setArguments(QStringList::split(" ", m_applicationName));
     proc->addArgument(QString::number(length));
-    if (!proc->start())
-    {
+    if (!proc->start()) {
         delete proc;
         throw PasswordGenerateException( QString("Error while launching the external program \"%1\"")
             .arg(m_applicationName).latin1() );
     }
+
     QTimer::singleShot( 5*1000, proc, SLOT(kill()) );
     while (proc->isRunning())
-    {
         qApp->processEvents(QEventLoop::ExcludeUserInput | QEventLoop::WaitForMore);
-    }
-    if (!proc->normalExit())
-    {
+
+    if (!proc->normalExit()) {
         delete proc;
         throw PasswordGenerateException( QString("Program exited not normally (exitcode %1)")
             .arg(QString::number(proc->exitStatus())).latin1() );
     }
+
     QString returnvalue = proc->readLineStdout();
     delete proc;
     return returnvalue;

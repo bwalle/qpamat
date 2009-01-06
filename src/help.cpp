@@ -58,15 +58,10 @@ void Help::showHelp()
     QString loc = QString(QTextCodec::locale()).section("_", 0, 0);
 
     if (QFile::exists(base + "/" + loc + "/index.html"))
-    {
         openURL(qApp->mainWidget(), "file:///" + base + "/" + loc + "/index.html");
-    }
     else if (QFile::exists(base + "/en/index.html"))
-    {
         openURL(qApp->mainWidget(), "file:///" + base + "/en/index.html");
-    }
-    else
-    {
+    else {
         QMessageBox::critical(qApp->mainWidget(), tr("QPaMaT"),
             tr("The QPaMaT documentation is not installed."), QMessageBox::Ok,
             QMessageBox::NoButton );
@@ -82,8 +77,7 @@ void Help::showHelp()
 */
 void Help::openURL(QWidget* parent, const QString& url)
 {
-    if (!QDesktopServices::openUrl(QUrl(url)))
-    {
+    if (!QDesktopServices::openUrl(QUrl(url))) {
         QMessageBox::critical(parent, "QPaMaT",
             tr("<qt><p>Failed to open the link <tt>%1</tt> in "
                 "the specified web browser.</p></qt>").arg(url),

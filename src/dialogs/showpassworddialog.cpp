@@ -95,9 +95,7 @@ ShowPasswordDialog::ShowPasswordDialog(QWidget* parent, DialogType type, const c
 
     // layout elements
     if (type == TRandomPasswordDlgInsert)
-    {
         insertButton = dialogButtons->addButton(tr("&Insert"), QDialogButtonBox::ActionRole);
-    }
 
     layout->addWidget(label);
     layout->addWidget(m_passwordEdit);
@@ -108,9 +106,7 @@ ShowPasswordDialog::ShowPasswordDialog(QWidget* parent, DialogType type, const c
     // communication
     connect(dialogButtons->button(QDialogButtonBox::Close), SIGNAL(clicked()), SLOT(reject()));
     if (insertButton)
-    {
         connect(insertButton, SIGNAL(clicked()), SLOT(insertButtonHandler()));
-    }
 }
 
 

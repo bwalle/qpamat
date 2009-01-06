@@ -130,9 +130,7 @@ MemoryCard::MemoryCard(QString library) throw (NoSuchLibraryException)
     : m_library(library), m_initialized(false), m_waitTime(0)
 {
     if (! m_library.load())
-    {
         throw NoSuchLibraryException("The library \""+ library + "\" could not be loaded." );
-    }
 
     // initialize the functions ...
     m_CT_init_function = (CT_init_ptr)m_library.resolve("CT_init");
@@ -140,20 +138,14 @@ MemoryCard::MemoryCard(QString library) throw (NoSuchLibraryException)
     m_CT_close_function = (CT_close_ptr)m_library.resolve("CT_close");
 
     if (!m_CT_init_function)
-    {
         throw NoSuchLibraryException("\""+ library +"\" is not a CT-API driver. It lacks the "
             " CT_init() function.");
-    }
     if (!m_CT_data_function)
-    {
         throw NoSuchLibraryException("\""+ library +"\" is not a CT-API driver. It lacks the "
             " CT_data() function.");
-    }
     if (!m_CT_close_function)
-    {
         throw NoSuchLibraryException("\""+ library +"\" is not a CT-API driver. It lacks the "
             " CT_close() function.");
-    }
 }
 
 
@@ -163,18 +155,12 @@ MemoryCard::MemoryCard(QString library) throw (NoSuchLibraryException)
 */
 MemoryCard::~MemoryCard()
 {
-    if (m_initialized)
-    {
-        try
-        {
+    if (m_initialized) {
+        try {
             close();
-        }
-        catch (const std::exception& ex)
-        {
+        } catch (const std::exception& ex) {
             qDebug() << CURRENT_FUNCTION << "Caught exception in destructor: %s" << ex.what();
-        }
-        catch (...)
-        {
+        } catch (...) {
             qDebug() << CURRENT_FUNCTION << "Caught general exception in destructor.";
         }
     }
@@ -195,15 +181,11 @@ MemoryCard::~MemoryCard()
 void MemoryCard::init(int portNumber) throw (CardException)
 {
     if (m_initialized)
-    {
         qWarning("init() before close()");
-    }
 
     char ret = m_CT_init_function(m_lastNumber, portNumber);
     if (ret != OK)
-    {
         throw CardException(CardException::ErrorCode(ret));
-    }
 
     m_portNumber = portNumber;
     m_cardTerminalNumber = m_lastNumber++;
@@ -222,9 +204,8 @@ void MemoryCard::close() throw (CardException, NotInitializedException)
 
     char ret = m_CT_close_function(m_cardTerminalNumber);
     if (ret != OK)
-    {
         throw CardException(CardException::ErrorCode(ret));
-    }
+
     m_initialized = false;
 }
 
@@ -271,17 +252,19 @@ MemoryCard::CardType MemoryCard::getType() const throw (CardException, NotInitia
         REQUEST_ICC, &lenr, response);
 
     if (ret != OK)
-    {
         throw CardException(CardException::ErrorCode(ret));
-    }
 
     ushort sw1sw2 = (response[0] << 8) + response[1];
 
-    switch (sw1sw2)
-    {
-        case 0x9000: return TMemoryCard;
-        case 0x9001: return TProcessorCard;
-        default:     return OtherResponse;
+    switch (sw1sw2) {
+        case 0x9000:
+            return TMemoryCard;
+
+        case 0x9001:
+            return TProcessorCard;
+
+        default:
+            return OtherResponse;
     }
 }
 
@@ -314,63 +297,51 @@ void MemoryCard::resetCard(int* capacity, ProtocolType* protocolType) const
         RESET_CT, &lenr, response);
 
     if (ret != OK)
-    {
         throw CardException(CardException::ErrorCode(ret));
-    }
 
 
-    if (lenr < 4)
-    {
-        qDebug("Return length is not 2, this is invalid. It was %d.\n", lenr);
+    if (lenr < 4) {
+        qDebug() << "Return length is not 2, this is invalid. It was " << lenr << ".";
         if (capacity != 0)
-        {
             *capacity = 0;
-        }
         if (protocolType != 0)
-        {
             *protocolType = TOther;
-        }
     }
 
 
     byte h1 =  response[0]; // protocol type
     byte protocol = (h1 >> 4) & 0x0F;
 
-    if (protocolType != NULL)
-    {
+    if (protocolType != NULL) {
         if (protocol < 0x08)
-        {
              *protocolType = TISOProtocol;
-        }
-        else
-        {
-            switch (protocol)
-            {
+        else {
+            switch (protocol) {
                 case 0x08:
                     *protocolType = TI2C;
                     break;
+
                 case 0x09:
                     *protocolType = T2Wire;
                     break;
+
                 case 0x0A:
                     *protocolType = T3Wire;
                     break;
+
                 default:
                     *protocolType = TOther;
                     break;
             }
-        };
+        }
     }
 
-    if (capacity != 0)
-    {
+    if (capacity != 0) {
         byte h2 = response[1]; // size
 
         int number = ((h2 >> 3) & 0x0F);
         if (number > 0)
-        {
             number = 1 << (number + 6); // 2^{number+6}
-        }
         int blocksize = 1 << (h2 & 0x07);
         *capacity = number * blocksize / 8;
     }
@@ -406,31 +377,21 @@ void MemoryCard::getStatusInformation(QString* manufacturer, QString* terminalTy
         REQUEST_STATUS, &lenr, response);
 
     if (ret != OK)
-    {
         throw CardException(CardException::ErrorCode(ret));
-    }
 
     QString resp = QString::fromLatin1(reinterpret_cast<char*>(response), lenr);
 
     if (manufacturer != 0)
-    {
         *manufacturer = resp.left(5);
-    }
 
     if (terminalType != 0)
-    {
         *terminalType = resp.mid(5, 5);
-    }
 
     if (software != 0)
-    {
         *software = resp.mid(10, 5);
-    }
 
     if (discrData != 0)
-    {
         *discrData = resp.right(lenr - 15);
-    }
 }
 
 
@@ -459,9 +420,7 @@ bool MemoryCard::selectFile() const throw (CardException, NotInitializedExceptio
         SELECT_FILE, &lenr, response);
 
     if (ret != OK)
-    {
         throw CardException(CardException::ErrorCode(ret));
-    }
 
     ushort sw1sw2 = (response[0] << 8) + response[1];
 
@@ -493,8 +452,7 @@ ByteVector MemoryCard::read(ushort offset, ushort length)
     int stillToRead = length;
     const int max = 255;
 
-    while (stillToRead > 0)
-    {
+    while (stillToRead > 0) {
         int dataToRead = std::min(stillToRead, max);
 
         read_binary[2] = (offset + dataOffset) >> 8;
@@ -511,16 +469,12 @@ ByteVector MemoryCard::read(ushort offset, ushort length)
             read_binary, &lenr, response);
 
         if (ret != OK)
-        {
             throw CardException(CardException::ErrorCode(ret));
-        }
 
         ushort sw1sw2 = (response[lenr-2] << 8) + response[lenr-1];
 
         if (sw1sw2 != 0x9000)
-        {
             throw CardException(CardException::ErrorCode(sw1sw2));
-        }
 
         readBytes += lenr - 2;
         qCopy(response, response + lenr - 2, vec.begin() + dataOffset);
@@ -532,9 +486,7 @@ ByteVector MemoryCard::read(ushort offset, ushort length)
     // truncate if not all could be read
     vec.resize(readBytes);
     if (readBytes != length)
-    {
         throw CardException(CardException::EndReached);
-    }
 
     return vec;
 }
@@ -560,8 +512,7 @@ void MemoryCard::write(ushort offset, const ByteVector& data)
     update_binary[0] = 0x00; // CLA
     update_binary[1] = 0xD6; // INS
 
-    while (len > 0)
-    {
+    while (len > 0) {
         int written_bytes = std::min(len, max);
 
         update_binary[2] = (offset + dataOffset) >> 8; // P1
@@ -582,16 +533,14 @@ void MemoryCard::write(ushort offset, const ByteVector& data)
         char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, written_bytes+5,
             update_binary, &lenr, response);
 
-        if (ret != OK)
-        {
+        if (ret != OK) {
             qDebug() << CURRENT_FUNCTION << "Throwing exception with error code" << ret;
             throw CardException(CardException::ErrorCode(ret));
         }
 
         ushort sw1sw2 = (response[lenr-2] << 8) + response[lenr-1];
 
-        if (sw1sw2 != 0x9000)
-        {
+        if (sw1sw2 != 0x9000) {
             qDebug() << CURRENT_FUNCTION << "Throwing card exception with error code" << sw1sw2;
             throw CardException(CardException::ErrorCode(sw1sw2));
         }
@@ -638,9 +587,7 @@ void MemoryCard::verify(const QString& pin) const
         VERIFY, &lenr, response);
 
     if (ret != OK)
-    {
         throw CardException(CardException::ErrorCode(ret));
-    }
 
     ushort sw1sw2 = (response[0] << 8) + response[1];
 
@@ -648,16 +595,12 @@ void MemoryCard::verify(const QString& pin) const
 
     if (sw1sw2 != 0x9000)
     {
-        if (sw1sw2 >= 0x63C0 && sw1sw2 <= 0x63CF)
-        {
+        if (sw1sw2 >= 0x63C0 && sw1sw2 <= 0x63CF) {
             CardException ex(CardException::WrongVerification);
             ex.setRetryNumber( sw1sw2 & 0x000F );
             throw ex;
-        }
-        else
-        {
+        } else
             throw CardException(CardException::ErrorCode(sw1sw2));
-        }
     }
 }
 
@@ -699,26 +642,19 @@ void MemoryCard::changeVerificationData(const QString& oldPin, const QString& ne
         VERIFY, &lenr, response);
 
     if (ret != OK)
-    {
         throw CardException(CardException::ErrorCode(ret));
-    }
 
     ushort sw1sw2 = (response[0] << 8) + response[1];
 
     qDebug() << CURRENT_FUNCTION << "Verfiy repsonse %X" << sw1sw2;
 
-    if (sw1sw2 != 0x9000)
-    {
-        if (sw1sw2 >= 0x63C0 && sw1sw2 <= 0x63CF)
-        {
+    if (sw1sw2 != 0x9000) {
+        if (sw1sw2 >= 0x63C0 && sw1sw2 <= 0x63CF) {
             CardException ex(CardException::WrongVerification);
             ex.setRetryNumber( sw1sw2 & 0x000F );
             throw ex;
-        }
-        else
-        {
+        } else
             throw CardException(CardException::ErrorCode(sw1sw2));
-        }
     }
 }
 
@@ -734,25 +670,18 @@ void MemoryCard::changeVerificationData(const QString& oldPin, const QString& ne
 void MemoryCard::createPIN(QString pin, byte* pinBytes) const throw (std::invalid_argument)
 {
     if (pin.length() > 6)
-    {
         throw std::invalid_argument("Length of PIN must be less than characters");
-    }
 
     // make six characters out of the PIN
     while (pin.length() != 6)
-    {
         pin.append('F');
-    }
 
     bool ok;
-    for (int i = 0; i < 3; ++i)
-    {
+    for (int i = 0; i < 3; ++i) {
         pinBytes[i] = pin.mid(2*i, 2).toShort(&ok, 16);
         if (!ok)
-        {
             throw std::invalid_argument("The PIN string contains wrong characteds that "
                 "don't represent a hexadecimal number.");
-        }
     }
 }
 
@@ -765,10 +694,8 @@ void MemoryCard::checkInitialzed(const QString& functionName) const
     throw (NotInitializedException)
 {
     if (!m_initialized)
-    {
         throw NotInitializedException("The function " + functionName + " was called even though "
             "the class was not initalized.");
-    }
 }
 
 // :maxLineLen=100:

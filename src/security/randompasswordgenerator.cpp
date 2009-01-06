@@ -55,26 +55,20 @@ QString RandomPasswordGenerator::getPassword(uint length, const QString& pAllowe
     bool allAllowed = allowedChars.isNull();
 
     // build the list of allowed characters
-    if (!allAllowed)
-    {
+    if (!allAllowed) {
         allowedChars.replace("a-z", "abcdefghijklmnopqrstuvwxzy");
         allowedChars.replace("A-Z", "ABCDEFGHIJKLMNOPQRSTUVWXZY");
         allowedChars.replace("0-9", "0123456789");
     }
 
-    while (ret.length() < (int)length)
-    {
+    while (ret.length() < (int)length) {
         if (RAND_bytes(buffer, 1) == 0)
-        {
             throw PasswordGenerateException("The object was not seeded so I cannot generate a "
                 "random password");
-        }
         char c = char(buffer[0]);
 
         if (allowedChars.contains(c))
-        {
             ret += c;
-        }
     }
 
     return ret;

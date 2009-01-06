@@ -26,9 +26,10 @@ class ShowPasswordDialog : public QDialog
     Q_OBJECT
 
     public:
-        enum DialogType
-        {
-            TRandomPasswordDlg, TRandomPasswordDlgInsert, TNormalPasswordDlg
+        enum DialogType {
+            TRandomPasswordDlg,
+            TRandomPasswordDlgInsert,
+            TNormalPasswordDlg
         };
 
     public:

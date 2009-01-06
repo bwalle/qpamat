@@ -113,8 +113,7 @@ void RightPanel::itemDeletedHandler(int item)
 {
     m_listView->updateView();
     int numberOfChilds = m_listView->childCount();
-    if (numberOfChilds == 0)
-    {
+    if (numberOfChilds == 0) {
         m_southPanel->clear();
         return;
     }
@@ -123,15 +122,11 @@ void RightPanel::itemDeletedHandler(int item)
 
     // if the last one was deleted, select the previous one
     if (item == numberOfChilds)
-    {
         --item;
-    }
 
     Q3ListViewItem* it = m_listView->firstChild();
     for (int i = 0; i < item; ++i)
-    {
         it = it->nextSibling();
-    }
 
     m_listView->setSelected(it, true);
 }
@@ -159,9 +154,7 @@ void RightPanel::setItem(Q3ListViewItem* item)
     m_currentItem = dynamic_cast<TreeEntry*>(item);
 
     if (m_currentItem == 0)
-    {
         return;
-    }
 
     m_listView->setItem(m_currentItem);
 
@@ -192,9 +185,7 @@ void RightPanel::selectionChangeHandler(Q3ListViewItem* item)
 void RightPanel::deleteCurrent()
 {
     if (isFocusInside())
-    {
         m_listView->deleteCurrent();
-    }
 }
 
 
@@ -204,9 +195,7 @@ void RightPanel::deleteCurrent()
 void RightPanel::insertAtCurrentPos()
 {
     if (isFocusInside())
-    {
         m_listView->insertAtCurrentPos();
-    }
 }
 
 

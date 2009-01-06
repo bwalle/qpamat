@@ -81,7 +81,8 @@
     \param parent the parent
 */
 SouthPanel::SouthPanel(QWidget* parent)
-    : Q3Frame(parent), m_lastStrength(Property::PUndefined)
+    : Q3Frame(parent)
+    , m_lastStrength(Property::PUndefined)
 {
     QHBoxLayout* hLayout = new QHBoxLayout(this, 0, 10, "SouthPanel-QHBoxLayout");
     Q3GroupBox* group = new Q3GroupBox(2, Qt::Horizontal, tr("&Properties"), this, "SouthPanel-GroupBox");
@@ -192,8 +193,7 @@ void SouthPanel::setItem (Property* property)
 {
     clear();
 
-    if (property != 0)
-    {
+    if (property != 0) {
         blockSignals(true);
         m_typeCombo->setCurrentItem(property->getType());
         m_valueLineEdit->setText(property->getValue());
@@ -201,9 +201,7 @@ void SouthPanel::setItem (Property* property)
         blockSignals(false);
         m_oldComboValue = property->getType();
         if (property->isHidden())
-        {
             m_valueLineEdit->setEchoMode(QLineEdit::Password);
-        }
         insertAutoText();
     }
     m_currentProperty = property;
@@ -219,29 +217,27 @@ void SouthPanel::setItem (Property* property)
 */
 void SouthPanel::updateIndicatorLabel(bool recompute)
 {
-    if (m_currentProperty && m_currentProperty->getType() == Property::PASSWORD)
-    {
-        try
-        {
+    if (m_currentProperty && m_currentProperty->getType() == Property::PASSWORD) {
+        try {
             if (recompute)
-            {
                 m_currentProperty->updatePasswordStrength();
-            }
-            if (m_currentProperty->getPasswordStrength() != m_lastStrength)
-            {
+
+            if (m_currentProperty->getPasswordStrength() != m_lastStrength) {
                 emit passwordStrengthUpdated();
                 m_lastStrength = m_currentProperty->getPasswordStrength();
-                switch (m_lastStrength)
-                {
+                switch (m_lastStrength) {
                     case Property::PWeak:
                         m_indicatorLabel->setPixmap(QPixmap(":/images/traffic_red_22.png"));
                         break;
+
                     case Property::PAcceptable:
                         m_indicatorLabel->setPixmap(QPixmap(":/images/traffic_yellow_22.png"));
                         break;
+
                     case Property::PStrong:
                         m_indicatorLabel->setPixmap(QPixmap(":/images/traffic_green_22.png"));
                         break;
+
                     case Property::PUndefined:
                         m_indicatorLabel->setPixmap(QPixmap(":/images/traffic_out_22.png"));
                         break;
@@ -251,9 +247,8 @@ void SouthPanel::updateIndicatorLabel(bool recompute)
             QString timeString = StringDisplay::displayTimeSuitable(m_currentProperty->daysToCrack());
             QString tooltipString = QString("Crack time: %1").arg(timeString);
             QToolTip::add(m_indicatorLabel, tooltipString);
-        }
-        catch (const PasswordCheckException& e)
-        {
+
+        } catch (const PasswordCheckException& e) {
             // possible workaround to prevent multiple selection in the list this time
             // A bit unclean ???
             /* QMessageBox* mb = new QMessageBox("QPaMaT", tr("<qt><nobr>Failed to calculate the password "
@@ -265,9 +260,7 @@ void SouthPanel::updateIndicatorLabel(bool recompute)
                 "strength. The error message</nobr> was:<p>%1<p>Check your configuration!</qt>")
                 .arg(e.what()), QMessageBox::Ok, QMessageBox::NoButton);
         }
-    }
-    else
-    {
+    } else {
         m_indicatorLabel->setPixmap(QPixmap());
         m_indicatorLabel->repaint(true);
         QToolTip::remove(m_indicatorLabel);
@@ -280,8 +273,7 @@ void SouthPanel::updateIndicatorLabel(bool recompute)
 */
 void SouthPanel::updateData()
 {
-    if (m_currentProperty != 0)
-    {
+    if (m_currentProperty != 0) {
         m_currentProperty->setType(Property::Type(m_typeCombo->currentItem()));
         m_currentProperty->setHidden(m_typeCombo->currentItem() == Property::PASSWORD);
         m_currentProperty->setEncrypted(m_typeCombo->currentItem() == Property::PASSWORD);
@@ -301,13 +293,10 @@ void SouthPanel::updateData()
 */
 void SouthPanel::comboBoxChanged(int newChoice)
 {
-
-    if (m_oldComboValue != newChoice)
-    {
+    if (m_oldComboValue != newChoice) {
         insertAutoText();
 
-        if (m_oldComboValue == Property::PASSWORD)
-        {
+        if (m_oldComboValue == Property::PASSWORD) {
             m_currentProperty->setValue("");
             m_valueLineEdit->setText("");
         }
@@ -323,23 +312,25 @@ void SouthPanel::comboBoxChanged(int newChoice)
 */
 void SouthPanel::insertAutoText()
 {
-    if (m_keyLineEdit->text().isEmpty())
-    {
+    if (m_keyLineEdit->text().isEmpty()) {
         QString newTxt;
-        switch ( Property::Type(m_typeCombo->currentItem()) )
-        {
+        switch ( Property::Type(m_typeCombo->currentItem()) ) {
             case Property::MISC:
                 newTxt = qpamat->set().readEntry("AutoText/Misc");
                 break;
+
             case Property::USERNAME:
                 newTxt = qpamat->set().readEntry("AutoText/Username");
                 break;
+
             case Property::PASSWORD:
                 newTxt = qpamat->set().readEntry("AutoText/Password");
                 break;
+
             case Property::URL:
                 newTxt = qpamat->set().readEntry("AutoText/URL");
                 break;
+
             default:
                 qDebug() << CURRENT_FUNCTION << "Value is out of range:"
                          << m_typeCombo->currentItem();
@@ -379,8 +370,7 @@ void SouthPanel::setMovingEnabled(bool up, bool down)
 */
 void SouthPanel::focusInValueHandler()
 {
-    if (m_currentProperty && m_currentProperty->getType() == Property::PASSWORD)
-    {
+    if (m_currentProperty && m_currentProperty->getType() == Property::PASSWORD) {
         passwordLineEditGotFocus(true);
     }
 }
@@ -391,8 +381,7 @@ void SouthPanel::focusInValueHandler()
 */
 void SouthPanel::focusOutValueHandler()
 {
-    if (m_currentProperty && m_currentProperty->getType() == Property::PASSWORD)
-    {
+    if (m_currentProperty && m_currentProperty->getType() == Property::PASSWORD) {
         emit passwordLineEditGotFocus(false);
     }
 }

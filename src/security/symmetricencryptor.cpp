@@ -68,13 +68,9 @@ SymmetricEncryptor::SymmetricEncryptor(const QString& algorithm, const QString& 
 {
     // set the right cipher algorithm
     if (m_algorithms.contains(algorithm.upper()))
-    {
         m_cipher_algorithm = EVP_get_cipherbyname(m_algorithms[algorithm.upper()]);
-    }
     else
-    {
         throw NoSuchAlgorithmException(("Algorithm "+algorithm+" not supported").latin1());
-    }
 
     // set the password
     setPassword(password);
@@ -92,10 +88,7 @@ QStringList SymmetricEncryptor::getAlgorithms()
     QStringList algorithms;
 
     for (StringMap::iterator it = m_algorithms.begin(); it != m_algorithms.end(); ++it)
-    {
         algorithms += it.key();
-    }
-
 
     return algorithms;
 }
@@ -116,12 +109,9 @@ QString SymmetricEncryptor::getSuggestedAlgorithm()
     vec.push_back("CAST5");
 
     for (StringVector::Iterator it = vec.begin(); it != vec.end(); ++it)
-    {
         if (m_algorithms.contains(*it))
-        {
             return *it;
-        }
-    }
+
     return QString();
 }
 
@@ -144,12 +134,9 @@ StringMap SymmetricEncryptor::initAlgorithmsMap()
     map["3DES"]         = "des3";
 
     for (StringMap::iterator it = map.begin(); it != map.end(); ++it)
-    {
         if (EVP_get_cipherbyname(*it))
-        {
             returned[it.key()] = *it;
-        }
-    }
+
     return returned;
 }
 
@@ -193,8 +180,7 @@ ByteVector SymmetricEncryptor::crypt(const ByteVector& vector, OperationType ope
     uint sizeOfVector = vector.size();
     EVP_CipherInit(&ectx, m_cipher_algorithm, m_key, m_iv, operation);
 
-    for (uint i = 0; i < sizeOfVector; i += BUFLEN)
-    {
+    for (uint i = 0; i < sizeOfVector; i += BUFLEN) {
         int readLen = (i + BUFLEN >= sizeOfVector)
             ? sizeOfVector - i
             : BUFLEN;
@@ -210,7 +196,7 @@ ByteVector SymmetricEncryptor::crypt(const ByteVector& vector, OperationType ope
 
     int oldSize = output.size();
     output.resize(oldSize + ebuflen);
-    qCopy( ebuf, ebuf + ebuflen, output.begin() + oldSize);
+    qCopy(ebuf, ebuf + ebuflen, output.begin() + oldSize);
 
     EVP_CIPHER_CTX_cleanup(&ectx);
 

@@ -51,22 +51,15 @@ double MasterPasswordChecker::passwordQuality(const QString& password) throw ()
     bool uppercase = false;
     bool lowercase = false;
     bool nonLetter = false;
-    for (int i = 0; i < password.length(); ++i)
-    {
+    for (int i = 0; i < password.length(); ++i) {
         const QChar character = password[i];
         QChar::Category cat = character.category();
         if (cat == QChar::Letter_Uppercase)
-        {
             uppercase = true;
-        }
         else if (cat == QChar::Letter_Lowercase)
-        {
             lowercase = true;
-        }
         else if (! character.isLetter())
-        {
             nonLetter = true;
-        }
     }
 
     return uppercase && lowercase && nonLetter ? std::numeric_limits<double>::max() : 0.0;

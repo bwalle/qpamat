@@ -34,13 +34,18 @@ class Property : public QObject
     friend class Tree;
 
     public:
-        enum Type
-        {
-            MISC, USERNAME, PASSWORD, URL
+        enum Type {
+            MISC,
+            USERNAME,
+            PASSWORD,
+            URL
         };
-        enum PasswordStrength
-        {
-            PWeak, PAcceptable, PStrong, PUndefined
+
+        enum PasswordStrength {
+            PWeak,
+            PAcceptable,
+            PStrong,
+            PUndefined
         };
 
     public:

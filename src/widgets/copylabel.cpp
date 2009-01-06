@@ -100,19 +100,14 @@ void CopyLabel::init()
 */
 void CopyLabel::setContent(const QString& content)
 {
-    if (m_hidden)
-    {
+    if (m_hidden) {
         QString text;
-        for (int i = 0; i < content.length(); ++i)
-        {
+        for (int i = 0; i < content.length(); ++i) {
             text += "*";
         }
         m_label->setText(text);
-    }
-    else
-    {
+    } else
         m_label->setText(content);
-    }
 }
 
 
@@ -150,9 +145,7 @@ void CopyLabel::copyText()
     QClipboard* cb = QApplication::clipboard();
     cb->setText(m_label->text(), QClipboard::Clipboard);
     if (cb->supportsSelection())
-    {
         cb->setText(m_label->text(), QClipboard::Selection);
-    }
 }
 
 // :maxLineLen=100:

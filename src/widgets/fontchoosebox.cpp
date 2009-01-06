@@ -120,12 +120,10 @@ void FontChooseBox::setDisplayFont(const QFont& font)
 void FontChooseBox::chooseFont()
 {
      bool ok;
-     QFont font = QFontDialog::getFont(&ok, m_font, this );
+     QFont font = QFontDialog::getFont(&ok, m_font, this);
 
-     if ( ok )
-     {
+     if (ok)
          setFont(font);
-     }
 }
 
 // :maxLineLen=100:

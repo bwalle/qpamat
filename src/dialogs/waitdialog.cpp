@@ -59,8 +59,7 @@ WaitDialog::WaitDialog(const QPixmap& icon, const QString& message, const QStrin
 
     QLabel* imageLabel = 0;
 
-    if (!icon.isNull())
-    {
+    if (!icon.isNull()) {
         imageLabel = new QLabel(this, "WaitDialog-Label");
         imageLabel->setPixmap(icon);
     }
@@ -69,17 +68,14 @@ WaitDialog::WaitDialog(const QPixmap& icon, const QString& message, const QStrin
     textLabel->setAlignment(Qt::AlignVCenter | Qt::AlignHCenter | Qt::ExpandTabs);
 
     if (!icon.isNull())
-    {
         box->addWidget(imageLabel);
 
-    }
     box->addSpacing(10);
     box->addWidget(textLabel);
     box->addSpacing(10);
     if (!icon.isNull())
-    {
         box->setStretchFactor(imageLabel, 0);
-    }
+
     box->setStretchFactor(textLabel, 5);
 }
 

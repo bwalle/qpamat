@@ -76,35 +76,28 @@ QString CollectEncryptor::decryptStrFromStr(const QString& string)
 {
     QStringList list = QStringList::split(":", string);
     if (list.size() != 3)
-    {
         throw std::invalid_argument("CollectEncryptor::decryptStrFromStr: string does not contain "
             "3 fields separated with \":\"");
-    }
     if (list[0] != "SMARTCARD")
-    {
         throw std::invalid_argument("CollectEncryptor::decryptStrFromStr: list[0] != "
             "\"SMARTCARD\"");
-    }
+
     bool ok;
     int offset = list[1].toUInt(&ok);
     if (!ok)
-    {
         throw std::invalid_argument("CollectEncryptor::decryptStrFromStr: list[1] is not a "
             "positive integer");
-    }
+
     int length = list[2].toUInt(&ok);
     if (!ok)
-    {
         throw std::invalid_argument("CollectEncryptor::decryptStrFromStr: list[1] is not a "
             "positive integer");
-    }
 
     if (m_bytes.size() < offset + length)
-    {
         throw std::invalid_argument(QString("CollectEncryptor::decryptStrFromStr: m_bytes is too "
             "small for the requested bytes: offset = %1, length = %d\n").arg(offset, length)
             .latin1());
-    }
+
     ByteVector vec(length);
     ByteVector::iterator beg = m_bytes.begin() + offset;
     qCopy(beg, beg + length, vec.begin());

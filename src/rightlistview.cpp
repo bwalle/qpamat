@@ -135,9 +135,7 @@ void RightListView::initContextMenu()
 void RightListView::showContextMenu(Q3ListViewItem* item, const QPoint& point)
 {
     if (!isEnabled())
-    {
         return;
-    }
     bool passw = item != 0 && m_currentItem->getProperty(item->text(2).toInt(0))->getType()
         == Property::PASSWORD;
 
@@ -146,8 +144,7 @@ void RightListView::showContextMenu(Q3ListViewItem* item, const QPoint& point)
     m_contextMenu->setItemEnabled(M_SHOW_PW, passw);
 
     int id = m_contextMenu->exec(point);
-    switch (id)
-    {
+    switch (id) {
         case M_DELETE:
         {
             int num = item->text(2).toInt(0);
@@ -155,13 +152,16 @@ void RightListView::showContextMenu(Q3ListViewItem* item, const QPoint& point)
             emit itemDeleted(num);
             break;
         }
+
         case M_COPY:
             copyItem(item);
             break;
+
         case M_NEW:
             m_currentItem->appendProperty(new Property());
             emit stateModified();
             break;
+
         case M_SHOW_PW:
             ShowPasswordDialog* dlg = new ShowPasswordDialog(this, ShowPasswordDialog::TNormalPasswordDlg);
             dlg->setPassword(m_currentItem->getProperty(item->text(2).toInt(0))->getValue());
@@ -181,9 +181,7 @@ void RightListView::setSelectedIndex(uint index)
 
     Q3ListViewItem* item = firstChild();
     for (uint i = 0; i < index; ++i)
-    {
         item = item->nextSibling();
-    }
 
     setSelected(item, true);
 }
@@ -199,15 +197,10 @@ void RightListView::keyPressEvent(QKeyEvent* evt)
     int key = evt->key();
 
     if (key == Qt::Key_Delete)
-    {
         deleteCurrent();
-    }
     else if (selected && key == Qt::Key_C && evt->state() == Qt::ControlButton)
-    {
         copyItem(selected);
-    }
-    else
-    {
+    else {
         evt->ignore();
         Q3ListView::keyPressEvent(evt);
     }
@@ -220,15 +213,13 @@ void RightListView::keyPressEvent(QKeyEvent* evt)
 */
 void RightListView::copyItem(Q3ListViewItem* item)
 {
-    if (item != 0)
-    {
+    if (item != 0) {
         Property* property = m_currentItem->getProperty(item->text(2).toInt(0));
         QClipboard* clip = QApplication::clipboard();
         clip->setText(property->getValue(), QClipboard::Clipboard);
+
         if (clip->supportsSelection())
-        {
             clip->setText(property->getValue(), QClipboard::Selection);
-        }
     }
 }
 
@@ -239,24 +230,17 @@ void RightListView::copyItem(Q3ListViewItem* item)
 */
 void RightListView::doubleClickHandler(Q3ListViewItem* item)
 {
-    if (item != 0)
-    {
+    if (item != 0) {
         Property* property = m_currentItem->getProperty(item->text(2).toInt(0));
         if (property->getType() == Property::URL)
-        {
             Help::openURL(this, property->getValue());
-        }
-        else if (property->getType() == Property::PASSWORD)
-        {
+        else if (property->getType() == Property::PASSWORD) {
             ShowPasswordDialog* dlg = new ShowPasswordDialog(this, ShowPasswordDialog::TNormalPasswordDlg);
             dlg->setPassword(m_currentItem->getProperty(item->text(2).toInt(0))->getValue());
             dlg->exec();
             delete dlg;
-        }
-        else
-        {
+        } else
             qpamat->message(tr("Double click only supported with passwords and URLs!"));
-        }
     }
 }
 
@@ -275,9 +259,7 @@ void RightListView::mouseButtonClickedHandler(int but, Q3ListViewItem* item,
     UNUSED(col);
 
     if (but == Qt::MidButton)
-    {
         copyItem(item);
-    }
 }
 
 /*!
@@ -287,14 +269,12 @@ void RightListView::updateView()
 {
     clear();
 
-    if (! m_currentItem->isCategory())
-    {
+    if (! m_currentItem->isCategory()) {
         TreeEntry::PropertyIterator it = m_currentItem->propertyIterator();
 
         Property* current;
         int i = 0;
-        while ( (current = it.current()) != 0 )
-        {
+        while ( (current = it.current()) != 0 ) {
             new Q3ListViewItem(this, lastItem(), current->getKey(), current->getVisibleValue(),
                 QString::number(i++));
             ++it;
@@ -313,8 +293,7 @@ void RightListView::updateSelected(Property* property)
 {
     Q3ListViewItem* item = selectedItem();
 
-    if (item != 0)
-    {
+    if (item != 0) {
         item->setText(0, property->getKey());
         QString value = property->getValue();
         item->setText(1, property->getVisibleValue());
@@ -330,8 +309,8 @@ void RightListView::setItem(Q3ListViewItem* item)
 {
     disconnect(this, SIGNAL(itemAppended()));
     m_currentItem = dynamic_cast<TreeEntry*>(item);
-    if (m_currentItem != 0)
-    {
+
+    if (m_currentItem != 0) {
         connect(m_currentItem, SIGNAL(propertyAppended()), this, SIGNAL(itemAppended()));
         updateView();
     }
@@ -344,16 +323,12 @@ void RightListView::setItem(Q3ListViewItem* item)
 void RightListView::deleteCurrent()
 {
     Q3ListViewItem* selected = selectedItem();
-    if (selected)
-    {
+    if (selected) {
         int num = selected->text(2).toInt(0);
         m_currentItem->deleteProperty(num);
         emit itemDeleted(num);
-    }
-    else
-    {
+    } else
         qpamat->message(tr("No item selected!"));
-    }
 }
 
 
@@ -373,9 +348,7 @@ void RightListView::itemAppendedHandler()
 {
     Q3ListViewItem* addedItem = lastItem();
     if (addedItem)
-    {
         setSelected(addedItem, true);
-    }
 }
 
 
@@ -395,19 +368,15 @@ bool RightListView::isFocusInside() const
 void RightListView::moveDown()
 {
     Q3ListViewItem* selected = selectedItem();
-    if (selected)
-    {
+    if (selected) {
         int index = selected->text(2).toInt(0);
         // up in list terminology means greater index
         m_currentItem->movePropertyOneUp(index);
         updateView();
         setSelectedIndex(index+1);
         emit stateModified();
-    }
-    else
-    {
+    } else
         qpamat->message("No item selected");
-    }
 }
 
 
@@ -417,19 +386,15 @@ void RightListView::moveDown()
 void RightListView::moveUp()
 {
     Q3ListViewItem* selected = selectedItem();
-    if (selected)
-    {
+    if (selected) {
         int index = selected->text(2).toInt(0);
         // up in list terminology means greater index
         m_currentItem->movePropertyOneDown(index);
         updateView();
         setSelectedIndex(index-1);
         emit stateModified();
-    }
-    else
-    {
+    } else
         qpamat->message("No item selected");
-    }
 }
 
 
@@ -443,8 +408,7 @@ void RightListView::setMoveStateCorrect()
     bool down = false;
     Q3ListViewItem* selected = selectedItem();
 
-    if (selected)
-    {
+    if (selected) {
         int index = selected->text(2).toInt(0);
         int number = childCount();
         down = (index < number - 1);
@@ -479,15 +443,14 @@ QTextStream& operator>>(QTextStream& ts, RightListView& listview)
     ts >> text;
     rx.search(text);
     QStringList list = rx.capturedTexts();
+
     if (list.size() != 3)
-    {
         qDebug() << CURRENT_FUNCTION << "Wrong input" << text;
-    }
-    else
-    {
+    else {
         listview.setColumnWidth(0, list[1].toInt());
         listview.setColumnWidth(1, list[2].toInt());
     }
+
     return ts;
 }
 

@@ -40,7 +40,8 @@
     \param statusbar the statusbar on which the message should be displayed
 */
 TimerStatusmessage::TimerStatusmessage(QStatusBar* statusbar)
-    : m_statusBar(statusbar), m_connected(false)
+    : m_statusBar(statusbar)
+    , m_connected(false)
 {}
 
 
@@ -57,8 +58,8 @@ void TimerStatusmessage::message(const QString& message, int time)
     m_statusBar->blockSignals(true);
     m_statusBar->message(m_message, time);
     m_statusBar->blockSignals(false);
-    if (!m_connected)
-    {
+
+    if (!m_connected) {
         connect(m_statusBar, SIGNAL(messageChanged(const QString&)), SLOT(displayAgain()));
         m_connected = true;
         QTimer::singleShot(time+1000, this, SLOT(disconnectSignalsAndSlots()));
@@ -72,8 +73,7 @@ void TimerStatusmessage::message(const QString& message, int time)
 void TimerStatusmessage::displayAgain()
 {
     int diff = m_begin.msecsTo(QTime::currentTime());
-    if (diff < m_time)
-    {
+    if (diff < m_time) {
         m_statusBar->blockSignals(true);
         m_statusBar->message(m_message, m_time - diff);
         m_statusBar->blockSignals(false);

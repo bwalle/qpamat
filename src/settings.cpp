@@ -165,14 +165,11 @@ QString Settings::readEntry(const QString & key, const QString& def)
 {
     bool read = false;
     QString string = m_qSettings.readEntry(key, def, &read);
+
     if (!read && m_stringMap.contains(key))
-    {
         return m_stringMap[key];
-    }
     else if (!read && def.isNull())
-    {
         qDebug() << CURRENT_FUNCTION << "Implicit default returned, key =" << key;
-    }
 
     return string;
 }
@@ -188,13 +185,9 @@ int Settings::readNumEntry (const QString & key, int def)
     bool read = m_qSettings.contains(key);
     int number = m_qSettings.value(key, def).toInt();
     if (!read && m_intMap.contains(key))
-    {
         return m_intMap[key];
-    }
     else if (!read && def == 0)
-    {
         qDebug() << CURRENT_FUNCTION << "Implicit default returned, key =" << key;
-    }
 
     return number;
 }
@@ -210,13 +203,9 @@ double Settings::readDoubleEntry(const QString & key, double def) const
     bool read = m_qSettings.contains(key);
     double number = m_qSettings.value(key, def).toDouble();
     if (!read && m_doubleMap.contains(key))
-    {
         return m_doubleMap[key];
-    }
     else if (!read && def == 0.0)
-    {
         qDebug() << CURRENT_FUNCTION << "Implicit default returned, key = %s" << key;
-    }
 
     return number;
 }
@@ -232,13 +221,9 @@ bool Settings::readBoolEntry(const QString & key, bool def) const
     bool read = m_qSettings.contains(key);
     bool res = m_qSettings.value(key, def).toBool();
     if (!read && m_boolMap.contains(key))
-    {
         return m_boolMap[key];
-    }
     else if (!read && !def)
-    {
         qDebug() << CURRENT_FUNCTION << "Implicit default returned, key =" << key;
-    }
 
     return res;
 }
@@ -255,13 +240,9 @@ bool Settings::readBoolEntry(const QString & key, bool def) const
 QByteArray Settings::readByteArrayEntry(const QString& key, const QByteArray& def)
 {
     if (m_qSettings.contains(key))
-    {
         return QByteArray::fromBase64(m_qSettings.value(key).toString().toUtf8());
-    }
     else
-    {
         return def;
-    }
 }
 
 

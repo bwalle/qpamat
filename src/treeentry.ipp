@@ -21,7 +21,10 @@
 */
 template<class T>
 TreeEntry::TreeEntry(T* parent, const QString& name, bool isCategory)
-    : Q3ListViewItem(parent), m_name(name), m_isCategory(isCategory), m_weak(false)
+    : Q3ListViewItem(parent)
+    , m_name(name)
+    , m_isCategory(isCategory)
+    , m_weak(false)
 {
     setRenameEnabled(0, true);
     setDragEnabled(true);
@@ -44,23 +47,21 @@ TreeEntry* TreeEntry::appendFromXML(T* parent, QDomElement& element)
     TreeEntry* returnvalue = new TreeEntry(parent, name, isCategory);
     QDomNode node = element.firstChild();
     QDomElement childElement;
-    while ( !node.isNull() )
-    {
-        if (node.isElement())
-        {
+
+    while ( !node.isNull() ) {
+        if (node.isElement()) {
             childElement = node.toElement();
-            if (isCategory)
-            {
+
+            if (isCategory) {
                 TreeEntry::appendFromXML(returnvalue, childElement);
                 returnvalue->setOpen(element.attribute("wasOpen", "0") == "1");
-            }
-            else
-            {
+            } else
                 Property::appendFromXML(returnvalue, childElement);
-            }
+
             node = node.nextSibling();
         }
     }
+
     return returnvalue;
 }
 

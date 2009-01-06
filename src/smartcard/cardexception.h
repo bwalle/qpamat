@@ -23,8 +23,7 @@
 class CardException : public std::runtime_error
 {
     public:
-        enum ErrorCode
-        {
+        enum ErrorCode {
             NoError             = 0,
             Invalid             = ERR_INVALID,
             CardTerminal        = ERR_CT,

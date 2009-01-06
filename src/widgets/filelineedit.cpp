@@ -41,7 +41,8 @@
     \param name the name of the widget which can be NULL.
 */
 FileLineEdit::FileLineEdit(QWidget* parent, bool save, const char* name)
-    : QWidget(parent, name), m_save(save)
+    : QWidget(parent, name)
+    , m_save(save)
 {
     QHBoxLayout* boxLayout = new QHBoxLayout(this, 0, 2);
     m_lineEdit = new QLineEdit(this);
@@ -120,26 +121,18 @@ void FileLineEdit::chooseFile()
 {
     QString startWith = m_lineEdit->text();
     if (startWith.length() == 0)
-    {
         startWith = QDir::homeDirPath();
-    }
 
     QString selected;
     if (m_save)
-    {
         selected = QFileDialog::getSaveFileName (startWith, m_filter, this, "File Dialog",
             tr("QPaMaT"));
-    }
     else
-    {
         selected = QFileDialog::getOpenFileName (startWith, m_filter, this, "File Dialog",
             tr("QPaMaT"));
-    }
 
     if (selected != QString::null)
-    {
         m_lineEdit->setText(selected);
-    }
 }
 
 // :maxLineLen=100:

@@ -65,12 +65,9 @@ const int PasswordHash::MAX_HASH_LENGTH = 40;
 bool PasswordHash::isCorrect(QString password, const QString& hash)
 {
     bool correct = false;
-    try
-    {
+    try {
         correct = isCorrect(password, EncodingHelper::fromBase64(hash));
-    }
-    catch (const std::invalid_argument& e)
-    {
+    } catch (const std::invalid_argument& e) {
         qDebug() << CURRENT_FUNCTION << "Caught invalid_argument:" << e.what();
     }
     return correct;

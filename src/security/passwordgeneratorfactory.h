@@ -25,9 +25,9 @@ class PasswordGeneratorFactory
 {
     public:
 
-        enum PasswordGeneratorType
-        {
-            TRandomPasswordGenerator, TExternalPasswordGenerator
+        enum PasswordGeneratorType {
+            TRandomPasswordGenerator,
+            TExternalPasswordGenerator
         };
 
         static const PasswordGeneratorType DEFAULT_GENERATOR;

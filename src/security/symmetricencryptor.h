@@ -39,8 +39,7 @@ class SymmetricEncryptor : public AbstractEncryptor
         static QString getSuggestedAlgorithm();
 
     protected:
-        enum OperationType
-        {
+        enum OperationType {
             DECRYPT, ENCRYPT
         };
 

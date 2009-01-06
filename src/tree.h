@@ -33,9 +33,11 @@ class Tree : public Q3ListView
     Q_OBJECT
 
     public:
-        enum MenuID
-        {
-            INSERT_ITEM, INSERT_CATEGORY, RENAME_ITEM, DELETE_ITEM
+        enum MenuID {
+            INSERT_ITEM,
+            INSERT_CATEGORY,
+            RENAME_ITEM,
+            DELETE_ITEM
         };
 
     public:

@@ -34,18 +34,35 @@ class MemoryCard
                              uchar* command, ushort* lenr, uchar* response);
         typedef char (*CT_close_ptr) (ushort ctn);
 
-        enum CardSlot
-        {
-            ICC1 = 0x00, ICC2 = 0x02, ICC3, ICC4, ICC5, ICC6, ICC7, ICC8, ICC9, ICC10,
-            ICC11, ICC12, ICC13, ICC14
+        enum CardSlot {
+            ICC1 = 0x00,
+            ICC2 = 0x02,
+            ICC3,
+            ICC4,
+            ICC5,
+            ICC6,
+            ICC7,
+            ICC8,
+            ICC9,
+            ICC10,
+            ICC11,
+            ICC12,
+            ICC13,
+            ICC14
         };
-        enum CardType
-        {
-            TMemoryCard, TProcessorCard, OtherResponse
+
+        enum CardType {
+            TMemoryCard,
+            TProcessorCard,
+            OtherResponse
         };
-        enum ProtocolType
-        {
-            TI2C, T2Wire, T3Wire, TISOProtocol, TOther
+
+        enum ProtocolType {
+            TI2C,
+            T2Wire,
+            T3Wire,
+            TISOProtocol,
+            TOther
         };
 
     public:

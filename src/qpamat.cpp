@@ -108,9 +108,15 @@
     Creates a new instance of the application.
  */
 Qpamat::Qpamat()
-    : QMainWindow(0, "qpamat main window"), m_tree(0), m_treeContextMenu(0), m_message(0),
-      m_rightPanel(0), m_searchCombo(0), m_randomPassword(0), m_trayIcon(0),
-      m_lastGeometry(0, 0, 0, 0)
+    : QMainWindow(0, "qpamat main window")
+    , m_tree(0)
+    , m_treeContextMenu(0)
+    , m_message(0)
+    , m_rightPanel(0)
+    , m_searchCombo(0)
+    , m_randomPassword(0)
+    , m_trayIcon(0)
+    , m_lastGeometry(0, 0, 0, 0)
 {
     QRect geometry;
 
@@ -159,27 +165,22 @@ Qpamat::Qpamat()
     // restore the layout
     restoreState(set().readByteArrayEntry("Main Window/layout"));
     if (set().readBoolEntry("Main Window/maximized"))
-    {
         showMaximized();
-    }
     else
-    {
         resize(
             set().readNumEntry("Main Window/width", int(geometry.width() * 0.6) ),
             set().readNumEntry("Main Window/height", int(geometry.height() / 2.0) )
         );
-    }
+
     QString rightpanel = set().readEntry("Main Window/rightpanelLayout");
-    if (!rightpanel.isNull())
-    {
+    if (!rightpanel.isNull()) {
         QTextStream rightpanelStream(&rightpanel, QIODevice::ReadOnly);
         rightpanelStream >> *m_rightPanel;
     }
 
     // tray icon
     if (set().readBoolEntry("Presentation/SystemTrayIcon") &&
-            QSystemTrayIcon::isSystemTrayAvailable())
-    {
+            QSystemTrayIcon::isSystemTrayAvailable()) {
         QMenu* trayPopup = new QMenu(this);
         trayPopup->addAction(m_actions.showHideAction);
         trayPopup->addAction(m_actions.quitActionNoKeyboardShortcut);
@@ -198,16 +199,11 @@ Qpamat::Qpamat()
 
     connectSignalsAndSlots();
 
-    if (set().readBoolEntry("General/AutoLogin"))
-    {
+    if (set().readBoolEntry("General/AutoLogin")) {
         if (QFile::exists(set().readEntry("General/Datafile")) )
-        {
             QTimer::singleShot( 0, this, SLOT(login()) );
-        }
         else
-        {
             QTimer::singleShot( 0, this, SLOT(newFile()) );
-        }
     }
 }
 
@@ -336,17 +332,13 @@ void Qpamat::initMenubar()
 void Qpamat::exitHandler()
 {
     if (!logout())
-    {
         return;
-    }
 
     // write the history
     QStringList list;
     int max = QMIN(m_searchCombo->count(), 10);
     for (int i = 0; i < max; ++i)
-    {
         list.append(m_searchCombo->text(i));
-    }
     set().writeEntry("Main Window/SearchHistory", list.join(" | "));
 
     // write window layout
@@ -371,13 +363,10 @@ void Qpamat::exitHandler()
 */
 void Qpamat::closeEvent(QCloseEvent* e)
 {
-    if (m_trayIcon)
-    {
+    if (m_trayIcon) {
         handleTrayiconClick();
         e->ignore();
-    }
-    else
-    {
+    } else {
         exitHandler();
         e->accept();
         QWidget::closeEvent(e);
@@ -409,19 +398,14 @@ void Qpamat::handleTrayiconClick()
 */
 void Qpamat::handleTrayiconClick(QSystemTrayIcon::ActivationReason reason)
 {
-    if (reason == QSystemTrayIcon::Trigger)
-    {
-        if (isShown())
-        {
+    if (reason == QSystemTrayIcon::Trigger) {
+        if (isShown()) {
             m_lastGeometry = geometry();
             hide();
             m_actions.showHideAction->setMenuText(tr("&Show"));
-        }
-        else
-        {
+        } else {
             if (!(m_lastGeometry.x() == 0 && m_lastGeometry.y() == 0
-                        && m_lastGeometry.width() == 0 && m_lastGeometry.height() == 0))
-            {
+                        && m_lastGeometry.width() == 0 && m_lastGeometry.height() == 0)) {
                 setGeometry(m_lastGeometry);
             }
             show();
@@ -443,27 +427,18 @@ void Qpamat::login()
     QDomDocument doc;
     bool ok = false;
 
-    while (!ok)
-    {
+    while (!ok) {
         if (dlg->exec() == QDialog::Accepted)
-        {
             m_password = dlg->getPassword();
-        }
         else
-        {
             return;
-        }
 
         DataReadWriter reader(this);
-        while (!ok)
-        {
-            try
-            {
+        while (!ok) {
+            try {
                 doc = reader.readXML(m_password);
                 ok = true;
-            }
-            catch (const ReadWriteException& e)
-            {
+            } catch (const ReadWriteException& e) {
                 // type of the message
                 QMessageBox::Icon icon = e.getSeverity() == ReadWriteException::WARNING
                     ? QMessageBox::Warning
@@ -472,9 +447,7 @@ void Qpamat::login()
                 ReadWriteException::Category cat = e.getCategory();
 
                 if (cat == ReadWriteException::CAbort)
-                {
                     return;
-                }
 
                 bool retry = e.retryMakesSense();
 
@@ -484,20 +457,14 @@ void Qpamat::login()
                     QMessageBox::NoButton, this, "qt_msgbox_information", true,
                         Qt::WDestructiveClose);
                 if (mb->exec() != QMessageBox::Retry)
-                {
                     return;
-                }
 
                 // the user wants to continue, now we discriminate if we just retry
                 // or show the password dialog again
                 if (cat == ReadWriteException::CWrongPassword)
-                {
                     break;
-                }
                 else
-                {
                     continue;
-                }
             }
         }
     }
@@ -519,17 +486,14 @@ void Qpamat::setLogin(bool loggedIn)
 
     // toggle action
     disconnect(m_actions.loginLogoutAction, SIGNAL(activated()), 0, 0 );
-    if (loggedIn)
-    {
+    if (loggedIn) {
         QIcon loginLogoutActionIcon(QPixmap(":/images/logout_16.png"));
         loginLogoutActionIcon.addPixmap(QPixmap(":/images/logout_24.png"));
         m_actions.loginLogoutAction->setIcon(loginLogoutActionIcon);
         m_actions.loginLogoutAction->setMenuText(tr("&Logout"));
         m_actions.loginLogoutAction->setToolTip(tr("Logout"));
         connect(m_actions.loginLogoutAction, SIGNAL(activated()), SLOT(logout()));
-    }
-    else
-    {
+    } else {
         QIcon loginLogoutActionIcon(QPixmap(":/images/login_16.png"));
         loginLogoutActionIcon.addPixmap(QPixmap(":/images/login_24.png"));
         m_actions.loginLogoutAction->setIconSet(loginLogoutActionIcon);
@@ -550,18 +514,16 @@ void Qpamat::setLogin(bool loggedIn)
     m_actions.exportAction->setEnabled(loggedIn);
 
     if (loggedIn)
-    {
         dynamic_cast<TimeoutApplication*>(qApp)->setTimeout(
             set().readNumEntry("Security/AutoLogout")
         );
-    }
-    else
-    {
+    else {
         m_actions.passwordStrengthAction->setOn(false);
         m_tree->clear();
         m_rightPanel->clear();
         this->setFocus();
     }
+
     m_tree->setEnabled(loggedIn);
     setModified(false);
 }
@@ -572,8 +534,7 @@ void Qpamat::setLogin(bool loggedIn)
  */
 void Qpamat::save()
 {
-    if (m_loggedIn && exportOrSave())
-    {
+    if (m_loggedIn && exportOrSave()) {
         setModified(false);
         message("Wrote data successfully.");
     }
@@ -592,15 +553,11 @@ bool Qpamat::exportOrSave()
     QDomDocument doc = writer.createSkeletonDocument();
     m_tree->appendXML(doc);
     bool success = false;
-    while (!success)
-    {
-        try
-        {
+    while (!success) {
+        try {
             writer.writeXML(doc, m_password);
             success = true;
-        }
-        catch (const ReadWriteException& e)
-        {
+        } catch (const ReadWriteException& e) {
             QMessageBox::Icon icon = e.getSeverity() == ReadWriteException::WARNING
                 ? QMessageBox::Warning
                 : QMessageBox::Critical;
@@ -612,8 +569,7 @@ bool Qpamat::exportOrSave()
 
             // ask the user if the exception type is not "abort"
             if (e.getCategory() == ReadWriteException::CAbort
-                    || mb->exec() != QMessageBox::Retry)
-            {
+                    || mb->exec() != QMessageBox::Retry) {
                 break;
             }
         }
@@ -636,52 +592,36 @@ void Qpamat::exportData()
     bool oldCard = set().readBoolEntry("Smartcard/UseCard");
 
     if (fd->exec() == QDialog::Accepted)
-    {
         fileName = fd->selectedFile();
-    }
     else
-    {
         return;
-    }
 
-    if (QFile::exists(fileName))
-    {
+    if (QFile::exists(fileName)) {
         if (QMessageBox::question(this, tr("QPaMaT"),
             tr("The file you've choosen exists. Do you overwrite it?"),
             tr("&Overwrite"), tr("&Don't export"), QString::null, 1, 1) == 1)
-        {
             return;
-        }
     }
 
     // XML or text?
-    if (fd->selectedFilter().endsWith("(*.xml)"))
-    {
+    if (fd->selectedFilter().endsWith("(*.xml)")) {
         set().writeEntry("General/Datafile", fileName);
         set().writeEntry("Smartcard/UseCard", false);
         if (m_loggedIn && exportOrSave())
-        {
             message("Wrote data successfully.");
-        }
         set().writeEntry("General/Datafile", oldFilename);
         set().writeEntry("Smartcard/UseCard", oldCard);
-    }
-    else
-    {
+    } else {
         QFile file(fileName);
-        if (file.open(QIODevice::WriteOnly))
-        {
+        if (file.open(QIODevice::WriteOnly)) {
             QTextStream stream(&file);
             m_tree->appendTextForExport(stream);
             file.close();
             message("Wrote data successfully.");
-        }
-        else
-        {
+        } else
             QMessageBox::warning(this, tr("QPaMaT"),
                tr("An error occured while saving the file."),
                QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
-        }
     }
 }
 
@@ -694,8 +634,7 @@ void Qpamat::exportData()
 bool Qpamat::logout()
 {
     // save the data
-    if (m_modified)
-    {
+    if (m_modified) {
         qDebug() << CURRENT_FUNCTION << "Disable timeout action temporary";
         dynamic_cast<TimeoutApplication*>(qApp)->setTemporaryDisabled(true);
 
@@ -703,8 +642,7 @@ bool Qpamat::logout()
             "\nDo you want to save it now?"), QMessageBox::Yes | QMessageBox::Default,
                     QMessageBox::No, QMessageBox::Cancel) ;
 
-        switch (ret)
-        {
+        switch (ret) {
             case QMessageBox::Yes:
                 save();
                 break;
@@ -733,12 +671,9 @@ void Qpamat::newFile()
 {
     boost::scoped_ptr<NewPasswordDialog> dialog(new NewPasswordDialog(this));
 
-    if (dialog->exec() == QDialog::Accepted)
-    {
+    if (dialog->exec() == QDialog::Accepted) {
         if (m_loggedIn)
-        {
             logout();
-        }
 
         m_password = dialog->getPassword();
         setLogin(true);
@@ -753,8 +688,7 @@ void Qpamat::newFile()
 void Qpamat::changePassword()
 {
     boost::scoped_ptr<NewPasswordDialog> dlg(new NewPasswordDialog(this, m_password));
-    if (dlg->exec() == QDialog::Accepted)
-    {
+    if (dlg->exec() == QDialog::Accepted) {
         m_password = dlg->getPassword();
         setModified();
     }
@@ -768,9 +702,7 @@ void Qpamat::configure()
 {
     boost::scoped_ptr<ConfigurationDialog> dlg(new ConfigurationDialog(this));
     if (dlg->exec() == QDialog::Accepted)
-    {
         emit settingsChanged();
-    }
 }
 
 
@@ -782,13 +714,9 @@ void Qpamat::search()
     const QString text = m_searchCombo->currentText();
 
     if (text.length() == 0)
-    {
          message(tr("Please enter a search criterion in the text field!"));
-    }
     else
-    {
         m_tree->searchFor(text);
-    }
 }
 
 
@@ -800,19 +728,14 @@ void Qpamat::passwordStrengthHandler(bool enabled)
 {
     m_tree->setShowPasswordStrength(enabled);
     bool error = false;
-    if (enabled)
-    {
+    if (enabled) {
         m_tree->recomputePasswordStrength(&error);
         if (error)
-        {
             m_actions.passwordStrengthAction->setOn(false);
-        }
     }
 
     if (!error)
-    {
         m_tree->updatePasswordStrengthView();
-    }
 }
 
 
@@ -823,14 +746,11 @@ void Qpamat::print()
 {
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage( TRUE );
-    if ( printer.setup( this ) )
-    {
+    if ( printer.setup( this ) ) {
         QPainter p(&printer);
         // Check that there is a valid device to print to.
         if (!p.device())
-        {
             return;
-        }
 
         QFont serifFont;
         QFont sansSerifFont;
@@ -861,8 +781,7 @@ void Qpamat::print()
             QTime::currentTime().toString("hh:mm");
 
         int page = 1;
-        do
-        {
+        do {
             qApp->processEvents( QEventLoop::ExcludeUserInput );
             QString pageS = tr("page") + " " + QString::number(page);
 
@@ -888,9 +807,7 @@ void Qpamat::print()
             p.translate(0 , -body.height());
 
             if (view.top() >= layout->documentSize().height())
-            {
                 break;
-            }
 
             printer.newPage();
             page++;

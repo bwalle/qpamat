@@ -76,8 +76,7 @@ QString EncodingHelper::toBase64(const ByteVector& vector)
     unsigned char a, b, c;
     int lenMod3;
 
-    for (int i = 0; i < vector.size(); i += 3)
-    {
+    for (int i = 0; i < vector.size(); i += 3) {
         lenMod3 = ((i+3) > vector.size()) ? (vector.size() % 3) : 3;
         a = vector[i];
         b = lenMod3 > 1 ? vector[i+1] : 0;
@@ -102,14 +101,12 @@ ByteVector EncodingHelper::fromBase64(const QString& string)
 {
     int stringLength = string.length();
     if (stringLength % 4 != 0)
-    {
         throw std::invalid_argument("In EncodingHelper::fromBase64: string % 4 != 0");
-    }
+
     const char* stringAscii = string.ascii();
     Q3ValueVector<unsigned char> vector;
     char a, b, c, d;
-    for (int i = 0; i < stringLength; i += 4)
-    {
+    for (int i = 0; i < stringLength; i += 4) {
         a = reverseBase64Alphabet[ (int)stringAscii[i] ];
         b = reverseBase64Alphabet[ (int)stringAscii[i+1] ];
         c = reverseBase64Alphabet[ (int)stringAscii[i+2] ];
@@ -119,13 +116,10 @@ ByteVector EncodingHelper::fromBase64(const QString& string)
         vector.push_back(((b & 0x0F) << 4) | (c >> 2));
         vector.push_back((((c & 0x03) << 6) | d));
 
-        if (d == -2)
-        {
+        if (d == -2) {
             vector.pop_back();
             if (c == -2)
-            {
                 vector.pop_back();
-            }
         }
     }
 

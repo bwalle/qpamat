@@ -116,26 +116,34 @@ CardException::CardException(ErrorCode errorcode)
 */
 const char* CardException::what() const throw ()
 {
-    switch (m_errorcode)
-    {
+    switch (m_errorcode) {
         case Invalid:
             return "Invalid parameter or value.";
+
         case CT:
             return "Cardterminal Error. The terminal is temporary not accessible.";
+
         case Transmission:
             return "Transmission error.";
+
         case Memory:
             return "Memory assignment error.";
+
         case HTSI:
             return "Host Transport Service Interface error.";
+
         case DataCorrupted:
             return "Data corrupted.";
+
         case EndReached:
             return "The specified data is not in the valid range for the chipcard.";
+
         case MemoryFailure:
             return "Memory failure.";
+
         case Error:
             return "Error";
+
         default:
             char buf[100];
             std::sprintf(buf, "CT-API Errorcode: %x", m_errorcode);
