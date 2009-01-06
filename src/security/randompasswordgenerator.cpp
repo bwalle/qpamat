@@ -49,7 +49,7 @@ QString RandomPasswordGenerator::getPassword(unsigned int length, const QString&
         throw (PasswordGenerateException)
 {
     QString ret;
-    byte buffer[1];
+    unsigned char buffer[1];
     QString allowedChars = pAllowedChars;
 
     bool allAllowed = allowedChars.isNull();

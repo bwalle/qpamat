@@ -88,8 +88,11 @@ class DataReadWriter
         QDomDocument createSkeletonDocument() throw ();
 
     private:
-        void writeOrReadSmartcard(ByteVector& bytes, bool write, byte& randomNumber,
-            const QString& password) throw (ReadWriteException);
+        void writeOrReadSmartcard(ByteVector    &bytes,
+                                  bool          write,
+                                  unsigned char &randomNumber,
+                                  const QString &password)
+        throw (ReadWriteException);
         void crypt(QDomElement& n, StringEncryptor& enc, bool encrypt);
 
     private:

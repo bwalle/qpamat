@@ -32,18 +32,11 @@
 
 
 /*!
-    \typedef unsigned char byte
+    \typedef QValueVector<unsigned char> ByteVector
 
-    We use unsigned char in meaning of a byte.
+    This is a unsigned char vector.
 */
-typedef unsigned char byte;
-
-/*!
-    \typedef QValueVector<byte> ByteVector
-
-    This is a byte vector.
-*/
-typedef Q3ValueVector<byte>      ByteVector;
+typedef Q3ValueVector<unsigned char> ByteVector;
 
 /*!
     \typedef QValueVector<QString> StringVector

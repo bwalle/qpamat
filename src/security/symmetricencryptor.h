@@ -48,8 +48,8 @@ class SymmetricEncryptor : public AbstractEncryptor
 
     private:
         const EVP_CIPHER*     m_cipher_algorithm;
-        mutable byte          m_key[EVP_MAX_KEY_LENGTH];
-        mutable byte          m_iv[EVP_MAX_IV_LENGTH];
+        mutable unsigned char m_key[EVP_MAX_KEY_LENGTH];
+        mutable unsigned char m_iv[EVP_MAX_IV_LENGTH];
         QString               m_currentAlgorithm;
 
     private:

@@ -101,8 +101,11 @@ class MemoryCard
             throw (CardException, NotInitializedException);
 
     private:
-        void checkInitialzed(const QString& = QString::null) const throw (NotInitializedException);
-        void createPIN(QString pin, byte* pinBytes) const throw (std::invalid_argument);
+        void checkInitialzed(const QString& = QString::null) const
+        throw (NotInitializedException);
+
+        void createPIN(QString pin, unsigned char* pinBytes) const
+        throw (std::invalid_argument);
 
     private:
         QLibrary        m_library;

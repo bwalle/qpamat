@@ -241,13 +241,13 @@ MemoryCard::CardType MemoryCard::getType() const throw (CardException, NotInitia
 {
     checkInitialzed();
 
-    //                     CLA   INS   P1    P2    LEN  WAIT
-    byte REQUEST_ICC[] = { 0x20, 0x12, 0x01, 0x00, 1,  m_waitTime };
+    //                              CLA   INS   P1    P2    LEN  WAIT
+    unsigned char REQUEST_ICC[] = { 0x20, 0x12, 0x01, 0x00, 1,  m_waitTime };
 
-    byte sad = HOST;      // source
-    byte dad = CT;        // destination
+    unsigned char sad = HOST;      // source
+    unsigned char dad = CT;        // destination
 
-    byte response[100];
+    unsigned char response[100];
     unsigned short lenr = sizeof(response);
 
     char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(REQUEST_ICC),
@@ -286,13 +286,13 @@ void MemoryCard::resetCard(int* capacity, ProtocolType* protocolType) const
 {
     checkInitialzed();
 
-    //                  CLA   INS   P1    P2    LEN
-    byte RESET_CT[] = { 0x20, 0x11, 0x01, 0x01, 0};
+    //                           CLA   INS   P1    P2    LEN
+    unsigned char RESET_CT[] = { 0x20, 0x11, 0x01, 0x01, 0};
 
-    byte sad = HOST;      // source
-    byte dad = CT;        // destination
+    unsigned char sad = HOST;      // source
+    unsigned char dad = CT;        // destination
 
-    byte response[100];
+    unsigned char response[100];
     unsigned short lenr = sizeof(response);
 
     char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(RESET_CT),
@@ -311,8 +311,8 @@ void MemoryCard::resetCard(int* capacity, ProtocolType* protocolType) const
     }
 
 
-    byte h1 =  response[0]; // protocol type
-    byte protocol = (h1 >> 4) & 0x0F;
+    unsigned char h1 =  response[0]; // protocol type
+    unsigned char protocol = (h1 >> 4) & 0x0F;
 
     if (protocolType != NULL) {
         if (protocol < 0x08)
@@ -339,7 +339,7 @@ void MemoryCard::resetCard(int* capacity, ProtocolType* protocolType) const
     }
 
     if (capacity != 0) {
-        byte h2 = response[1]; // size
+        unsigned char h2 = response[1]; // size
 
         int number = ((h2 >> 3) & 0x0F);
         if (number > 0)
@@ -366,13 +366,13 @@ void MemoryCard::getStatusInformation(QString* manufacturer, QString* terminalTy
     checkInitialzed();
 
 
-    //                        CLA   INS   P1    P2    LEN
-    byte REQUEST_STATUS[] = { 0x20, 0x13, 0x00, 0x46, 0 };
+    //                                 CLA   INS   P1    P2    LEN
+    unsigned char REQUEST_STATUS[] = { 0x20, 0x13, 0x00, 0x46, 0 };
 
-    byte sad = HOST;      // source
-    byte dad = CT;        // destination
+    unsigned char sad = HOST;      // source
+    unsigned char dad = CT;        // destination
 
-    byte response[100];
+    unsigned char response[100];
     unsigned short lenr = sizeof(response);
 
     char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(REQUEST_STATUS),
@@ -408,14 +408,14 @@ bool MemoryCard::selectFile() const throw (CardException, NotInitializedExceptio
 {
     checkInitialzed();
 
-    //                     CLA   INS   P1    P2    LEN -- total --
-    byte SELECT_FILE[] = { 0x00, 0xA4, 0x00, 0x00, 2,  0x3F, 0x00 };
+    //                              CLA   INS   P1    P2    LEN -- total --
+    unsigned char SELECT_FILE[] = { 0x00, 0xA4, 0x00, 0x00, 2,  0x3F, 0x00 };
 
-    byte sad = HOST;      // source
-    byte dad = ICC1;         // destination
+    unsigned char sad = HOST;      // source
+    unsigned char dad = ICC1;      // destination
 
 
-    byte response[2];
+    unsigned char response[2];
     unsigned short lenr = sizeof(response);
 
     char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(SELECT_FILE),
@@ -443,7 +443,7 @@ ByteVector MemoryCard::read(unsigned short offset, unsigned short length)
 {
     checkInitialzed();
 
-    byte read_binary[5];
+    unsigned char read_binary[5];
     read_binary[0] = 0x00; // CLA
     read_binary[1] = 0xB0; // INS
 
@@ -461,10 +461,10 @@ ByteVector MemoryCard::read(unsigned short offset, unsigned short length)
         read_binary[3] = (offset + dataOffset) & 0xFF;
         read_binary[4] = dataToRead;
 
-        byte sad = HOST;      // source
-        byte dad = ICC1;      // destination
+        unsigned char sad = HOST;      // source
+        unsigned char dad = ICC1;      // destination
 
-        byte response[max+2];
+        unsigned char response[max+2];
         unsigned short lenr = dataToRead + 2;
 
         char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(read_binary),
@@ -510,7 +510,7 @@ void MemoryCard::write(unsigned short offset, const ByteVector& data)
     int len = data.size();
     const int max = 255;
 
-    byte update_binary[max+5];
+    unsigned char update_binary[max+5];
     update_binary[0] = 0x00; // CLA
     update_binary[1] = 0xD6; // INS
 
@@ -526,10 +526,10 @@ void MemoryCard::write(unsigned short offset, const ByteVector& data)
 
         qCopy(realBegin, realBegin + written_bytes, update_binary + 5);
 
-        byte sad = HOST;      // source
-        byte dad = ICC1;      // destination
+        unsigned char sad = HOST;      // source
+        unsigned char dad = ICC1;      // destination
 
-        byte response[100];
+        unsigned char response[100];
         unsigned short lenr = sizeof(response);
 
         char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, written_bytes+5,
@@ -574,15 +574,15 @@ void MemoryCard::verify(const QString& pin) const
 {
     checkInitialzed();
 
-    //                CLA   INS   P1    P2    LEN -- PIN --
-    byte VERIFY[] = { 0x00, 0x20, 0x00, 0x00, 3,  0x00, 0x00, 0x00 };
+    //                         CLA   INS   P1    P2    LEN -- PIN --
+    unsigned char VERIFY[] = { 0x00, 0x20, 0x00, 0x00, 3,  0x00, 0x00, 0x00 };
 
     createPIN(pin, VERIFY + 5);
 
-    byte sad = HOST;      // source
-    byte dad = ICC1;      // destination
+    unsigned char sad = HOST;      // source
+    unsigned char dad = ICC1;      // destination
 
-    byte response[2];
+    unsigned char response[2];
     unsigned short lenr = sizeof(response);
 
     char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(VERIFY),
@@ -628,16 +628,16 @@ void MemoryCard::changeVerificationData(const QString& oldPin, const QString& ne
 {
      checkInitialzed();
 
-    //                CLA   INS   P1    P2    LEN -- old PIN -----  -- new PIN -----
-    byte VERIFY[] = { 0x00, 0x24, 0x00, 0x00, 6,  0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+    //                         CLA   INS   P1    P2    LEN -- old PIN -----  -- new PIN -----
+    unsigned char VERIFY[] = { 0x00, 0x24, 0x00, 0x00, 6,  0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
     createPIN(oldPin, VERIFY + 5);
     createPIN(newPin, VERIFY + 8);
 
-    byte sad = HOST;      // source
-    byte dad = ICC1;      // destination
+    unsigned char sad = HOST;      // source
+    unsigned char dad = ICC1;      // destination
 
-    byte response[2];
+    unsigned char response[2];
     unsigned short lenr = sizeof(response);
 
     char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(VERIFY),
@@ -669,7 +669,7 @@ void MemoryCard::changeVerificationData(const QString& oldPin, const QString& ne
     \param std::invalid_argument if the string contains illegal characters or has not the right
            length
 */
-void MemoryCard::createPIN(QString pin, byte* pinBytes) const throw (std::invalid_argument)
+void MemoryCard::createPIN(QString pin, unsigned char* pinBytes) const throw (std::invalid_argument)
 {
     if (pin.length() > 6)
         throw std::invalid_argument("Length of PIN must be less than characters");

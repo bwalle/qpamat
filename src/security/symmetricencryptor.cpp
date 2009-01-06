@@ -171,8 +171,8 @@ ByteVector SymmetricEncryptor::decrypt(const ByteVector& vector)
 */
 ByteVector SymmetricEncryptor::crypt(const ByteVector& vector, OperationType operation) const
 {
-    byte buf[BUFLEN];
-	byte ebuf[BUFLEN + 8];
+    unsigned char buf[BUFLEN];
+    unsigned char ebuf[BUFLEN + 8];
     ByteVector output;
     EVP_CIPHER_CTX ectx;
     int ebuflen;
@@ -212,7 +212,7 @@ void SymmetricEncryptor::setPassword(const QString& password)
 {
     Q3CString pwUtf8 = password.utf8();
     EVP_BytesToKey(m_cipher_algorithm, HASH_ALGORITHM, 0,
-        (byte*)pwUtf8.operator const char*(), pwUtf8.length(), 1, m_key, m_iv);
+        (unsigned char *)pwUtf8.operator const char*(), pwUtf8.length(), 1, m_key, m_iv);
 }
 
 

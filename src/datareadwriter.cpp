@@ -256,8 +256,8 @@ QDomDocument DataReadWriter::createSkeletonDocument() throw ()
 class ReadWriteThread : public QThread
 {
     public:
-        ReadWriteThread(MemoryCard& card, ByteVector& bytes, bool write, byte& randomNumber,
-            const QString& password, const QString& pin)
+        ReadWriteThread(MemoryCard& card, ByteVector& bytes, bool write,
+                        unsigned char& randomNumber, const QString& password, const QString& pin)
             : m_card(card), m_bytes(bytes), m_write(write), m_randomNumber(randomNumber),
               m_password(password), m_exception(0), m_pin(pin) { }
 
@@ -274,7 +274,7 @@ class ReadWriteThread : public QThread
         MemoryCard&         m_card;
         ByteVector&         m_bytes;
         const bool          m_write;
-        byte&               m_randomNumber;
+        unsigned char&      m_randomNumber;
         const QString&      m_password;
         ReadWriteException* m_exception;
         const QString&      m_pin;
@@ -300,7 +300,7 @@ class ReadWriteThread : public QThread
 */
 
 /*!
-    \fn ReadWriteThread::ReadWriteThread(MemoryCard&, ByteVector&, bool, byte&, const QString&)
+    \fn ReadWriteThread::ReadWriteThread(MemoryCard&, ByteVector&, bool, unsigned char&, const QString&)
 
     Creates a new instance of a ReadWriteThread.
     \param card the memory card, it must be initialized with the right port (the reason is that
@@ -375,7 +375,7 @@ void ReadWriteThread::run()
             qDebug() << CURRENT_FUNCTION << "Read randomNumber =" << m_randomNumber;
 
             // read the password hash, check the password and throw a exception if necessary
-            byte len = m_card.read(1, 1)[0];
+            unsigned char len = m_card.read(1, 1)[0];
             ByteVector pwHash = m_card.read(2, len);
 
             qDebug() << CURRENT_FUNCTION << "Password hash length =" << len;
@@ -501,7 +501,7 @@ void DataReadWriter::writeXML(const QDomDocument& document, const QString& passw
     QDomText text = document_cpy.createTextNode(hash);
     appData.namedItem("passwordhash").toElement().appendChild(text);
 
-    byte id = 0;
+    unsigned char id = 0;
     if (smartcard) {
         ByteVector vec = dynamic_cast<CollectEncryptor*>(enc.get())->getBytes();
         writeOrReadSmartcard(vec, true, id, password);
@@ -592,7 +592,7 @@ QDomDocument DataReadWriter::readXML(const QString& password)
     // read the data from the smartcard
     if (smartcard) {
         ByteVector vec;
-        byte id = byte(appData.namedItem("smartcard").toElement().attribute("card-id").toShort());
+        unsigned char id = (unsigned char)(appData.namedItem("smartcard").toElement().attribute("card-id").toShort());
 
         // also throws exception
         writeOrReadSmartcard(vec, false, id, password);
@@ -613,15 +613,18 @@ QDomDocument DataReadWriter::readXML(const QString& password)
     \param write reading or writing
     \param randomNumber the random number
 */
-void DataReadWriter::writeOrReadSmartcard(ByteVector& bytes, bool write, byte& randomNumber,
-    const QString& password) throw (ReadWriteException)
+void DataReadWriter::writeOrReadSmartcard(ByteVector        &bytes,
+                                          bool              write,
+                                          unsigned char     &randomNumber,
+                                          const QString     &password)
+    throw (ReadWriteException)
 {
     QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
 
     // at first we need a random number
     if (write) {
         std::srand(std::time(0));
-        randomNumber = byte((double(std::rand())/RAND_MAX)*256);
+        randomNumber = (unsigned char)((double(std::rand())/RAND_MAX)*256);
     }
 
     boost::scoped_ptr<MemoryCard> card;

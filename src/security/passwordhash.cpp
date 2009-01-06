@@ -111,7 +111,7 @@ bool PasswordHash::isCorrect(QString password, const ByteVector& hash)
 */
 ByteVector PasswordHash::generateHash(QString password)
 {
-    StdRandomNumberGenerator<byte> rand;
+    StdRandomNumberGenerator<unsigned char> rand;
     ByteVector output(numberOfRandomBytes);
 
     // generate the random bytes and copy them to the output, too
@@ -155,7 +155,7 @@ void PasswordHash::attachHashWithoutSalt(ByteVector& output, const ByteVector& p
     unsigned int md_len;
 
     int len = passwordBytes.size();
-    byte* password = new byte[len];
+    unsigned char* password = new unsigned char[len];
     std::copy(passwordBytes.begin(), passwordBytes.end(), password);
 
     EVP_DigestInit(&mdctx, HASH_ALGORITHM);
