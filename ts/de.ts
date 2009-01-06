@@ -18,7 +18,7 @@
         <translation>&amp;Über</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/aboutdialog.cpp" line="123"/>
+        <location filename="../src/dialogs/aboutdialog.cpp" line="122"/>
         <source>&amp;License</source>
         <translation>&amp;Lizenz</translation>
     </message>
@@ -94,47 +94,47 @@
 <context>
     <name>ConfDlgPasswordTab</name>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="306"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="313"/>
         <source>Generated Passwords</source>
         <translation>Generierte Passwörter</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="307"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="314"/>
         <source>Password checker</source>
         <translation>Passwort-Checker</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="311"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="318"/>
         <source>L&amp;ength:</source>
         <translation>L&amp;änge:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="312"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="319"/>
         <source>&amp;Allowed characters:</source>
         <translation>&amp;Erlaubte Zeichen:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="326"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="333"/>
         <source>Use external application for generation:</source>
         <translation>Externe Anwendung für Generierung verwenden:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="331"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="338"/>
         <source>Limits for weak - acceptable - strong (cracking days):</source>
         <translation>Grenzen für schwach - akzeptabel - stark (Tage fürs &quot;Knacken&quot;):</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="346"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="353"/>
         <source>&amp;Dictionary file (must be sorted once):</source>
         <translation>&amp;Wörterbuchdatei (muss einmal sortiert werden):</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="352"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="359"/>
         <source>&amp;Sort dictionary</source>
         <translation>Wörterbuch &amp;sortieren</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="370"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="377"/>
         <source>&lt;qt&gt;For performance reasons, the dictionary file needs to be sorted by the length of the words. This function does that!&lt;p&gt;It saves also a copy of the old file by &lt;i&gt;filename.old&lt;/i&gt;.&lt;/qt&gt;</source>
         <translation>&lt;qt&gt;Aus Performancegründen muss die Wörterbuchdatei einmal nach der Länge der Wörter sortiert werden. Diese Funktion erledigt dies!&lt;p&gt;Sie speichert außerdem eine Kopie der alten Datei als &lt;i&gt;dateiname.old&lt;/i&gt;.&lt;/qt&gt;</translation>
     </message>
@@ -144,14 +144,14 @@
         <translation>Die zum Sortieren ausgewählte Datei existiert nicht!</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="482"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="479"/>
         <source>Failed to create a backup file. Do you want
 to continue without a backup?</source>
         <translation>Fehler beim Erstellen der Backupdatei. Wollen
 Sie ohne Backup fortfahren?</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="493"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="487"/>
         <source>Could not open the file for writing!</source>
         <translation>Datei konnte nicht zum Schreiben geöffnet werden!</translation>
     </message>
@@ -159,47 +159,47 @@ Sie ohne Backup fortfahren?</translation>
 <context>
     <name>ConfDlgPresentationTab</name>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="656"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="649"/>
         <source>Passwords</source>
         <translation>Passwörter</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="657"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="650"/>
         <source>Printing Fonts</source>
         <translation>Schriften für Druck</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="665"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="658"/>
         <source>Hide passwords in Random Password Dialog</source>
         <translation>Passwörter im Zufallspasswort-Dialog verstecken</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="667"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="660"/>
         <source>Don&apos;t &amp;grab keyboard focus in the password dialog</source>
         <translation>Tastatur&amp;fokus nicht behalten im Passwortdialog</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="658"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="651"/>
         <source>System tray</source>
         <translation>Systemabschnitt</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="671"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="664"/>
         <source>Show icon in system tray (needs restart!)</source>
         <translation>Icon im Systemabschnitt anzeigen (Neustart!)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="677"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="668"/>
         <source>Start hidden</source>
         <translation>Versteckt starten</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="660"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="653"/>
         <source>&amp;Normal font:</source>
         <translation>Schriftart für &amp;normalen Text:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="662"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="655"/>
         <source>&amp;Footer font:</source>
         <translation>Schriftart für &amp;Fußzeile:</translation>
     </message>
@@ -207,12 +207,12 @@ Sie ohne Backup fortfahren?</translation>
 <context>
     <name>ConfDlgSecurityTab</name>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="557"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="549"/>
         <source>Encryption</source>
         <translation>Verschlüsselung</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="561"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="553"/>
         <source>Cipher &amp;algorithm:</source>
         <translation>Verschlüsselungs-&amp;Algorithmus:</translation>
     </message>
@@ -222,37 +222,37 @@ Sie ohne Backup fortfahren?</translation>
         <translation type="obsolete">&lt;qt&gt;Ändern Sie diese Einstellung nur, wenn Sie wissen, was Sie tun. Die Algorithmen werden von der OpenSSL-Bibliothek zur Verfügung gestellt und werden zur Laufzeit ermittelt. Sie können jede Datei, die mit &lt;i&gt;X&lt;/i&gt; verschlüsselt wurden, nur auf Computern lesen, dessen OpenSSL-Bibliothek mit dem Algorithmus &lt;i&gt;X&lt;/i&gt; zurecht kommt. &lt;p&gt;Blowfish ist eine gute Wahl weil es sich um einen freien, überall verfügbaren Algorithmus handelt. IDEA ist patentiert (aber sicher, PGP verwendet ihn!) und AES (der Nachfolger von DES) ist nur bei neuen Versionen von OpenSSL verfügbar. Lesen Sie ein Buch über Kryptographie wenn Sie sich für die Algorithmen interessieren.&lt;/qt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="558"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="550"/>
         <source>Logout</source>
         <translation>Ausloggen</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="565"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="557"/>
         <source>Auto &amp;logout after inactivity:</source>
         <translation>Automatisches Aus&amp;loggen nach Inaktivität:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="589"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="581"/>
         <source>Disabled</source>
         <translation>Deaktiviert</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="590"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="582"/>
         <source>15 minutes</source>
         <translation>15 Minuten</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="591"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="583"/>
         <source>30 minutes</source>
         <translation>30 Minuten</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="592"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="584"/>
         <source>1 hour</source>
         <translation>1 Stunde</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="593"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="585"/>
         <source>2 hours</source>
         <translation>2 Stunden</translation>
     </message>
@@ -260,113 +260,113 @@ Sie ohne Backup fortfahren?</translation>
 <context>
     <name>ConfDlgSmartcardTab</name>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="771"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="762"/>
         <source>Smartcard</source>
         <translation>Chipkarte</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="772"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="763"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="773"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="764"/>
         <source>Testing</source>
         <translation>Testen</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="775"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="766"/>
         <source>&amp;Use a smartcard</source>
         <translation>&amp;Chipkarte verwenden</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="776"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="767"/>
         <source>Card has &amp;write-protection</source>
         <translation>Karte hat &amp;Schreibschutz</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="778"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="769"/>
         <source>CT-&amp;API Chipcard Driver:</source>
         <translation>CT-&amp;API Chipkarten-Treiber:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="781"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="772"/>
         <source>Chipcard Terminal &amp;Port:</source>
         <translation>Chipkartenleser &amp;Port:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="784"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="775"/>
         <source>Insert a card and click on this button to test your settings:</source>
-        <translation>Legen Sie eine Karte ein und klicken Sie auf diesen Button, 
+        <translation>Legen Sie eine Karte ein und klicken Sie auf diesen Button,
 um die Einstellungen zu testen:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="786"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="777"/>
         <source>&amp;Test</source>
         <translation>&amp;Testen</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="800"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="791"/>
         <source>CT-API-Driver (*.dll)</source>
         <translation>CT-API-Treiber (*.dll)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="802"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="793"/>
         <source>CT-API-Driver (*.dylib)</source>
         <translation>CT-API-Treiber (*.dylib)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="804"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="795"/>
         <source>CT-API-Driver (*.sl)</source>
         <translation>CT-API-Treiber (*.sl)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="806"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="797"/>
         <source>CT-API-Driver (*.so)</source>
         <translation>CT-API-Treiber (*.so)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="835"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="827"/>
         <source>Special (Port 0)</source>
         <translation>Speziell (Port 0)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="835"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="828"/>
         <source>COM1/USB/Keyboard</source>
         <translation>COM1/USB/Tastatur</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="836"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="829"/>
         <source>COM2</source>
         <translation>COM2</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="836"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="830"/>
         <source>COM3</source>
         <translation>COM3</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="836"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="832"/>
         <source>COM4</source>
         <translation>COM4</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="888"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="879"/>
         <source>&lt;p&gt;Detected a card with %1 kBytes memory.&lt;/p&gt;&lt;p&gt;If you think this is enough memory you can use this card for storing your passwords!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Karte mit %1 kByte Speicher erkannt.&lt;/p&gt;&lt;p&gt;Wenn Sie denken dass dies genug Speicher ist, können Sie diese Karte zum Speichern der Passwörter verwenden!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="898"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="887"/>
         <source>&lt;p&gt;The communication to your chipcard terminal seems to work.&lt;p&gt;&lt;p&gt;However, there&apos;s no memory card in your reader. So you cannot use it for saving your password. Buy a memory card and try again!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Die Kommunikation mit dem Chipkartenleser scheint zu funktionieren.&lt;p&gt;&lt;p&gt;Es befindet sich aber keine Speicherkarte im Lesegerät. Deshalb können Sie diese nicht zum Speichern der Passwörter verwenden. Kaufen Sie sich eine Speicherkarte und versuchen Sie es erneut!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="911"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="898"/>
         <source>&lt;p&gt;A problem occurred while loading the specified CT-API (chipcard) driver. The error message was:&lt;/p&gt;&lt;p&gt;%1&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ein Fehler trat beim Laden des angegebenen CT-API (Chipkarten) Treiber auf. Die Fehlermeldung war:&lt;/p&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="919"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="904"/>
         <source>&lt;p&gt;An error occurred while communicating with the chipcard terminal. The error message was:&lt;/p&gt;&lt;p&gt;%1&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ein Fehler trat bei der Kommunikation mit dem Kartenleser auf. Die Fehlermeldung war:&lt;/p&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
@@ -415,7 +415,7 @@ um die Einstellungen zu testen:</translation>
 <context>
     <name>FileLineEdit</name>
     <message>
-        <location filename="../src/widgets/filelineedit.cpp" line="136"/>
+        <location filename="../src/widgets/filelineedit.cpp" line="132"/>
         <source>QPaMaT</source>
         <translation>QPaMaT</translation>
     </message>
@@ -428,22 +428,22 @@ um die Einstellungen zu testen:</translation>
         <translation type="obsolete">&lt;qt&gt;&lt;p&gt;Öffnen des Links &lt;tt&gt;%1&lt;/tt&gt; im angegebenen Web-Browser fehlgeschlagen. Der Befehl war:&lt;/p&gt;&lt;p&gt;&lt;tt&gt;&lt;nobr&gt;%2&lt;/tt&gt;&lt;/nobr&gt;&lt;/p&gt;&lt;/qt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/help.cpp" line="70"/>
+        <location filename="../src/help.cpp" line="65"/>
         <source>QPaMaT</source>
         <translation>QPaMaT</translation>
     </message>
     <message>
-        <location filename="../src/help.cpp" line="71"/>
+        <location filename="../src/help.cpp" line="66"/>
         <source>The QPaMaT documentation is not installed.</source>
         <translation>Die QPaMaT-Dokumentation ist nicht installiert.</translation>
     </message>
     <message>
-        <location filename="../src/help.cpp" line="76"/>
+        <location filename="../src/help.cpp" line="71"/>
         <source>Help started in web browser.</source>
         <translation>Hilfe wurde in Web-Browser gestartet.</translation>
     </message>
     <message>
-        <location filename="../src/help.cpp" line="89"/>
+        <location filename="../src/help.cpp" line="83"/>
         <source>&lt;qt&gt;&lt;p&gt;Failed to open the link &lt;tt&gt;%1&lt;/tt&gt; in the specified web browser.&lt;/p&gt;&lt;/qt&gt;</source>
         <translation>&lt;qt&gt;&lt;p&gt;Öffnen des Links &lt;tt&gt;%1&lt;/tt&gt; im angegebenen Web-Browser fehlgeschlagen.&lt;/p&gt;&lt;/qt&gt;</translation>
     </message>
@@ -451,12 +451,12 @@ um die Einstellungen zu testen:</translation>
 <context>
     <name>InsertCardDialog</name>
     <message>
-        <location filename="../src/dialogs/insertcarddialog.cpp" line="59"/>
+        <location filename="../src/dialogs/insertcarddialog.cpp" line="60"/>
         <source>Insert the card in the reader.</source>
         <translation>Legen Sie die Karte in den Leser ein.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/insertcarddialog.cpp" line="62"/>
+        <location filename="../src/dialogs/insertcarddialog.cpp" line="63"/>
         <source>Enter the PIN and insert the card in your reader.
 It must consist of six hexadecimal digits:</source>
         <translation>Geben Sie die PIN ein und legen Sie die Karte in Ihren Leser ein. Sie muss aus sechs hexadezimalen Ziffern bestehen:</translation>
@@ -498,17 +498,17 @@ It must consist of six hexadecimal digits:</source>
         <translation type="obsolete">Geben Sie die &lt;b&gt;Passphrase&lt;/b&gt; zweimal zur Bestätigung ein. Die minimale Länge beträgt sechs Zeichen, aus Sicherheitsgründen sind mehr als zwei Wörter gut!</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/newpassworddialog.cpp" line="124"/>
+        <location filename="../src/dialogs/newpassworddialog.cpp" line="121"/>
         <source>&amp;Old password:</source>
         <translation>&amp;Altes Passwort:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/newpassworddialog.cpp" line="127"/>
+        <location filename="../src/dialogs/newpassworddialog.cpp" line="124"/>
         <source>&amp;Password:</source>
         <translation>&amp;Passwort:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/newpassworddialog.cpp" line="129"/>
+        <location filename="../src/dialogs/newpassworddialog.cpp" line="126"/>
         <source>&amp;Verification:</source>
         <translation>&amp;Bestätigung:</translation>
     </message>
@@ -523,32 +523,32 @@ It must consist of six hexadecimal digits:</source>
         <translation type="obsolete">Abbrechen</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/newpassworddialog.cpp" line="178"/>
+        <location filename="../src/dialogs/newpassworddialog.cpp" line="173"/>
         <source>The confirmation passphrase was not the same as the first one. Re-enter the confirmation or both.</source>
         <translation>Die Bestätigung stimmte nicht mit dem Passwort überein. Geben Sie die Bestätigung oder das Passwort neu ein.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/newpassworddialog.cpp" line="186"/>
+        <location filename="../src/dialogs/newpassworddialog.cpp" line="181"/>
         <source>The old password was incorrect. Without the old password, the password cannot be changed.</source>
         <translation>Das alte Passwort war falsch. Ohne das alte Passwort kann das Passwort nicht geändert werden.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/newpassworddialog.cpp" line="205"/>
+        <location filename="../src/dialogs/newpassworddialog.cpp" line="197"/>
         <source>An error occurred while checking the password:&lt;br&gt;%1</source>
         <translation>Ein Fehler trat bei der Überprüfung des Passwortes auf:&lt;br&gt;%1</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/newpassworddialog.cpp" line="215"/>
+        <location filename="../src/dialogs/newpassworddialog.cpp" line="206"/>
         <source>&lt;nobr&gt;The passphrase is too simple. See the&lt;/nobr&gt; Security settings for details about the conditions a valid password must met.</source>
         <translation>&lt;nobr&gt;Die Passphrase war zu einfach. Überpüfen&lt;/nobr&gt; Sie die Sicherheitseinstellungen.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/newpassworddialog.cpp" line="114"/>
+        <location filename="../src/dialogs/newpassworddialog.cpp" line="112"/>
         <source>Enter the &lt;b&gt;old passphrase&lt;/b&gt; once and the &lt;b&gt;new passphrase&lt;/b&gt;&lt;br&gt; two times for verification. The minimum length must be six&lt;br&gt; characters, but for security reasons more than two words&lt;br&gt; are good!</source>
         <translation>Geben Sie die &lt;b&gt;alte Passphrase&lt;/b&gt; einmal und dann die &lt;b&gt;neue Passphrase&lt;/b&gt;&lt;br&gt; zweimal zur Bestätigung ein. Die minimale Länge&lt;br&gt; muss sechs Zeichen betragen, aus Sicherheitsgründen wären mehr&lt;br&gt; als zwei Wörter gut!</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/newpassworddialog.cpp" line="117"/>
+        <location filename="../src/dialogs/newpassworddialog.cpp" line="115"/>
         <source>Enter the &lt;b&gt;passphrase&lt;/b&gt; two times for verification. The minimum length&lt;br&gt; must be six characters, but for security reasons more than two&lt;br&gt; words are good!</source>
         <translation>Geben Sie die &lt;b&gt;Passphrase&lt;/b&gt; zweimal zur Bestätigung ein. Die minimale&lt;br&gt; Länge beträgt sechs Zeichen, aus Sicherheitsgründen sind mehr als&lt;br&gt; zwei Wörter gut!</translation>
     </message>
@@ -638,47 +638,47 @@ erneut.
 (PID des anderen %3 Prozesses ist %4.)</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="328"/>
+        <location filename="../src/datareadwriter.cpp" line="327"/>
         <source>There&apos;s no memory card in your reader.
 Use the test function in the configuration
 dialog to set up your reader properly.</source>
         <translation>Es befindet sich keine Speicherkarte im
-Lesegerät. Verwenden Sie die  Testfunktion 
-im Konfigurationsdialog um den Leser 
+Lesegerät. Verwenden Sie die  Testfunktion
+im Konfigurationsdialog um den Leser
 korrekt zu konfigurieren.</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="342"/>
+        <location filename="../src/datareadwriter.cpp" line="339"/>
         <source>&lt;qt&gt;It was not possible to select the file on the smartcard&lt;/qt&gt;</source>
         <translation>&lt;qt&gt;Es war nicht möglich die Datei auf der Chipkarte auszuwählen&lt;/qt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="378"/>
+        <location filename="../src/datareadwriter.cpp" line="371"/>
         <source>You inserted the wrong smartcard!</source>
         <translation>Sie haben eine falsche Chipkarte eingelegt!</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="393"/>
+        <location filename="../src/datareadwriter.cpp" line="385"/>
         <source>The given password was wrong.</source>
         <translation>Das Passwort war falsch.</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="415"/>
+        <location filename="../src/datareadwriter.cpp" line="405"/>
         <source>&lt;qt&gt;&lt;nobr&gt;The PIN you entered was wrong. You have&lt;/nobr&gt; &lt;b&gt;%1&lt;/b&gt; retries. After that, the card is destroyed!</source>
         <translation>&lt;qt&gt;&lt;nobr&gt;Die PIN, die Sie eingegeben habe, war falsch. Sie haben&lt;/nobr&gt; noch &lt;b&gt;%1&lt;/b&gt; Versuche. Nach diesen Versuchen wird die Karte zerstört!</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="422"/>
+        <location filename="../src/datareadwriter.cpp" line="410"/>
         <source>&lt;qt&gt;&lt;nobr&gt;There was a communication error while&lt;/nobr&gt; communicating with the smartcard terminal.&lt;p&gt;The error message was:&lt;br&gt;&lt;nobr&gt;%1&lt;/nobr&gt;</source>
         <translation>&lt;qt&gt;&lt;nobr&gt;Es trat ein Kommunikationsfehler mit dem &lt;/nobr&gt; Chipkartenleser auf.&lt;p&gt;Die Fehlermeldung war:&lt;br&gt;&lt;nobr&gt;%1&lt;/nobr&gt;</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="486"/>
+        <location filename="../src/datareadwriter.cpp" line="473"/>
         <source>&lt;qt&gt;&lt;nobr&gt;The data file is not writable. Change the file in&lt;/nobr&gt; the configuration dialog or change the permission of the file!&lt;/qt&gt;</source>
         <translation>&lt;qt&gt;&lt;nobr&gt;Die Datendatei ist nicht schreibbar. Ändern Sie die &lt;/nobr&gt; Datei im Konfigurationsdialog oder passen Sie die Zugriffsrechte der Datei an!&lt;/qt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="509"/>
+        <location filename="../src/datareadwriter.cpp" line="490"/>
         <source>The algorithm &apos;%1&apos; is not avaible on your system.
 Choose another crypto algorithm in the settings.
 The data is not saved!</source>
@@ -687,7 +687,7 @@ Wählen Sie einen anderen Algorithmus in den Einstellungen.
 Die Daten wurden nicht gespeichert!</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="535"/>
+        <location filename="../src/datareadwriter.cpp" line="514"/>
         <source>The data could not be saved. There was an
 error while creating the file:
 %1</source>
@@ -696,63 +696,63 @@ trat ein Fehler bei der Erstellung der Datei auf:
 %1</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="572"/>
+        <location filename="../src/datareadwriter.cpp" line="549"/>
         <source>The file %1 could not be opened:
 %2.</source>
         <translation>Die Datei %1 konnte nicht geöffnet werden:
 %2.</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="579"/>
+        <location filename="../src/datareadwriter.cpp" line="555"/>
         <source>The XML file (%1) may be corrupted and
 could not be read. Check the file with a text editor.</source>
         <translation>Die XML-Datei (%1) ist beschädigt und konnte nicht gelesen werden. Überprüfen Sie die Datei mit einem Texteditor.</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="589"/>
+        <location filename="../src/datareadwriter.cpp" line="564"/>
         <source>&lt;qt&gt;&lt;nobr&gt;The passwords of the current data file are stored&lt;/nobr&gt; on a smartcard but you did not configure QPaMaT for reading smartcards.&lt;p&gt;Change the settings and try again!&lt;/qt&gt;</source>
         <translation>&lt;qt&gt;&lt;nobr&gt;Die Passwörter in der aktuellen Datendatei sind &lt;/nobr&gt; auf einer Chipkarte gespeichert aber QPaMaT ist nicht für die Verwendung von Chipkarten konfiguriert.&lt;p&gt;Ändern Sie die Einstellungen und versuchen Sie es erneut!&lt;/qt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="600"/>
+        <location filename="../src/datareadwriter.cpp" line="573"/>
         <source>The password is incorrect.</source>
         <translation>Das Passwort ist falsch.</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="677"/>
+        <location filename="../src/datareadwriter.cpp" line="639"/>
         <source>The application was not set up correctly for using the smartcard. Call the configuration dialog and use the Test button for testing!&lt;p&gt;The error message was:&lt;br&gt;&lt;nobr&gt;%1&lt;/nobr&gt;</source>
         <translation>Die Anwendung wurde für die Verwendung von Chipkarten nicht korrekt eingerichtet. Rufen Sie den Konfigurationsdialg auf und verwenden Sie den Testen-Button zum Testen der Einstellungen!&lt;p&gt;Die Fehlermeldung war:&lt;br&gt;&lt;nobr&gt;%1&lt;/nobr&gt;</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="689"/>
+        <location filename="../src/datareadwriter.cpp" line="648"/>
         <source>Error in initializing the smart card reader:
 %1</source>
         <translation>Fehler bei der Initialisierung des Chipkartenlesers:
 %1</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="716"/>
+        <location filename="../src/datareadwriter.cpp" line="672"/>
         <source>&lt;b&gt;Writing&lt;/b&gt; to the smartcard...</source>
         <translation>&lt;b&gt;Schreiben&lt;/b&gt; auf die Chipkarte...</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="716"/>
+        <location filename="../src/datareadwriter.cpp" line="672"/>
         <source>&lt;b&gt;Reading&lt;/b&gt; from the smartcard...</source>
         <translation>&lt;b&gt;Lesen&lt;/b&gt; von der Chipkarte...</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="215"/>
+        <location filename="../src/main.cpp" line="201"/>
         <source>QPaMaT</source>
         <translation>QPaMaT</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="210"/>
+        <location filename="../src/main.cpp" line="198"/>
         <source>No more memory available. The application
 will be closed.</source>
         <translation>Nicht genug Speicher verfügbar. Die Anwendung wird geschlossen.</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="217"/>
+        <location filename="../src/main.cpp" line="203"/>
         <source>An unknown error occurred:
 %1
 The application will be closed.</source>
@@ -761,7 +761,7 @@ The application will be closed.</source>
 Die Anwendung wird geschlossen.</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="626"/>
+        <location filename="../src/datareadwriter.cpp" line="590"/>
         <source>The algorithm &apos;%1&apos; is not avaible on your system.
 It is impossible to read the file. Try to recompile or
 update your OpenSSL library.</source>
@@ -773,32 +773,32 @@ OpenSSL neu kompilieren oder zu aktualisieren.</translation>
 <context>
     <name>Qpamat</name>
     <message>
-        <location filename="../src/qpamat.cpp" line="130"/>
+        <location filename="../src/qpamat.cpp" line="137"/>
         <source>Sites</source>
         <translation>Seiten</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="252"/>
+        <location filename="../src/qpamat.cpp" line="249"/>
         <source>Application</source>
         <translation>Anwendung</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1071"/>
+        <location filename="../src/qpamat.cpp" line="989"/>
         <source>Search</source>
         <translation>Suchen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="266"/>
+        <location filename="../src/qpamat.cpp" line="263"/>
         <source>Search:</source>
         <translation>Suchen:</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="283"/>
+        <location filename="../src/qpamat.cpp" line="280"/>
         <source>Edit</source>
         <translation>Bearbeiten</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="301"/>
+        <location filename="../src/qpamat.cpp" line="298"/>
         <source>&amp;File</source>
         <translation>&amp;Datei</translation>
     </message>
@@ -808,17 +808,17 @@ OpenSSL neu kompilieren oder zu aktualisieren.</translation>
         <translation type="obsolete">&amp;Ansicht</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="311"/>
+        <location filename="../src/qpamat.cpp" line="308"/>
         <source>&amp;Options</source>
         <translation>&amp;Optionen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="316"/>
+        <location filename="../src/qpamat.cpp" line="313"/>
         <source>&amp;Extras</source>
         <translation>&amp;Extras</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1049"/>
+        <location filename="../src/qpamat.cpp" line="967"/>
         <source>&amp;Help</source>
         <translation>&amp;Hilfe</translation>
     </message>
@@ -828,89 +828,89 @@ OpenSSL neu kompilieren oder zu aktualisieren.</translation>
         <translation type="obsolete">QPaMaT XML-Dateien (*.xml)</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="681"/>
+        <location filename="../src/qpamat.cpp" line="623"/>
         <source>QPaMaT</source>
         <translation>QPaMaT</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="703"/>
+        <location filename="../src/qpamat.cpp" line="643"/>
         <source>There is modified data that was not saved.
 Do you want to save it now?</source>
         <translation>Daten wurden modifiziert aber nicht gespeichert.
 Wollen Sie jetzt speichern?</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="786"/>
+        <location filename="../src/qpamat.cpp" line="718"/>
         <source>Please enter a search criterion in the text field!</source>
         <translation>Bitte geben Sie in Suchkriterium in das Textfeld ein!</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="859"/>
+        <location filename="../src/qpamat.cpp" line="780"/>
         <source>QPaMaT - Password managing tool for Unix, Windows and MacOS X</source>
         <translation>QPaMaT - Passwort-Management-Tool für Unix, Windows und MacOS X</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="867"/>
+        <location filename="../src/qpamat.cpp" line="787"/>
         <source>page</source>
         <translation>Seite</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="992"/>
+        <location filename="../src/qpamat.cpp" line="910"/>
         <source>&amp;New</source>
         <translation>&amp;Neu</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1003"/>
+        <location filename="../src/qpamat.cpp" line="921"/>
         <source>E&amp;xit</source>
         <translation>&amp;Beenden</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1007"/>
+        <location filename="../src/qpamat.cpp" line="925"/>
         <source>&amp;Login</source>
         <translation>&amp;Einloggen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="527"/>
+        <location filename="../src/qpamat.cpp" line="494"/>
         <source>&amp;Logout</source>
         <translation>&amp;Ausloggen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1012"/>
+        <location filename="../src/qpamat.cpp" line="930"/>
         <source>&amp;Save</source>
         <translation>&amp;Speichern</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1017"/>
+        <location filename="../src/qpamat.cpp" line="935"/>
         <source>&amp;Export...</source>
         <translation>&amp;Exportieren...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1021"/>
+        <location filename="../src/qpamat.cpp" line="939"/>
         <source>&amp;Print...</source>
         <translation>&amp;Drucken...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1025"/>
+        <location filename="../src/qpamat.cpp" line="943"/>
         <source>&amp;Change Password...</source>
         <translation>&amp;Passwort ändern...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1029"/>
+        <location filename="../src/qpamat.cpp" line="947"/>
         <source>&amp;Settings...</source>
         <translation>&amp;Einstellungen...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1033"/>
+        <location filename="../src/qpamat.cpp" line="951"/>
         <source>&amp;Random Password...</source>
         <translation>&amp;Zufallspasswort...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1036"/>
+        <location filename="../src/qpamat.cpp" line="954"/>
         <source>&amp;Show password strength</source>
         <translation>&amp;Passwortstärke anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1043"/>
+        <location filename="../src/qpamat.cpp" line="961"/>
         <source>&amp;Clear clipboard</source>
         <translation>&amp;Zwischenablage löschen</translation>
     </message>
@@ -920,22 +920,22 @@ Wollen Sie jetzt speichern?</translation>
         <translation type="obsolete">&amp;Kontexthilfe</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1054"/>
+        <location filename="../src/qpamat.cpp" line="972"/>
         <source>&amp;About...</source>
         <translation>&amp;Über...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1056"/>
+        <location filename="../src/qpamat.cpp" line="974"/>
         <source>About &amp;Qt...</source>
         <translation>Über &amp;Qt...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1061"/>
+        <location filename="../src/qpamat.cpp" line="979"/>
         <source>Add item</source>
         <translation>Eintrag hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1066"/>
+        <location filename="../src/qpamat.cpp" line="984"/>
         <source>Remove item</source>
         <translation>Eintrag entfernen</translation>
     </message>
@@ -945,7 +945,7 @@ Wollen Sie jetzt speichern?</translation>
         <translation type="obsolete">Suchfeld &amp;fokussieren</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="650"/>
+        <location filename="../src/qpamat.cpp" line="602"/>
         <source>The file you&apos;ve choosen exists. Do you overwrite it?</source>
         <translation>Die gewählte Datei existiert bereits. Soll sie überschrieben werden?</translation>
     </message>
@@ -955,42 +955,42 @@ Wollen Sie jetzt speichern?</translation>
         <translation type="obsolete">&amp;Überschreiben</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="682"/>
+        <location filename="../src/qpamat.cpp" line="624"/>
         <source>An error occured while saving the file.</source>
         <translation>Ein Fehler ist beim Speichern aufgetreten.</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="634"/>
+        <location filename="../src/qpamat.cpp" line="591"/>
         <source>QPaMaT XML files (*.xml);;Text files with cleartext password (*.txt)</source>
         <translation>QPaMaT XML-Dateien (*.xml);;Textdateien mit Klartextpasswort (*.txt)</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="651"/>
+        <location filename="../src/qpamat.cpp" line="603"/>
         <source>&amp;Overwrite</source>
         <translation>&amp;Überschreiben</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="651"/>
+        <location filename="../src/qpamat.cpp" line="603"/>
         <source>&amp;Don&apos;t export</source>
         <translation>&amp;Nicht exportieren</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="528"/>
+        <location filename="../src/qpamat.cpp" line="495"/>
         <source>Logout</source>
         <translation>Ausloggen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="537"/>
+        <location filename="../src/qpamat.cpp" line="502"/>
         <source>Login</source>
         <translation>Einloggen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="1073"/>
+        <location filename="../src/qpamat.cpp" line="991"/>
         <source>&amp;Show</source>
         <translation>&amp;Anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="428"/>
+        <location filename="../src/qpamat.cpp" line="413"/>
         <source>&amp;Hide</source>
         <translation>&amp;Verbergen</translation>
     </message>
@@ -998,7 +998,7 @@ Wollen Sie jetzt speichern?</translation>
 <context>
     <name>RandomPassword</name>
     <message>
-        <location filename="../src/randompassword.cpp" line="92"/>
+        <location filename="../src/randompassword.cpp" line="89"/>
         <source>Failed to create a password checker or generator:
 
 %1
@@ -1011,12 +1011,12 @@ Adjust the settings!</source>
 Prüfen Sie Ihre Einstellungen!</translation>
     </message>
     <message>
-        <location filename="../src/randompassword.cpp" line="124"/>
+        <location filename="../src/randompassword.cpp" line="117"/>
         <source>&lt;qt&gt;&lt;nobr&gt;An error occurred while generating the password:&lt;/nobr&gt;&lt;br&gt;%1&lt;/qt&gt;</source>
         <translation>&lt;qt&gt;&lt;nobr&gt;Ein Fehler ist während der Geneierung des Passworts aufgetreten:&lt;/nobr&gt;&lt;br&gt;%1&lt;/qt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/randompassword.cpp" line="149"/>
+        <location filename="../src/randompassword.cpp" line="137"/>
         <source>&lt;qt&gt;&lt;nobr&gt;Failed to create a random password with the current&lt;/nobr&gt; generator and the current password checker. Adjust the settings!</source>
         <translation>&lt;qt&gt;&lt;nobr&gt;Generieren eines Zufallspassworts mit den aktuellen&lt;/nobr&gt; Einstellungen fehlgeschlagen. Prüfen Sie die Einstellungen!</translation>
     </message>
@@ -1024,44 +1024,52 @@ Prüfen Sie Ihre Einstellungen!</translation>
 <context>
     <name>RightListView</name>
     <message>
-        <location filename="../src/rightlistview.cpp" line="86"/>
+        <location filename="../src/rightlistview.cpp" line="88"/>
         <source>Key</source>
         <translation>Schlüssel</translation>
     </message>
     <message>
-        <location filename="../src/rightlistview.cpp" line="87"/>
+        <location filename="../src/rightlistview.cpp" line="89"/>
         <source>Value</source>
         <translation>Wert</translation>
     </message>
     <message>
-        <location filename="../src/rightlistview.cpp" line="119"/>
+        <location filename="../src/rightlistview.cpp" line="121"/>
         <source>&amp;New</source>
         <translation>&amp;Neu</translation>
     </message>
     <message>
-        <location filename="../src/rightlistview.cpp" line="121"/>
+        <location filename="../src/rightlistview.cpp" line="123"/>
         <source>&amp;Delete</source>
         <translation>&amp;Löschen</translation>
     </message>
     <message>
-        <location filename="../src/rightlistview.cpp" line="124"/>
+        <location filename="../src/rightlistview.cpp" line="126"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopieren</translation>
     </message>
     <message>
-        <location filename="../src/rightlistview.cpp" line="126"/>
+        <location filename="../src/rightlistview.cpp" line="128"/>
         <source>Show &amp;password...</source>
         <translation>Passwort &amp;anzeigen...</translation>
     </message>
     <message>
-        <location filename="../src/rightlistview.cpp" line="258"/>
+        <location filename="../src/rightlistview.cpp" line="245"/>
         <source>Double click only supported with passwords and URLs!</source>
         <translation>Doppelklick wird nur bei Passwörtern und URLs unterstützt!</translation>
     </message>
     <message>
-        <location filename="../src/rightlistview.cpp" line="355"/>
+        <location filename="../src/rightlistview.cpp" line="333"/>
         <source>No item selected!</source>
         <translation>Kein Eintrag ausgewählt!</translation>
+    </message>
+</context>
+<context>
+    <name>RightPanel</name>
+    <message>
+        <location filename="../src/rightpanel.cpp" line="112"/>
+        <source>(No item selected)</source>
+        <translation>(Kein Eintrag ausgewählt)</translation>
     </message>
 </context>
 <context>
@@ -1082,7 +1090,7 @@ Prüfen Sie Ihre Einstellungen!</translation>
         <translation type="obsolete">&amp;Schließen</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/showpassworddialog.cpp" line="99"/>
+        <location filename="../src/dialogs/showpassworddialog.cpp" line="98"/>
         <source>&amp;Insert</source>
         <translation>&amp;Einfügen</translation>
     </message>
@@ -1090,47 +1098,47 @@ Prüfen Sie Ihre Einstellungen!</translation>
 <context>
     <name>SouthPanel</name>
     <message>
-        <location filename="../src/southpanel.cpp" line="92"/>
+        <location filename="../src/southpanel.cpp" line="93"/>
         <source>&amp;Type</source>
         <translation>&amp;Typ</translation>
     </message>
     <message>
-        <location filename="../src/southpanel.cpp" line="95"/>
+        <location filename="../src/southpanel.cpp" line="96"/>
         <source>Misc</source>
         <translation>Verschiedenes</translation>
     </message>
     <message>
-        <location filename="../src/southpanel.cpp" line="96"/>
+        <location filename="../src/southpanel.cpp" line="97"/>
         <source>Username</source>
         <translation>Benutzername</translation>
     </message>
     <message>
-        <location filename="../src/southpanel.cpp" line="97"/>
+        <location filename="../src/southpanel.cpp" line="98"/>
         <source>Password</source>
         <translation>Passwort</translation>
     </message>
     <message>
-        <location filename="../src/southpanel.cpp" line="98"/>
+        <location filename="../src/southpanel.cpp" line="99"/>
         <source>URL</source>
         <translation>URL</translation>
     </message>
     <message>
-        <location filename="../src/southpanel.cpp" line="102"/>
+        <location filename="../src/southpanel.cpp" line="103"/>
         <source>&amp;Key</source>
         <translation>&amp;Schlüssel</translation>
     </message>
     <message>
-        <location filename="../src/southpanel.cpp" line="107"/>
+        <location filename="../src/southpanel.cpp" line="108"/>
         <source>&amp;Value</source>
         <translation>&amp;Wert</translation>
     </message>
     <message>
-        <location filename="../src/southpanel.cpp" line="266"/>
+        <location filename="../src/southpanel.cpp" line="261"/>
         <source>&lt;qt&gt;&lt;nobr&gt;Failed to calculate the password strength. The error message&lt;/nobr&gt; was:&lt;p&gt;%1&lt;p&gt;Check your configuration!&lt;/qt&gt;</source>
         <translation>&lt;qt&gt;&lt;nobr&gt;Berechnung der Passwortstärke fehlgeschlagen. Die Fehlermeldung&lt;/nobr&gt; lautete:&lt;p&gt;%1&lt;p&gt;Prüfen Sie Ihre Konfiguration!&lt;/qt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/southpanel.cpp" line="87"/>
+        <location filename="../src/southpanel.cpp" line="88"/>
         <source>&amp;Properties</source>
         <translation>&amp;Eigenschaften</translation>
     </message>
@@ -1138,72 +1146,72 @@ Prüfen Sie Ihre Einstellungen!</translation>
 <context>
     <name>Tree</name>
     <message>
-        <location filename="../src/tree.cpp" line="122"/>
+        <location filename="../src/tree.cpp" line="124"/>
         <source>Insert &amp;Item</source>
         <translation>&amp;Eintrag hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/tree.cpp" line="123"/>
+        <location filename="../src/tree.cpp" line="125"/>
         <source>Insert &amp;Category</source>
         <translation>&amp;Kategorie hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/tree.cpp" line="128"/>
+        <location filename="../src/tree.cpp" line="130"/>
         <source>&amp;Rename</source>
         <translation>&amp;Umbenennen</translation>
     </message>
     <message>
-        <location filename="../src/tree.cpp" line="130"/>
+        <location filename="../src/tree.cpp" line="132"/>
         <source>Delete &amp;Item</source>
         <translation>Eintrag &amp;löschen</translation>
     </message>
     <message>
-        <location filename="../src/tree.cpp" line="227"/>
+        <location filename="../src/tree.cpp" line="229"/>
         <source>An unknown error occured while reading the file. If you don&apos;t know what to do try to contact the author.&lt;p&gt;The error message was:&lt;br&gt;&lt;nobr&gt;%1&lt;/nobr&gt;</source>
         <translation>Ein unbekannter Fehler trat beim Lesen der Datei auf. Wenn Sie nicht wissen, was zu tun ist, kontaktieren Sie den Autor.&lt;p&gt;Die Fehlermeldung war:&lt;br&gt;&lt;nobr&gt;%1&lt;/nobr&gt;</translation>
     </message>
     <message>
-        <location filename="../src/tree.cpp" line="287"/>
+        <location filename="../src/tree.cpp" line="289"/>
         <source>New category</source>
         <translation>Neue Kategorie</translation>
     </message>
     <message>
-        <location filename="../src/tree.cpp" line="287"/>
+        <location filename="../src/tree.cpp" line="289"/>
         <source>New Item</source>
         <translation>Neuer Eintrag</translation>
     </message>
     <message>
-        <location filename="../src/tree.cpp" line="342"/>
+        <location filename="../src/tree.cpp" line="344"/>
         <source>No item selected!</source>
         <translation>Kein Eintrag ausgwählt!</translation>
     </message>
     <message>
-        <location filename="../src/tree.cpp" line="510"/>
+        <location filename="../src/tree.cpp" line="512"/>
         <source>Updating password strength...</source>
         <translation>Berechnung der Passwortstärke...</translation>
     </message>
     <message>
-        <location filename="../src/tree.cpp" line="605"/>
+        <location filename="../src/tree.cpp" line="607"/>
         <source>&lt;qt&gt;&lt;nobr&gt;Failed to calculate the password strength. The error message&lt;/nobr&gt; was:&lt;p&gt;%1&lt;p&gt;Check your configuration!&lt;/qt&gt;</source>
         <translation>&lt;qt&gt;&lt;nobr&gt;Berechnung der Passwortstärke fehlgeschlagen. Die Fehlermeldung&lt;/nobr&gt; war:%1&lt;p&gt;Überprüfen Sie Ihre Konfiguration!&lt;/qt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/tree.cpp" line="388"/>
+        <location filename="../src/tree.cpp" line="390"/>
         <source>QPaMaT</source>
         <translation>QPaMaT</translation>
     </message>
     <message>
-        <location filename="../src/tree.cpp" line="389"/>
+        <location filename="../src/tree.cpp" line="391"/>
         <source>password managing tool for Unix, Windows and MacOS X</source>
         <translation>Passwortmanager für Unix, Windows und MacOS X</translation>
     </message>
     <message>
-        <location filename="../src/tree.cpp" line="390"/>
+        <location filename="../src/tree.cpp" line="392"/>
         <source>Export date:</source>
         <translation>Exportdatum:</translation>
     </message>
     <message>
-        <location filename="../src/tree.cpp" line="442"/>
+        <location filename="../src/tree.cpp" line="444"/>
         <source>No items found</source>
         <translation>Keine Einträge gefunden</translation>
     </message>
@@ -1211,7 +1219,7 @@ Prüfen Sie Ihre Einstellungen!</translation>
 <context>
     <name>TreeEntry</name>
     <message>
-        <location filename="../src/treeentry.cpp" line="392"/>
+        <location filename="../src/treeentry.cpp" line="383"/>
         <source>Cannot dray to itself.</source>
         <translation>Eintrag kann nicht auf sich selbst gezogen werden.</translation>
     </message>
