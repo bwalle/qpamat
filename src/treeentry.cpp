@@ -224,6 +224,22 @@ TreeEntry::PropertyIterator TreeEntry::propertyIterator() const
 
 
 /*!
+    Returns the full name including the category.
+
+    This is required for the printout and for the label on the top.
+
+    \return the full name with category
+*/
+QString TreeEntry::getFullName() const
+{
+    QString catString;
+    const Q3ListViewItem* item = this;
+    while ((item = item->parent()))
+        catString = catString.prepend( boost::polymorphic_cast<const TreeEntry*>(item)->getName() + ": ");
+    return catString + m_name;
+}
+
+/*!
     This function converts a tree entry to HTML for printing. A TreeEntry represents one
     big table.
     \return the RichText
@@ -234,14 +250,12 @@ QString TreeEntry::toRichTextForPrint() const
         return QString("");
 
     QString catString;
-    const Q3ListViewItem* item = this;
-    while ((item = item->parent()))
-        catString = catString.prepend( boost::polymorphic_cast<const TreeEntry*>(item)->getName() + ": ");
+
 
     QString ret;
     ret += QString("<table width=\"100%\"><tr><td bgcolor=grey cellpadding=\"3\">"
             "&nbsp;<b>%1</b></td></tr><tr><td>"
-            "<table border=\"0\">").arg(catString + m_name);
+            "<table border=\"0\">").arg(getFullName());
 
     PropertyIterator it = propertyIterator();
     Property* current;
@@ -386,4 +400,4 @@ void TreeEntry::dropped(QDropEvent *evt)
     }
 }
 
-// :maxLineLen=100:
+// :maxLineLen=100:shiftWidth=4:tabSize=4:noTabs=true:

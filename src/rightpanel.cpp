@@ -69,13 +69,20 @@
 RightPanel::RightPanel(Qpamat* parent) : Q3Frame(parent, "RightPanel")
 {
     QVBoxLayout* layout = new QVBoxLayout(this);
+    m_overviewLabel = new QLabel(this);
     m_listView = new RightListView(this);
     m_southPanel = new SouthPanel(this);
+    layout->addWidget(m_overviewLabel);
     layout->addWidget(m_listView);
     layout->setStretchFactor(m_listView, 10);
     layout->addWidget(m_southPanel);
 
-    setEnabled(false);
+    // bold font for the label
+    QFont font = m_overviewLabel->font();
+    font.setBold(true);
+    m_overviewLabel->setFont(font);
+
+    clear(true);
 
     connect(m_listView, SIGNAL(selectionChanged(Q3ListViewItem*)),
         this, SLOT(selectionChangeHandler(Q3ListViewItem*)));
@@ -96,9 +103,13 @@ RightPanel::RightPanel(Qpamat* parent) : Q3Frame(parent, "RightPanel")
 
 /*!
     Clears the widget
+
+    \param [in] full \c true if the label should be cleared, too, \c false otherwise
 */
-void RightPanel::clear()
+void RightPanel::clear(bool full)
 {
+    if (full)
+        m_overviewLabel->setText(tr("(No item selected)"));
     m_listView->clear();
     m_southPanel->clear();
     setEnabled(false);
@@ -142,6 +153,7 @@ void RightPanel::setEnabled(bool enabled)
 {
     Q3Frame::setEnabled(enabled);
     m_listView->setEnabled(enabled);
+    m_overviewLabel->setEnabled(enabled);
 }
 
 
@@ -152,8 +164,9 @@ void RightPanel::setEnabled(bool enabled)
 */
 void RightPanel::setItem(Q3ListViewItem* item)
 {
-    clear();
+    clear(false);
     m_currentItem = dynamic_cast<TreeEntry*>(item);
+    m_overviewLabel->setText(m_currentItem->getFullName());
 
     if (!m_currentItem)
         return;

@@ -6,6 +6,8 @@
 	  locked into memory.
 	* Add test case infrastructure (and implement test cases for
 	  SecureString).
+	* Implement label that shows the name and the category of the currently
+	  selected item.
 
 2009-01-01  Bernhard Walle <bernhard.walle@gmx.de>
 

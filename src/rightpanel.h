@@ -39,7 +39,7 @@ class RightPanel : public Q3Frame
 
     public slots:
         void setItem(Q3ListViewItem* item);
-        void clear();
+        void clear(bool full);
         void setEnabled(bool enabled);
         void deleteCurrent();
         void insertAtCurrentPos();
@@ -54,10 +54,11 @@ class RightPanel : public Q3Frame
         void itemDeletedHandler(int item);
 
     private:
-        TreeEntry*      m_currentItem;
-        RightListView*  m_listView;
-        SouthPanel*     m_southPanel;
-        Property*       m_currentPropery;
+        QLabel          *m_overviewLabel;
+        TreeEntry       *m_currentItem;
+        RightListView   *m_listView;
+        SouthPanel      *m_southPanel;
+        Property        *m_currentPropery;
 };
 
 QTextStream& operator<<(QTextStream& ts, const RightPanel& panel);

@@ -54,6 +54,7 @@ class TreeEntry : public QObject, public Q3ListViewItem
         QString text(int column) const;
         void setText(int column, const QString& text);
 
+        QString getFullName() const;
         QString toRichTextForPrint() const;
         void appendTextForExport(QTextStream& stream);
         QString toXML() const;
