@@ -135,6 +135,7 @@ SecureString &SecureString::operator=(const SecureString& text)
 {
     if (m_text) {
         unlock();
+        smash();
         delete[] m_text;
     }
 
@@ -181,6 +182,7 @@ SecureString::~SecureString()
     throw ()
 {
     unlock();
+    smash();
     delete[] m_text;
 }
 
@@ -333,6 +335,19 @@ void SecureString::unlock()
     if (ret != 0)
         qDebug() << "Cannot unlock memory " << strerror(errno);
 #endif
+}
+
+/*!
+    Overwrites the data with garbage.
+
+    This function should be called before the data is delete[]'d. Currently we overwrite the
+    contents of the data with zeroes, but we could change that to random data. Should not matter
+    because it's not a hard disk but only memory contents.
+*/
+void SecureString::smash()
+    throw ()
+{
+    std::fill(m_text, m_text+strlen(m_text), '\0');
 }
 
 // :maxLineLen=100:shiftWidth=4:tabSize=4:noTabs=true:

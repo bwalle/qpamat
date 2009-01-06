@@ -79,6 +79,9 @@ class SecureString : private boost::totally_ordered<SecureString> {
         void unlock()
         throw ();
 
+        void smash()
+        throw ();
+
     private:
         char *m_text;
         bool m_locked;
