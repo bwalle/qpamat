@@ -39,10 +39,13 @@ class RightPanel : public Q3Frame
 
     public slots:
         void setItem(Q3ListViewItem* item);
-        void clear(bool full);
+        void clear();
         void setEnabled(bool enabled);
         void deleteCurrent();
         void insertAtCurrentPos();
+
+    protected:
+        void clear(bool full);
 
     signals:
         void stateModified();

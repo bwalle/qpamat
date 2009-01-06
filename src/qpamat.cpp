@@ -521,7 +521,7 @@ void Qpamat::setLogin(bool loggedIn)
     else {
         m_actions.passwordStrengthAction->setOn(false);
         m_tree->clear();
-        m_rightPanel->clear(true);
+        m_rightPanel->clear();
         this->setFocus();
     }
 

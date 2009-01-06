@@ -102,7 +102,9 @@ RightPanel::RightPanel(Qpamat* parent) : Q3Frame(parent, "RightPanel")
 
 
 /*!
-    Clears the widget
+    Clears the widget.
+
+    The <tt>bool=false</tt> is needed to avoid flickering when another item selected.
 
     \param [in] full \c true if the label should be cleared, too, \c false otherwise
 */
@@ -115,6 +117,15 @@ void RightPanel::clear(bool full)
     setEnabled(false);
 }
 
+/*!
+    Clears the widget.
+
+    Just calls clear(true). We cannot use a default parameter here because of Qt signals and slots.
+*/
+void RightPanel::clear()
+{
+    clear(true);
+}
 
 /*!
     Handler for deleted widgets. Selects the next item.
