@@ -12,6 +12,8 @@
  *
  * -------------------------------------------------------------------------------------------------
  */
+#include <boost/cast.hpp>
+
 #include <QDebug>
 #include <Q3ListView>
 #include <QLayout>
@@ -153,7 +155,7 @@ void RightPanel::setItem(Q3ListViewItem* item)
     clear();
     m_currentItem = dynamic_cast<TreeEntry*>(item);
 
-    if (m_currentItem == 0)
+    if (!m_currentItem)
         return;
 
     m_listView->setItem(m_currentItem);

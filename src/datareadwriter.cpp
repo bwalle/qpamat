@@ -16,6 +16,7 @@
 #include <cstdlib>
 
 #include <boost/scoped_ptr.hpp>
+#include <boost/cast.hpp>
 
 #include <QThread>
 #include <QFile>
@@ -503,7 +504,7 @@ void DataReadWriter::writeXML(const QDomDocument& document, const QString& passw
 
     unsigned char id = 0;
     if (smartcard) {
-        ByteVector vec = dynamic_cast<CollectEncryptor*>(enc.get())->getBytes();
+        ByteVector vec = boost::polymorphic_cast<CollectEncryptor*>(enc.get())->getBytes();
         writeOrReadSmartcard(vec, true, id, password);
         appData.namedItem("smartcard").toElement().setAttribute("card-id", id);
     }
@@ -596,7 +597,7 @@ QDomDocument DataReadWriter::readXML(const QString& password)
 
         // also throws exception
         writeOrReadSmartcard(vec, false, id, password);
-        dynamic_cast<CollectEncryptor*>(enc.get())->setBytes(vec);
+        boost::polymorphic_cast<CollectEncryptor*>(enc.get())->setBytes(vec);
     }
 
     QDomElement pwData = doc.documentElement().namedItem("passwords").toElement();

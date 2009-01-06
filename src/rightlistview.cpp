@@ -12,6 +12,8 @@
  *
  * -------------------------------------------------------------------------------------------------
  */
+#include <boost/cast.hpp>
+
 #include <QDebug>
 #include <Q3ListView>
 #include <QWidget>
@@ -310,7 +312,7 @@ void RightListView::setItem(Q3ListViewItem* item)
     disconnect(this, SIGNAL(itemAppended()));
     m_currentItem = dynamic_cast<TreeEntry*>(item);
 
-    if (m_currentItem != 0) {
+    if (m_currentItem) {
         connect(m_currentItem, SIGNAL(propertyAppended()), this, SIGNAL(itemAppended()));
         updateView();
     }

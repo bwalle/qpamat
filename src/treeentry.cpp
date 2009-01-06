@@ -12,6 +12,8 @@
  *
  * -------------------------------------------------------------------------------------------------
  */
+#include <boost/cast.hpp>
+
 #include <QString>
 #include <QDomDocument>
 #include <QTextStream>
@@ -234,7 +236,7 @@ QString TreeEntry::toRichTextForPrint() const
     QString catString;
     const Q3ListViewItem* item = this;
     while ((item = item->parent()))
-        catString = catString.prepend( dynamic_cast<const TreeEntry*>(item)->getName() + ": ");
+        catString = catString.prepend( boost::polymorphic_cast<const TreeEntry*>(item)->getName() + ": ");
 
     QString ret;
     ret += QString("<table width=\"100%\"><tr><td bgcolor=grey cellpadding=\"3\">"
@@ -267,7 +269,7 @@ void TreeEntry::appendTextForExport(QTextStream& stream)
     QString catString;
     const Q3ListViewItem* item = this;
     while ((item = item->parent()))
-        catString = catString.prepend( dynamic_cast<const TreeEntry*>(item)->getName() + ": ");
+        catString = catString.prepend( boost::polymorphic_cast<const TreeEntry*>(item)->getName() + ": ");
 
     stream << "--------------------------------------------------------------------------------\n";
     stream << catString + m_name << "\n";
@@ -379,7 +381,7 @@ void TreeEntry::dropped(QDropEvent *evt)
             setOpen(true);
 
         listView()->setSelected(appended, true);
-        dynamic_cast<Tree*>(listView())->updatePasswordStrengthView();
+        boost::polymorphic_cast<Tree*>(listView())->updatePasswordStrengthView();
         delete src;
     }
 }

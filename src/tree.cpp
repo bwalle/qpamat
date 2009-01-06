@@ -14,6 +14,8 @@
  */
 #include <cstdlib>
 
+#include <boost/cast.hpp>
+
 #include <QStatusBar>
 #include <QFile>
 #include <QThread>
@@ -207,7 +209,7 @@ Q3DragObject* Tree::dragObject()
     Q3ListViewItem* current = currentItem();
     emit stateModified();
     if (current) {
-        QString xml = dynamic_cast<TreeEntry*>(current)->toXML();
+        QString xml = boost::polymorphic_cast<TreeEntry*>(current)->toXML();
         Q3StoredDrag* drag = new Q3StoredDrag("application/x-qpamat", this);
         drag->setEncodedData(xml.utf8());
         return drag;
@@ -258,7 +260,7 @@ void Tree::showContextMenu(Q3ListViewItem* item, const QPoint& point)
             break;
 
         case RENAME_ITEM:
-            dynamic_cast<TreeEntry*>(item)->startRename(0);
+            boost::polymorphic_cast<TreeEntry*>(item)->startRename(0);
             emit stateModified();
             break;
 
@@ -365,7 +367,7 @@ QString Tree::toRichTextForPrint()
     QString ret;
     ret += "<qt>";
     while ( (current = it.current()) ) {
-        ret += dynamic_cast<TreeEntry*>(current)->toRichTextForPrint();
+        ret += boost::polymorphic_cast<TreeEntry*>(current)->toRichTextForPrint();
         ++it;
     }
     ret += "</qt>";
@@ -392,7 +394,7 @@ void Tree::appendTextForExport(QTextStream& stream)
     stream << "================================================================================\n";
 
     while ( (current = it.current()) ) {
-        dynamic_cast<TreeEntry*>(current)->appendTextForExport(stream);
+        boost::polymorphic_cast<TreeEntry*>(current)->appendTextForExport(stream);
         ++it;
     }
 }
@@ -495,7 +497,7 @@ void Tree::recomputePasswordStrength(bool* error)
     {
         Q3ListViewItemIterator it(this);
         while (it.current()) {
-            TreeEntry* current = dynamic_cast<TreeEntry*>(it.current());
+            TreeEntry* current = boost::polymorphic_cast<TreeEntry*>(it.current());
             TreeEntry::PropertyIterator propIt = current->propertyIterator();
             while (propIt.current()) {
                 if (propIt.current()->getType() == Property::PASSWORD)
@@ -515,7 +517,7 @@ void Tree::recomputePasswordStrength(bool* error)
 
         Q3ListViewItemIterator it(this);
         while (it.current()) {
-            TreeEntry* current = dynamic_cast<TreeEntry*>(it.current());
+            TreeEntry* current = boost::polymorphic_cast<TreeEntry*>(it.current());
             TreeEntry::PropertyIterator propIt = current->propertyIterator();
             while (propIt.current()) {
                 if (propIt.current()->getType() == Property::PASSWORD) {
@@ -567,7 +569,7 @@ void Tree::updatePasswordStrengthView()
             Q3ListViewItemIterator it(this);
             while (it.current()) {
                 Property::PasswordStrength strength =
-                    dynamic_cast<TreeEntry*>(it.current())->weakestChildrenPassword();
+                    boost::polymorphic_cast<TreeEntry*>(it.current())->weakestChildrenPassword();
 
                 switch (strength) {
                     case Property::PWeak:
