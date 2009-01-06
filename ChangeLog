@@ -1,3 +1,12 @@
+2009-01-06  Bernhard Walle <bernhard.walle@gmx.de>
+
+	* Changes in coding style.
+	* Use boost::polymorphic_cast when appropriate.
+	* Implement a SecureString which is overwritten on destruction and
+	  locked into memory.
+	* Add test case infrastructure (and implement test cases for
+	  SecureString).
+
 2009-01-01  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Switch from PRINT_DEBUG() and PRINT_TRACE() to qDebug()
@@ -25,7 +34,7 @@
 
 2007-06-10  Bernhard Walle <bernhard.walle@gmx.de>
 
-	* get rid of multi-byte character constants in 
+	* get rid of multi-byte character constants in
 	  src/security/hybridpasswordchecker.cpp
 
 2007-06-09  Bernhard Walle <bernhard.walle@gmx.de>
@@ -74,7 +83,7 @@
 	* Important Bugfix: Retry of smartcard store writes the correct
 	  data on the smartcard. Previously, 'SMARTCARD:x:x' was written
 	  and all passwords were lost!
-	* Imported trayicon code from 
+	* Imported trayicon code from
 	  http://dev.psi-im.org/darcs/psi-qt4/iconsets/system/default/
 	  -> works on Windows now
 	* Released 0.5.1.
@@ -98,7 +107,7 @@
 
 
 2005-07-05  Bernhard Walle <bernhard.walle@gmx.de>
-	
+
 	* Implemented detection if the process in .qpamat.lock with specified
 	  PID is still running. Of course, if it is running it could be
 	  another process, but the probability is low (maybe check for process
@@ -159,17 +168,17 @@
 
 2004-12-26  Bernhard Walle <bernhard.walle@gmx.de>
 
-	* Added "Cancel" in the dialog that appears if a user wants to 
+	* Added "Cancel" in the dialog that appears if a user wants to
 	  log out without saving.
 	* Released 0.3.2.
 
 2004-09-25  Bernhard Walle <bernhard.walle@gmx.de>
-	
+
 	* Fixed compile error in help.cpp.
 	* Released 0.3.1.
 
 2004-09-03  Bernhard Walle <bernhard.walle@gmx.de>
-	
+
 	* Removed superflous code (QErrorMessage) in qpamat.cpp.
 	* Improved AboutDialog (increased border).
 
@@ -182,7 +191,7 @@
 	* Released 0.3.0
 
 2004-07-23  Bernhard Walle <bernhard.walle@gmx.de>
-	
+
 	* Changed icons to PNG format.
 	* Using stock icons from Gtk+.
 	* Changed "About" dialog.
@@ -192,5 +201,5 @@
 
 2004-06-05  Bernhard Walle <bernhard.walle@gmx.de>
 
-	* Beginning with logging the changes. 
+	* Beginning with logging the changes.
 
