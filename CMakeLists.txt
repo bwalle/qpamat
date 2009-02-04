@@ -323,7 +323,9 @@ INSTALL(
     FILES
         ${CMAKE_SOURCE_DIR}/images/qpamat_48.png
     DESTINATION
-        share/pixmaps/qpamat.png
+        share/pixmaps/
+    RENAME
+        qpamat.png
 )
 
 INSTALL(
