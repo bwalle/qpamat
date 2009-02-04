@@ -320,6 +320,13 @@ INSTALL(
 )
 
 INSTALL(
+    FILES
+        ${CMAKE_SOURCE_DIR}/share/qpamat.desktop
+    DESTINATION
+        share/applications
+)
+
+INSTALL(
     DIRECTORY
         ${CMAKE_BINARY_DIR}/doc/user/en
     DESTINATION
