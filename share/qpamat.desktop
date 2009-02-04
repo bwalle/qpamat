@@ -1,6 +1,6 @@
 [Desktop Entry]
 Encoding=UTF-8
 Exec=qpamat
-Icon=qpamat
+Icon=/usr/share/pixmaps/qpamat.png
 Type=Application
 Name=QPaMaT
