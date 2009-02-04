@@ -1,8 +1,8 @@
 2009-02-04  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Fix crash because of wrong boost::any_cast.
-    * Add desktop file on Unix.
-    * Install icon on Unix.
+	* Add desktop file on Unix.
+	* Install icon on Unix.
 
 2009-01-06  Bernhard Walle <bernhard.walle@gmx.de>
 
