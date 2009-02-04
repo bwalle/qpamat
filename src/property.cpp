@@ -109,10 +109,12 @@ void Property::setKey(const QString& key)
 */
 QString Property::getValue() const
 {
-    if (m_hidden)
+    if (boost::any_cast<SecureString>(&m_value))
         return boost::any_cast<SecureString>(m_value).qString();
-    else
+    else if (boost::any_cast<QString>(&m_value))
         return boost::any_cast<QString>(m_value);
+    else
+        return QString();
 }
 
 
