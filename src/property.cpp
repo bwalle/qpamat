@@ -125,9 +125,13 @@ QString Property::getValue() const
 QString Property::getVisibleValue() const
 {
     if (m_hidden) {
-        QString s;
-        s.fill('*',boost::any_cast<SecureString>(m_value).length());
-        return s;
+        try {
+            QString s;
+            s.fill('*',boost::any_cast<SecureString>(m_value).length());
+            return s;
+        } catch (const std::bad_cast &ex) {
+            return QString();
+        }
     } else
         return boost::any_cast<QString>(m_value);
 }

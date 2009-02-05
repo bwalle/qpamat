@@ -1,3 +1,7 @@
+2009-02-05  Bernhard Walle <bernhard.walle@gmx.de>
+
+	* Fix another crash because of wrong boost::any_cast.
+
 2009-02-04  Bernhard Walle <bernhard.walle@gmx.de>
 
 	* Fix crash because of wrong boost::any_cast.
