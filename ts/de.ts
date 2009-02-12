@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="de_DE">
+<defaultcodec></defaultcodec>
 <context>
     <name>AboutDialog</name>
     <message>
@@ -8,7 +9,6 @@
         <translation>Über QPaMaT</translation>
     </message>
     <message>
-        <location filename="" line="7471221"/>
         <source>&amp;Close</source>
         <translation type="obsolete">&amp;Schließen</translation>
     </message>
@@ -23,7 +23,6 @@
         <translation>&amp;Lizenz</translation>
     </message>
     <message>
-        <location filename="" line="7471221"/>
         <source>&lt;p&gt;&lt;nobr&gt;This is a password managing tool for Unix, Windows and MacOS X&lt;/nobr&gt; written in C++ using the Qt library.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Thanks to:&lt;/b&gt;&lt;ul&gt;&lt;li&gt;Trolltech for the Qt library&lt;/li&gt;&lt;li&gt;OpenSSL team for the OpenSSL library&lt;/li&gt;&lt;li&gt;Gtk+ artists for the nice stock icons&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Homepage:&lt;/b&gt; &lt;tt&gt;http://qpamat.berlios.de&lt;/tt&gt;&lt;/p&gt;</source>
         <translation type="obsolete">&lt;p&gt;&lt;nobr&gt;Dies ist ein Passwort-Management-Tool für Unix, Windows und MacOS X.&lt;/nobr&gt; Es wurde in C++ mit Hilfe der Qt-Bibliothek geschrieben.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Danke an:&lt;/b&gt;&lt;ul&gt;&lt;li&gt;Trolltech für die Qt-Bibliothek&lt;/li&gt;&lt;li&gt;OpenSSL-Team für die OpenSSL-Bibliothek&lt;/li&gt;&lt;li&gt;Gtk+-Grafiker für die Stock-Icons&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Homepage:&lt;/b&gt; &lt;tt&gt;http://qpamat.berlios.de&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
@@ -61,7 +60,6 @@
         <translation>&amp;Automatisches Login beim Start</translation>
     </message>
     <message>
-        <location filename="" line="7471221"/>
         <source>&amp;Web Browser (full path if not in PATH environment):</source>
         <translation type="obsolete">&amp;Web-Browser (voller Pfad wenn nicht in PATH-Umbegung):</translation>
     </message>
@@ -217,7 +215,6 @@ Sie ohne Backup fortfahren?</translation>
         <translation>Verschlüsselungs-&amp;Algorithmus:</translation>
     </message>
     <message>
-        <location filename="" line="7471221"/>
         <source>&lt;qt&gt;Only change this if you know what you do. The algorithms are provided by the OpenSSL library and the availability is determined at runtime. You can read a file encrypted with &lt;i&gt;X&lt;/i&gt; only if the computer on which you read it is able to handle algorithm &lt;i&gt;X&lt;/i&gt;. &lt;p&gt;Blowfish is a good choise because it&apos;s free and available everywhere. IDEA is patended (but secure, PGP uses it!) and AES (the successor of DES) is only available at new versions of OpenSSL. Read a book about cryptography if you&apos;re interested in this algorithms.&lt;/qt&gt;</source>
         <translation type="obsolete">&lt;qt&gt;Ändern Sie diese Einstellung nur, wenn Sie wissen, was Sie tun. Die Algorithmen werden von der OpenSSL-Bibliothek zur Verfügung gestellt und werden zur Laufzeit ermittelt. Sie können jede Datei, die mit &lt;i&gt;X&lt;/i&gt; verschlüsselt wurden, nur auf Computern lesen, dessen OpenSSL-Bibliothek mit dem Algorithmus &lt;i&gt;X&lt;/i&gt; zurecht kommt. &lt;p&gt;Blowfish ist eine gute Wahl weil es sich um einen freien, überall verfügbaren Algorithmus handelt. IDEA ist patentiert (aber sicher, PGP verwendet ihn!) und AES (der Nachfolger von DES) ist nur bei neuen Versionen von OpenSSL verfügbar. Lesen Sie ein Buch über Kryptographie wenn Sie sich für die Algorithmen interessieren.&lt;/qt&gt;</translation>
     </message>
@@ -394,7 +391,6 @@ um die Einstellungen zu testen:</translation>
         <translation>Chipkarte</translation>
     </message>
     <message>
-        <location filename="" line="7471221"/>
         <source>Presenstation</source>
         <translation type="obsolete">Anzeige</translation>
     </message>
@@ -423,7 +419,6 @@ um die Einstellungen zu testen:</translation>
 <context>
     <name>Help</name>
     <message>
-        <location filename="" line="7471221"/>
         <source>&lt;qt&gt;&lt;p&gt;Failed to open the link &lt;tt&gt;%1&lt;/tt&gt; in the specified web browser. The command was:&lt;/p&gt;&lt;p&gt;&lt;tt&gt;&lt;nobr&gt;%2&lt;/tt&gt;&lt;/nobr&gt;&lt;/p&gt;&lt;/qt&gt;</source>
         <translation type="obsolete">&lt;qt&gt;&lt;p&gt;Öffnen des Links &lt;tt&gt;%1&lt;/tt&gt; im angegebenen Web-Browser fehlgeschlagen. Der Befehl war:&lt;/p&gt;&lt;p&gt;&lt;tt&gt;&lt;nobr&gt;%2&lt;/tt&gt;&lt;/nobr&gt;&lt;/p&gt;&lt;/qt&gt;</translation>
     </message>
@@ -475,12 +470,10 @@ It must consist of six hexadecimal digits:</source>
 <context>
     <name>ListBoxDialog</name>
     <message>
-        <location filename="" line="7471221"/>
         <source>OK</source>
         <translation type="obsolete">OK</translation>
     </message>
     <message>
-        <location filename="" line="7471221"/>
         <source>Cancel</source>
         <translation type="obsolete">Abbrechen</translation>
     </message>
@@ -488,12 +481,10 @@ It must consist of six hexadecimal digits:</source>
 <context>
     <name>NewPasswordDialog</name>
     <message>
-        <location filename="" line="7471221"/>
         <source>Enter the &lt;b&gt;old passphrase&lt;/b&gt; once and the &lt;b&gt;new passphrase&lt;/b&gt; two times for verification. The minimum length must be six characters, but for security reasons more than two words are good!</source>
         <translation type="obsolete">Geben Sie die &lt;b&gt;alte Passphrase&lt;/b&gt; einmal und dann die &lt;b&gt;neue Passphrase&lt;/b&gt; zweimal zur Bestätigung ein. Die minimale Länge muss sechs Zeichen betragen, aus Sicherheitsgründen wären mehr als zwei Wörter gut!</translation>
     </message>
     <message>
-        <location filename="" line="7471221"/>
         <source>Enter the &lt;b&gt;passphrase&lt;/b&gt; two times for verification. The minimum length must be six characters, but for security reasons more than two words are good!</source>
         <translation type="obsolete">Geben Sie die &lt;b&gt;Passphrase&lt;/b&gt; zweimal zur Bestätigung ein. Die minimale Länge beträgt sechs Zeichen, aus Sicherheitsgründen sind mehr als zwei Wörter gut!</translation>
     </message>
@@ -513,12 +504,10 @@ It must consist of six hexadecimal digits:</source>
         <translation>&amp;Bestätigung:</translation>
     </message>
     <message>
-        <location filename="" line="7471221"/>
         <source>OK</source>
         <translation type="obsolete">OK</translation>
     </message>
     <message>
-        <location filename="" line="7471221"/>
         <source>Cancel</source>
         <translation type="obsolete">Abbrechen</translation>
     </message>
@@ -561,12 +550,10 @@ It must consist of six hexadecimal digits:</source>
         <translation>Geben Sie die Passphrase ein:</translation>
     </message>
     <message>
-        <location filename="" line="7471221"/>
         <source>OK</source>
         <translation type="obsolete">OK</translation>
     </message>
     <message>
-        <location filename="" line="7471221"/>
         <source>Cancel</source>
         <translation type="obsolete">Abbrechen</translation>
     </message>
@@ -741,18 +728,18 @@ could not be read. Check the file with a text editor.</source>
         <translation>&lt;b&gt;Lesen&lt;/b&gt; von der Chipkarte...</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="201"/>
+        <location filename="../src/main.cpp" line="202"/>
         <source>QPaMaT</source>
         <translation>QPaMaT</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="198"/>
+        <location filename="../src/main.cpp" line="199"/>
         <source>No more memory available. The application
 will be closed.</source>
         <translation>Nicht genug Speicher verfügbar. Die Anwendung wird geschlossen.</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="203"/>
+        <location filename="../src/main.cpp" line="204"/>
         <source>An unknown error occurred:
 %1
 The application will be closed.</source>
@@ -803,7 +790,6 @@ OpenSSL neu kompilieren oder zu aktualisieren.</translation>
         <translation>&amp;Datei</translation>
     </message>
     <message>
-        <location filename="" line="7471221"/>
         <source>&amp;View</source>
         <translation type="obsolete">&amp;Ansicht</translation>
     </message>
@@ -823,7 +809,6 @@ OpenSSL neu kompilieren oder zu aktualisieren.</translation>
         <translation>&amp;Hilfe</translation>
     </message>
     <message>
-        <location filename="" line="7471221"/>
         <source>QPaMaT XML files (*.xml)</source>
         <translation type="obsolete">QPaMaT XML-Dateien (*.xml)</translation>
     </message>
@@ -915,7 +900,6 @@ Wollen Sie jetzt speichern?</translation>
         <translation>&amp;Zwischenablage löschen</translation>
     </message>
     <message>
-        <location filename="" line="7471221"/>
         <source>&amp;What&apos;s this</source>
         <translation type="obsolete">&amp;Kontexthilfe</translation>
     </message>
@@ -940,7 +924,6 @@ Wollen Sie jetzt speichern?</translation>
         <translation>Eintrag entfernen</translation>
     </message>
     <message>
-        <location filename="" line="7471221"/>
         <source>Focus &amp;search</source>
         <translation type="obsolete">Suchfeld &amp;fokussieren</translation>
     </message>
@@ -950,7 +933,6 @@ Wollen Sie jetzt speichern?</translation>
         <translation>Die gewählte Datei existiert bereits. Soll sie überschrieben werden?</translation>
     </message>
     <message>
-        <location filename="" line="7471221"/>
         <source>Overwrite</source>
         <translation type="obsolete">&amp;Überschreiben</translation>
     </message>
@@ -993,6 +975,11 @@ Wollen Sie jetzt speichern?</translation>
         <location filename="../src/qpamat.cpp" line="413"/>
         <source>&amp;Hide</source>
         <translation>&amp;Verbergen</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamat.cpp" line="621"/>
+        <source>Wrote data successfully.</source>
+        <translation>Daten erfolgreich geschrieben.</translation>
     </message>
 </context>
 <context>
@@ -1067,7 +1054,7 @@ Prüfen Sie Ihre Einstellungen!</translation>
 <context>
     <name>RightPanel</name>
     <message>
-        <location filename="../src/rightpanel.cpp" line="112"/>
+        <location filename="../src/rightpanel.cpp" line="114"/>
         <source>(No item selected)</source>
         <translation>(Kein Eintrag ausgewählt)</translation>
     </message>
@@ -1085,7 +1072,6 @@ Prüfen Sie Ihre Einstellungen!</translation>
         <translation>Das Zufallspasswort lautet:</translation>
     </message>
     <message>
-        <location filename="" line="7471221"/>
         <source>&amp;Close</source>
         <translation type="obsolete">&amp;Schließen</translation>
     </message>

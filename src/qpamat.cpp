@@ -537,7 +537,7 @@ void Qpamat::save()
 {
     if (m_loggedIn && exportOrSave()) {
         setModified(false);
-        message("Wrote data successfully.");
+        message(tr("Wrote data successfully."));
     }
 }
 
@@ -609,7 +609,7 @@ void Qpamat::exportData()
         set().writeEntry("General/Datafile", fileName);
         set().writeEntry("Smartcard/UseCard", false);
         if (m_loggedIn && exportOrSave())
-            message("Wrote data successfully.");
+            message(tr("Wrote data successfully."));
         set().writeEntry("General/Datafile", oldFilename);
         set().writeEntry("Smartcard/UseCard", oldCard);
     } else {
@@ -618,7 +618,7 @@ void Qpamat::exportData()
             QTextStream stream(&file);
             m_tree->appendTextForExport(stream);
             file.close();
-            message("Wrote data successfully.");
+            message(tr("Wrote data successfully."));
         } else
             QMessageBox::warning(this, tr("QPaMaT"),
                tr("An error occured while saving the file."),
