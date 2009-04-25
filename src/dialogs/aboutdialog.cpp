@@ -72,7 +72,7 @@ AboutDialog::AboutDialog(QWidget* parent, const char* name = 0)
     // main layout
     m_mainLayout->addWidget(titleBox);
     m_mainLayout->addWidget(m_tabWidget);
-    m_mainLayout->addStretch(5);
+    m_mainLayout->setStretchFactor(m_tabWidget, 5);
     m_mainLayout->addWidget(dialogButtons);
 
     connect(dialogButtons, SIGNAL(clicked(QAbstractButton *)), SLOT(accept()));
@@ -87,7 +87,7 @@ void AboutDialog::setupAboutTab()
     Q3HBox* aboutTab = new Q3HBox(this);
     aboutTab->setMargin(15);
 
-    (void)new QLabel(
+    QLabel *label = new QLabel(
         tr("<p><nobr>This is a password managing tool for Unix, Windows and "
             "MacOS X</nobr> written in C++<br> using the Qt library.</p>"
             "<p><b>Thanks to:</b>"
@@ -96,6 +96,7 @@ void AboutDialog::setupAboutTab()
             "<li>Gtk+ artists for the nice stock icons</li>"
             "</ul></p>"
             "<p><b>Homepage:</b> <tt>http://qpamat.berlios.de</tt></p>"), aboutTab);
+    label->setAlignment(Qt::AlignTop);
 
     m_tabWidget->addTab(aboutTab, tr("&About"));
 
