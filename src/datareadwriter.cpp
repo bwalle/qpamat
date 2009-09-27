@@ -32,7 +32,7 @@
 #include <QTextStream>
 #include <QDebug>
 
-#include "qpamat.h"
+#include "qpamatwindow.h"
 #include "datareadwriter.h"
 #include "smartcard/memorycard.h"
 #include "security/passwordhash.h"
@@ -233,7 +233,7 @@ QDomDocument DataReadWriter::createSkeletonDocument() throw ()
     appData.appendChild(date);
 
     QDomElement cryptAlgorithm = doc.createElement("crypt-algorithm");
-    QDomText algorithm = doc.createTextNode(qpamat->set().readEntry("Security/CipherAlgorithm"));
+    QDomText algorithm = doc.createTextNode(qpamatwindow->set().readEntry("Security/CipherAlgorithm"));
     cryptAlgorithm.appendChild(algorithm);
     appData.appendChild(cryptAlgorithm);
 
@@ -241,7 +241,7 @@ QDomDocument DataReadWriter::createSkeletonDocument() throw ()
     appData.appendChild(passwordhash);
 
     QDomElement smartcard = doc.createElement("smartcard");
-    smartcard.setAttribute("useCard", qpamat->set().readBoolEntry("Smartcard/UseCard"));
+    smartcard.setAttribute("useCard", qpamatwindow->set().readBoolEntry("Smartcard/UseCard"));
     appData.appendChild(smartcard);
 
     // add the empty passwords child
@@ -460,9 +460,9 @@ void DataReadWriter::writeXML(const QDomDocument& document, const QString& passw
     throw (ReadWriteException)
 {
     QDomDocument document_cpy = document.cloneNode(true).toDocument();
-    bool smartcard = qpamat->set().readBoolEntry("Smartcard/UseCard");
-    const QString fileName = qpamat->set().readEntry("General/Datafile");
-    const QString algorithm = qpamat->set().readEntry("Security/CipherAlgorithm");
+    bool smartcard = qpamatwindow->set().readBoolEntry("Smartcard/UseCard");
+    const QString fileName = qpamatwindow->set().readEntry("General/Datafile");
+    const QString algorithm = qpamatwindow->set().readEntry("Security/CipherAlgorithm");
 
     // check if the file can be added
     QFile file(fileName);
@@ -539,8 +539,8 @@ QDomDocument DataReadWriter::readXML(const QString& password)
 {
     qDebug() << CURRENT_FUNCTION;
 
-    const QString& fileName = qpamat->set().readEntry("General/Datafile");
-    bool smartcard = qpamat->set().readBoolEntry("Smartcard/UseCard");
+    const QString& fileName = qpamatwindow->set().readEntry("General/Datafile");
+    bool smartcard = qpamatwindow->set().readBoolEntry("Smartcard/UseCard");
 
     // load the XML structure
     QFile file(fileName);
@@ -630,7 +630,7 @@ void DataReadWriter::writeOrReadSmartcard(ByteVector        &bytes,
 
     boost::scoped_ptr<MemoryCard> card;
     try {
-        card.reset(new MemoryCard(qpamat->set().readEntry("Smartcard/Library")) );
+        card.reset(new MemoryCard(qpamatwindow->set().readEntry("Smartcard/Library")) );
     }
     catch (const NoSuchLibraryException& e) {
         QApplication::restoreOverrideCursor();
@@ -641,7 +641,7 @@ void DataReadWriter::writeOrReadSmartcard(ByteVector        &bytes,
     }
 
     try {
-        card->init(qpamat->set().readNumEntry("Smartcard/Port"));
+        card->init(qpamatwindow->set().readNumEntry("Smartcard/Port"));
     } catch (const CardException& e) {
         QApplication::restoreOverrideCursor();
         throw ReadWriteException(QObject::tr("Error in initializing the smart card reader:\n"
@@ -652,7 +652,7 @@ void DataReadWriter::writeOrReadSmartcard(ByteVector        &bytes,
     QApplication::restoreOverrideCursor();
 
     QString pin;
-    bool havePin = qpamat->set().readBoolEntry("Smartcard/HasWriteProtection") && write;
+    bool havePin = qpamatwindow->set().readBoolEntry("Smartcard/HasWriteProtection") && write;
     boost::scoped_ptr<InsertCardDialog> dlg(new InsertCardDialog(havePin, m_parent, "InsertCardDlg"));
     if (dlg->exec() != QDialog::Accepted)
         throw ReadWriteException(0, ReadWriteException::CAbort);

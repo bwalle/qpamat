@@ -39,7 +39,7 @@
 #include <QDateTime>
 #include <QDebug>
 
-#include "qpamat.h"
+#include "qpamatwindow.h"
 
 #include "tree.h"
 #include "treeentry.h"
@@ -341,7 +341,7 @@ void Tree::deleteCurrent()
             }
             emit stateModified();
         } else
-            qpamat->message(tr("No item selected!"));
+            qpamatwindow->message(tr("No item selected!"));
     }
 }
 
@@ -441,7 +441,7 @@ void Tree::searchFor(const QString& word)
     }
 
     if (selectedItem() == selected)
-        qpamat->message(tr("No items found"));
+        qpamatwindow->message(tr("No items found"));
 }
 
 

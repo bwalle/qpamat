@@ -106,7 +106,7 @@ SET(qpamat_SRCS
     src/property.cpp
     src/tree.cpp
     src/settings.cpp
-    src/qpamat.cpp
+    src/qpamatwindow.cpp
     src/help.cpp
     src/rightpanel.cpp
     src/rightlistview.cpp
@@ -138,7 +138,7 @@ SET(qpamat_MOCS
     src/property.h
     src/treeentry.h
     src/help.h
-    src/qpamat.h
+    src/qpamatwindow.h
 )
 
 # build some files only on specific platforms

@@ -18,14 +18,14 @@
 #include <QObject>
 #include <QString>
 
-class Qpamat;
+class QpamatWindow;
 
 class RandomPassword : public QObject
 {
     Q_OBJECT
 
     public:
-        RandomPassword(Qpamat* parent, const char* name = 0);
+        RandomPassword(QpamatWindow* parent, const char* name = 0);
 
     public slots:
         void setInsertEnabled(bool enabled = true);
@@ -36,7 +36,7 @@ class RandomPassword : public QObject
 
     private:
         bool m_insertEnabled;
-        Qpamat* m_parent;
+        QpamatWindow* m_parent;
 };
 
 #endif // RANDOMPASSWORD_H

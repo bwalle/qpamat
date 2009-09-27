@@ -22,7 +22,7 @@
 #include <QDBusConnection>
 #include <QDBusAbstractAdaptor>
 
-class Qpamat;
+class QpamatWindow;
 
 class QpamatAdaptor: public QDBusAbstractAdaptor
 {
@@ -30,7 +30,7 @@ class QpamatAdaptor: public QDBusAbstractAdaptor
     Q_CLASSINFO("D-Bus Interface", "de.berlios.qpamat.Qpamat")
 
     public:
-        QpamatAdaptor(Qpamat *qpamat);
+        QpamatAdaptor(QpamatWindow *qpamat);
 
     private:
         virtual ~QpamatAdaptor() {}
@@ -39,7 +39,7 @@ class QpamatAdaptor: public QDBusAbstractAdaptor
         Q_NOREPLY void showHideApplication();
 
     private:
-    	Qpamat *m_qpamat;
+    	QpamatWindow *m_qpamat;
 };
 
 

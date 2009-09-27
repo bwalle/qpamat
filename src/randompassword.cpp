@@ -18,7 +18,7 @@
 #include <QApplication>
 #include <QCursor>
 
-#include "qpamat.h"
+#include "qpamatwindow.h"
 #include "global.h"
 #include "settings.h"
 #include "dialogs/showpassworddialog.h"
@@ -52,7 +52,7 @@
     \param parent the parent object
     \param name the name of the object
 */
-RandomPassword::RandomPassword(Qpamat* parent, const char* name)
+RandomPassword::RandomPassword(QpamatWindow* parent, const char* name)
     : QObject(parent, name), m_insertEnabled(false), m_parent(parent)
 { }
 
@@ -75,13 +75,13 @@ void RandomPassword::setInsertEnabled(bool enabled)
 void RandomPassword::requestPassword()
 {
     PasswordGenerator* passwordgen = 0;
-    QString allowed = qpamat->set().readEntry("Security/AllowedCharacters");
+    QString allowed = qpamatwindow->set().readEntry("Security/AllowedCharacters");
     PasswordChecker* checker = 0;
     try {
-        checker = new HybridPasswordChecker(qpamat->set().readEntry("Security/DictionaryFile"));
+        checker = new HybridPasswordChecker(qpamatwindow->set().readEntry("Security/DictionaryFile"));
         passwordgen = PasswordGeneratorFactory::getGenerator(
-            qpamat->set().readEntry( "Security/PasswordGenerator" ),
-            qpamat->set().readEntry( "Security/PasswordGenAdditional" )
+            qpamatwindow->set().readEntry( "Security/PasswordGenerator" ),
+            qpamatwindow->set().readEntry( "Security/PasswordGenAdditional" )
         );
     } catch (const std::exception& exc) {
         QMessageBox::warning(m_parent, "QPaMaT",
@@ -102,11 +102,11 @@ void RandomPassword::requestPassword()
 
         try {
             password = passwordgen->getPassword(
-                qpamat->set().readNumEntry("Security/Length"),
-                qpamat->set().readEntry("Security/AllowedCharacters")
+                qpamatwindow->set().readNumEntry("Security/Length"),
+                qpamatwindow->set().readEntry("Security/AllowedCharacters")
             );
             double quality = checker->passwordQuality(password);
-            ok = quality > qpamat->set().readDoubleEntry("StrongPasswordLimit");
+            ok = quality > qpamatwindow->set().readDoubleEntry("StrongPasswordLimit");
 
         } catch (const std::exception& exc) {
             if (passwordgen->isSlow())

@@ -25,7 +25,7 @@
 #include <QUrl>
 
 #include "global.h"
-#include "qpamat.h"
+#include "qpamatwindow.h"
 #include "help.h"
 #include "settings.h"
 #include "dialogs/aboutdialog.h"
@@ -68,7 +68,7 @@ void Help::showHelp()
         return;
     }
 
-    qpamat->message(tr("Help started in web browser."));
+    qpamatwindow->message(tr("Help started in web browser."));
 }
 
 

@@ -28,7 +28,7 @@
 #include <QTextCodec>
 #include <QTranslator>
 
-#include "qpamat.h"
+#include "qpamatwindow.h"
 
 #include "global.h"
 #include "settings.h"
@@ -48,7 +48,7 @@ namespace X11
 #endif
 
 
-Qpamat* qpamat;
+QpamatWindow* qpamatwindow;
 
 /*!
     Prints the available command line options on stdout and exits the program.
@@ -169,27 +169,27 @@ int main(int argc, char** argv)
     app.installTranslator(&ttranslator);
 
     SingleApplication::init(QDir::homeDirPath(), "QPaMaT");
-    boost::scoped_ptr<Qpamat> qp;
+    boost::scoped_ptr<QpamatWindow> qp;
 
     try {
         SingleApplication::startup();
         SingleApplication::registerStandardExitHandlers();
 
-        qp.reset(new Qpamat());
-        qpamat = qp.get();
-        app.setMainWidget(qpamat);
+        qp.reset(new QpamatWindow());
+        qpamatwindow = qp.get();
+        app.setMainWidget(qpamatwindow);
 
 #ifdef Q_WS_X11
 	// register the remote interface
-	new QpamatAdaptor(qpamat);
+	new QpamatAdaptor(qpamatwindow);
 	QDBusConnection::sessionBus().registerService("de.berlios.Qpamat");
-	QDBusConnection::sessionBus().registerObject("/Qpamat", qpamat);
+	QDBusConnection::sessionBus().registerObject("/Qpamat", qpamatwindow);
 #endif
 
-        QObject::connect(qpamat, SIGNAL(quit()), &app, SLOT(quit()));
-        if (!(qpamat->set().readBoolEntry("Presentation/StartHidden")
-                        && qpamat->set().readBoolEntry("Presentation/SystemTrayIcon")))
-            qpamat->show();
+        QObject::connect(qpamatwindow, SIGNAL(quit()), &app, SLOT(quit()));
+        if (!(qpamatwindow->set().readBoolEntry("Presentation/StartHidden")
+                        && qpamatwindow->set().readBoolEntry("Presentation/SystemTrayIcon")))
+            qpamatwindow->show();
 
         return app.exec();
 

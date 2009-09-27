@@ -13,7 +13,7 @@
  * -------------------------------------------------------------------------------------------------
  */
 #include "qpamatadaptor.h"
-#include "qpamat.h"
+#include "qpamatwindow.h"
 
 /*!
     \class QpamatAdaptor
@@ -29,7 +29,7 @@
 
     \param qpamat the Qpamat main class
 */
-QpamatAdaptor::QpamatAdaptor(Qpamat *qpamat)
+QpamatAdaptor::QpamatAdaptor(QpamatWindow *qpamat)
     : QDBusAbstractAdaptor(qpamat)
 {
     m_qpamat = qpamat;

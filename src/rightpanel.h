@@ -23,7 +23,7 @@
 #include "southpanel.h"
 #include "rightlistview.h"
 
-class Qpamat;
+class QpamatWindow;
 
 class RightPanel : public Q3Frame
 {
@@ -34,7 +34,7 @@ class RightPanel : public Q3Frame
         friend QTextStream& operator>>(QTextStream& ts, RightPanel& panel);
 
     public:
-        RightPanel(Qpamat* parent);
+        RightPanel(QpamatWindow* parent);
         bool isFocusInside() const;
 
     public slots:

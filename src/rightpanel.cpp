@@ -23,7 +23,7 @@
 #include <QVBoxLayout>
 #include <QTextStream>
 
-#include "qpamat.h"
+#include "qpamatwindow.h"
 
 #include "rightpanel.h"
 #include "rightlistview.h"
@@ -66,7 +66,7 @@
     Creates a new instance of the right panel.
     \param parent the parent widget as usual for QObject
 */
-RightPanel::RightPanel(Qpamat* parent) : Q3Frame(parent, "RightPanel")
+RightPanel::RightPanel(QpamatWindow* parent) : Q3Frame(parent, "RightPanel")
 {
     QVBoxLayout* layout = new QVBoxLayout(this);
     m_overviewLabel = new QLabel(this);

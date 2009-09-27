@@ -28,7 +28,7 @@
 #include <QTextStream>
 #include <Q3PopupMenu>
 
-#include "qpamat.h"
+#include "qpamatwindow.h"
 
 #include "global.h"
 #include "rightlistview.h"
@@ -242,7 +242,7 @@ void RightListView::doubleClickHandler(Q3ListViewItem* item)
             dlg->exec();
             delete dlg;
         } else
-            qpamat->message(tr("Double click only supported with passwords and URLs!"));
+            qpamatwindow->message(tr("Double click only supported with passwords and URLs!"));
     }
 }
 
@@ -330,7 +330,7 @@ void RightListView::deleteCurrent()
         m_currentItem->deleteProperty(num);
         emit itemDeleted(num);
     } else
-        qpamat->message(tr("No item selected!"));
+        qpamatwindow->message(tr("No item selected!"));
 }
 
 
@@ -378,7 +378,7 @@ void RightListView::moveDown()
         setSelectedIndex(index+1);
         emit stateModified();
     } else
-        qpamat->message("No item selected");
+        qpamatwindow->message("No item selected");
 }
 
 
@@ -396,7 +396,7 @@ void RightListView::moveUp()
         setSelectedIndex(index-1);
         emit stateModified();
     } else
-        qpamat->message("No item selected");
+        qpamatwindow->message("No item selected");
 }
 
 

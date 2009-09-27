@@ -35,15 +35,15 @@ class Tree;
 class RightPanel;
 class TimerStatusmessage;
 
-class Qpamat : public QMainWindow
+class QpamatWindow : public QMainWindow
 {
     Q_OBJECT
 
     friend class QpamatAdaptor;
 
     public:
-        Qpamat();
-        ~Qpamat();
+        QpamatWindow();
+        ~QpamatWindow();
 
         Settings& set();
 
@@ -125,12 +125,12 @@ class Qpamat : public QMainWindow
         QRect               m_lastGeometry;
 
     private:
-        Qpamat(const Qpamat&);
-        Qpamat& operator=(const Qpamat&);
+        QpamatWindow(const QpamatWindow&);
+        QpamatWindow& operator=(const QpamatWindow&);
 };
 
 
-extern Qpamat* qpamat;
+extern QpamatWindow* qpamatwindow;
 
 
 #endif // QPAMAT_H

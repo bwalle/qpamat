@@ -20,7 +20,7 @@
 #include <QMessageBox>
 #include <QTextStream>
 
-#include "qpamat.h"
+#include "qpamatwindow.h"
 
 #include "util/securestring.h"
 #include "security/hybridpasswordchecker.h"
@@ -189,13 +189,13 @@ double Property::daysToCrack() const
 void Property::updatePasswordStrength() throw (PasswordCheckException)
 {
     if (m_type == PASSWORD) {
-        QString ensured = qpamat->set().readEntry("Security/EnsuredCharacters");
+        QString ensured = qpamatwindow->set().readEntry("Security/EnsuredCharacters");
         double days = -1.0;
-        HybridPasswordChecker checker(qpamat->set().readEntry("Security/DictionaryFile"));
+        HybridPasswordChecker checker(qpamatwindow->set().readEntry("Security/DictionaryFile"));
         days = checker.passwordQuality(boost::any_cast<SecureString>(m_value).qString()); // XXX
         m_daysToCrack = days;
-        double weakLimit = qpamat->set().readDoubleEntry("Security/WeakPasswordLimit");
-        double strongLimit = qpamat->set().readDoubleEntry("Security/StrongPasswordLimit");
+        double weakLimit = qpamatwindow->set().readDoubleEntry("Security/WeakPasswordLimit");
+        double strongLimit = qpamatwindow->set().readDoubleEntry("Security/StrongPasswordLimit");
         if (m_daysToCrack < weakLimit)
             m_passwordStrength = PWeak;
         else if (m_daysToCrack >= weakLimit && m_daysToCrack < strongLimit)

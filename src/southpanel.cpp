@@ -26,7 +26,7 @@
 #include <QHBoxLayout>
 #include <QDebug>
 
-#include "qpamat.h"
+#include "qpamatwindow.h"
 
 #include "southpanel.h"
 #include "settings.h"
@@ -316,19 +316,19 @@ void SouthPanel::insertAutoText()
         QString newTxt;
         switch ( Property::Type(m_typeCombo->currentItem()) ) {
             case Property::MISC:
-                newTxt = qpamat->set().readEntry("AutoText/Misc");
+                newTxt = qpamatwindow->set().readEntry("AutoText/Misc");
                 break;
 
             case Property::USERNAME:
-                newTxt = qpamat->set().readEntry("AutoText/Username");
+                newTxt = qpamatwindow->set().readEntry("AutoText/Username");
                 break;
 
             case Property::PASSWORD:
-                newTxt = qpamat->set().readEntry("AutoText/Password");
+                newTxt = qpamatwindow->set().readEntry("AutoText/Password");
                 break;
 
             case Property::URL:
-                newTxt = qpamat->set().readEntry("AutoText/URL");
+                newTxt = qpamatwindow->set().readEntry("AutoText/URL");
                 break;
 
             default:
