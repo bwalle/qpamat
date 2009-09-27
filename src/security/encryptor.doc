@@ -64,4 +64,4 @@
     \return the decrypted string
 */
 
-// vim: set sw=4 ts=4 et ft=cpp:
+// vim: set sw=4 ts=4 et ft=doxygen:

@@ -37,4 +37,4 @@
     See http://www.openssl.org/docs/crypto/EVP_BytesToKey.html.
 */
 
-// vim: set sw=4 ts=4 et ft=cpp:
+// vim: set sw=4 ts=4 et ft=doxygen:
