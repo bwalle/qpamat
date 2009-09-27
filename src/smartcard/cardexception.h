@@ -55,4 +55,4 @@ class CardException : public std::runtime_error
 
 #endif // CARDEXCEPTION_H
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

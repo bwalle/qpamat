@@ -32,4 +32,4 @@ class StdRandomNumberGenerator : public std::unary_function<type, type>
 
 #endif // STDRANDOMNUMBERGENERATOR_H
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

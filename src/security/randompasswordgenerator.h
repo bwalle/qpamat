@@ -33,4 +33,4 @@ class RandomPasswordGenerator : public PasswordGenerator
 
 #endif // RANDOMPASSWORDGENERATOR_H
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

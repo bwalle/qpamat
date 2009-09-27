@@ -28,4 +28,4 @@ void sighandler(int signal = 0);
 
 #endif // MAIN_H
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

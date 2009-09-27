@@ -79,4 +79,4 @@ WaitDialog::WaitDialog(const QPixmap& icon, const QString& message, const QStrin
     box->setStretchFactor(textLabel, 5);
 }
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

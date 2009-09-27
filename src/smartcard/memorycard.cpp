@@ -700,4 +700,4 @@ void MemoryCard::checkInitialzed(const QString& functionName) const
             "the class was not initalized.");
 }
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

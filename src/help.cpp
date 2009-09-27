@@ -85,4 +85,4 @@ void Help::openURL(QWidget* parent, const QString& url)
     }
 }
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

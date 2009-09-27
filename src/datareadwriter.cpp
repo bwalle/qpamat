@@ -719,4 +719,4 @@ void DataReadWriter::crypt(QDomElement& n, StringEncryptor& enc, bool encrypt)
     }
 }
 
-// :maxLineLen=100:indentSize=4:tabSize=4:noTabs=true:
+// vim: set sw=4 ts=4 et:

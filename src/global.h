@@ -100,4 +100,4 @@ qDebug() << BOOST_CURRENT_FUNCTION << "Hello!";
 
 #endif // GLOBAL_H
 
-// :maxLineLen=100:tabSize=4:shiftWidth=4:
+// vim: set sw=4 ts=4 et:

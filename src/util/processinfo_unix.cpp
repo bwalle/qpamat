@@ -48,4 +48,4 @@ q_pid_t ProcessInfo::getCurrentPid()
     return getpid();
 }
 
-// vim: set sw=4 ts=4 et: :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

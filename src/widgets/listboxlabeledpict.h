@@ -50,4 +50,4 @@ class ListBoxLabeledPict : public Q3ListBoxItem
 
 #endif // LISTBOXLABELEDPICT_H
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

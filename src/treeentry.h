@@ -95,4 +95,4 @@ class TreeEntry : public QObject, public Q3ListViewItem
 
 #endif // TREEENTRY_H
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

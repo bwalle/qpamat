@@ -135,4 +135,4 @@ void FileLineEdit::chooseFile()
         m_lineEdit->setText(selected);
 }
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

@@ -51,4 +51,4 @@ NotInitializedException::NotInitializedException(const QString& error)
     : std::runtime_error(error.latin1())
 { }
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

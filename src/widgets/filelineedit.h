@@ -47,4 +47,4 @@ class FileLineEdit : public QWidget
 
 #endif // FILELINEEDIT_H
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

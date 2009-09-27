@@ -46,4 +46,4 @@ class QpamatAdaptor: public QDBusAbstractAdaptor
 #endif /* Q_WS_X11 */
 #endif /* QPAMATADAPTOR_H */
 
-// vim: set sw=4 ts=4 et: :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

@@ -141,4 +141,4 @@ void RandomPassword::requestPassword()
     delete checker;
 }
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

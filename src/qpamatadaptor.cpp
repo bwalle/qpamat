@@ -44,4 +44,4 @@ void QpamatAdaptor::showHideApplication()
 }
 
 
-// vim: set sw=4 ts=4 et: :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

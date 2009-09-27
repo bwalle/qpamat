@@ -350,4 +350,4 @@ void SecureString::smash()
     std::fill(m_text, m_text+strlen(m_text), '\0');
 }
 
-// :maxLineLen=100:shiftWidth=4:tabSize=4:noTabs=true:
+// vim: set sw=4 ts=4 et:

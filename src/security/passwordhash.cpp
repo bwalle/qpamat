@@ -166,4 +166,4 @@ void PasswordHash::attachHashWithoutSalt(ByteVector& output, const ByteVector& p
     std::copy(md_value, md_value + md_len, std::back_inserter(output));
 }
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

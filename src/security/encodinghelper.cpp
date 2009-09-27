@@ -126,4 +126,4 @@ ByteVector EncodingHelper::fromBase64(const QString& string)
     return vector;
 }
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

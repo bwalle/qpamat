@@ -45,4 +45,4 @@ class SingleApplication : public QObject
 
 #endif // SINGLEAPPLICATION_H
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

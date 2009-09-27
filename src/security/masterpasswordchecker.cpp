@@ -65,4 +65,4 @@ double MasterPasswordChecker::passwordQuality(const QString& password) throw ()
     return uppercase && lowercase && nonLetter ? std::numeric_limits<double>::max() : 0.0;
 }
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

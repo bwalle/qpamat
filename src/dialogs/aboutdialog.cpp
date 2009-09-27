@@ -123,4 +123,4 @@ void AboutDialog::setupLicenseTab()
     m_tabWidget->addTab(licenseTab, tr("&License"));
 }
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

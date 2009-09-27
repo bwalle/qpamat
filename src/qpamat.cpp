@@ -991,4 +991,4 @@ void Qpamat::initActions()
     m_actions.showHideAction = new QAction(tr("&Show"), this);
 }
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

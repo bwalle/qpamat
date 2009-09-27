@@ -72,4 +72,4 @@ class SouthPanel : public Q3Frame
 
 #endif // SOUTHPANEL_H
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

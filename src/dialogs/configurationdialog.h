@@ -33,4 +33,4 @@ class ConfigurationDialog : public ListBoxDialog
 
 #endif // CONFIGURATIONDIALOG_H
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

@@ -310,4 +310,4 @@ bool TimeoutApplication::notify(QObject* receiver, QEvent* e)
     Signal that is emitted if the inactivity timeout occured.
 */
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

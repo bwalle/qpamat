@@ -65,4 +65,4 @@ TreeEntry* TreeEntry::appendFromXML(T* parent, QDomElement& element)
     return returnvalue;
 }
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et ft=cpp:

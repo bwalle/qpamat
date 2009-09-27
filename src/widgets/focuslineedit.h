@@ -40,4 +40,4 @@ class FocusLineEdit : public QLineEdit
 
 #endif // FOCUSLINEEDIT_H
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

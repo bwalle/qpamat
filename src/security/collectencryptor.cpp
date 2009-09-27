@@ -123,4 +123,4 @@ ByteVector CollectEncryptor::getBytes()
     return m_bytes;
 }
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

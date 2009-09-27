@@ -131,4 +131,4 @@ void InsertCardDialog::pinEditHandler(const QString& text)
     m_okButton->setEnabled(m_pinEdit->hasAcceptableInput());
 }
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

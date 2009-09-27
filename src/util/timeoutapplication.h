@@ -63,4 +63,4 @@ class TimeoutApplication : public QApplication
 
 #endif /* TIMEOUTAPPLICATION_H */
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

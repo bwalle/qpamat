@@ -258,4 +258,4 @@ QTextStream& operator>>(QTextStream& ts, RightPanel& panel)
     return ts;
 }
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

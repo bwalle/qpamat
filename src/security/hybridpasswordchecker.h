@@ -52,4 +52,4 @@ bool string_length_greater(const QString& a, const QString& b);
 
 #endif // HYBRIDPASSWORDCHECKER_H
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

@@ -181,4 +181,4 @@ int CardException::getRetryNumber() const
     return m_retryNumber;
 }
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

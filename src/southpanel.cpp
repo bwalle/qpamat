@@ -396,4 +396,4 @@ void SouthPanel::insertPassword(const QString& password)
     m_valueLineEdit->insert(password);
 }
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

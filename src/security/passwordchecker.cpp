@@ -77,4 +77,4 @@ const unsigned int PasswordChecker::CRACKS_PER_SECOND = 500000;
     \param error the error message
 */
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

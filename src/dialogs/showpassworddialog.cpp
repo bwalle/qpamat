@@ -138,4 +138,4 @@ void ShowPasswordDialog::insertButtonHandler()
     emit insertPassword(m_passwordEdit->getContent());
 }
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

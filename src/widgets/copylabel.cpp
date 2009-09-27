@@ -148,4 +148,4 @@ void CopyLabel::copyText()
         cb->setText(m_label->text(), QClipboard::Selection);
 }
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

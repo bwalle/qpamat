@@ -225,4 +225,4 @@ QString SymmetricEncryptor::getCurrentAlgorithm() const
     return m_currentAlgorithm;
 }
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

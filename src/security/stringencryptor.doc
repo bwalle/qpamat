@@ -71,4 +71,4 @@
     \param error the error message
 */
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et ft=cpp:

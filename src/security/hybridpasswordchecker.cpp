@@ -259,4 +259,4 @@ bool string_length_greater(const QString& a, const QString& b)
     return a.length() > b.length();
 }
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

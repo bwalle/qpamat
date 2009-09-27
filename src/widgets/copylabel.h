@@ -49,4 +49,4 @@ class CopyLabel : public QWidget
 
 #endif // COPYLABEL_H
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:

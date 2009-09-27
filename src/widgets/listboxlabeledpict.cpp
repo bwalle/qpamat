@@ -150,4 +150,4 @@ int ListBoxLabeledPict::rtti() const
     return RTTI;
 }
 
-// :maxLineLen=100:
+// vim: set sw=4 ts=4 et:
