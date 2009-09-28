@@ -148,6 +148,11 @@ QpamatWindow *Qpamat::getWindow()
     return m_qpamatWindow.get();
 }
 
+/** 
+ * @brief Returns the only instance of the singleton.
+ * 
+ * @return the pointer to the instance which is valid during the whole life time of the application.
+ */
 Qpamat *Qpamat::instance()
 {
     if (!m_instance) {
