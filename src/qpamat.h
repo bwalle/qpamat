@@ -36,7 +36,6 @@ class Qpamat : boost::noncopyable
 
     protected:
         void printVersion();
-        void getX11Version(QString &protocolVersion, QString &vendorVersion);
 
     private:
         Qpamat();
