@@ -21,7 +21,6 @@
 #include <QStringList>
 
 #include "global.h"
-#include "encryptor.h"
 
 
 class NoSuchAlgorithmException : public std::runtime_error
