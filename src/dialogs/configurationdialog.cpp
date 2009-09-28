@@ -48,6 +48,7 @@
 #include "configurationdialog.h"
 #include "configurationdialogprivate.h"
 #include "qpamatwindow.h"
+#include "qpamat.h"
 #include "widgets/filelineedit.h"
 #include "widgets/listboxlabeledpict.h"
 #include "security/passwordgeneratorfactory.h"
@@ -236,12 +237,14 @@ void ConfDlgGeneralTab::createAndLayout()
 */
 void ConfDlgGeneralTab::fillSettings()
 {
-    m_autoLoginCheckbox->setChecked(qpamatwindow->set().readBoolEntry("General/AutoLogin"));
-    m_datafileEdit->setContent(qpamatwindow->set().readEntry("General/Datafile"));
-    m_miscEdit->setText(qpamatwindow->set().readEntry("AutoText/Misc"));
-    m_usernameEdit->setText(qpamatwindow->set().readEntry("AutoText/Username"));
-    m_passwordEdit->setText(qpamatwindow->set().readEntry("AutoText/Password"));
-    m_urlEdit->setText(qpamatwindow->set().readEntry("AutoText/URL"));
+    QpamatWindow *win = Qpamat::instance()->getWindow();
+
+    m_autoLoginCheckbox->setChecked(win->set().readBoolEntry("General/AutoLogin"));
+    m_datafileEdit->setContent(win->set().readEntry("General/Datafile"));
+    m_miscEdit->setText(win->set().readEntry("AutoText/Misc"));
+    m_usernameEdit->setText(win->set().readEntry("AutoText/Username"));
+    m_passwordEdit->setText(win->set().readEntry("AutoText/Password"));
+    m_urlEdit->setText(win->set().readEntry("AutoText/URL"));
 }
 
 
@@ -250,12 +253,14 @@ void ConfDlgGeneralTab::fillSettings()
 */
 void ConfDlgGeneralTab::applySettings()
 {
-    qpamatwindow->set().writeEntry("General/AutoLogin", m_autoLoginCheckbox->isChecked() );
-    qpamatwindow->set().writeEntry("General/Datafile", m_datafileEdit->getContent() );
-    qpamatwindow->set().writeEntry("AutoText/Misc", m_miscEdit->text() );
-    qpamatwindow->set().writeEntry("AutoText/Username", m_usernameEdit->text() );
-    qpamatwindow->set().writeEntry("AutoText/Password", m_passwordEdit->text() );
-    qpamatwindow->set().writeEntry("AutoText/URL", m_urlEdit->text() );
+    QpamatWindow *win = Qpamat::instance()->getWindow();
+
+    win->set().writeEntry("General/AutoLogin", m_autoLoginCheckbox->isChecked() );
+    win->set().writeEntry("General/Datafile", m_datafileEdit->getContent() );
+    win->set().writeEntry("AutoText/Misc", m_miscEdit->text() );
+    win->set().writeEntry("AutoText/Username", m_usernameEdit->text() );
+    win->set().writeEntry("AutoText/Password", m_passwordEdit->text() );
+    win->set().writeEntry("AutoText/URL", m_urlEdit->text() );
 }
 
 
@@ -394,13 +399,15 @@ void ConfDlgPasswordTab::checkboxHandler(bool on)
 */
 void ConfDlgPasswordTab::fillSettings()
 {
-    m_lengthSpinner->setValue(qpamatwindow->set().readNumEntry("Security/Length"));
-    m_allowedCharsEdit->setText(qpamatwindow->set().readEntry("Security/AllowedCharacters"));
-    m_weakSlider->setValue(int(qpamatwindow->set().readDoubleEntry("Security/WeakPasswordLimit")*2));
-    m_strongSlider->setValue(int(qpamatwindow->set().readDoubleEntry("Security/StrongPasswordLimit")*2));
-    m_useExternalCB->setChecked(qpamatwindow->set().readEntry("Security/PasswordGenerator") =="EXTERNAL");
-    m_externalEdit->setContent(qpamatwindow->set().readEntry("Security/PasswordGenAdditional"));
-    m_dictionaryEdit->setContent(qpamatwindow->set().readEntry("Security/DictionaryFile"));
+    QpamatWindow *win = Qpamat::instance()->getWindow();
+
+    m_lengthSpinner->setValue(win->set().readNumEntry("Security/Length"));
+    m_allowedCharsEdit->setText(win->set().readEntry("Security/AllowedCharacters"));
+    m_weakSlider->setValue(int(win->set().readDoubleEntry("Security/WeakPasswordLimit")*2));
+    m_strongSlider->setValue(int(win->set().readDoubleEntry("Security/StrongPasswordLimit")*2));
+    m_useExternalCB->setChecked(win->set().readEntry("Security/PasswordGenerator") =="EXTERNAL");
+    m_externalEdit->setContent(win->set().readEntry("Security/PasswordGenAdditional"));
+    m_dictionaryEdit->setContent(win->set().readEntry("Security/DictionaryFile"));
 
     checkboxHandler(m_useExternalCB->isChecked());
     weakSliderHandler(m_weakSlider->value());
@@ -413,13 +420,15 @@ void ConfDlgPasswordTab::fillSettings()
 void ConfDlgPasswordTab::applySettings()
 {
     QString passGen = m_useExternalCB->isChecked() ? "EXTERNAL" : "RANDOM";
-    qpamatwindow->set().writeEntry("Security/PasswordGenerator", passGen);
-    qpamatwindow->set().writeEntry("Security/PasswordGenAdditional", m_externalEdit->getContent());
-    qpamatwindow->set().writeEntry("Security/WeakPasswordLimit", m_weakSlider->value()/2.0);
-    qpamatwindow->set().writeEntry("Security/StrongPasswordLimit", m_strongSlider->value()/2.0);
-    qpamatwindow->set().writeEntry("Security/Length", m_lengthSpinner->value());
-    qpamatwindow->set().writeEntry("Security/AllowedCharacters", m_allowedCharsEdit->text());
-    qpamatwindow->set().writeEntry("Security/DictionaryFile", m_dictionaryEdit->getContent());
+    QpamatWindow *win = Qpamat::instance()->getWindow();
+
+    win->set().writeEntry("Security/PasswordGenerator", passGen);
+    win->set().writeEntry("Security/PasswordGenAdditional", m_externalEdit->getContent());
+    win->set().writeEntry("Security/WeakPasswordLimit", m_weakSlider->value()/2.0);
+    win->set().writeEntry("Security/StrongPasswordLimit", m_strongSlider->value()/2.0);
+    win->set().writeEntry("Security/Length", m_lengthSpinner->value());
+    win->set().writeEntry("Security/AllowedCharacters", m_allowedCharsEdit->text());
+    win->set().writeEntry("Security/DictionaryFile", m_dictionaryEdit->getContent());
 }
 
 
@@ -573,9 +582,10 @@ void ConfDlgSecurityTab::createAndLayout()
 void ConfDlgSecurityTab::fillSettings()
 {
     qDebug() << CURRENT_FUNCTION << "Insert algorithm";
+    QpamatWindow *win = Qpamat::instance()->getWindow();
 
     m_algorithmCombo->insertStringList(SymmetricEncryptor::getAlgorithms());
-    m_algorithmCombo->setCurrentText( qpamatwindow->set().readEntry( "Security/CipherAlgorithm" ));
+    m_algorithmCombo->setCurrentText( win->set().readEntry( "Security/CipherAlgorithm" ));
 
     // Combo box
     m_logoutCombo->insertItem(tr("Disabled"));
@@ -584,7 +594,7 @@ void ConfDlgSecurityTab::fillSettings()
     m_logoutCombo->insertItem(tr("1 hour"));
     m_logoutCombo->insertItem(tr("2 hours"));
 
-    int logout = qpamatwindow->set().readNumEntry( "Security/AutoLogout" );
+    int logout = win->set().readNumEntry( "Security/AutoLogout" );
     int size = sizeof(ConfDlgSecurityTab::m_minuteMap)/sizeof(int);
     const int* val = qFind(
         ConfDlgSecurityTab::m_minuteMap,
@@ -599,9 +609,10 @@ void ConfDlgSecurityTab::fillSettings()
 */
 void ConfDlgSecurityTab::applySettings()
 {
+    QpamatWindow *win = Qpamat::instance()->getWindow();
     int min = ConfDlgSecurityTab::m_minuteMap[m_algorithmCombo->currentItem()];
-    qpamatwindow->set().writeEntry("Security/CipherAlgorithm", m_algorithmCombo->currentText() );
-    qpamatwindow->set().writeEntry("Security/AutoLogout", min);
+    win->set().writeEntry("Security/CipherAlgorithm", m_algorithmCombo->currentText() );
+    win->set().writeEntry("Security/AutoLogout", min);
 }
 
 
@@ -685,14 +696,15 @@ void ConfDlgPresentationTab::createAndLayout()
 void ConfDlgPresentationTab::fillSettings()
 {
     QFont font;
-    font.fromString(qpamatwindow->set().readEntry( "Presentation/NormalFont"));
+    QpamatWindow *win = Qpamat::instance()->getWindow();
+    font.fromString(win->set().readEntry( "Presentation/NormalFont"));
     m_normalFontEdit->setFont(font);
-    font.fromString(qpamatwindow->set().readEntry( "Presentation/FooterFont"));
+    font.fromString(win->set().readEntry( "Presentation/FooterFont"));
     m_footerFontEdit->setFont(font);
-    m_hidePasswordCB->setChecked(qpamatwindow->set().readBoolEntry("Presentation/HideRandomPass"));
-    m_nograbCB->setChecked(qpamatwindow->set().readBoolEntry("Password/NoGrabbing"));
-    m_systrayCB->setChecked(qpamatwindow->set().readBoolEntry("Presentation/SystemTrayIcon"));
-    m_hiddenCB->setChecked(qpamatwindow->set().readBoolEntry("Presentation/StartHidden"));
+    m_hidePasswordCB->setChecked(win->set().readBoolEntry("Presentation/HideRandomPass"));
+    m_nograbCB->setChecked(win->set().readBoolEntry("Password/NoGrabbing"));
+    m_systrayCB->setChecked(win->set().readBoolEntry("Presentation/SystemTrayIcon"));
+    m_hiddenCB->setChecked(win->set().readBoolEntry("Presentation/StartHidden"));
     m_hiddenCB->setEnabled(m_systrayCB->isChecked());
 }
 
@@ -702,12 +714,14 @@ void ConfDlgPresentationTab::fillSettings()
 */
 void ConfDlgPresentationTab::applySettings()
 {
-    qpamatwindow->set().writeEntry("Presentation/HideRandomPass", m_hidePasswordCB->isChecked());
-    qpamatwindow->set().writeEntry("Password/NoGrabbing", m_nograbCB->isChecked());
-    qpamatwindow->set().writeEntry("Presentation/NormalFont", m_normalFontEdit->getFont().toString());
-    qpamatwindow->set().writeEntry("Presentation/FooterFont", m_footerFontEdit->getFont().toString());
-    qpamatwindow->set().writeEntry("Presentation/SystemTrayIcon", m_systrayCB->isChecked());
-    qpamatwindow->set().writeEntry("Presentation/StartHidden", m_hiddenCB->isChecked());
+    QpamatWindow *win = Qpamat::instance()->getWindow();
+
+    win->set().writeEntry("Presentation/HideRandomPass", m_hidePasswordCB->isChecked());
+    win->set().writeEntry("Password/NoGrabbing", m_nograbCB->isChecked());
+    win->set().writeEntry("Presentation/NormalFont", m_normalFontEdit->getFont().toString());
+    win->set().writeEntry("Presentation/FooterFont", m_footerFontEdit->getFont().toString());
+    win->set().writeEntry("Presentation/SystemTrayIcon", m_systrayCB->isChecked());
+    win->set().writeEntry("Presentation/StartHidden", m_hiddenCB->isChecked());
 }
 
 
@@ -831,13 +845,15 @@ void ConfDlgSmartcardTab::fillSettings()
         QT_TR_NOOP("COM4")
     };
 
-    for (int i = 0; i < 5; ++i)
+    for (int i = 0; i < 5; ++i) {
         m_portCombo->insertItem(tr(ports[i]));
+    }
 
-    m_libraryEdit->setContent(qpamatwindow->set().readEntry("Smartcard/Library"));
-    m_portCombo->setCurrentItem(qpamatwindow->set().readNumEntry("Smartcard/Port"));
-    m_useCardCB->setChecked(qpamatwindow->set().readBoolEntry("Smartcard/UseCard"));
-    m_usePinCB->setChecked(qpamatwindow->set().readBoolEntry("Smartcard/HasWriteProtection"));
+    QpamatWindow *win = Qpamat::instance()->getWindow();
+    m_libraryEdit->setContent(win->set().readEntry("Smartcard/Library"));
+    m_portCombo->setCurrentItem(win->set().readNumEntry("Smartcard/Port"));
+    m_useCardCB->setChecked(win->set().readBoolEntry("Smartcard/UseCard"));
+    m_usePinCB->setChecked(win->set().readBoolEntry("Smartcard/HasWriteProtection"));
 
     if (!m_useCardCB->isChecked())
         setUseSmartcardEnabled(false);
@@ -849,10 +865,12 @@ void ConfDlgSmartcardTab::fillSettings()
 */
 void ConfDlgSmartcardTab::applySettings()
 {
-    qpamatwindow->set().writeEntry("Smartcard/Library", m_libraryEdit->getContent() );
-    qpamatwindow->set().writeEntry("Smartcard/Port", m_portCombo->currentItem() );
-    qpamatwindow->set().writeEntry("Smartcard/UseCard", m_useCardCB->isChecked() );
-    qpamatwindow->set().writeEntry("Smartcard/HasWriteProtection", m_usePinCB->isChecked() );
+    QpamatWindow *win = Qpamat::instance()->getWindow();
+
+    win->set().writeEntry("Smartcard/Library", m_libraryEdit->getContent() );
+    win->set().writeEntry("Smartcard/Port", m_portCombo->currentItem() );
+    win->set().writeEntry("Smartcard/UseCard", m_useCardCB->isChecked() );
+    win->set().writeEntry("Smartcard/HasWriteProtection", m_usePinCB->isChecked() );
 }
 
 

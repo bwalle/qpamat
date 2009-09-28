@@ -20,6 +20,7 @@
 #include <QDropEvent>
 
 #include "qpamatwindow.h"
+#include "qpamat.h"
 
 #include "treeentry.h"
 #include "settings.h"
@@ -379,8 +380,9 @@ void TreeEntry::dropped(QDropEvent *evt)
 
         Q3ListViewItem* src = reinterpret_cast<TreeEntry*>(elem.attribute("memoryAddress").toLong());
 
+        QpamatWindow *win = Qpamat::instance()->getWindow();
         if (src == this) {
-            qpamatwindow->message(tr("Cannot dray to itself."));
+            win->message(tr("Cannot dray to itself."));
             return;
         }
 

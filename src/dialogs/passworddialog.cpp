@@ -24,6 +24,7 @@
 
 #include "passworddialog.h"
 #include "qpamatwindow.h"
+#include "qpamat.h"
 
 /*!
     \class PasswordDialog
@@ -73,7 +74,8 @@ PasswordDialog::PasswordDialog(QWidget* parent, const char* name)
     connect(dialogButtons, SIGNAL(accepted()), SLOT(accept()));
     connect(dialogButtons, SIGNAL(rejected()), SLOT(reject()));
 
-    if (!qpamatwindow->set().readBoolEntry("Password/NoGrabbing")) {
+    QpamatWindow *win = Qpamat::instance()->getWindow();
+    if (!win->set().readBoolEntry("Password/NoGrabbing")) {
         connect(m_passwordEdit, SIGNAL(gotFocus()), SLOT(grab()));
         connect(m_passwordEdit, SIGNAL(lostFocus()), SLOT(release()));
     }

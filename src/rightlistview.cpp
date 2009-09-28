@@ -29,7 +29,7 @@
 #include <Q3PopupMenu>
 
 #include "qpamatwindow.h"
-
+#include "qpamat.h"
 #include "global.h"
 #include "rightlistview.h"
 #include "dialogs/showpassworddialog.h"
@@ -241,8 +241,10 @@ void RightListView::doubleClickHandler(Q3ListViewItem* item)
             dlg->setPassword(m_currentItem->getProperty(item->text(2).toInt(0))->getValue());
             dlg->exec();
             delete dlg;
-        } else
-            qpamatwindow->message(tr("Double click only supported with passwords and URLs!"));
+        } else {
+            QpamatWindow *win = Qpamat::instance()->getWindow();
+            win->message(tr("Double click only supported with passwords and URLs!"));
+        }
     }
 }
 
@@ -329,8 +331,10 @@ void RightListView::deleteCurrent()
         int num = selected->text(2).toInt(0);
         m_currentItem->deleteProperty(num);
         emit itemDeleted(num);
-    } else
-        qpamatwindow->message(tr("No item selected!"));
+    } else {
+        QpamatWindow *win = Qpamat::instance()->getWindow();
+        win->message(tr("No item selected!"));
+    }
 }
 
 
@@ -377,8 +381,10 @@ void RightListView::moveDown()
         updateView();
         setSelectedIndex(index+1);
         emit stateModified();
-    } else
-        qpamatwindow->message("No item selected");
+    } else {
+        QpamatWindow *win = Qpamat::instance()->getWindow();
+        win->message("No item selected");
+    }
 }
 
 
@@ -395,8 +401,10 @@ void RightListView::moveUp()
         updateView();
         setSelectedIndex(index-1);
         emit stateModified();
-    } else
-        qpamatwindow->message("No item selected");
+    } else {
+        QpamatWindow *win = Qpamat::instance()->getWindow();
+        win->message("No item selected");
+    }
 }
 
 

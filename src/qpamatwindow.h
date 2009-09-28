@@ -129,10 +129,6 @@ class QpamatWindow : public QMainWindow
         QpamatWindow& operator=(const QpamatWindow&);
 };
 
-
-extern QpamatWindow* qpamatwindow;
-
-
 #endif // QPAMATWINDOW_H
 
 // vim: set sw=4 ts=4 et:

@@ -27,7 +27,7 @@
 #include <QDebug>
 
 #include "qpamatwindow.h"
-
+#include "qpamat.h"
 #include "southpanel.h"
 #include "settings.h"
 #include "util/stringdisplay.h"
@@ -314,21 +314,22 @@ void SouthPanel::insertAutoText()
 {
     if (m_keyLineEdit->text().isEmpty()) {
         QString newTxt;
+        QpamatWindow *win = Qpamat::instance()->getWindow();
         switch ( Property::Type(m_typeCombo->currentItem()) ) {
             case Property::MISC:
-                newTxt = qpamatwindow->set().readEntry("AutoText/Misc");
+                newTxt = win->set().readEntry("AutoText/Misc");
                 break;
 
             case Property::USERNAME:
-                newTxt = qpamatwindow->set().readEntry("AutoText/Username");
+                newTxt = win->set().readEntry("AutoText/Username");
                 break;
 
             case Property::PASSWORD:
-                newTxt = qpamatwindow->set().readEntry("AutoText/Password");
+                newTxt = win->set().readEntry("AutoText/Password");
                 break;
 
             case Property::URL:
-                newTxt = qpamatwindow->set().readEntry("AutoText/URL");
+                newTxt = win->set().readEntry("AutoText/URL");
                 break;
 
             default:

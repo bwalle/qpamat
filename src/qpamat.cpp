@@ -41,7 +41,6 @@
 
 
 Qpamat *Qpamat::m_instance = NULL;
-QpamatWindow* qpamatwindow;
 
 /**
  * @brief Constructor
@@ -50,9 +49,7 @@ QpamatWindow* qpamatwindow;
  */
 Qpamat::Qpamat()
     : m_qpamatWindow(new QpamatWindow())
-{
-    qpamatwindow = m_qpamatWindow.get();
-}
+{}
 
 /**
  * @brief Installs the tranlators.
@@ -92,9 +89,9 @@ void Qpamat::registerDBus()
 {
 #ifdef Q_WS_X11
 	// register the remote interface
-	new QpamatAdaptor(qpamatwindow);
+	new QpamatAdaptor(getWindow());
 	QDBusConnection::sessionBus().registerService("de.berlios.Qpamat");
-	QDBusConnection::sessionBus().registerObject("/Qpamat", qpamatwindow);
+	QDBusConnection::sessionBus().registerObject("/Qpamat", getWindow());
 #endif
 }
 

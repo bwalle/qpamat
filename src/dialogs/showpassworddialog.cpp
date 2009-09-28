@@ -26,6 +26,7 @@
 #include <QVBoxLayout>
 
 #include "qpamatwindow.h"
+#include "qpamat.h"
 #include "showpassworddialog.h"
 
 /*!
@@ -79,8 +80,8 @@ ShowPasswordDialog::ShowPasswordDialog(QWidget* parent, DialogType type, const c
 
     QLabel* label = new QLabel(labelText, this);
 
-    m_passwordEdit = new CopyLabel(qpamatwindow->set().readBoolEntry("Presentation/HideRandomPass"),
-        this);
+    QpamatWindow *win = Qpamat::instance()->getWindow();
+    m_passwordEdit = new CopyLabel(win->set().readBoolEntry("Presentation/HideRandomPass"), this);
     m_passwordEdit->setMinimumWidth(250);
     m_passwordEdit->setFocusPolicy(Qt::NoFocus);
 

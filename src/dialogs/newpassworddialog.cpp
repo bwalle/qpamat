@@ -29,6 +29,7 @@
 #include "qpamatwindow.h"
 #include "security/masterpasswordchecker.h"
 #include "settings.h"
+#include "qpamat.h"
 
 /*!
     \class NewPasswordDialog
@@ -73,7 +74,8 @@ NewPasswordDialog::NewPasswordDialog(QWidget* parent, const QString& oldPassword
     connect(m_firstPasswordEdit, SIGNAL(textChanged(const QString&)), SLOT(checkOkEnabled()));
     connect(m_secondPasswordEdit, SIGNAL(textChanged(const QString&)), SLOT(checkOkEnabled()));
 
-    if (!qpamatwindow->set().readBoolEntry("Password/NoGrabbing")) {
+    QpamatWindow *win = Qpamat::instance()->getWindow();
+    if (!win->set().readBoolEntry("Password/NoGrabbing")) {
         if (!m_oldPassword.isNull()) {
             connect(m_oldPasswordEdit, SIGNAL(gotFocus()), SLOT(grabOldPassword()));
             connect(m_oldPasswordEdit, SIGNAL(lostFocus()), SLOT(release()));
@@ -190,8 +192,9 @@ void NewPasswordDialog::accept()
     bool ok;
 
     try {
+        QpamatWindow *win = Qpamat::instance()->getWindow();
         double quality = checker.passwordQuality(password);
-        ok = quality > qpamatwindow->set().readDoubleEntry("Security/StrongPasswordLimit");
+        ok = quality > win->set().readDoubleEntry("Security/StrongPasswordLimit");
     } catch (const std::exception& exc) {
         QMessageBox::warning(this, "QPaMaT",
             ("<qt>"+tr("An error occurred while checking the password:<br>%1")+"</qt>").

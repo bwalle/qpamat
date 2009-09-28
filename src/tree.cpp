@@ -40,7 +40,7 @@
 #include <QDebug>
 
 #include "qpamatwindow.h"
-
+#include "qpamat.h"
 #include "tree.h"
 #include "treeentry.h"
 #include "security/passwordhash.h"
@@ -340,8 +340,10 @@ void Tree::deleteCurrent()
                 setSelected(below, true);
             }
             emit stateModified();
-        } else
-            qpamatwindow->message(tr("No item selected!"));
+        } else {
+            QpamatWindow *win = Qpamat::instance()->getWindow();
+            win->message(tr("No item selected!"));
+        }
     }
 }
 
@@ -440,8 +442,10 @@ void Tree::searchFor(const QString& word)
         }
     }
 
-    if (selectedItem() == selected)
-        qpamatwindow->message(tr("No items found"));
+    QpamatWindow *win = Qpamat::instance()->getWindow();
+    if (selectedItem() == selected) {
+        win->message(tr("No items found"));
+    }
 }
 
 
