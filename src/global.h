@@ -25,9 +25,9 @@
  * @file global.h
  * @ingroup gui
  *
- * @brief Defines some types and functions used in the whole application.
+ * @brief defines some types and functions used in the whole application.
  *
- * Defines some types and functions used in the whole application.
+ * defines some types and functions used in the whole application.
  */
 
 
@@ -72,6 +72,12 @@ typedef QMap<QString, QString>  StringMap;
  * Vector for Unicode characters.
  */
 typedef Q3ValueVector<QChar>     QCharVector;
+
+/**
+ * Returns the size of a global array.
+ */
+#define ARRAY_SIZE(array)       \
+    ( sizeof((array)) / sizeof((array)[0]) )
 
 /**
  * Unused parameters.
