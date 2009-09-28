@@ -193,7 +193,7 @@ void SingleApplication::shutdown()
 {
     qDebug() << CURRENT_FUNCTION << "Shutting down ...";
 
-    if (!didShutdownAlready) // prevents multiple calls {
+    if (!didShutdownAlready) { // prevents multiple calls
         if (!QFile::remove(lockfile)) {
             qDebug() << CURRENT_FUNCTION << "Could not remove the lockfile" << lockfile;
         }
