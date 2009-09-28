@@ -107,6 +107,7 @@ SET(qpamat_SRCS
     src/tree.cpp
     src/settings.cpp
     src/qpamatwindow.cpp
+    src/qpamat.cpp
     src/help.cpp
     src/rightpanel.cpp
     src/rightlistview.cpp

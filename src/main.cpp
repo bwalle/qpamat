@@ -26,8 +26,8 @@
 #include <QFile>
 #include <QDir>
 #include <QTextCodec>
-#include <QTranslator>
 
+#include "qpamat.h"
 #include "qpamatwindow.h"
 
 #include "global.h"
@@ -37,159 +37,29 @@
 #include "util/timeoutapplication.h"
 #include "qpamatadaptor.h"
 
-#ifdef Q_WS_X11
-#include <unistd.h>
-#include <sys/utsname.h>
-#include <sys/types.h>
-namespace X11
-{
-    #include <X11/Xlib.h>
-};
-#endif
-
-
-QpamatWindow* qpamatwindow;
-
-/*!
-    Prints the available command line options on stdout and exits the program.
-*/
-void printCommandlineOptions()
-{
-    std::cerr
-        << "\n"
-        << "This is QPaMaT " << VERSION_STRING << ", a password managing tool for Unix, MacOS X\n"
-        << "and Windows using the Qt programming library from Trolltech.\n\n"
-        << "Options: -h            prints this help\n"
-        << "         -style ...    specifies the Qt style, e.g. \"platinum\" or \"sgi\"\n"
-#ifdef Q_WS_X11
-        << "         -display ...  specifies the display for the X Window System\n"
-        << "         -fn ...       specifies the font in XLFD syntax for text elements\n"
-        << "         -bg ...       specifies the background color (examples: green, #FFFFFF)\n"
-        << "         -fg ...       specifies the foreground color\n"
-#endif
-        << std::endl;
-}
-
-
-/*!
-    Prints the version of the program on stderr and exits the program.
-*/
-void printVersion()
-{
-#ifdef Q_WS_X11
-    struct utsname uname_struct;
-    bool nameAvailable = (uname(&uname_struct) >= 0);
-    QString X11protocolVersion, X11vendorVersion;
-    getX11Version(X11protocolVersion, X11vendorVersion);
-#endif
-
-    std::cerr
-        << "QPaMaT version   " << VERSION_STRING << "\n"
-        << "\nBased on software of this version: \n"
-        << "  Qt version     " << QT_VERSION_STR << "\n"
-#ifdef Q_WS_X11
-        << "  OS name        " << (nameAvailable ? uname_struct.sysname : "unknown") << "\n"
-        << "  OS release     " << (nameAvailable ? uname_struct.release : "unknown") << "\n"
-        << "  OS version     " << (nameAvailable ? uname_struct.version : "unknown") << "\n"
-        << "  OS machine     " << (nameAvailable ? uname_struct.machine : "unknown") << "\n"
-        << "  X11 Protocol   " << X11protocolVersion.toStdString() << "\n"
-        << "  X11 Release    " << X11vendorVersion.toStdString()
-#endif
-        << std::endl;
-}
-
-
-/*!
-    Parses the command line and calls the right functions. Call this function after
-    creating a QApplication.
-    \param argc the number of arguments
-    \param argv an array of strings
-*/
-void parseCommandLine(int& argc, char**& argv)
-{
-    for (int i = 1; i < argc; ++i) {
-        QString string = QString::fromLatin1(argv[i]);
-        if (string == "-h" || string == "--help" || string == "-help") {
-            printCommandlineOptions();
-            std::exit(0);
-        } else if (string == "v" || string == "--version" || string == "-version") {
-            printVersion();
-            std::exit(0);
-        }
-    }
-}
-
-
-/*!
-    Returns the X11 version if the code is compiled on a system with X11. If not,
-    the strings are not changed.
-    \param protocolVersion the version of the X11 protocol, normally 11
-    \param vendorVersion the version of the implementation e.g. of XFree86 on Linux
-*/
-void getX11Version(QString& protocolVersion, QString& vendorVersion)
-{
-#ifdef Q_WS_X11
-    using X11::_XPrivDisplay;
-    X11::Display* dpy = X11::XOpenDisplay(0);
-    if (dpy) {
-        protocolVersion = QString("%1.%2").arg(QString::number(ProtocolVersion (dpy))).
-            arg(ProtocolRevision (dpy));
-        vendorVersion = QString::number(VendorRelease (dpy));
-        X11::XCloseDisplay(dpy);
-    }
-#endif
-}
 
 int main(int argc, char** argv)
 {
     TimeoutApplication app(argc, argv);
-    parseCommandLine(argc, argv);
 
-    // translation
-    QTranslator translator(0), ttranslator(0);
-    QString loc = QTextCodec::locale();
-    translator.load(loc, qApp->applicationDirPath() + "/../share/qpamat/translations/");
-
-    QString dirs[] = {
-            QString("/usr/share/qt4/translations"),
-            QString("/usr/share/qt/translations"),
-            QString(getenv("QTDIR")) + "/translations/",
-            qApp->applicationDirPath() + "/../share/qpamat/translations/"
-    };
-
-    for (unsigned int i = 0; i < sizeof(dirs)/sizeof(dirs[0]); i++) {
-        QDir test(dirs[i]);
-        if (test.exists()) {
-            ttranslator.load(QString("qt_") + loc, dirs[i]);
-            break;
-        }
-    }
-
-    app.installTranslator(&translator);
-    app.installTranslator(&ttranslator);
+    Qpamat *qpamat = Qpamat::instance();
+    qpamat->parseCommandLine(argc, argv);
+    qpamat->registerDBus();
 
     SingleApplication::init(QDir::homeDirPath(), "QPaMaT");
-    boost::scoped_ptr<QpamatWindow> qp;
 
     try {
         SingleApplication::startup();
         SingleApplication::registerStandardExitHandlers();
 
-        qp.reset(new QpamatWindow());
-        qpamatwindow = qp.get();
-        app.setMainWidget(qpamatwindow);
+        QpamatWindow *win = qpamat->getWindow();
+        app.setMainWidget(win);
 
-#ifdef Q_WS_X11
-	// register the remote interface
-	new QpamatAdaptor(qpamatwindow);
-	QDBusConnection::sessionBus().registerService("de.berlios.Qpamat");
-	QDBusConnection::sessionBus().registerObject("/Qpamat", qpamatwindow);
-#endif
-
-        QObject::connect(qpamatwindow, SIGNAL(quit()), &app, SLOT(quit()));
-        if (!(qpamatwindow->set().readBoolEntry("Presentation/StartHidden")
-                        && qpamatwindow->set().readBoolEntry("Presentation/SystemTrayIcon")))
-            qpamatwindow->show();
+        QObject::connect(qpamat->getWindow(), SIGNAL(quit()), &app, SLOT(quit()));
+        if (!(win->set().readBoolEntry("Presentation/StartHidden")
+              && win->set().readBoolEntry("Presentation/SystemTrayIcon"))) {
+            win->show();
+        }
 
         return app.exec();
 
