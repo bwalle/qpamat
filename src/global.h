@@ -21,80 +21,79 @@
 #include <QMap>
 #include <QString>
 
-/*!
-    \file global.h
-    \ingroup gui
+/**
+ * @file global.h
+ * @ingroup gui
+ *
+ * @brief Defines some types and functions used in the whole application.
+ *
+ * Defines some types and functions used in the whole application.
+ */
 
-    \brief Defines some types and functions used in the whole application.
 
-    Defines some types and functions used in the whole application.
-*/
-
-
-/*!
-    \typedef QValueVector<unsigned char> ByteVector
-
-    This is a unsigned char vector.
-*/
+/**
+ * @typedef QValueVector<unsigned char> ByteVector
+ *
+ * This is a unsigned char vector.
+ */
 typedef Q3ValueVector<unsigned char> ByteVector;
 
-/*!
-    \typedef QValueVector<QString> StringVector
-
-    This is a vector of QString objects.
-*/
+/**
+ * @typedef QValueVector<QString> StringVector
+ *
+ * This is a vector of QString objects.
+ */
 typedef Q3ValueVector<QString>   StringVector;
 
-/*!
-    \typedef QValueVector<unsigned int> UIntVector
-
-    Vector for unsigned integer.
-*/
+/**
+ * @typedef QValueVector<unsigned int> UIntVector
+ *
+ * Vector for unsigned integer.
+ */
 typedef Q3ValueVector<unsigned int>      UIntVector;
 
-/*!
-    \typedef QValueVector<int> IntVector
-
-    Vector for integer.
-*/
+/**
+ * @typedef QValueVector<int> IntVector
+ *
+ * Vector for integer.
+ */
 typedef Q3ValueVector<int>       IntVector;
 
-/*!
-    \typedef QMap<QString, QString> StringMap
-
-    This is a map that maps strings to strings
-*/
+/**
+ * @typedef QMap<QString, QString> StringMap
+ *
+ * This is a map that maps strings to strings
+ */
 typedef QMap<QString, QString>  StringMap;
 
-/*!
-    \typedef QValueVector<QChar> QCharVector
-
-    Vector for Unicode characters.
-*/
+/**
+ * @typedef QValueVector<QChar> QCharVector
+ *
+ * Vector for Unicode characters.
+ */
 typedef Q3ValueVector<QChar>     QCharVector;
 
-/*!
-     Unused parameters.
-
-     \param param the unused parameter
-*/
+/**
+ * Unused parameters.
+ *
+ * @param param the unused parameter
+ */
 #define UNUSED(param) (void)param;
 
-/*!
-    Macro for the current function with signature included in brackets. Example:
-
-\code
-[ void Qpamat::setLogin(bool) ]
-\endcode
-
-    Since the streaming operators are used, that only works for straming objects. Examples:
-
-\code
-std::cout << BOOST_CURRENT_FUNCTION << "Hello!" << std::endl;
-qDebug() << BOOST_CURRENT_FUNCTION << "Hello!";
-\endcode
-
-*/
+/**
+ * Macro for the current function with signature included in brackets. Example:
+ *
+ * @code
+ * [ void Qpamat::setLogin(bool) ]
+ * @endcode
+ *
+ * Since the streaming operators are used, that only works for straming objects. Examples:
+ *
+ * @code
+ * std::cout << BOOST_CURRENT_FUNCTION << "Hello!" << std::endl;
+ * qDebug() << BOOST_CURRENT_FUNCTION << "Hello!";
+ * @endcode
+ */
 #define CURRENT_FUNCTION \
         "[" << BOOST_CURRENT_FUNCTION << "]"
 
