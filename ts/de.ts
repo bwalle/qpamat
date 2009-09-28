@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="de_DE">
-<defaultcodec></defaultcodec>
+<!DOCTYPE TS>
+<TS version="2.0" language="de_DE">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -13,12 +13,12 @@
         <translation type="obsolete">&amp;Schließen</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/aboutdialog.cpp" line="100"/>
+        <location filename="../src/dialogs/aboutdialog.cpp" line="101"/>
         <source>&amp;About</source>
         <translation>&amp;Über</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/aboutdialog.cpp" line="122"/>
+        <location filename="../src/dialogs/aboutdialog.cpp" line="123"/>
         <source>&amp;License</source>
         <translation>&amp;Lizenz</translation>
     </message>
@@ -32,7 +32,7 @@
         <translation>&lt;p&gt;&lt;b&gt;&lt;big&gt;QPaMaT %1&lt;/big&gt;&lt;/b&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/aboutdialog.cpp" line="98"/>
+        <location filename="../src/dialogs/aboutdialog.cpp" line="91"/>
         <source>&lt;p&gt;&lt;nobr&gt;This is a password managing tool for Unix, Windows and MacOS X&lt;/nobr&gt; written in C++&lt;br&gt; using the Qt library.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Thanks to:&lt;/b&gt;&lt;ul&gt;&lt;li&gt;Trolltech for the Qt library&lt;/li&gt;&lt;li&gt;OpenSSL team for the OpenSSL library&lt;/li&gt;&lt;li&gt;Gtk+ artists for the nice stock icons&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Homepage:&lt;/b&gt; &lt;tt&gt;http://qpamat.berlios.de&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;nobr&gt;Dies ist ein Passwort-Management-Tool für Unix, Windows und MacOS X.&lt;/nobr&gt; Es wurde&lt;br&gt; in C++ mit Hilfe der Qt-Bibliothek geschrieben.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Danke an:&lt;/b&gt;&lt;ul&gt;&lt;li&gt;Trolltech für die Qt-Bibliothek&lt;/li&gt;&lt;li&gt;OpenSSL-Team für die OpenSSL-Bibliothek&lt;/li&gt;&lt;li&gt;Gtk+-Grafiker für die Stock-Icons&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Homepage:&lt;/b&gt; &lt;tt&gt;http://qpamat.berlios.de&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
@@ -132,7 +132,7 @@
         <translation>Wörterbuch &amp;sortieren</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="377"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="375"/>
         <source>&lt;qt&gt;For performance reasons, the dictionary file needs to be sorted by the length of the words. This function does that!&lt;p&gt;It saves also a copy of the old file by &lt;i&gt;filename.old&lt;/i&gt;.&lt;/qt&gt;</source>
         <translation>&lt;qt&gt;Aus Performancegründen muss die Wörterbuchdatei einmal nach der Länge der Wörter sortiert werden. Diese Funktion erledigt dies!&lt;p&gt;Sie speichert außerdem eine Kopie der alten Datei als &lt;i&gt;dateiname.old&lt;/i&gt;.&lt;/qt&gt;</translation>
     </message>
@@ -142,7 +142,7 @@
         <translation>Die zum Sortieren ausgewählte Datei existiert nicht!</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="479"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="478"/>
         <source>Failed to create a backup file. Do you want
 to continue without a backup?</source>
         <translation>Fehler beim Erstellen der Backupdatei. Wollen
@@ -343,27 +343,27 @@ um die Einstellungen zu testen:</translation>
         <translation>COM3</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="832"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="831"/>
         <source>COM4</source>
         <translation>COM4</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="879"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="877"/>
         <source>&lt;p&gt;Detected a card with %1 kBytes memory.&lt;/p&gt;&lt;p&gt;If you think this is enough memory you can use this card for storing your passwords!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Karte mit %1 kByte Speicher erkannt.&lt;/p&gt;&lt;p&gt;Wenn Sie denken dass dies genug Speicher ist, können Sie diese Karte zum Speichern der Passwörter verwenden!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="887"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="884"/>
         <source>&lt;p&gt;The communication to your chipcard terminal seems to work.&lt;p&gt;&lt;p&gt;However, there&apos;s no memory card in your reader. So you cannot use it for saving your password. Buy a memory card and try again!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Die Kommunikation mit dem Chipkartenleser scheint zu funktionieren.&lt;p&gt;&lt;p&gt;Es befindet sich aber keine Speicherkarte im Lesegerät. Deshalb können Sie diese nicht zum Speichern der Passwörter verwenden. Kaufen Sie sich eine Speicherkarte und versuchen Sie es erneut!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="898"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="896"/>
         <source>&lt;p&gt;A problem occurred while loading the specified CT-API (chipcard) driver. The error message was:&lt;/p&gt;&lt;p&gt;%1&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ein Fehler trat beim Laden des angegebenen CT-API (Chipkarten) Treiber auf. Die Fehlermeldung war:&lt;/p&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/configurationdialog.cpp" line="904"/>
+        <location filename="../src/dialogs/configurationdialog.cpp" line="902"/>
         <source>&lt;p&gt;An error occurred while communicating with the chipcard terminal. The error message was:&lt;/p&gt;&lt;p&gt;%1&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ein Fehler trat bei der Kommunikation mit dem Kartenleser auf. Die Fehlermeldung war:&lt;/p&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
@@ -411,6 +411,7 @@ um die Einstellungen zu testen:</translation>
 <context>
     <name>FileLineEdit</name>
     <message>
+        <location filename="../src/widgets/filelineedit.cpp" line="129"/>
         <location filename="../src/widgets/filelineedit.cpp" line="132"/>
         <source>QPaMaT</source>
         <translation>QPaMaT</translation>
@@ -438,7 +439,7 @@ um die Einstellungen zu testen:</translation>
         <translation>Hilfe wurde in Web-Browser gestartet.</translation>
     </message>
     <message>
-        <location filename="../src/help.cpp" line="83"/>
+        <location filename="../src/help.cpp" line="82"/>
         <source>&lt;qt&gt;&lt;p&gt;Failed to open the link &lt;tt&gt;%1&lt;/tt&gt; in the specified web browser.&lt;/p&gt;&lt;/qt&gt;</source>
         <translation>&lt;qt&gt;&lt;p&gt;Öffnen des Links &lt;tt&gt;%1&lt;/tt&gt; im angegebenen Web-Browser fehlgeschlagen.&lt;/p&gt;&lt;/qt&gt;</translation>
     </message>
@@ -451,18 +452,16 @@ um die Einstellungen zu testen:</translation>
         <translation>Legen Sie die Karte in den Leser ein.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/insertcarddialog.cpp" line="63"/>
+        <location filename="../src/dialogs/insertcarddialog.cpp" line="61"/>
         <source>Enter the PIN and insert the card in your reader.
 It must consist of six hexadecimal digits:</source>
         <translation>Geben Sie die PIN ein und legen Sie die Karte in Ihren Leser ein. Sie muss aus sechs hexadezimalen Ziffern bestehen:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/insertcarddialog.cpp" line="86"/>
         <source>OK</source>
         <translation type="obsolete">OK</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/insertcarddialog.cpp" line="88"/>
         <source>Cancel</source>
         <translation type="obsolete">Abbrechen</translation>
     </message>
@@ -512,12 +511,12 @@ It must consist of six hexadecimal digits:</source>
         <translation type="obsolete">Abbrechen</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/newpassworddialog.cpp" line="173"/>
+        <location filename="../src/dialogs/newpassworddialog.cpp" line="172"/>
         <source>The confirmation passphrase was not the same as the first one. Re-enter the confirmation or both.</source>
         <translation>Die Bestätigung stimmte nicht mit dem Passwort überein. Geben Sie die Bestätigung oder das Passwort neu ein.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/newpassworddialog.cpp" line="181"/>
+        <location filename="../src/dialogs/newpassworddialog.cpp" line="180"/>
         <source>The old password was incorrect. Without the old password, the password cannot be changed.</source>
         <translation>Das alte Passwort war falsch. Ohne das alte Passwort kann das Passwort nicht geändert werden.</translation>
     </message>
@@ -527,17 +526,17 @@ It must consist of six hexadecimal digits:</source>
         <translation>Ein Fehler trat bei der Überprüfung des Passwortes auf:&lt;br&gt;%1</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/newpassworddialog.cpp" line="206"/>
+        <location filename="../src/dialogs/newpassworddialog.cpp" line="205"/>
         <source>&lt;nobr&gt;The passphrase is too simple. See the&lt;/nobr&gt; Security settings for details about the conditions a valid password must met.</source>
         <translation>&lt;nobr&gt;Die Passphrase war zu einfach. Überpüfen&lt;/nobr&gt; Sie die Sicherheitseinstellungen.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/newpassworddialog.cpp" line="112"/>
+        <location filename="../src/dialogs/newpassworddialog.cpp" line="110"/>
         <source>Enter the &lt;b&gt;old passphrase&lt;/b&gt; once and the &lt;b&gt;new passphrase&lt;/b&gt;&lt;br&gt; two times for verification. The minimum length must be six&lt;br&gt; characters, but for security reasons more than two words&lt;br&gt; are good!</source>
         <translation>Geben Sie die &lt;b&gt;alte Passphrase&lt;/b&gt; einmal und dann die &lt;b&gt;neue Passphrase&lt;/b&gt;&lt;br&gt; zweimal zur Bestätigung ein. Die minimale Länge&lt;br&gt; muss sechs Zeichen betragen, aus Sicherheitsgründen wären mehr&lt;br&gt; als zwei Wörter gut!</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/newpassworddialog.cpp" line="115"/>
+        <location filename="../src/dialogs/newpassworddialog.cpp" line="113"/>
         <source>Enter the &lt;b&gt;passphrase&lt;/b&gt; two times for verification. The minimum length&lt;br&gt; must be six characters, but for security reasons more than two&lt;br&gt; words are good!</source>
         <translation>Geben Sie die &lt;b&gt;Passphrase&lt;/b&gt; zweimal zur Bestätigung ein. Die minimale&lt;br&gt; Länge beträgt sechs Zeichen, aus Sicherheitsgründen sind mehr als&lt;br&gt; zwei Wörter gut!</translation>
     </message>
@@ -611,7 +610,7 @@ It must consist of six hexadecimal digits:</source>
         <translation>%1 Stunden</translation>
     </message>
     <message>
-        <location filename="../src/util/singleapplication.cpp" line="125"/>
+        <location filename="../src/util/singleapplication.cpp" line="122"/>
         <source>You can only start one instance of %1. If you are
 really sure that no other instance is running, delete
 the file %2 and start again.
@@ -625,7 +624,7 @@ erneut.
 (PID des anderen %3 Prozesses ist %4.)</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="327"/>
+        <location filename="../src/datareadwriter.cpp" line="325"/>
         <source>There&apos;s no memory card in your reader.
 Use the test function in the configuration
 dialog to set up your reader properly.</source>
@@ -635,7 +634,7 @@ im Konfigurationsdialog um den Leser
 korrekt zu konfigurieren.</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="339"/>
+        <location filename="../src/datareadwriter.cpp" line="338"/>
         <source>&lt;qt&gt;It was not possible to select the file on the smartcard&lt;/qt&gt;</source>
         <translation>&lt;qt&gt;Es war nicht möglich die Datei auf der Chipkarte auszuwählen&lt;/qt&gt;</translation>
     </message>
@@ -650,22 +649,22 @@ korrekt zu konfigurieren.</translation>
         <translation>Das Passwort war falsch.</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="405"/>
+        <location filename="../src/datareadwriter.cpp" line="404"/>
         <source>&lt;qt&gt;&lt;nobr&gt;The PIN you entered was wrong. You have&lt;/nobr&gt; &lt;b&gt;%1&lt;/b&gt; retries. After that, the card is destroyed!</source>
         <translation>&lt;qt&gt;&lt;nobr&gt;Die PIN, die Sie eingegeben habe, war falsch. Sie haben&lt;/nobr&gt; noch &lt;b&gt;%1&lt;/b&gt; Versuche. Nach diesen Versuchen wird die Karte zerstört!</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="410"/>
+        <location filename="../src/datareadwriter.cpp" line="408"/>
         <source>&lt;qt&gt;&lt;nobr&gt;There was a communication error while&lt;/nobr&gt; communicating with the smartcard terminal.&lt;p&gt;The error message was:&lt;br&gt;&lt;nobr&gt;%1&lt;/nobr&gt;</source>
         <translation>&lt;qt&gt;&lt;nobr&gt;Es trat ein Kommunikationsfehler mit dem &lt;/nobr&gt; Chipkartenleser auf.&lt;p&gt;Die Fehlermeldung war:&lt;br&gt;&lt;nobr&gt;%1&lt;/nobr&gt;</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="473"/>
+        <location filename="../src/datareadwriter.cpp" line="471"/>
         <source>&lt;qt&gt;&lt;nobr&gt;The data file is not writable. Change the file in&lt;/nobr&gt; the configuration dialog or change the permission of the file!&lt;/qt&gt;</source>
         <translation>&lt;qt&gt;&lt;nobr&gt;Die Datendatei ist nicht schreibbar. Ändern Sie die &lt;/nobr&gt; Datei im Konfigurationsdialog oder passen Sie die Zugriffsrechte der Datei an!&lt;/qt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="490"/>
+        <location filename="../src/datareadwriter.cpp" line="488"/>
         <source>The algorithm &apos;%1&apos; is not avaible on your system.
 Choose another crypto algorithm in the settings.
 The data is not saved!</source>
@@ -674,7 +673,7 @@ Wählen Sie einen anderen Algorithmus in den Einstellungen.
 Die Daten wurden nicht gespeichert!</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="514"/>
+        <location filename="../src/datareadwriter.cpp" line="513"/>
         <source>The data could not be saved. There was an
 error while creating the file:
 %1</source>
@@ -683,20 +682,20 @@ trat ein Fehler bei der Erstellung der Datei auf:
 %1</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="549"/>
+        <location filename="../src/datareadwriter.cpp" line="548"/>
         <source>The file %1 could not be opened:
 %2.</source>
         <translation>Die Datei %1 konnte nicht geöffnet werden:
 %2.</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="555"/>
+        <location filename="../src/datareadwriter.cpp" line="554"/>
         <source>The XML file (%1) may be corrupted and
 could not be read. Check the file with a text editor.</source>
         <translation>Die XML-Datei (%1) ist beschädigt und konnte nicht gelesen werden. Überprüfen Sie die Datei mit einem Texteditor.</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="564"/>
+        <location filename="../src/datareadwriter.cpp" line="562"/>
         <source>&lt;qt&gt;&lt;nobr&gt;The passwords of the current data file are stored&lt;/nobr&gt; on a smartcard but you did not configure QPaMaT for reading smartcards.&lt;p&gt;Change the settings and try again!&lt;/qt&gt;</source>
         <translation>&lt;qt&gt;&lt;nobr&gt;Die Passwörter in der aktuellen Datendatei sind &lt;/nobr&gt; auf einer Chipkarte gespeichert aber QPaMaT ist nicht für die Verwendung von Chipkarten konfiguriert.&lt;p&gt;Ändern Sie die Einstellungen und versuchen Sie es erneut!&lt;/qt&gt;</translation>
     </message>
@@ -706,19 +705,19 @@ could not be read. Check the file with a text editor.</source>
         <translation>Das Passwort ist falsch.</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="639"/>
+        <location filename="../src/datareadwriter.cpp" line="637"/>
         <source>The application was not set up correctly for using the smartcard. Call the configuration dialog and use the Test button for testing!&lt;p&gt;The error message was:&lt;br&gt;&lt;nobr&gt;%1&lt;/nobr&gt;</source>
         <translation>Die Anwendung wurde für die Verwendung von Chipkarten nicht korrekt eingerichtet. Rufen Sie den Konfigurationsdialg auf und verwenden Sie den Testen-Button zum Testen der Einstellungen!&lt;p&gt;Die Fehlermeldung war:&lt;br&gt;&lt;nobr&gt;%1&lt;/nobr&gt;</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="648"/>
+        <location filename="../src/datareadwriter.cpp" line="647"/>
         <source>Error in initializing the smart card reader:
 %1</source>
         <translation>Fehler bei der Initialisierung des Chipkartenlesers:
 %1</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="672"/>
+        <location filename="../src/datareadwriter.cpp" line="671"/>
         <source>&lt;b&gt;Writing&lt;/b&gt; to the smartcard...</source>
         <translation>&lt;b&gt;Schreiben&lt;/b&gt; auf die Chipkarte...</translation>
     </message>
@@ -728,18 +727,19 @@ could not be read. Check the file with a text editor.</source>
         <translation>&lt;b&gt;Lesen&lt;/b&gt; von der Chipkarte...</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="202"/>
+        <location filename="../src/main.cpp" line="68"/>
+        <location filename="../src/main.cpp" line="72"/>
         <source>QPaMaT</source>
         <translation>QPaMaT</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="199"/>
+        <location filename="../src/main.cpp" line="69"/>
         <source>No more memory available. The application
 will be closed.</source>
         <translation>Nicht genug Speicher verfügbar. Die Anwendung wird geschlossen.</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="204"/>
+        <location filename="../src/main.cpp" line="73"/>
         <source>An unknown error occurred:
 %1
 The application will be closed.</source>
@@ -748,7 +748,7 @@ The application will be closed.</source>
 Die Anwendung wird geschlossen.</translation>
     </message>
     <message>
-        <location filename="../src/datareadwriter.cpp" line="590"/>
+        <location filename="../src/datareadwriter.cpp" line="588"/>
         <source>The algorithm &apos;%1&apos; is not avaible on your system.
 It is impossible to read the file. Try to recompile or
 update your OpenSSL library.</source>
@@ -760,232 +760,407 @@ OpenSSL neu kompilieren oder zu aktualisieren.</translation>
 <context>
     <name>Qpamat</name>
     <message>
-        <location filename="../src/qpamat.cpp" line="137"/>
         <source>Sites</source>
-        <translation>Seiten</translation>
+        <translation type="obsolete">Seiten</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="249"/>
         <source>Application</source>
-        <translation>Anwendung</translation>
+        <translation type="obsolete">Anwendung</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="989"/>
         <source>Search</source>
-        <translation>Suchen</translation>
+        <translation type="obsolete">Suchen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="263"/>
         <source>Search:</source>
-        <translation>Suchen:</translation>
+        <translation type="obsolete">Suchen:</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="280"/>
         <source>Edit</source>
-        <translation>Bearbeiten</translation>
+        <translation type="obsolete">Bearbeiten</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="298"/>
         <source>&amp;File</source>
-        <translation>&amp;Datei</translation>
+        <translation type="obsolete">&amp;Datei</translation>
     </message>
     <message>
         <source>&amp;View</source>
         <translation type="obsolete">&amp;Ansicht</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="308"/>
         <source>&amp;Options</source>
-        <translation>&amp;Optionen</translation>
+        <translation type="obsolete">&amp;Optionen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="313"/>
         <source>&amp;Extras</source>
-        <translation>&amp;Extras</translation>
+        <translation type="obsolete">&amp;Extras</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="967"/>
         <source>&amp;Help</source>
-        <translation>&amp;Hilfe</translation>
+        <translation type="obsolete">&amp;Hilfe</translation>
     </message>
     <message>
         <source>QPaMaT XML files (*.xml)</source>
         <translation type="obsolete">QPaMaT XML-Dateien (*.xml)</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="623"/>
         <source>QPaMaT</source>
-        <translation>QPaMaT</translation>
+        <translation type="obsolete">QPaMaT</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="643"/>
         <source>There is modified data that was not saved.
 Do you want to save it now?</source>
-        <translation>Daten wurden modifiziert aber nicht gespeichert.
+        <translation type="obsolete">Daten wurden modifiziert aber nicht gespeichert.
 Wollen Sie jetzt speichern?</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="718"/>
         <source>Please enter a search criterion in the text field!</source>
-        <translation>Bitte geben Sie in Suchkriterium in das Textfeld ein!</translation>
+        <translation type="obsolete">Bitte geben Sie in Suchkriterium in das Textfeld ein!</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="780"/>
         <source>QPaMaT - Password managing tool for Unix, Windows and MacOS X</source>
-        <translation>QPaMaT - Passwort-Management-Tool für Unix, Windows und MacOS X</translation>
+        <translation type="obsolete">QPaMaT - Passwort-Management-Tool für Unix, Windows und MacOS X</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="787"/>
         <source>page</source>
-        <translation>Seite</translation>
+        <translation type="obsolete">Seite</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="910"/>
         <source>&amp;New</source>
-        <translation>&amp;Neu</translation>
+        <translation type="obsolete">&amp;Neu</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="921"/>
         <source>E&amp;xit</source>
-        <translation>&amp;Beenden</translation>
+        <translation type="obsolete">&amp;Beenden</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="925"/>
         <source>&amp;Login</source>
-        <translation>&amp;Einloggen</translation>
+        <translation type="obsolete">&amp;Einloggen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="494"/>
         <source>&amp;Logout</source>
-        <translation>&amp;Ausloggen</translation>
+        <translation type="obsolete">&amp;Ausloggen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="930"/>
         <source>&amp;Save</source>
-        <translation>&amp;Speichern</translation>
+        <translation type="obsolete">&amp;Speichern</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="935"/>
         <source>&amp;Export...</source>
-        <translation>&amp;Exportieren...</translation>
+        <translation type="obsolete">&amp;Exportieren...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="939"/>
         <source>&amp;Print...</source>
-        <translation>&amp;Drucken...</translation>
+        <translation type="obsolete">&amp;Drucken...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="943"/>
         <source>&amp;Change Password...</source>
-        <translation>&amp;Passwort ändern...</translation>
+        <translation type="obsolete">&amp;Passwort ändern...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="947"/>
         <source>&amp;Settings...</source>
-        <translation>&amp;Einstellungen...</translation>
+        <translation type="obsolete">&amp;Einstellungen...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="951"/>
         <source>&amp;Random Password...</source>
-        <translation>&amp;Zufallspasswort...</translation>
+        <translation type="obsolete">&amp;Zufallspasswort...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="954"/>
         <source>&amp;Show password strength</source>
-        <translation>&amp;Passwortstärke anzeigen</translation>
+        <translation type="obsolete">&amp;Passwortstärke anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="961"/>
         <source>&amp;Clear clipboard</source>
-        <translation>&amp;Zwischenablage löschen</translation>
+        <translation type="obsolete">&amp;Zwischenablage löschen</translation>
     </message>
     <message>
         <source>&amp;What&apos;s this</source>
         <translation type="obsolete">&amp;Kontexthilfe</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="972"/>
         <source>&amp;About...</source>
-        <translation>&amp;Über...</translation>
+        <translation type="obsolete">&amp;Über...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="974"/>
         <source>About &amp;Qt...</source>
-        <translation>Über &amp;Qt...</translation>
+        <translation type="obsolete">Über &amp;Qt...</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="979"/>
         <source>Add item</source>
-        <translation>Eintrag hinzufügen</translation>
+        <translation type="obsolete">Eintrag hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="984"/>
         <source>Remove item</source>
-        <translation>Eintrag entfernen</translation>
+        <translation type="obsolete">Eintrag entfernen</translation>
     </message>
     <message>
         <source>Focus &amp;search</source>
         <translation type="obsolete">Suchfeld &amp;fokussieren</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="602"/>
         <source>The file you&apos;ve choosen exists. Do you overwrite it?</source>
-        <translation>Die gewählte Datei existiert bereits. Soll sie überschrieben werden?</translation>
+        <translation type="obsolete">Die gewählte Datei existiert bereits. Soll sie überschrieben werden?</translation>
     </message>
     <message>
         <source>Overwrite</source>
         <translation type="obsolete">&amp;Überschreiben</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="624"/>
         <source>An error occured while saving the file.</source>
-        <translation>Ein Fehler ist beim Speichern aufgetreten.</translation>
+        <translation type="obsolete">Ein Fehler ist beim Speichern aufgetreten.</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="591"/>
         <source>QPaMaT XML files (*.xml);;Text files with cleartext password (*.txt)</source>
-        <translation>QPaMaT XML-Dateien (*.xml);;Textdateien mit Klartextpasswort (*.txt)</translation>
+        <translation type="obsolete">QPaMaT XML-Dateien (*.xml);;Textdateien mit Klartextpasswort (*.txt)</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="603"/>
         <source>&amp;Overwrite</source>
-        <translation>&amp;Überschreiben</translation>
+        <translation type="obsolete">&amp;Überschreiben</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="603"/>
         <source>&amp;Don&apos;t export</source>
-        <translation>&amp;Nicht exportieren</translation>
+        <translation type="obsolete">&amp;Nicht exportieren</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="495"/>
         <source>Logout</source>
-        <translation>Ausloggen</translation>
+        <translation type="obsolete">Ausloggen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="502"/>
         <source>Login</source>
-        <translation>Einloggen</translation>
+        <translation type="obsolete">Einloggen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="991"/>
+        <source>&amp;Show</source>
+        <translation type="obsolete">&amp;Anzeigen</translation>
+    </message>
+    <message>
+        <source>&amp;Hide</source>
+        <translation type="obsolete">&amp;Verbergen</translation>
+    </message>
+    <message>
+        <source>Wrote data successfully.</source>
+        <translation type="obsolete">Daten erfolgreich geschrieben.</translation>
+    </message>
+</context>
+<context>
+    <name>QpamatWindow</name>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="137"/>
+        <source>Sites</source>
+        <translation>Seiten</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="190"/>
+        <location filename="../src/qpamatwindow.cpp" line="590"/>
+        <location filename="../src/qpamatwindow.cpp" line="601"/>
+        <location filename="../src/qpamatwindow.cpp" line="623"/>
+        <source>QPaMaT</source>
+        <translation>QPaMaT</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="249"/>
+        <source>Application</source>
+        <translation>Anwendung</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="260"/>
+        <location filename="../src/qpamatwindow.cpp" line="989"/>
+        <source>Search</source>
+        <translation>Suchen</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="263"/>
+        <source>Search:</source>
+        <translation>Suchen:</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="280"/>
+        <source>Edit</source>
+        <translation>Bearbeiten</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="298"/>
+        <source>&amp;File</source>
+        <translation>&amp;Datei</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="308"/>
+        <source>&amp;Options</source>
+        <translation>&amp;Optionen</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="313"/>
+        <source>&amp;Extras</source>
+        <translation>&amp;Extras</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="322"/>
+        <location filename="../src/qpamatwindow.cpp" line="967"/>
+        <source>&amp;Help</source>
+        <translation>&amp;Hilfe</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="406"/>
+        <location filename="../src/qpamatwindow.cpp" line="991"/>
         <source>&amp;Show</source>
         <translation>&amp;Anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="413"/>
+        <location filename="../src/qpamatwindow.cpp" line="413"/>
         <source>&amp;Hide</source>
         <translation>&amp;Verbergen</translation>
     </message>
     <message>
-        <location filename="../src/qpamat.cpp" line="621"/>
+        <location filename="../src/qpamatwindow.cpp" line="494"/>
+        <source>&amp;Logout</source>
+        <translation>&amp;Ausloggen</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="495"/>
+        <source>Logout</source>
+        <translation>Ausloggen</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="501"/>
+        <location filename="../src/qpamatwindow.cpp" line="925"/>
+        <source>&amp;Login</source>
+        <translation>&amp;Einloggen</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="502"/>
+        <source>Login</source>
+        <translation>Einloggen</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="540"/>
+        <location filename="../src/qpamatwindow.cpp" line="612"/>
+        <location filename="../src/qpamatwindow.cpp" line="621"/>
         <source>Wrote data successfully.</source>
         <translation>Daten erfolgreich geschrieben.</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="591"/>
+        <source>QPaMaT XML files (*.xml);;Text files with cleartext password (*.txt)</source>
+        <translation>QPaMaT XML-Dateien (*.xml);;Textdateien mit Klartextpasswort (*.txt)</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="602"/>
+        <source>The file you&apos;ve choosen exists. Do you overwrite it?</source>
+        <translation>Die gewählte Datei existiert bereits. Soll sie überschrieben werden?</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="603"/>
+        <source>&amp;Overwrite</source>
+        <translation>&amp;Überschreiben</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="603"/>
+        <source>&amp;Don&apos;t export</source>
+        <translation>&amp;Nicht exportieren</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="624"/>
+        <source>An error occured while saving the file.</source>
+        <translation>Ein Fehler ist beim Speichern aufgetreten.</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="642"/>
+        <source>There is modified data that was not saved.
+Do you want to save it now?</source>
+        <translation>Daten wurden modifiziert aber nicht gespeichert.
+Wollen Sie jetzt speichern?</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="718"/>
+        <source>Please enter a search criterion in the text field!</source>
+        <translation>Bitte geben Sie in Suchkriterium in das Textfeld ein!</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="780"/>
+        <source>QPaMaT - Password managing tool for Unix, Windows and MacOS X</source>
+        <translation>QPaMaT - Passwort-Management-Tool für Unix, Windows und MacOS X</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="787"/>
+        <source>page</source>
+        <translation>Seite</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="910"/>
+        <source>&amp;New</source>
+        <translation>&amp;Neu</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="915"/>
+        <location filename="../src/qpamatwindow.cpp" line="921"/>
+        <source>E&amp;xit</source>
+        <translation>&amp;Beenden</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="930"/>
+        <source>&amp;Save</source>
+        <translation>&amp;Speichern</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="935"/>
+        <source>&amp;Export...</source>
+        <translation>&amp;Exportieren...</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="939"/>
+        <source>&amp;Print...</source>
+        <translation>&amp;Drucken...</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="943"/>
+        <source>&amp;Change Password...</source>
+        <translation>&amp;Passwort ändern...</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="947"/>
+        <source>&amp;Settings...</source>
+        <translation>&amp;Einstellungen...</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="951"/>
+        <source>&amp;Random Password...</source>
+        <translation>&amp;Zufallspasswort...</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="954"/>
+        <source>&amp;Show password strength</source>
+        <translation>&amp;Passwortstärke anzeigen</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="961"/>
+        <source>&amp;Clear clipboard</source>
+        <translation>&amp;Zwischenablage löschen</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="972"/>
+        <source>&amp;About...</source>
+        <translation>&amp;Über...</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="974"/>
+        <source>About &amp;Qt...</source>
+        <translation>Über &amp;Qt...</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="979"/>
+        <source>Add item</source>
+        <translation>Eintrag hinzufügen</translation>
+    </message>
+    <message>
+        <location filename="../src/qpamatwindow.cpp" line="984"/>
+        <source>Remove item</source>
+        <translation>Eintrag entfernen</translation>
     </message>
 </context>
 <context>
     <name>RandomPassword</name>
     <message>
-        <location filename="../src/randompassword.cpp" line="89"/>
+        <location filename="../src/randompassword.cpp" line="88"/>
         <source>Failed to create a password checker or generator:
 
 %1
@@ -998,12 +1173,12 @@ Adjust the settings!</source>
 Prüfen Sie Ihre Einstellungen!</translation>
     </message>
     <message>
-        <location filename="../src/randompassword.cpp" line="117"/>
+        <location filename="../src/randompassword.cpp" line="116"/>
         <source>&lt;qt&gt;&lt;nobr&gt;An error occurred while generating the password:&lt;/nobr&gt;&lt;br&gt;%1&lt;/qt&gt;</source>
         <translation>&lt;qt&gt;&lt;nobr&gt;Ein Fehler ist während der Geneierung des Passworts aufgetreten:&lt;/nobr&gt;&lt;br&gt;%1&lt;/qt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/randompassword.cpp" line="137"/>
+        <location filename="../src/randompassword.cpp" line="135"/>
         <source>&lt;qt&gt;&lt;nobr&gt;Failed to create a random password with the current&lt;/nobr&gt; generator and the current password checker. Adjust the settings!</source>
         <translation>&lt;qt&gt;&lt;nobr&gt;Generieren eines Zufallspassworts mit den aktuellen&lt;/nobr&gt; Einstellungen fehlgeschlagen. Prüfen Sie die Einstellungen!</translation>
     </message>
@@ -1062,7 +1237,7 @@ Prüfen Sie Ihre Einstellungen!</translation>
 <context>
     <name>ShowPasswordDialog</name>
     <message>
-        <location filename="../src/dialogs/showpassworddialog.cpp" line="78"/>
+        <location filename="../src/dialogs/showpassworddialog.cpp" line="77"/>
         <source>The password is:</source>
         <translation>Das Passwort lautet:</translation>
     </message>
@@ -1119,7 +1294,7 @@ Prüfen Sie Ihre Einstellungen!</translation>
         <translation>&amp;Wert</translation>
     </message>
     <message>
-        <location filename="../src/southpanel.cpp" line="261"/>
+        <location filename="../src/southpanel.cpp" line="259"/>
         <source>&lt;qt&gt;&lt;nobr&gt;Failed to calculate the password strength. The error message&lt;/nobr&gt; was:&lt;p&gt;%1&lt;p&gt;Check your configuration!&lt;/qt&gt;</source>
         <translation>&lt;qt&gt;&lt;nobr&gt;Berechnung der Passwortstärke fehlgeschlagen. Die Fehlermeldung&lt;/nobr&gt; lautete:&lt;p&gt;%1&lt;p&gt;Prüfen Sie Ihre Konfiguration!&lt;/qt&gt;</translation>
     </message>
@@ -1152,12 +1327,12 @@ Prüfen Sie Ihre Einstellungen!</translation>
         <translation>Eintrag &amp;löschen</translation>
     </message>
     <message>
-        <location filename="../src/tree.cpp" line="229"/>
+        <location filename="../src/tree.cpp" line="227"/>
         <source>An unknown error occured while reading the file. If you don&apos;t know what to do try to contact the author.&lt;p&gt;The error message was:&lt;br&gt;&lt;nobr&gt;%1&lt;/nobr&gt;</source>
         <translation>Ein unbekannter Fehler trat beim Lesen der Datei auf. Wenn Sie nicht wissen, was zu tun ist, kontaktieren Sie den Autor.&lt;p&gt;Die Fehlermeldung war:&lt;br&gt;&lt;nobr&gt;%1&lt;/nobr&gt;</translation>
     </message>
     <message>
-        <location filename="../src/tree.cpp" line="289"/>
+        <location filename="../src/tree.cpp" line="288"/>
         <source>New category</source>
         <translation>Neue Kategorie</translation>
     </message>
@@ -1177,7 +1352,8 @@ Prüfen Sie Ihre Einstellungen!</translation>
         <translation>Berechnung der Passwortstärke...</translation>
     </message>
     <message>
-        <location filename="../src/tree.cpp" line="607"/>
+        <location filename="../src/tree.cpp" line="545"/>
+        <location filename="../src/tree.cpp" line="605"/>
         <source>&lt;qt&gt;&lt;nobr&gt;Failed to calculate the password strength. The error message&lt;/nobr&gt; was:&lt;p&gt;%1&lt;p&gt;Check your configuration!&lt;/qt&gt;</source>
         <translation>&lt;qt&gt;&lt;nobr&gt;Berechnung der Passwortstärke fehlgeschlagen. Die Fehlermeldung&lt;/nobr&gt; war:%1&lt;p&gt;Überprüfen Sie Ihre Konfiguration!&lt;/qt&gt;</translation>
     </message>
