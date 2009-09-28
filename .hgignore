@@ -5,3 +5,4 @@ syntax: glob
 build
 doc/api
 *.marks
+tags
