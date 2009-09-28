@@ -12,8 +12,8 @@
  *
  * -------------------------------------------------------------------------------------------------
  */
-#ifndef QPAMAT_H
-#define QPAMAT_H
+#ifndef QPAMATWINDOW_H
+#define QPAMATWINDOW_H
 
 #include <QMainWindow>
 #include <Q3MainWindow>
@@ -133,6 +133,6 @@ class QpamatWindow : public QMainWindow
 extern QpamatWindow* qpamatwindow;
 
 
-#endif // QPAMAT_H
+#endif // QPAMATWINDOW_H
 
 // vim: set sw=4 ts=4 et:
