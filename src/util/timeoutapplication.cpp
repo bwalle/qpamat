@@ -12,6 +12,8 @@
  *
  * -------------------------------------------------------------------------------------------------
  */
+#include <cstdio>
+
 #include <QTimer>
 #include <QApplication>
 #include <QList>
@@ -171,7 +173,7 @@ void TimeoutApplication::init()
 
     // get the selection type we'll use to locate the notification tray
     char buf[32];
-    snprintf(buf, sizeof(buf), "_NET_SYSTEM_TRAY_S%d",
+    std::snprintf(buf, sizeof(buf), "_NET_SYSTEM_TRAY_S%d",
         XScreenNumberOfScreen( XDefaultScreenOfDisplay(dsp) ));
     tray_selection_atom = XInternAtom(dsp, buf, false);
 
