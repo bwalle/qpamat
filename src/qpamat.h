@@ -22,7 +22,7 @@
 
 class QpamatWindow;
 
-class Qpamat : boost::noncopyable
+class Qpamat
 {
     public:
         static Qpamat *instance();
@@ -44,6 +44,7 @@ class Qpamat : boost::noncopyable
         static Qpamat *m_instance;
 
     private:
+        Q_DISABLE_COPY(Qpamat);
         boost::scoped_ptr<QpamatWindow> m_qpamatWindow;
 };
 
