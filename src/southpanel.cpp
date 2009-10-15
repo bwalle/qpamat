@@ -33,53 +33,54 @@
 #include "util/stringdisplay.h"
 
 
-/*!
-    \class SouthPanel
+/**
+ * @class SouthPanel
+ *
+ * @brief Represents the south panel.
+ *
+ * @ingroup gui
+ * @author Bernhard Walle
+ */
 
-    \brief Represents the south panel.
+/**
+ * @fn SouthPanel::moveUp
+ *
+ * This signal is emitted if the user pressed the "Up" button to move an item one
+ * step up.
+ */
 
-    \ingroup gui
-    \author Bernhard Walle
-*/
+/**
+ * @fn SouthPanel::moveDown
+ *
+ * This signal is emitted if the user pressed the "Down" button to move an item one
+ * step down.
+ */
 
-/*!
-    \fn SouthPanel::moveUp
+/**
+ * @fn SouthPanel::passwordLineEditGotFocus(bool)
+ *
+ * This signal is emitted if the password field got this focus.
+ * @param focus @c true if it got the focus, @c false if the focus is lost
+ */
 
-    This signal is emitted if the user pressed the "Up" button to move an item one
-    step up.
-*/
+/**
+ * @fn SouthPanel::stateModified()
+ *
+ * If something was modified, need to determine if saving is necessary.
+ */
 
-/*!
-    \fn SouthPanel::moveDown
+/**
+ * @fn SouthPanel::passwordStrengthUpdated()
+ *
+ * This signal is emitted if the password strength of an item has changed an
+ * therefore the displaying must be updated.
+ */
 
-    This signal is emitted if the user pressed the "Down" button to move an item one
-    step down.
-*/
-
-/*!
-    \fn SouthPanel::passwordLineEditGotFocus(bool)
-
-    This signal is emitted if the password field got this focus.
-    \param focus \c true if it got the focus, \c false if the focus is lost
-*/
-
-/*!
-    \fn SouthPanel::stateModified()
-
-    If something was modified, need to determine if saving is necessary.
-*/
-
-/*!
-    \fn SouthPanel::passwordStrengthUpdated()
-
-    This signal is emitted if the password strength of an item has changed an therefore
-    the displaying must be updated.
-*/
-
-/*!
-    Creates a new instance of the south panel.
-    \param parent the parent
-*/
+/**
+ * Creates a new instance of the south panel.
+ *
+ * @param parent the parent
+ */
 SouthPanel::SouthPanel(QWidget* parent)
     : Q3Frame(parent)
     , m_lastStrength(Property::PUndefined)
@@ -165,9 +166,9 @@ SouthPanel::SouthPanel(QWidget* parent)
 }
 
 
-/*!
-    Clears the south panel.
-*/
+/**
+ * Clears the south panel.
+ */
 void SouthPanel::clear()
 {
     m_currentProperty = 0;
@@ -186,9 +187,9 @@ void SouthPanel::clear()
 }
 
 
-/*!
-    Sets item with the property.
-*/
+/**
+ * Sets item with the property.
+ */
 void SouthPanel::setItem (Property* property)
 {
     clear();
@@ -211,10 +212,11 @@ void SouthPanel::setItem (Property* property)
 }
 
 
-/*!
-    Updates the traffic light.
-    \param recompute whether recomputation of the password strength should take place
-*/
+/**
+ * Updates the traffic light.
+ *
+ * @param recompute whether recomputation of the password strength should take place
+ */
 void SouthPanel::updateIndicatorLabel(bool recompute)
 {
     if (m_currentProperty && m_currentProperty->getType() == Property::PASSWORD) {
@@ -268,9 +270,9 @@ void SouthPanel::updateIndicatorLabel(bool recompute)
 }
 
 
-/*!
-    Updates the data.
-*/
+/**
+ * Updates the data.
+ */
 void SouthPanel::updateData()
 {
     if (m_currentProperty != 0) {
@@ -288,9 +290,9 @@ void SouthPanel::updateData()
 }
 
 
-/*!
-    Choice of the combo changed.
-*/
+/**
+ * Choice of the combo changed.
+ */
 void SouthPanel::comboBoxChanged(int newChoice)
 {
     if (m_oldComboValue != newChoice) {
@@ -307,9 +309,9 @@ void SouthPanel::comboBoxChanged(int newChoice)
 }
 
 
-/*!
-    Inserts the appropriate AutoText.
-*/
+/**
+ * Inserts the appropriate AutoText.
+ */
 void SouthPanel::insertAutoText()
 {
     if (m_keyLineEdit->text().isEmpty()) {
@@ -343,20 +345,21 @@ void SouthPanel::insertAutoText()
 }
 
 
-/*!
-    Returns if the focus is inside this object.
-    \return \c true if the focus is inside this object, \c false otherwise.
-*/
+/**
+ * Returns if the focus is inside this object.
+ * @return @c true if the focus is inside this object, @c false otherwise.
+ */
 bool SouthPanel::isFocusInside() const
 {
     return m_keyLineEdit->hasFocus() || m_typeCombo->hasFocus() || m_valueLineEdit->hasFocus();
 }
 
 
-/*!
-    Enables or disables the moving buttons.
-    \param up \c true if the up button should be enabled, \c false otherwise
-    \param down \c true if the down button should be enabled, \c false otherwise
+/**
+ * Enables or disables the moving buttons.
+ *
+ * @param up    @c true if the up button should be enabled, @c false otherwise
+ * @param down  @c true if the down button should be enabled, \c false otherwise
 */
 void SouthPanel::setMovingEnabled(bool up, bool down)
 {
@@ -365,10 +368,10 @@ void SouthPanel::setMovingEnabled(bool up, bool down)
 }
 
 
-/*!
-    Handles the event if the password edit got the focus.
-    Emits the passwordLineEditGotFocus signal.
-*/
+/**
+ * Handles the event if the password edit got the focus.
+ * Emits the passwordLineEditGotFocus signal.
+ */
 void SouthPanel::focusInValueHandler()
 {
     if (m_currentProperty && m_currentProperty->getType() == Property::PASSWORD) {
@@ -377,9 +380,11 @@ void SouthPanel::focusInValueHandler()
 }
 
 
-/*!
-    Handles the event if the password lost the focus. Emits the passwordLineEditGotFocus signal.
-*/
+/**
+ * Handles the event if the password lost the focus.
+ *
+ * Emits the passwordLineEditGotFocus signal.
+ */
 void SouthPanel::focusOutValueHandler()
 {
     if (m_currentProperty && m_currentProperty->getType() == Property::PASSWORD) {
@@ -388,10 +393,10 @@ void SouthPanel::focusOutValueHandler()
 }
 
 
-/*!
-    Inserts a password in the password edit.
-    \param password the password
-*/
+/**
+ * Inserts a password in the password edit.
+ * @param password the password
+ */
 void SouthPanel::insertPassword(const QString& password)
 {
     m_valueLineEdit->insert(password);
