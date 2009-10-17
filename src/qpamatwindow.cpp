@@ -12,8 +12,6 @@
  *
  * -------------------------------------------------------------------------------------------------
  */
-#include <boost/cast.hpp>
-
 #include <QDebug>
 #include <QApplication>
 #include <QTextDocument>
@@ -191,7 +189,7 @@ QpamatWindow::QpamatWindow()
         m_trayIcon->show();
 
         // hack to prevent icontray events to interfere with the timeout mechanism
-        boost::polymorphic_cast<TimeoutApplication*>(qApp)->addReceiverToIgnore(m_trayIcon);
+        dynamic_cast<TimeoutApplication*>(qApp)->addReceiverToIgnore(m_trayIcon);
 
         connect(m_trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
                 SLOT(handleTrayiconClick(QSystemTrayIcon::ActivationReason)));
@@ -512,7 +510,7 @@ void QpamatWindow::setLogin(bool loggedIn)
     m_actions.exportAction->setEnabled(loggedIn);
 
     if (loggedIn)
-    boost::polymorphic_cast<TimeoutApplication*>(qApp)->setTimeout(
+    dynamic_cast<TimeoutApplication*>(qApp)->setTimeout(
             set().readNumEntry("Security/AutoLogout")
         );
     else {
@@ -634,7 +632,7 @@ bool QpamatWindow::logout()
     // save the data
     if (m_modified) {
         qDebug() << CURRENT_FUNCTION << "Disable timeout action temporary";
-        boost::polymorphic_cast<TimeoutApplication*>(qApp)->setTemporaryDisabled(true);
+        dynamic_cast<TimeoutApplication*>(qApp)->setTemporaryDisabled(true);
 
         int ret = QMessageBox::question(this, "QPaMaT", tr("There is modified data that was not saved."
             "\nDo you want to save it now?"), QMessageBox::Yes | QMessageBox::Default,
@@ -653,7 +651,7 @@ bool QpamatWindow::logout()
         }
 
         qDebug() << CURRENT_FUNCTION << "Enable timeout action again";
-        boost::polymorphic_cast<TimeoutApplication*>(qApp)->setTemporaryDisabled(false);
+        dynamic_cast<TimeoutApplication*>(qApp)->setTemporaryDisabled(false);
     }
 
     setLogin(false);
@@ -888,7 +886,7 @@ void QpamatWindow::connectSignalsAndSlots()
         SIGNAL(insertPassword(const QString&)));
 
     // auto logout
-    connect(boost::polymorphic_cast<TimeoutApplication*>(qApp), SIGNAL(timedOut()), SLOT(logout()));
+    connect(dynamic_cast<TimeoutApplication*>(qApp), SIGNAL(timedOut()), SLOT(logout()));
 
     // previously I used a hidden action for this, but this doesn't work in Qt4 any more
     QShortcut* focusSearch = new QShortcut(QKeySequence(Qt::CTRL|Qt::Key_G), this);

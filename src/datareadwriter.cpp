@@ -15,8 +15,6 @@
 #include <ctime>
 #include <cstdlib>
 
-#include <boost/cast.hpp>
-
 #include <QThread>
 #include <QFile>
 #include <QApplication>
@@ -537,7 +535,7 @@ void DataReadWriter::writeXML(const QDomDocument& document, const QString& passw
 
     unsigned char id = 0;
     if (smartcard) {
-        ByteVector vec = boost::polymorphic_cast<CollectEncryptor*>(enc.data())->getBytes();
+        ByteVector vec = dynamic_cast<CollectEncryptor*>(enc.data())->getBytes();
         writeOrReadSmartcard(vec, true, id, password);
         appData.namedItem("smartcard").toElement().setAttribute("card-id", id);
     }
@@ -634,7 +632,7 @@ QDomDocument DataReadWriter::readXML(const QString& password)
 
         // also throws exception
         writeOrReadSmartcard(vec, false, id, password);
-        boost::polymorphic_cast<CollectEncryptor*>(enc.data())->setBytes(vec);
+        dynamic_cast<CollectEncryptor*>(enc.data())->setBytes(vec);
     }
 
     QDomElement pwData = doc.documentElement().namedItem("passwords").toElement();
