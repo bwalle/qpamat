@@ -194,20 +194,6 @@ QT4_CREATE_TRANSLATION(
 # Compiled-in pixmaps
 SET(QtApp_RCCS qpamat.qrc)
 
-# Boost
-IF (MSVC)
-  SET(Boost_USE_STATIC_LIBS ON)
-  SET(Boost_USE_MULTITHREAD ON)
-
-  # this workaround is required because otherwise CMake 2.6.2 doesn't find the
-  # libraries on Windows when installed in c:\program files\boost\boost_1_36\
-  # See http://public.kitware.com/Bug/view.php?id=8326.
-  SET(Boost_Version 1.36)
-ENDIF (MSVC)
-
-FIND_PACKAGE(Boost ${Boost_Version} COMPONENTS program_options)
-
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 
 # generate rules for building source files from the resources
 QT4_ADD_RESOURCES(qpamat_RCC_SRCS qpamat.qrc)
@@ -221,7 +207,6 @@ ADD_EXECUTABLE(qpamat WIN32
 )
 
 TARGET_LINK_LIBRARIES(qpamat ${QT_LIBRARIES} ${OPENSSL_LIBRARIES})
-TARGET_LINK_LIBRARIES(qpamat ${Boost_LIBRARIES})
 
 #
 # {{{ Tests
