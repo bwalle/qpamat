@@ -31,7 +31,6 @@
 
 #include "global.h"
 #include "settings.h"
-#include "main.h"
 #include "util/singleapplication.h"
 #include "util/timeoutapplication.h"
 #include "qpamatadaptor.h"
