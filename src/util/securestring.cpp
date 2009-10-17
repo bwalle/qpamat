@@ -62,6 +62,15 @@ bool SecureString::platformSupportsLocking()
 }
 
 /**
+ * @brief Creates a new SecureString that is empty
+ */
+SecureString::SecureString()
+    throw ()
+    : m_text(0)
+    , m_locked(false)
+{}
+
+/**
  * @brief Creates a new SecureString from a C string representation.
  *
  * @param [in] text the C-String representation

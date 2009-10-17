@@ -23,6 +23,9 @@
 class SecureString
 {
     public:
+        SecureString()
+        throw ();
+
         SecureString(const char *text)
         throw (std::bad_alloc);
 
