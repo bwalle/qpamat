@@ -41,176 +41,196 @@
 #include "security/collectencryptor.h"
 #include "dialogs/insertcarddialog.h"
 #include "dialogs/waitdialog.h"
-//#include "treeentry.h"
-
 #include "global.h"
 
-/*!
-    \class ReadWriteException
+/**
+ * @class ReadWriteException
+ *
+ * @brief Exception that is thrown if something got wrong with reading or writing.
+ *
+ * This exception is thrown by the DataReadWriter class. It simply contains a
+ * translated error message. You can display this error message in a
+ * QMessageBox. There's also a severity which indicates the severity level and
+ * which you can use to determine the message type.
+ *
+ * This class is a subclass of the the std::runtime_error exception class.
+ * This is for convenience (catching and use the std::exception::what()
+ * method). The message string may be localized but const char* works only in
+ * ISO-8859-1 charset properly. Use the getMessage() method instead.
+ *
+ * @ingroup gui
+ */
 
-    \brief Exception that is thrown if something got wrong with reading or writing.
+/**
+ * @enum ReadWriteException::Severity
+ *
+ * Indicates the severity of a ReadWriteException. Use @c WARNING for not so critical
+ * errors and @c CRITICAL for critical errors.
+ */
 
-    This exception is thrown by the DataReadWriter class. It simply contains a translated
-    error message. You can display this error message in a QMessageBox. There's also a
-    severity which indicates the severity level and which you can use to determine the
-    message type.
+/**
+ * @enum ReadWriteException::Category
+ *
+ * @brief Indicates the category of the error.
+ *
+ * Maybe the reaction depends on the category of the error (for example if the
+ * password was wrong we need to show the password dialog again).
+ */
 
-    This class is a subclass of the the std::runtime_error exception class. This is for
-    convenience (catching and use the std::exception::what() method). The message string
-    may be localized but const char* works only in ISO-8859-1 charset properly. Use the
-    getMessage() method instead.
+/**
+ * @var ReadWriteException::CWrongPassword
+ *
+ * @brief Indicates a wrong password.
+ *
+ * The user has to enter a new one.
+ */
 
-    \ingroup gui
-*/
+/**
+ * @var ReadWriteException::CInvalidData
+ *
+ * @brief Indicates invalid data such as a malformed XML file.
+ *
+ * Retrying makes no sense here.
+ */
 
-/*!
-    \enum ReadWriteException::Severity
+/**
+ * @var ReadWriteException::CIOError
+ *
+ * Indicates an error with input/output such as wrong file permission.
+ */
 
-    Indicates the severity of a ReadWriteException. Use \c WARNING for not so critical
-    errors and \c CRITICAL for critical errors.
-*/
+/**
+ * @var ReadWriteException::CSmartcardError
+ *
+ * @brief Indicates an error while communicating with the smartcard terminal.
+ *
+ * Retrying makes heavily sense here because maybe the user just forgot to
+ * insert the card and pressed Ok.
+ */
 
-/*!
-    \enum ReadWriteException::Category
+/**
+ * @var ReadWriteException::CNoAlgorithm
+ *
+ * @brief Indicates that the algorithm for encryption does not exist.
+ *
+ * Retrying makes no sense since the user has to re-build OpenSSL and that
+ * takes a bit ...
+ */
 
-    Indicates the category of the error. Maybe the reaction depends on the category of
-    the error (for example if the password was wrong we need to show the password
-    dialog again).
-*/
+/**
+ * @var ReadWriteException::COtherError
+ *
+ * @brief The default: we don't know the category.
+ *
+ * This is always bad because we cannot react properly. Avoid this!
+ */
 
-/*!
-    \var ReadWriteException::CWrongPassword
+/**
+ * @fn ReadWriteException::CAbort
+ *
+ * @brief User wants to abort the action.
+ */
 
-    Indicates a wrong password. The user has to enter a new one.
-*/
-/*!
-    \var ReadWriteException::CInvalidData
+/**
+ * @fn ReadWriteException::ReadWriteException(const QString&, Category, Severity)
+ *
+ * @brief Creates a new instance of a ReadWriteException.
+ *
+ * @param error the error message which should be localized
+ * @param category the category of the error
+ * @param severity the severity which indicates the dialog type used later in the GUI
+ */
 
-    Indicates invalid data such as a malformed XML file. Retrying makes no sense here.
-*/
-/*!
-    \var ReadWriteException::CIOError
+/**
+ * @fn ReadWriteException::retryMakesSense() const
+ *
+ * @brief Returns whether immediately retrying makes sense.
+ *
+ * @return @c true if it makes sense, @c false otherwise
+ */
 
-    Indicates an error with input/output such as wrong file permission.
-*/
-/*!
-    \var ReadWriteException::CSmartcardError
+/**
+ * @fn ReadWriteException::~ReadWriteException
+ *
+ * Destroys the ReadWriteException object.
+ */
 
-    Indicates an error while communicating with the smartcard terminal. Retrying
-    makes heavily sense here because maybe the user just forgot to insert the card
-    and pressed Ok.
-*/
-/*!
-    \var ReadWriteException::CNoAlgorithm
+/**
+ * @fn ReadWriteException::getMessage() const
+ *
+ * Returns the error message.
+ *
+ * @return the localized string, may contain HTML-tags
+ */
 
-    Indicates that the algorithm for encryption does not exist. Retrying makes
-    no sense since the user has to re-build OpenSSL and that takes a bit ...
-*/
-/*!
-    \var ReadWriteException::COtherError
+/**
+ * @fn ReadWriteException::getSeverity() const
+ *
+ * Returns the severity.
+ * @return the severity
+ */
 
-    The default: we don't know the category. This is always bad because we cannot
-    react properly. Avoid this!
-*/
-/*!
-    \fn ReadWriteException::CAbort
-
-    User wants to abort the action.
-*/
-
-/*!
-    \fn ReadWriteException::ReadWriteException(const QString&, Category, Severity)
-
-    Creates a new instance of a ReadWriteException.
-    \param error the error message which should be localized
-    \param category the category of the error
-    \param severity the severity which indicates the dialog type used later in the GUI
-*/
-
-/*!
-    \fn ReadWriteException::retryMakesSense() const
-
-    Returns whether immediately retrying makes sense.
-    \return \c true if it makes sense, \c false otherwise
-*/
-
-/*!
-    \fn ReadWriteException::~ReadWriteException
-
-    Destroys the ReadWriteException object.
-*/
-
-/*!
-    \fn ReadWriteException::getMessage() const
-
-    Returns the error message.
-    \return the localized string, may contain HTML-tags
-*/
-
-/*!
-    \fn ReadWriteException::getSeverity() const
-
-    Returns the severity.
-    \return the severity
-*/
-
-/*!
-    \fn ReadWriteException::getCategory() const
-
-    Returns the category.
-    \return the category
-*/
+/**
+ * @fn ReadWriteException::getCategory() const
+ *
+ * Returns the category.
+ * @return the category
+ */
 
 // ------------------------------------------------------------------------------------------------
 
-/*!
-    \class DataReadWriter
+/**
+ * @class DataReadWriter
+ *
+ * @brief Handles the reading and writing from and to the smartcard and/or file.
+ *
+ * This class handles reading and writing to the XML file and the smartcard. The input or
+ * output is a XML structure with passwords as cleartext. This class does also the
+ * encryption or decryption.
+ *
+ * It reads the current configuration from the global Settings object. The configuration
+ * is the file, the smartcard settings, the encryption algorithm and so on.
+ *
+ * On error, a ReadWriteException is thrown and the error message is set to a sensible
+ * value. It displays no error dialog itself, you have to to this on the calling part.
+ *
+ * No automatic delection takes place. This is no QObject. We only need the parent widget
+ * to display a message box if the user should insert the smartcard.
+ *
+ * @par Writing
+ *
+ * In DOM, no XML element can exist without the context of a DomDocument. Therefore
+ * you have to create an QDomDocument with the factory function createSkeletonDocument()
+ * in this class. It gets filled with application-specific data and contains an empty
+ * <tt>\<password\></tt> tag. The document must be passed to the Tree::writeToXML()
+ * function.
+ *
+ * @bug PIN verification does not work here: I get 90 00 as response after verifying, but
+ *       writing fails with 62 00 error !??
+ *
+ * @ingroup gui
+ */
 
-    \brief Handles the reading and writing from and to the smartcard and/or file.
-
-    This class handles reading and writing to the XML file and the smartcard. The input
-    or output is a XML structure with passwords as cleartext. This class does also the
-    encryption or decryption.
-
-    It reads the current configuration from the global Settings object. The configuration
-    is the file, the smartcard settings, the encryption algorithm and so on.
-
-    On error, a ReadWriteException is thrown and the error message is set to a
-    sensible value. It displays no error dialog itself, you have to to this on the
-    calling part.
-
-    No automatic delection takes place. This is no QObject. We only need the parent
-    widget to display a message box if the user should insert the smartcard.
-
-    \par Writing
-
-    In DOM, no XML element can exist without the context of a DomDocument. Therefore
-    you have to create an QDomDocument with the factory function createSkeletonDocument()
-    in this class. It gets filled with application-specific data and contains an empty
-    <tt>\<password\></tt> tag. The document must be passed to the Tree::writeToXML()
-    function.
-
-    \bug PIN verification does not work here: I get 90 00 as response after verifying, but
-          writing fails with 62 00 error !??
-
-    \ingroup gui
-*/
-
-/*!
-    Creates a new instance of a DataReadWriter. The parent is needed for the message box
-    which asks the user to insert the password.
-    \param parent the parent widget
-*/
+/**
+ * @brief Creates a new instance of a DataReadWriter.
+ *
+ * The parent is needed for the message box which asks the user to insert the password.
+ *
+ * @param parent the parent widget
+ */
 DataReadWriter::DataReadWriter(QWidget* parent)
     : m_parent(parent)
 {}
 
 
-/*!
-    Creates a skeleton document that must be used for writing the XML tree to the harddisk.
-    As described in the constructor documentation, it contains all application data.
-    \return the QDomDocument object
-*/
+/**
+ * @brief Creates a skeleton document that must be used for writing the XML tree to the
+ *        harddisk.
+ *
+ * As described in the constructor documentation, it contains all application data.
+ *
+ * @return the QDomDocument object
+ */
 QDomDocument DataReadWriter::createSkeletonDocument() throw ()
 {
     const char url[] = "http://qpamat.berlios.de/qpamat.dtd";
@@ -285,40 +305,43 @@ class ReadWriteThread : public QThread
 
 // -------------------------------------------------------------------------------------------------
 
-/*!
-    \class ReadWriteThread
+/**
+ * @class ReadWriteThread
+ *
+ * @brief Thread that is responsible for reading and writing to the smart card.
+ *
+ * Because the real operations are long and atomar, the GUI would be blocked if the
+ * operations are not running in an own thread.
+ *
+ * No GUI operations take place in this thread. Instead of that, if an error occured the
+ * error message is set and the operation is finished. The caller has to check the error
+ * message and must display a message.
+ *
+ * The access to the variables which are passed to the constructor are not locked with a
+ * QMutex or something like that. The caller must ensure that he doesn't access this
+ * variables while this thread is running. This is usually no problem because the caller
+ * displays just a dialog which says the user that he must wait until the operation is
+ * finished.
+ */
 
-    Thread that is responsible for reading and writing to the smart card. Because the real
-    operations are long and atomar, the GUI would be blocked if the operations are not running
-    in an own thread.
+/**
+ * @fn ReadWriteThread::ReadWriteThread(MemoryCard&, ByteVector&, bool, unsigned char&, const QString&)
+ *
+ * @brief Creates a new instance of a ReadWriteThread.
+ *
+ * @param card the memory card, it must be initialized with the right port (the reason is that
+ *        the user should get a message box, insert the card and confirm the box while the
+ *        memory card class should wait for it. So another process cannot access the card
+ *        terminal at this time, this is important for security reasons
+ * @param bytes the read or write bytes
+ * @param write @c true if a write operation should be made, @c false for a read operation
+ * @param randomNumber the random number
+ * @param password the password to check
+ */
 
-    No GUI operations take place in this thread. Instead of that, if an error occured the
-    error message is set and the operation is finished. The caller has to check the error message
-    and must display a message.
-
-    The access to the variables which are passed to the constructor are not locked with a
-    QMutex or something like that. The caller must ensure that he doesn't access this variables
-    while this thread is running. This is usually no problem because the caller displays just
-    a dialog which says the user that he must wait until the operation is finished.
-*/
-
-/*!
-    \fn ReadWriteThread::ReadWriteThread(MemoryCard&, ByteVector&, bool, unsigned char&, const QString&)
-
-    Creates a new instance of a ReadWriteThread.
-    \param card the memory card, it must be initialized with the right port (the reason is that
-           the user should get a message box, insert the card and confirm the box while the
-           memory card class should wait for it. So another process cannot access the card terminal
-           at this time, this is important for security reasons
-    \param bytes the read or write bytes
-    \param write \c true if a write operation should be made, \c false for a read operation
-    \param randomNumber the random number
-    \param password the password to check
-*/
-
-/*!
-    Runs the operation.
-*/
+/**
+ * Runs the operation.
+ */
 void ReadWriteThread::run()
     throw ()
 {
@@ -415,49 +438,56 @@ void ReadWriteThread::run()
     }
 }
 
-/*!
-    Deletes the object. If an exception is set, that object is deleted.
-*/
+/**
+ * @brief Deletes the object.
+ *
+ * If an exception is set, that object is deleted.
+ */
 ReadWriteThread::~ReadWriteThread()
 {
     delete m_exception;
 }
 
-/*!
-    Returns the exception of the ReadWriteException.
-
-    \return the exception. The caller doesn't have to free the exception object, that is done
-            by the descructor of the ReadWriteThread.
-*/
+/**
+ * @brief Returns the exception of the ReadWriteException.
+ *
+ * @return the exception. The caller doesn't have to free the exception object, that is done
+ *         by the descructor of the ReadWriteThread.
+ */
 ReadWriteException* ReadWriteThread::getException() const
     throw ()
 {
     return m_exception;
 }
 
-/*!
-    \fn ReadWriteThread::getException() const
-    Returns the exception that occured or 0 if no exception occured. The pointer becomes invalid
-    after the thread is deleted.
-    \return the exception
-*/
+/**
+ * @fn ReadWriteThread::getException() const
+ *
+ * @brief Returns the exception that occured or 0 if no exception occured.
+ *
+ * The pointer becomes invalid after the thread is deleted.
+ *
+ * @return the exception
+ */
 
 #endif // DOXYGEN
 
 // -------------------------------------------------------------------------------------------------
 
 
-/*!
-    Writes the document in the file specified in the global settings. Encryption
-    is done before writing with the specified password. If something went wrong,
-    a ReadWriteException is thrown.
-    \param document the XML document to write
-    \param password the password which is used for encryption
-    \exception ReadWriteException several reasons
-                 - file could not be opened
-                 - cipher algorithm is not available
-                 - error in communicating with the smart-card terminal
-*/
+/**
+ * @brief Writes the document in the file specified in the global settings.
+ *
+ * Encryption is done before writing with the specified password. If something went wrong,
+ * a ReadWriteException is thrown.
+ *
+ * @param document the XML document to write
+ * @param password the password which is used for encryption
+ * @exception ReadWriteException several reasons
+ *               - file could not be opened
+ *               - cipher algorithm is not available
+ *               - error in communicating with the smart-card terminal
+ */
 void DataReadWriter::writeXML(const QDomDocument& document, const QString& password)
     throw (ReadWriteException)
 {
@@ -523,20 +553,23 @@ void DataReadWriter::writeXML(const QDomDocument& document, const QString& passw
 }
 
 
-/*!
-    Reads the document from the specified XML (global settings) file and decrypts the
-    passwords using the given \p password. It does also a password check.
-    \param password the decryption password
-    \return the document
-    \exception ReadWriteException several reasons
-                 - cannot open the XML file
-                 - invalid XML file
-                 - wrong password (checked with the checksum stored in the file or on
-                                   the chipcard)
-                 - wrong configuration of the smartcard terminal
-                 - algorithm does not exist in this OpenSSL configuration
-                 - error with communicating with the card terminal
-*/
+/**
+ * @brief Reads the document from the specified XML (global settings) file and decrypts the
+ *        passwords using the given \p password.
+ *
+ * It does also a password check.
+ *
+ * @param password the decryption password
+ * @return the document
+ * @exception ReadWriteException several reasons
+ *               - cannot open the XML file
+ *               - invalid XML file
+ *               - wrong password (checked with the checksum stored in the file or on
+ *                                 the chipcard)
+ *               - wrong configuration of the smartcard terminal
+ *               - algorithm does not exist in this OpenSSL configuration
+ *               - error with communicating with the card terminal
+ */
 QDomDocument DataReadWriter::readXML(const QString& password)
     throw (ReadWriteException)
 {
@@ -611,13 +644,15 @@ QDomDocument DataReadWriter::readXML(const QString& password)
 }
 
 
-/*!
-    Reads or writes from the smartcard. Displays an error message if needed. Refer to the
-    ReadWriteThread for more information.
-    \param bytes the bytes
-    \param write reading or writing
-    \param randomNumber the random number
-*/
+/**
+ * @brief Reads or writes from the smartcard.
+ *
+ * Displays an error message if needed. Refer to the ReadWriteThread for more information.
+ *
+ * @param bytes the bytes
+ * @param write reading or writing
+ * @param randomNumber the random number
+ */
 void DataReadWriter::writeOrReadSmartcard(ByteVector        &bytes,
                                           bool              write,
                                           unsigned char     &randomNumber,
