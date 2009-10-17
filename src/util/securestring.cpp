@@ -165,6 +165,63 @@ bool SecureString::operator<(const SecureString &text) const
 }
 
 /**
+ * @brief Checks if \p text is less or equal than this string.
+ *
+ * The check is not locale-aware. However, since we store only passwords in SecureString
+ * it's more important that this operation is there to be able to use that SecureString in
+ * standard containers and that the results are always the same than that the results are
+ * really "correct".
+ *
+ * The method does not throw.
+ *
+ * @param [in] text the SecureString to compare with
+ * @return \c true if \p text is less or equal than this string, \c false otherwise
+ */
+bool SecureString::operator<=(const SecureString &text) const
+    throw ()
+{
+    return strcmp(utf8(), text.utf8()) <= 0;
+}
+
+/**
+ * @brief Checks if \p text is greater than this string.
+ *
+ * The check is not locale-aware. However, since we store only passwords in SecureString
+ * it's more important that this operation is there to be able to use that SecureString in
+ * standard containers and that the results are always the same than that the results are
+ * really "correct".
+ *
+ * The method does not throw.
+ *
+ * @param [in] text the SecureString to compare with
+ * @return \c true if \p text is greater than this string, \c false otherwise
+ */
+bool SecureString::operator>(const SecureString &text) const
+    throw ()
+{
+    return strcmp(utf8(), text.utf8()) > 0;
+}
+
+/**
+ * @brief Checks if \p text is greater or equal than this string.
+ *
+ * The check is not locale-aware. However, since we store only passwords in SecureString
+ * it's more important that this operation is there to be able to use that SecureString in
+ * standard containers and that the results are always the same than that the results are
+ * really "correct".
+ *
+ * The method does not throw.
+ *
+ * @param [in] text the SecureString to compare with
+ * @return \c true if \p text is greater or equal than this string, \c false otherwise
+ */
+bool SecureString::operator>=(const SecureString &text) const
+    throw ()
+{
+    return strcmp(utf8(), text.utf8()) >= 0;
+}
+
+/**
  * @brief Checks if \p text is equal than this string.
  *
  * The method does not throw.
@@ -176,6 +233,20 @@ bool SecureString::operator==(const SecureString &text) const
     throw ()
 {
     return strcmp(utf8(), text.utf8()) == 0;
+}
+
+/**
+ * @brief Checks if \p text is not equal than this string.
+ *
+ * The method does not throw.
+ *
+ * @param [in] text the SecureString to compare with
+ * @return \c true if \p text is not equal than this string, \c false otherwise
+ */
+bool SecureString::operator!=(const SecureString &text) const
+    throw ()
+{
+    return strcmp(utf8(), text.utf8()) != 0;
 }
 
 /**

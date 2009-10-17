@@ -18,12 +18,10 @@
 #include <stdexcept>
 #include <string>
 
-#include <boost/operators.hpp>
-
 #include <QString>
 
-class SecureString : private boost::totally_ordered<SecureString> {
-
+class SecureString
+{
     public:
         SecureString(const char *text)
         throw (std::bad_alloc);
@@ -46,7 +44,19 @@ class SecureString : private boost::totally_ordered<SecureString> {
         bool operator<(const SecureString &text) const
         throw ();
 
+        bool operator<=(const SecureString &text) const
+        throw ();
+
+        bool operator>(const SecureString &text) const
+        throw ();
+
+        bool operator>=(const SecureString &text) const
+        throw ();
+
         bool operator==(const SecureString &text) const
+        throw ();
+
+        bool operator!=(const SecureString &text) const
         throw ();
 
     public:
