@@ -18,8 +18,6 @@
 #include <cerrno>
 #include <algorithm>
 
-#include <boost/lambda/lambda.hpp>
-
 // before the include of <sys/mman.h> to get the Q_WS_X11 define
 #include <QDebug>
 
@@ -329,10 +327,16 @@ size_t SecureString::length() const
 {
     // according to the Unicode FAQ [http://www.cl.cam.ac.uk/~mgk25/unicode.html]
     // we have to count characters not in the range [0x80; 0xBF].
-    return std::count_if(
-                reinterpret_cast<unsigned char *>(m_text),
-                reinterpret_cast<unsigned char *>(m_text) + strlen(m_text),
-                boost::lambda::_1 < 0x80 || boost::lambda::_1 > 0xBF);
+
+    int total = 0;
+    for (unsigned int i = 0; i < strlen(m_text); i++) {
+        if (static_cast<unsigned char>(m_text[i]) < 0x80 ||
+            static_cast<unsigned char>(m_text[i]) > 0xBF) {
+            total++;
+        }
+    }
+
+    return total;
 }
 
 /**
