@@ -23,18 +23,20 @@
 #include "security/encryptor.h"
 
 
-/*!
-    \class Settings
+/**
+ * @class Settings
+ *
+ * @brief Singleton for storing settings in registry (MS Windows) or ini-file (Unix).
+ *
+ * @ingroup gui
+ * @author Bernhard Walle
+ */
 
-    \brief Singleton for storing settings in registry (MS Windows) or ini-file (Unix).
-
-    \ingroup gui
-    \author Bernhard Walle
-*/
-
-/*!
-    Creates a new instance of the settings object. The default values are initialized.
-*/
+/**
+ * @brief Creates a new instance of the settings object.
+ *
+ * The default values are initialized.
+ */
 Settings::Settings()
 {
     m_qSettings.setPath( "qpamat", "qpamat", QSettings::User );
@@ -88,67 +90,74 @@ Settings::Settings()
 }
 
 
-/*!
-    \fn Settings::~Settings()
+/**
+ * @fn Settings::~Settings()
+ *
+ * Destructor
+ */
 
-    Destructor
-*/
-
-/*!
-    Writes an entry into the settings.
-    \param key the key
-    \param value the value
-    \return if the entry was written
-*/
+/**
+ * @brief Writes an entry into the settings.
+ *
+ * @param key the key
+ * @param value the value
+ * @return if the entry was written
+ */
 bool Settings::writeEntry(const QString & key, const QString & value)
 {
     return m_qSettings.writeEntry(key, value);
 }
 
 
-/*!
-    Writes an entry into the settings.
-    \param key the key
-    \param value the value
-    \return if the entry was written
-*/
+/**
+ * @brief Writes an entry into the settings.
+ *
+ * @param key the key
+ * @param value the value
+ *
+ * @return if the entry was written
+ */
 bool Settings::writeEntry(const QString & key, double value)
 {
     return m_qSettings.writeEntry(key, value);
 }
 
 
-/*!
-    Writes an entry into the settings.
-    \param key the key
-    \param value the value
-    \return if the entry was written
-*/
+/**
+ * @brief Writes an entry into the settings.
+ *
+ * @param key the key
+ * @param value the value
+ * @return if the entry was written
+ */
 bool Settings::writeEntry(const QString & key, int value)
 {
     return m_qSettings.writeEntry(key, value);
 }
 
 
-/*!
-    Writes an entry into the settings.
-    \param key the key
-    \param value the value
-    \return if the entry was written
-*/
+/**
+ * @brief Writes an entry into the settings.
+ *
+ * @param key the key
+ * @param value the value
+ *
+ * @return if the entry was written
+ */
 bool Settings::writeEntry(const QString & key, bool value)
 {
     return m_qSettings.writeEntry(key, value);
 }
 
 
-/*!
-    Stores a byte array.
-
-    \param key the key
-    \param bytes the value
-    \return if the entry was written
-*/
+/**
+ * @brief Stores a byte array.
+ *
+ * @param key the key
+ * @param bytes the value
+ *
+ * @return if the entry was written
+ */
 bool Settings::writeEntry(const QString& key, const QByteArray& bytes)
 {
     return m_qSettings.writeEntry(key, QString::fromUtf8(bytes.toBase64()));
@@ -156,11 +165,14 @@ bool Settings::writeEntry(const QString& key, const QByteArray& bytes)
 }
 
 
-/*!
-    Reads the entry. If the entry does not exist there's a automatic default value that
-    is returned.
-    \return the entry
-*/
+/**
+ * @brief Reads the entry.
+ *
+ * If the entry does not exist there's a automatic default value that is
+ * returned.
+ *
+ * @return the entry
+ */
 QString Settings::readEntry(const QString & key, const QString& def)
 {
     bool read = false;
@@ -175,11 +187,14 @@ QString Settings::readEntry(const QString & key, const QString& def)
 }
 
 
-/*!
-    Reads a number entry. If the entry does not exist there's a automatic default value that
-    is returned.
-    \return the entry
-*/
+/**
+ * @brief Reads a number entry.
+ *
+ * If the entry does not exist there's a automatic default value that is
+ * returned.
+ *
+ * @return the entry
+ */
 int Settings::readNumEntry (const QString & key, int def)
 {
     bool read = m_qSettings.contains(key);
@@ -193,11 +208,13 @@ int Settings::readNumEntry (const QString & key, int def)
 }
 
 
-/*!
-    Reads a double entry. If the entry does not exist there's a automatic default value that
-    is returned.
-    \return the entry
-*/
+/**
+ * @brief Reads a double entry.
+ *
+ * If the entry does not exist there's a automatic default value that is returned.
+ *
+ * @return the entry
+ */
 double Settings::readDoubleEntry(const QString & key, double def) const
 {
     bool read = m_qSettings.contains(key);
@@ -211,11 +228,14 @@ double Settings::readDoubleEntry(const QString & key, double def) const
 }
 
 
-/*!
-    Reads a boolean entry. If the entry does not exist there's a automatic default value that
-    is returned.
-    \return the entry
-*/
+/**
+ * @brief Reads a boolean entry.
+ *
+ * If the entry does not exist there's a automatic default value that
+ * is returned.
+ *
+ * @return the entry
+ */
 bool Settings::readBoolEntry(const QString & key, bool def) const
 {
     bool read = m_qSettings.contains(key);
@@ -229,14 +249,17 @@ bool Settings::readBoolEntry(const QString & key, bool def) const
 }
 
 
-/*!
-    Writes a QByteArray entry. If the entry does not exist, the default value is returned.
-    There's no automatic default value for QByteArrays.
-
-    \param key the key to look for
-    \param def the default value if the key does not exist
-    \return the entry
-*/
+/**
+ * @brief  Writes a QByteArray entry.
+ *
+ * If the entry does not exist, the default value is returned.    There's no
+ * automatic default value for QByteArrays.
+ *
+ * @param key the key to look for
+ * @param def the default value if the key does not exist
+ *
+ * @return the entry
+ */
 QByteArray Settings::readByteArrayEntry(const QString& key, const QByteArray& def)
 {
     if (m_qSettings.contains(key))

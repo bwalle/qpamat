@@ -23,29 +23,31 @@
 
 #include "fontchoosebox.h"
 
-/*!
-    \class FontChooseBox
+/**
+ * @class FontChooseBox
+ *
+ * @brief This class provides a not-editable QLineEdit combined with a button.
+ *
+ * The additional button lets the user choose a font which is available on the system.
+ *
+ * @ingroup widgets
+ * @author Bernhard Walle
+ */
 
-    \brief This class provides a not-editable QLineEdit combined with a button.
+/**
+ * @fn FontChooseBox::fontChanged(const QFont&)
+ *
+ * This signal is emitted if the font has changed.
+ *
+ * @param font the new font
+ */
 
-    The additional button lets the user choose a font which is available on the system.
-
-    \ingroup widgets
-    \author Bernhard Walle
-*/
-
-/*!
-    \fn FontChooseBox::fontChanged(const QFont&)
-
-    This signal is emitted if the font has changed.
-    \param font the new font
-*/
-
-/*!
-    Creates a new instance of a FontChooseBox widget.
-    \param parent the parent widget
-    \param name the name of the widget which can be NULL.
-*/
+/**
+ * @brief Creates a new instance of a FontChooseBox widget.
+ *
+ * @param parent the parent widget
+ * @param name the name of the widget which can be NULL.
+ */
 FontChooseBox::FontChooseBox(QWidget* parent, const char* name)
     : QWidget(parent, name)
 {
@@ -74,16 +76,19 @@ FontChooseBox::FontChooseBox(QWidget* parent, const char* name)
 }
 
 
-/*!
-    \property FontChooseBox::font
+/**
+ * @property FontChooseBox::font
+ *
+ * Current font.
+ */
 
-    Current font.
-*/
-
-/*!
-    Sets the font. The font is displayed in itself.
-    \param font content the content string
-*/
+/**
+ * @brief Sets the font.
+ *
+ * The font is displayed in itself.
+ *
+ * @param font content the content string
+ */
 void FontChooseBox::setFont(const QFont& font)
 {
     m_font = font;
@@ -91,20 +96,22 @@ void FontChooseBox::setFont(const QFont& font)
 }
 
 
-/*!
-    This returns the current font.
-    \return the font
-*/
+/**
+ * @brief This returns the current font.
+ *
+ * @return the font
+ */
 QFont FontChooseBox::getFont() const
 {
     return m_font;
 }
 
 
-/*!
-    Sets the font to display the line edit
-    \param font the font object
-*/
+/**
+ * @brief Sets the font to display the line edit
+ *
+ * @param font the font object
+ */
 void FontChooseBox::setDisplayFont(const QFont& font)
 {
     QFont displayFont(font.family(), QApplication::font().pointSize());
@@ -113,10 +120,11 @@ void FontChooseBox::setDisplayFont(const QFont& font)
 }
 
 
-/*!
-    Slot that is called if the user pressed the button. It displays a QFontDialog
-    and lets the user choose the font.
-*/
+/**
+ * @brief Slot that is called if the user pressed the button.
+ *
+ * It displays a QFontDialog and lets the user choose the font.
+ */
 void FontChooseBox::chooseFont()
 {
      bool ok;

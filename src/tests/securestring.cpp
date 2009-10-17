@@ -20,19 +20,19 @@
 #include <util/securestring.h>
 #include <tests/securestring.h>
 
-/*!
-    \class TestSecureString
+/**
+ * @brief TestSecureString
+ *
+ * @brief Tests for the SecureString class
+ *
+ * @ingroup unittest
+ * @author Bernhard Walle
+ */
 
-    \brief Tests for the SecureString class
 
-    \ingroup unittest
-    \author Bernhard Walle
-*/
-
-
-/*!
-    Tests the copy constructor.
-*/
+/**
+ * @brief Tests the copy constructor.
+ */
 void TestSecureString::testCtor() const
 {
     SecureString a("blubb");
@@ -46,9 +46,9 @@ void TestSecureString::testCtor() const
     QVERIFY(a == c);
 }
 
-/*!
-    Tests the return operators.
-*/
+/**
+ * @brief Tests the return operators.
+ */
 void TestSecureString::testConversion() const
 {
     const char aChar[] = "blubb";
@@ -60,9 +60,9 @@ void TestSecureString::testConversion() const
     QVERIFY(strcmp(a.utf8(), aChar) == 0);
 }
 
-/*!
-    Tests the equal operator of SecureString.
-*/
+/**
+ * @brief Tests the equal operator of SecureString.
+ */
 void TestSecureString::testEqual() const
 {
     SecureString a("blaFasel");
@@ -75,9 +75,9 @@ void TestSecureString::testEqual() const
     QVERIFY(b != c);
 }
 
-/*!
-    Tests the assignment operator.
-*/
+/**
+ * @brief Tests the assignment operator.
+ */
 void TestSecureString::testAssignment() const
 {
     SecureString a("blaFasel");
@@ -86,9 +86,9 @@ void TestSecureString::testAssignment() const
     QVERIFY(a == "blub");
 }
 
-/*!
-    Tests the copy constructor.
-*/
+/**
+ * @brief Tests the copy constructor.
+ */
 void TestSecureString::testCopyCtor() const
 {
     SecureString a("blaFaSel");
@@ -101,9 +101,9 @@ void TestSecureString::testCopyCtor() const
     }
 }
 
-/*!
-    Checks if the memory is actually locked.
-*/
+/**
+ * @brief Checks if the memory is actually locked.
+ */
 void TestSecureString::testLocking() const
 {
     if (!SecureString::platformSupportsLocking())
@@ -113,9 +113,9 @@ void TestSecureString::testLocking() const
     QVERIFY(s.isLocked());
 }
 
-/*!
-    Checks if the size() operator actually returns the number of bytes.
-*/
+/**
+ * @brief Checks if the size() operator actually returns the number of bytes.
+ */
 void TestSecureString::testSize() const
 {
     const char teststring[5] = { 0x54, 0xc3, 0xa4, 0x73, 0x74 }; // "Täst" in UTF-8

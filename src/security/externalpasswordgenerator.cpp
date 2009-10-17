@@ -25,40 +25,43 @@
 //                                     Static data
 // -------------------------------------------------------------------------------------------------
 
-/*!
-    The timeout for the application call.
-*/
+/**
+ * The timeout for the application call.
+ */
 const int ExternalPasswordGenerator::TIMEOUT = 5*1000;
 
 
-/*!
-    \class ExternalPasswordGenerator
+/**
+ * @class ExternalPasswordGenerator
+ *
+ * @brief Object to generate random passwords.
+ *
+ * Generates passwords using a random application. The application gets the required
+ * length as first argument. A shellscript wrapper may be used.
+ *
+ * @ingroup security
+ * @author Bernhard Walle
+ */
 
-    \brief Object to generate random passwords.
-
-    Generates passwords using a random application. The application gets the required length
-    as first argument. A shellscript wrapper may be used.
-
-    \ingroup security
-    \author Bernhard Walle
-*/
-
-/*!
-    Creates a new instance of ExternalPasswordGenerator.
-    \param applicationName the name of the application which should be called to get the password
-*/
+/**
+ * @brief Creates a new instance of ExternalPasswordGenerator.
+ *
+ * @param applicationName the name of the application which should be called to get the
+ *                        password
+ */
 ExternalPasswordGenerator::ExternalPasswordGenerator(const QString& applicationName)
     : m_applicationName(applicationName)
 {}
 
 
-/*!
-    Generates a random password.
-    \param length the length of the password
-    \param allowedChars ignored
-    \return the password
-    \exception PasswordGenerateException if launching the external application failed
-*/
+/**
+ * @brief Generates a random password.
+ *
+ * @param length the length of the password
+ * @param allowedChars ignored
+ * @return the password
+ * @exception PasswordGenerateException if launching the external application failed
+ */
 QString ExternalPasswordGenerator::getPassword(unsigned int length, const QString&)
         throw (PasswordGenerateException)
 {
@@ -90,10 +93,11 @@ QString ExternalPasswordGenerator::getPassword(unsigned int length, const QStrin
 }
 
 
-/*!
-    Returns \c true
-    \return \c true
-*/
+/**
+ * Returns \c true
+ *
+ * @return \c true
+ */
 bool ExternalPasswordGenerator::isSlow() const
 {
     return true;

@@ -29,30 +29,30 @@
 
 #include "securestring.h"
 
-/*!
-    \class SecureString
+/**
+ * \class SecureString
+ *
+ * \brief String impelementation which takes care that the memory is not swapped out
+ *
+ * This string class takes care that the data is not swapped out to disk but kept in memory.
+ * How that is done depends on the operating system. Currently, only mlock() is supported
+ * on Unix platforms.
+ *
+ * This class is Unicode-aware because it uses UTF-8 internally to store the data. If you use
+ * QString or a UTF-8 C-String, you can use Unicode. If you use a local 8-bit encoding like
+ * ISO-8859-1, you need to convert the data to UTF-8 first manually.
+ *
+ * @ingroup misc
+ * @author Bernhard Walle
+ */
 
-    \brief String impelementation which takes care that the memory is not swapped out
-
-    This string class takes care that the data is not swapped out to disk but kept in memory.
-    How that is done depends on the operating system. Currently, only mlock() is supported
-    on Unix platforms.
-
-    This class is Unicode-aware because it uses UTF-8 internally to store the data. If you use
-    QString or a UTF-8 C-String, you can use Unicode. If you use a local 8-bit encoding like
-    ISO-8859-1, you need to convert the data to UTF-8 first manually.
-
-    \ingroup misc
-    \author Bernhard Walle
-*/
-
-/*!
-    Checks if the current platform (operating system) supports memory locking.
-
-    Currently only Linux and a few other Unices supports memory locking.
-
-    \return \c true if memory locking is supported, \c false otherwise
-*/
+/**
+ * @brief Checks if the current platform (operating system) supports memory locking.
+ *
+ * Currently only Linux and a few other Unices supports memory locking.
+ *
+ * @return \c true if memory locking is supported, \c false otherwise
+ */
 bool SecureString::platformSupportsLocking()
     throw ()
 {
@@ -63,12 +63,12 @@ bool SecureString::platformSupportsLocking()
 #endif
 }
 
-/*!
-    Creates a new SecureString from a C string representation.
-
-    \param [in] text the C-String representation
-    \throw std::bad_alloc if the memory of the string cannot be allocated
-*/
+/**
+ * @brief Creates a new SecureString from a C string representation.
+ *
+ * @param [in] text the C-String representation
+ * @throw std::bad_alloc if the memory of the string cannot be allocated
+ */
 SecureString::SecureString(const char *text)
     throw (std::bad_alloc)
     : m_text(0)
@@ -77,18 +77,19 @@ SecureString::SecureString(const char *text)
     fromCString(text);
 }
 
-/*!
-    Creates a new SecureString from a std::string represenation. This additional constructor is
-    only provided for convenience. It's the same as calling
-
-    \code
-std::string mystring("bla");
-SecureString str(bla.c_str());
-    \endcode
-
-    \param [in] text the std::string represenation
-    \throw std::bad_alloc if the memory of the string cannot be allocated
-*/
+/**
+ * @brief Creates a new SecureString from a std::string represenation.
+ *
+ * This additional constructor is only provided for convenience. It's the same as calling
+ *
+ * @code
+ * std::string mystring("bla");
+ * SecureString str(bla.c_str());
+ * @endcode
+ *
+ * @param[in] text the std::string represenation
+ * @throw std::bad_alloc if the memory of the string cannot be allocated
+ */
 SecureString::SecureString(const std::string &text)
     throw (std::bad_alloc)
     : m_text(0)
@@ -97,14 +98,14 @@ SecureString::SecureString(const std::string &text)
     fromCString(text.c_str());
 }
 
-/*!
-    Creates a SecureString from a QString.
-
-    Internally, we call lock() after allocating the space for the string.
-
-    \param [in] text the QString representation of the string
-    \throw std::bad_alloc if the memory of the string cannot be allocated
-*/
+/**
+ * @brief Creates a SecureString from a QString.
+ *
+ * Internally, we call lock() after allocating the space for the string.
+ *
+ * @param [in] text the QString representation of the string
+ * @throw std::bad_alloc if the memory of the string cannot be allocated
+ */
 SecureString::SecureString(const QString &text)
     throw (std::bad_alloc)
     : m_text(0)
@@ -113,9 +114,9 @@ SecureString::SecureString(const QString &text)
     fromCString(text.toUtf8().data());
 }
 
-/*!
-    Creates a SecureString from another SecureString.
-*/
+/**
+ * @brief Creates a SecureString from another SecureString.
+ */
 SecureString::SecureString(const SecureString &text)
     throw (std::bad_alloc)
     : m_text(0)
@@ -124,12 +125,13 @@ SecureString::SecureString(const SecureString &text)
     fromCString(text.utf8());
 }
 
-/*!
-    Assignment of a SecureString to a SecureString.
-
-    \param [in] text SecureString the other SecureString that should be assigned to the current SecureString
-    \throw std::bad_alloc if the memory of the string cannot be allocated
-*/
+/**
+ * @brief Assignment of a SecureString to a SecureString.
+ *
+ * @param [in] text SecureString the other SecureString that should be assigned
+ *                  to the current SecureString
+ * @throw std::bad_alloc if the memory of the string cannot be allocated
+ */
 SecureString &SecureString::operator=(const SecureString& text)
     throw (std::bad_alloc)
 {
@@ -143,41 +145,42 @@ SecureString &SecureString::operator=(const SecureString& text)
     return *this;
 }
 
-/*!
-    Checks if \p text is less than this string.
-
-    The check is not locale-aware. However, since we store only passwords in SecureString it's more
-    important that this operation is there to be able to use that SecureString in standard containers
-    and that the results are always the same than that the results are really "correct".
-
-    The method does not throw.
-
-    \param [in] text the SecureString to compare with
-    \return \c true if \p text is less than this string, \c false otherwise
-*/
+/**
+ * @brief Checks if \p text is less than this string.
+ *
+ * The check is not locale-aware. However, since we store only passwords in SecureString
+ * it's more important that this operation is there to be able to use that SecureString in
+ * standard containers and that the results are always the same than that the results are
+ * really "correct".
+ *
+ * The method does not throw.
+ *
+ * @param [in] text the SecureString to compare with
+ * @return \c true if \p text is less than this string, \c false otherwise
+ */
 bool SecureString::operator<(const SecureString &text) const
     throw ()
 {
     return strcmp(utf8(), text.utf8()) < 0;
 }
 
-/*!
-    Checks if \p text is equal than this string.
-
-    The method does not throw.
-
-    \param [in] text the SecureString to compare with
-    \return \c true if \p text is equal than this string, \c false otherwise
-*/
+/**
+ * @brief Checks if \p text is equal than this string.
+ *
+ * The method does not throw.
+ *
+ * @param [in] text the SecureString to compare with
+ * @return \c true if \p text is equal than this string, \c false otherwise
+ */
 bool SecureString::operator==(const SecureString &text) const
     throw ()
 {
     return strcmp(utf8(), text.utf8()) == 0;
 }
 
-/*!
-    Creates a new SecureString from a std::string representation. This is only
-*/
+/**
+ * @brief Creates a new SecureString from a std::string representation.
+ */
 SecureString::~SecureString()
     throw ()
 {
@@ -186,66 +189,70 @@ SecureString::~SecureString()
     delete[] m_text;
 }
 
-/*!
-    Checks if the SecureString is really locked into memory.
-
-    If the string is not locked into memory, that can have multiple reasons:
-
-    - Memory locking is not implemented in SecureString for that operating system.
-    - Memory locking is implemented, but the current user doesn't have sufficient permission to lock
-      memory.
-    - The quota for locking memory for the current user and/or process is full.
-
-    The method never throws.
-
-    \return \c true if the string is locked into memory, \c false otherwise
-*/
+/**
+ * @brief Checks if the SecureString is really locked into memory.
+ *
+ * If the string is not locked into memory, that can have multiple reasons:
+ *
+ *  - Memory locking is not implemented in SecureString for that operating system.
+ *  - Memory locking is implemented, but the current user doesn't have sufficient permission to lock
+ *    memory.
+ *  - The quota for locking memory for the current user and/or process is full.
+ *
+ * The method never throws.
+ *
+ * @return \c true if the string is locked into memory, \c false otherwise
+ */
 bool SecureString::isLocked() const
     throw ()
 {
     return m_locked;
 }
 
-/*!
-    Returns an UTF-8 representation of the stored text. Please note that this points to an internal
-    pointer of the SecureString. This means that the memory is valid as long as the SecureString is
-    valid, but not longer. Don't call free(), delete or delete[] on the returned string.
-
-    \return the UTF-8 representation as zero-terminated string
-*/
+/**
+ * @brief Returns an UTF-8 representation of the stored text.
+ *
+ * Please note that this points to an internal pointer of the SecureString. This means *
+ * that the memory is valid as long as the SecureString is valid, but not longer. Don't
+ * call free(), delete or delete[] on the returned string.
+ *
+ * @return the UTF-8 representation as zero-terminated string
+ */
 const char *SecureString::utf8() const
     throw ()
 {
     return m_text;
 }
 
-/*!
-    Returns a QString (without any memory protection!) of the stored text.
-
-    This is only a convenience method to replace
-    \code
-QString::fromUtf8(SecureString::utf8())
-    \endcode
-
-    calls.
-
-    \return a QString
-*/
+/**
+ * @brief Returns a QString (without any memory protection!) of the stored text.
+ *
+ * This is only a convenience method to replace
+ *
+ * @code
+ * QString::fromUtf8(SecureString::utf8())
+ * @endcode
+ *
+ * calls.
+ *
+ * @return a QString
+ */
 QString SecureString::qString() const
     throw ()
 {
     return QString::fromUtf8(utf8());
 }
 
-/*!
-    Returns the number of characters that it takes to display that SecureString on the screen.
-
-    It's important that this is not the number of bytes in UTF-8 encoding. It's the number of
-    user-visible characters. Of course, when you use UCS-4 (or practially: UCS-2), the number is
-    equal.
-
-    \return the number of characters
-*/
+/**
+ * @brief Returns the number of characters that it takes to display that SecureString on
+ *        the screen.
+ *
+ * It's important that this is not the number of bytes in UTF-8 encoding. It's the number
+ * of user-visible characters. Of course, when you use UCS-4 (or practially: UCS-2), the
+ * number is equal.
+ *
+ * @return the number of characters
+ */
 size_t SecureString::length() const
     throw ()
 {
@@ -257,28 +264,29 @@ size_t SecureString::length() const
                 boost::lambda::_1 < 0x80 || boost::lambda::_1 > 0xBF);
 }
 
-/*!
-    Returns the size (in bytes) of the SecureString in UTF-8 encoding.
-
-    Consider the function SecureString::length() if you need the length that it takes to display
-    the string on the screen.
-
-    \return the number of bytes
-*/
+/**
+ * @brief Returns the size (in bytes) of the SecureString in UTF-8 encoding.
+ *
+ * Consider the function SecureString::length() if you need the length that it takes to
+ * display the string on the screen.
+ *
+ * @return the number of bytes
+ */
 size_t SecureString::size() const
     throw ()
 {
     return strlen(m_text);
 }
 
-/*!
-    Shared implementation for all the constructors. C++ doesn't allow (contrary to Java)
-    calling of another constructor in the constructor. So we use that implementation to share
-    code. <tt>:-)</tt>
-
-    \param [in] text the text as C-String represenation
-    \throw std::bad_alloc if we couldn't allocate the necessary memory
-*/
+/**
+ * @brief Shared implementation for all the constructors.
+ *
+ * C++ doesn't allow (contrary to Java) calling of another constructor in the constructor.
+ * So we use that implementation to share code. <tt>:-)</tt>
+ *
+ * @param [in] text the text as C-String represenation
+ * @throw std::bad_alloc if we couldn't allocate the necessary memory
+ */
 void SecureString::fromCString(const char *text)
     throw (std::bad_alloc)
 {
@@ -290,16 +298,16 @@ void SecureString::fromCString(const char *text)
     lock();
 }
 
-/*!
-    Locks the string in m_text into memory.
-
-    If the string cannot be locked, the implementation does \b not throw any exception. Instead,
-    it issues a warning with qDebug(). If that is not sufficient for you, you can check with
-    SecureString::isLocked() if the memory is really locked.
-
-    If m_isLocked is \c true which means that the string is already locked, the function silently
-    returns.
-*/
+/**
+ * @brief Locks the string in m_text into memory.
+ *
+ * If the string cannot be locked, the implementation does \b not throw any exception.
+ * Instead, it issues a warning with qDebug(). If that is not sufficient for you, you can
+ * check with SecureString::isLocked() if the memory is really locked.
+ *
+ * If m_isLocked is \c true which means that the string is already locked, the function
+ * silently returns.
+ */
 void SecureString::lock()
     throw ()
 {
@@ -317,12 +325,12 @@ void SecureString::lock()
 #endif
 }
 
-/*!
-    Unlocks the string in m_text from memory.
-
-    If m_isLocked is \c false which means that the string is not locked, the function silently
-    returns.
-*/
+/**
+ * @brief Unlocks the string in m_text from memory.
+ *
+ * If m_isLocked is \c false which means that the string is not locked, the function
+ * silently returns.
+ */
 void SecureString::unlock()
     throw ()
 {
@@ -337,13 +345,13 @@ void SecureString::unlock()
 #endif
 }
 
-/*!
-    Overwrites the data with garbage.
-
-    This function should be called before the data is delete[]'d. Currently we overwrite the
-    contents of the data with zeroes, but we could change that to random data. Should not matter
-    because it's not a hard disk but only memory contents.
-*/
+/**
+ * @brief Overwrites the data with garbage.
+ *
+ * This function should be called before the data is delete[]'d. Currently we overwrite
+ * the contents of the data with zeroes, but we could change that to random data. Should
+ * not matter because it's not a hard disk but only memory contents.
+ */
 void SecureString::smash()
     throw ()
 {

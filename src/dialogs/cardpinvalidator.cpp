@@ -17,39 +17,41 @@
 #include "cardpinvalidator.h"
 #include "global.h"
 
-/*!
-    \class CardPINValidator
+/**
+ * @class CardPINValidator
+ *
+ * @brief Validates a PIN for a smartcard
+ *
+ * This class acts as a validator for PINs protecting smartcards. Following
+ * conditions must the PIN met:
+ *
+ *   - The PIN must consist of exactly six characters
+ *   - Valid characters are hexadecimal digits (\c 0-9, \c a-f, \c A-F)
+ *
+ * @ingroup dialogs
+ * @author Bernhard Walle
+ */
 
-    \brief Validates a PIN for a smartcard
-
-    This class acts as a validator for PINs protecting smartcards. Following conditions
-    must the PIN met:
-
-     - The PIN must consist of exactly six characters
-     - Valid characters are hexadecimal digits (\c 0-9, \c a-f, \c A-F)
-
-    \ingroup dialogs
-    \author Bernhard Walle
-
-*/
-
-/*!
-    Creates a new instance of a CardPINValidator.
-    \param parent the parent widget
-    \param name the widget's name
-*/
+/**
+ * Creates a new instance of a CardPINValidator.
+ *
+ * @param parent the parent widget
+ * @param name the widget's name
+ */
 CardPINValidator::CardPINValidator(QObject* parent, const char* name )
     : QValidator(parent, name)
 {}
 
 
-/*!
-    Validates the input according to the rule described in the constructor documentation.
-    \param input the word to validate
-    \param pos no meaning here
-    \return Acceptable if the string has excatly 6 hex characters, Invalid if it contains invalid
-            characters and Intermediate otherwise
-*/
+/**
+ * @brief Validates the input according to the rule described in the constructor
+ *        documentation.
+ *
+ * @param input the word to validate
+ * @param pos no meaning here
+ * @return Acceptable if the string has excatly 6 hex characters, Invalid if it
+ *         contains invalid characters and Intermediate otherwise
+ */
 CardPINValidator::State CardPINValidator::validate(QString& input, int& pos) const
 {
     UNUSED(pos);

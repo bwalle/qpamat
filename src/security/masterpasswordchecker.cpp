@@ -20,31 +20,32 @@
 #include "masterpasswordchecker.h"
 
 
-/*!
-    \class MasterPasswordChecker
+/**
+ * @class MasterPasswordChecker
+ *
+ * @brief This is a simple password checker.
+ *
+ * A password is valid according to this checker if the following conditions are met:
+ *
+ *   - the password must have a minimum length of eight characters
+ *   - it must contain at least one special character or digit, one uppercase letter
+ *     and one lowercase letter
+ *
+ * @ingroup security
+ * @author Bernhard Walle
+ */
 
-     \brief This is a simple password checker.
-
-    A password is valid according to this checker if the following conditions are met:
-
-    - the password must have a minimum length of eight characters
-    - it must contain at least one special character or digit, one uppercase letter and one
-    lowercase letter
-
-    \ingroup security
-    \author Bernhard Walle
-*/
-
-/*!
-    Returns the password quality. We don't calculate how long it takes to crack
-    the password etc. We have a fix policy here.
-    \param password the password to check
-    \return 0.0 if the password is bad, numeric_limits<double>::max() if it is good.
-*/
+/**
+ * @brief Returns the password quality.
+ *
+ * We don't calculate how long it takes to crack the password etc. We have a fix policy here.
+ *
+ * @param password the password to check
+ * @return 0.0 if the password is bad, numeric_limits<double>::max() if it is good.
+ */
 double MasterPasswordChecker::passwordQuality(const QString& password) throw ()
 {
-    if (password.length() < 8)
-    {
+    if (password.length() < 8) {
         return false;
     }
 

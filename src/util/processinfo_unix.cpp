@@ -18,31 +18,31 @@
 
 #include "processinfo.h"
 
-/*!
-    \class ProcessInfo
+/**
+ * @class ProcessInfo
+ *
+ * @brief Information about the current process
+ *
+ * @ingroup util
+ * @author Bernhard Walle
+ */
 
-    \brief Information about the current process
-
-    \ingroup util
-    \author Bernhard Walle
-*/
-
-/*!
-    Checks if the specified process is currently running.
-
-    \param pid the PID of the process that should be checked
-    \return \c true if the process is running, \c false otherwise.
-*/
+/**
+ * @brief Checks if the specified process is currently running.
+ *
+ * @param pid the PID of the process that should be checked
+ * @return \c true if the process is running, \c false otherwise.
+ */
 bool ProcessInfo::isProcessRunning(q_pid_t pid)
 {
     return !kill(pid, 0);
 }
 
-/*!
-    Returns the PID (process ID) of the process that is currently active.
-
-    \return the PID of the current proces.
-*/
+/**
+ * @brief Returns the PID (process ID) of the process that is currently active.
+ *
+ * @return the PID of the current proces.
+ */
 q_pid_t ProcessInfo::getCurrentPid()
 {
     return getpid();

@@ -13,28 +13,31 @@
  * -------------------------------------------------------------------------------------------------
  */
 
-/*!
-    \file constants.h
-
-    This file contains some constants for the cryptographic algorithms used in this program.
-
-    \ingroup security
-*/
-
-/*!
-    \def HASH_ALGORITHM
-
-    The hash algorithm used in this program. See also "Abenteuer Kryptologie", page 292
-    for a detailed description of the security of such algorithms. According to
-    this book and according to my interpretion this is the best one. If you change
-    this the password could not be read by a "normal" compiled program, so be careful.
+/**
+ * @file constants.h
+ *
+ * @brief This file contains some constants for the cryptographic algorithms
+ *        used in this program.
+ *
+ * @ingroup security
  */
 
-/*!
-    \def KEY_CREATION_COUNT
+/**
+ * @def HASH_ALGORITHM
+ *
+ * @brief The hash algorithm used in this program.
+ *
+ * See also "Abenteuer Kryptologie", page 292 for a detailed description of
+ * the security of such algorithms. According to this book and according to my
+ * interpretion this is the best one. If you change this the password could
+ * not be read by a "normal" compiled program, so be careful.
+ */
 
-    A higher count makes the algorithm more secure but is slower.
-    See http://www.openssl.org/docs/crypto/EVP_BytesToKey.html.
-*/
+/**
+ * @def KEY_CREATION_COUNT
+ *
+ * A higher count makes the algorithm more secure but is slower.
+ * See http://www.openssl.org/docs/crypto/EVP_BytesToKey.html.
+ */
 
 // vim: set sw=4 ts=4 et ft=doxygen:

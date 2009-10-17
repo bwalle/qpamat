@@ -26,11 +26,11 @@
 //                                     Static data
 // -------------------------------------------------------------------------------------------------
 
-/*!
-    The Base 64 alphabet from 0 to 63 described in RFC 2045
-    (http://www.faqs.org/rfcs/rfc2045.html). The index is the number and
-    the result is the corresponding character.
-*/
+/**
+ * The Base 64 alphabet from 0 to 63 described in RFC 2045 (http://www.faqs.org/rfcs/rfc2045.html).
+ *
+ * The index is the number and the result is the corresponding character.
+ */
 const char EncodingHelper::base64Alphabet[] = {
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',     // 00 .. 07
     'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',     // 08 .. 15
@@ -41,10 +41,10 @@ const char EncodingHelper::base64Alphabet[] = {
     'w', 'x', 'y', 'z', '0', '1', '2', '3',     // 48 .. 55
     '4', '5', '6', '7', '8', '9', '+', '/'  };  // 56 .. 63
 
-/*!
-    The reverse Base 64 alphabet, i.e. the index is the character and the result is
-    the corresponding number.
-*/
+/**
+ * The reverse Base 64 alphabet, i.e. the index is the character and the result is
+ * the corresponding number.
+ */
 const char EncodingHelper::reverseBase64Alphabet[] = {
      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -56,20 +56,21 @@ const char EncodingHelper::reverseBase64Alphabet[] = {
      41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51                       };
 
 
-/*!
-    \class EncodingHelper
+/**
+ * @class EncodingHelper
+ *
+ * @brief Helper class for dealing with encodings.
+ *
+ * @ingroup security
+ * @author Bernhard Walle
+ */
 
-    \brief Helper class for dealing with encodings.
-
-    \ingroup security
-    \author Bernhard Walle
-*/
-
-/*!
-    Converts the bytes that are in the given vector.
-    \param vector the vector with the bytes
-    \return the string
-*/
+/**
+ * Converts the bytes that are in the given vector.
+ *
+ * @param vector the vector with the bytes
+ * @return the string
+ */
 QString EncodingHelper::toBase64(const ByteVector& vector)
 {
     QString result;
@@ -90,13 +91,15 @@ QString EncodingHelper::toBase64(const ByteVector& vector)
 }
 
 
-/*!
-    Converts the base64 encoded string to the original bytes. The length of
-    the string must be correct, i.e. dividable by 4.
-    \param string the encoded string
-    \return the decoded bytes
-    \exception std::invalid_argument if the length is incorrect
-*/
+/**
+ * Converts the base64 encoded string to the original bytes.
+ *
+ * The length of the string must be correct, i.e. dividable by 4.
+ *
+ * @param string the encoded string
+ * @return the decoded bytes
+ * @exception std::invalid_argument if the length is incorrect
+ */
 ByteVector EncodingHelper::fromBase64(const QString& string)
 {
     int stringLength = string.length();

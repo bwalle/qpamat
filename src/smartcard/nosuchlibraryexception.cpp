@@ -15,34 +15,38 @@
 
 #include "nosuchlibraryexception.h"
 
-/*!
-    \class NoSuchLibraryException
+/**
+ * @class NoSuchLibraryException
+ *
+ * @brief  Exception that is thrown if the specified library does not exist.
+ *
+ * Only the type is important. Use the constructor to set the error message and use the
+ * inherited NoSuchLibraryException::what() method to get the error message.
+ *
+ * @ingroup smartcard
+ * @author Bernhard Walle
+ */
 
-    \brief  Exception that is thrown if the specified library does not exist.
-
-    Only the type is important. Use the constructor to set the error message and use the
-    inherited NoSuchLibraryException::what() method to get the error message.
-
-    \ingroup smartcard
-    \author Bernhard Walle
-*/
-
-/*!
-    Creates a new instance of the exception and includes the error message. This
-    message is returned by the what() method.
-    \param error the error message
-*/
+/**
+ * @brief Creates a new instance of the exception and includes the error message.
+ *
+ * This message is returned by the what() method.
+ *
+ * @param error the error message
+ */
 NoSuchLibraryException::NoSuchLibraryException(const std::string& error)
     : std::runtime_error(error)
 { }
 
 
-/*!
-    Creates a new instance of the exception and includes the error message. This
-    message is returned by the what() method. It behaves exactly like the above
-    constructor and is provided only for convenience.
-    \param error the error message
-*/
+/**
+ * @brief Creates a new instance of the exception and includes the error message.
+ *
+ * This message is returned by the what() method. It behaves exactly like the above
+ * constructor and is provided only for convenience.
+ *
+ * @param error the error message
+ */
 NoSuchLibraryException::NoSuchLibraryException(const QString& error)
     : std::runtime_error(error.latin1())
 { }

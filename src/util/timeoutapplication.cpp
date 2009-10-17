@@ -27,17 +27,17 @@
 #include "timeoutapplication.h"
 #include "global.h"
 
-/*!
-    \class TimeoutApplication
-
-    \brief Support for a application that wants to trigger an inactivity action after a timeout
-
-    Some applications wants to perform an action after some time of inactivity of the user.
-    A user is active if the application receives mouse and/or key events.
-
-    \ingroup misc
-    \author Bernhard Walle
-*/
+/**
+ * @class TimeoutApplication
+ *
+ * @brief Support for a application that wants to trigger an inactivity action after a timeout
+ *
+ * Some applications wants to perform an action after some time of inactivity of the user.
+ * A user is active if the application receives mouse and/or key events.
+ *
+ * @ingroup misc
+ * @author Bernhard Walle
+ */
 
 
 #ifdef Q_WS_X11
@@ -112,14 +112,14 @@ void setTrayOwnerWindow(Display *dsp)
 #endif
 
 
-/*!
-    Creates a new TimeoutApplication object.
-
-    See QApplication::QApplication(int&, char**) for details.
-
-    \param argc the args of the main() function
-    \param argv the argv of the main() function
-*/
+/**
+ * @brief Creates a new TimeoutApplication object.
+ *
+ * See QApplication::QApplication(int&, char**) for details.
+ *
+ * @param argc the args of the main() function
+ * @param argv the argv of the main() function
+ */
 TimeoutApplication::TimeoutApplication(int& argc, char** argv)
     : QApplication(argc, argv), m_timeout(0), m_timer(0), m_temporaryDisabled(false)
 {
@@ -127,15 +127,15 @@ TimeoutApplication::TimeoutApplication(int& argc, char** argv)
 }
 
 
-/*!
-    Creates a new TimeoutApplication object.
-
-    See QApplication::QApplication(int&, char**, bool) for details.
-
-    \param argc the args of the main() function
-    \param argv the argv of the main() function
-    \param guiEnabled if it is a GUI application
-*/
+/**
+ * @brief Creates a new TimeoutApplication object.
+ *
+ * See QApplication::QApplication(int&, char**, bool) for details.
+ *
+ * @param argc the args of the main() function
+ * @param argv the argv of the main() function
+ * @param guiEnabled if it is a GUI application
+ */
 TimeoutApplication::TimeoutApplication(int& argc, char** argv, bool guiEnabled)
     : QApplication(argc, argv, guiEnabled), m_timeout(0), m_timer(0), m_temporaryDisabled(false)
 {
@@ -143,9 +143,9 @@ TimeoutApplication::TimeoutApplication(int& argc, char** argv, bool guiEnabled)
 }
 
 
-/*!
-    Common init function because in C++ a constructor cannot call another constructor.
-*/
+/**
+ * Common init function because in C++ a constructor cannot call another constructor.
+ */
 void TimeoutApplication::init()
 {
     m_timer = new QTimer(this);
@@ -191,58 +191,63 @@ void TimeoutApplication::init()
 #endif
 }
 
-/*!
-    \property TimeoutApplication::timeout
+/**
+ * @property TimeoutApplication::timeout
+ *
+ * @brief The inactivity timeout after that the timedOut signal should be triggered.
+ *
+ * The value must be positive, negative values are not permitted.
+ */
 
-    The inactivity timeout after that the timedOut signal should be triggered. The value
-    must be positive, negative values are not permitted.
-*/
-
-/*!
-    Returns the timeout value in minutes. Zero means the timeout feature is disabled.
-
-    \return the timeout
-*/
+/**
+ * @brief Returns the timeout value in minutes.
+ *
+ * Zero means the timeout feature is disabled.  
+ * @return the timeout
+ */
 int TimeoutApplication::getTimeout() const
 {
     return m_timeout;
 }
 
 
-/*!
-    Sets the timeout. Zero means that the timeout feature is disabled. Negative values are
-    not permitted.
-
-    \param timeout the timeout in milliseconds
-*/
+/**
+ * @brief Sets the timeout.
+ *
+ * Zero means that the timeout feature is disabled. Negative values are not permitted.
+ *
+ * @param timeout the timeout in milliseconds
+ */
 void TimeoutApplication::setTimeout(int timeout)
 {
     m_timeout = timeout;
 }
 
 
-/*!
-    \property TimeoutApplication::temporaryDisabled
-
-    Sometimes, the call of the timedOut() function has to disabled temporary without loosing
-    the timeout value. To do this, set temporaryDisabled to true.
+/**
+ * @property TimeoutApplication::temporaryDisabled
+ *
+ * @brief Sometimes, the call of the timedOut() function has to disabled temporary without
+ *        loosing the timeout value.
+ *
+ * To do this, set temporaryDisabled to true.
 */
 
-/*!
-    Checks if the TimeoutApplication is disabled temporary.
-
-    \return \c true if it is disabled, \c false if not
-*/
+/**
+ * @brief Checks if the TimeoutApplication is disabled temporary.
+ *
+ * @return \c true if it is disabled, \c false if not
+ */
 bool TimeoutApplication::isTemporaryDisabled() const
 {
     return m_temporaryDisabled;
 }
 
-/*!
-    Sets the timeout function to disabled temporary.
-
-    \param disabled \c true if it should be disabled, \c false if not
-*/
+/**
+ * @brief Sets the timeout function to disabled temporary.
+ *
+ * @param disabled \c true if it should be disabled, \c false if not
+ */
 void TimeoutApplication::setTemporaryDisabled(bool disabled)
 {
     m_timer->stop();
@@ -250,47 +255,51 @@ void TimeoutApplication::setTemporaryDisabled(bool disabled)
 }
 
 
-/*!
-    Adds receivers to ignore for timeout. This is a kind of hack to ignore
-    events which get passed to the tray icon. If the object is destroyed,
-    it does not gets automatically removed from this list. You have to take care
-    this yourself!
-
-    \param receiver the receiver to ignore
-*/
+/**
+ * @brief Adds receivers to ignore for timeout.
+ *
+ * This is a kind of hack to ignore events which get passed to the tray icon. If the
+ * object is destroyed, it does not gets automatically removed from this list. You have to
+ * take care this yourself!
+ *
+ * @param receiver the receiver to ignore
+ */
 void TimeoutApplication::addReceiverToIgnore(void* receiver)
 {
     m_receiversToIgnore.append(receiver);
 }
 
 
-/*!
-    Removes receivers to ignore from timeout. See also
-    TimeoutApplication::addReceiverToIgnore().
-
-    \param receiver the receiver to remove
-*/
+/**
+ * @brief Removes receivers to ignore from timeout.
+ *
+ * See also TimeoutApplication::addReceiverToIgnore().
+ *
+ * @param receiver the receiver to remove
+ */
 void TimeoutApplication::removeReceiverToIgnore(void* receiver)
 {
     m_receiversToIgnore.removeAll(receiver);
 }
 
 
-/*!
-    Clears the list of receivers to ignore.
-*/
+/**
+ * @brief Clears the list of receivers to ignore.
+ */
 void TimeoutApplication::clearReceiversToIgnore()
 {
     m_receiversToIgnore.clear();
 }
 
 
-/*!
-    Overwrites QApplication::nofity(QObject*, QEvent*). Restarts the timer if necessary.
-
-    \param receiver the receiver
-    \param e the event
-*/
+/**
+ * @brief Overwrites QApplication::nofity(QObject*, QEvent*).
+ *
+ * Restarts the timer if necessary.
+ *
+ * @param receiver the receiver
+ * @param e the event
+ */
 bool TimeoutApplication::notify(QObject* receiver, QEvent* e)
 {
     if (!m_temporaryDisabled && m_timeout != 0 &&
@@ -305,11 +314,10 @@ bool TimeoutApplication::notify(QObject* receiver, QEvent* e)
 }
 
 
-
-/*!
-    \fn TimeoutApplication::timedOut()
-
-    Signal that is emitted if the inactivity timeout occured.
-*/
+/**
+ * @fn TimeoutApplication::timedOut()
+ *
+ * Signal that is emitted if the inactivity timeout occured.
+ */
 
 // vim: set sw=4 ts=4 et:

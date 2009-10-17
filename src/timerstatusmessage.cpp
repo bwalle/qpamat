@@ -19,37 +19,39 @@
 
 #include "timerstatusmessage.h"
 
-/*!
-    \class TimerStatusmessage
+/**
+ * @class TimerStatusmessage
+ *
+ * @brief Class for displaying a status message for a fixed amount of time.
+ *
+ * This class makes it possible to display a status message for a fixed amount of time.
+ * If another class changes the status text, this class re-changes it to the old value.
+ * Of course this is a hack, but it works.
+ *
+ * Create a new instance and set the statusbar. Then call the message() method each time
+ * you want to display the message.
+ *
+ * @ingroup gui
+ * @author Bernhard Walle
+ */
 
-    \brief Class for displaying a status message for a fixed amount of time.
-
-    This class makes it possible to display a status message for a fixed amount of time.
-    If another class changes the status text, this class re-changes it to the old value.
-    Of course this is a hack, but it works.
-
-    Create a new instance and set the statusbar. Then call the message() method each time
-    you want to display the message.
-
-    \ingroup gui
-    \author Bernhard Walle
-*/
-
-/*!
-    Creates a new TimerStatusmessage object.
-    \param statusbar the statusbar on which the message should be displayed
-*/
+/**
+ * Creates a new TimerStatusmessage object.
+ *
+ * @param statusbar the statusbar on which the message should be displayed
+ */
 TimerStatusmessage::TimerStatusmessage(QStatusBar* statusbar)
     : m_statusBar(statusbar)
     , m_connected(false)
 {}
 
 
-/*!
-    Displays a message immediately.
-    \param message the message that should be displayed on the statusbar
-    \param time the time while the message is displayed
-*/
+/**
+ * Displays a message immediately.
+ *
+ * @param message the message that should be displayed on the statusbar
+ * @param time the time while the message is displayed
+ */
 void TimerStatusmessage::message(const QString& message, int time)
 {
     m_message = message;
@@ -67,9 +69,9 @@ void TimerStatusmessage::message(const QString& message, int time)
 }
 
 
-/*!
-    Displays the same message again.
-*/
+/**
+ * Displays the same message again.
+ */
 void TimerStatusmessage::displayAgain()
 {
     int diff = m_begin.msecsTo(QTime::currentTime());
@@ -81,9 +83,9 @@ void TimerStatusmessage::displayAgain()
 }
 
 
-/*!
-    Disconnects signals and slots after the timer timed out.
-*/
+/**
+ * Disconnects signals and slots after the timer timed out.
+ */
 void TimerStatusmessage::disconnectSignalsAndSlots()
 {
     disconnect(m_statusBar, SIGNAL(messageChanged(const QString&)), this, SLOT(displayAgain()));

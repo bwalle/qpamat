@@ -30,18 +30,18 @@
 #include "settings.h"
 #include "dialogs/aboutdialog.h"
 
-/*!
-    \class Help
+/**
+ * @class Help
+ *
+ * @brief Helping class for providing help.
+ *
+ * @ingroup gui
+ * @author Bernhard Walle
+ */
 
-    \brief Helping class for providing help.
-
-    \ingroup gui
-    \author Bernhard Walle
-*/
-
-/*!
-    Shows the about dialog
-*/
+/**
+ * @brief Shows the about dialog
+ */
 void Help::showAbout()
 {
     QScopedPointer<AboutDialog> dlg(new AboutDialog(qApp->mainWidget(), "About Dialog"));
@@ -49,9 +49,9 @@ void Help::showAbout()
     dlg->exec();
 }
 
-/*!
-    Shows the documentation in the browser specified by the user.
-*/
+/**
+ * @brief Shows the documentation in the browser specified by the user.
+ */
 void Help::showHelp()
 {
     QString base = QDir(qApp->applicationDirPath() + "/../share/qpamat/doc/").canonicalPath();
@@ -73,9 +73,9 @@ void Help::showHelp()
 }
 
 
-/*!
-    Opens the specified URL in the browser.
-*/
+/**
+ * @brief Opens the specified URL in the browser.
+ */
 void Help::openURL(QWidget* parent, const QString& url)
 {
     if (!QDesktopServices::openUrl(QUrl(url))) {

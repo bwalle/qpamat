@@ -28,21 +28,21 @@
 #include <QHBoxLayout>
 #include <QTextStream>
 
-/*!
-    \class AboutDialog
+/**
+ * @class AboutDialog
+ *
+ * @brief The "about" dialog of QPaMaT.
+ *
+ * @ingroup gui
+ * @author Bernhard Walle
+ */
 
-    \brief The "about" dialog of QPaMaT.
-
-    \ingroup gui
-    \author Bernhard Walle
-*/
-
-/*!
-    Creates a new instance of a AboutDialog object.
-
-    \param parent the parent widget
-    \param name the name of the widget
-*/
+/**
+ * @brief Creates a new instance of a AboutDialog object.
+ *
+ * @param parent the parent widget
+ * @param name the name of the widget
+ */
 AboutDialog::AboutDialog(QWidget* parent, const char* name = 0)
     : QDialog(parent, name)
 {
@@ -79,9 +79,9 @@ AboutDialog::AboutDialog(QWidget* parent, const char* name = 0)
 
 }
 
-/*!
-    Sets up the about tab.
-*/
+/**
+ * @brief Sets up the about tab.
+ */
 void AboutDialog::setupAboutTab()
 {
     Q3HBox* aboutTab = new Q3HBox(this);
@@ -102,9 +102,11 @@ void AboutDialog::setupAboutTab()
 
 }
 
-/*!
-    Sets up the license tab. Tries to search the \c LICENSE file.
-*/
+/**
+ * @brief Sets up the license tab.
+ *
+ * Tries to search the \c LICENSE file.
+ */
 void AboutDialog::setupLicenseTab()
 {
     Q3VBox* licenseTab = new Q3VBox(this);

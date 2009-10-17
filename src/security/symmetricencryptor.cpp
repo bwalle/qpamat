@@ -36,33 +36,34 @@
 StringMap SymmetricEncryptor::m_algorithms = initAlgorithmsMap();
 
 
-/*!
-    \class SymmetricEncryptor
+/**
+ * @class SymmetricEncryptor
+ *
+ * @brief A object which encrypts bytes.
+ *
+ * @ingroup security
+ * @author Bernhard Walle
+ */
 
-    \brief A object which encrypts bytes.
-
-    \ingroup security
-    \author Bernhard Walle
-*/
-
-/*!
-    Creates an instance of a new Encryptor for the given algorithm.
-    Following algorithms may be supported:
-
-     - Blowfish (\c BLOWFISH)
-     - International Data Encryption Algorithm (\c IDEA)
-     - CAST (\c CAST)
-     - Triple-Data Encryption Standard (\c 3DES)
-     - Advances Encryption Standard (\c AES)
-
-    Which algorithms are available in reality depends on OpenSSL. It can only be
-    checked at runtime. You cat a list of available algorithms using the
-    getAlgorithms() function in this class.
-
-    \param algorithm the algorithm as string
-    \param password The password for encryption and decryption.
-    \exception NoSuchAlgorithmException if the algorithm is not supported
-*/
+/**
+ * @brief Creates an instance of a new Encryptor for the given algorithm.
+ *
+ * Following algorithms may be supported:
+ *
+ *   - Blowfish (\c BLOWFISH)
+ *   - International Data Encryption Algorithm (\c IDEA)
+ *   - CAST (\c CAST)
+ *   - Triple-Data Encryption Standard (\c 3DES)
+ *   - Advances Encryption Standard (\c AES)
+ *
+ * Which algorithms are available in reality depends on OpenSSL. It can only be checked at
+ * runtime. You cat a list of available algorithms using the getAlgorithms() function in
+ * this class.
+ *
+ * @param algorithm the algorithm as string
+ * @param password The password for encryption and decryption.
+ * @exception NoSuchAlgorithmException if the algorithm is not supported
+ */
 SymmetricEncryptor::SymmetricEncryptor(const QString& algorithm, const QString& password)
             throw (NoSuchAlgorithmException)
 {
@@ -78,11 +79,14 @@ SymmetricEncryptor::SymmetricEncryptor(const QString& algorithm, const QString& 
 }
 
 
-/*!
-    Returns a list of all available cipher algorithms. It depends on the OpenSSL configuration.
-    \return the list
-    \see Encryptor()
-*/
+/**
+ * @brief Returns a list of all available cipher algorithms.
+ *
+ * It depends on the OpenSSL configuration.
+ *
+ * @return the list
+ * @see Encryptor()
+ */
 QStringList SymmetricEncryptor::getAlgorithms()
 {
     QStringList algorithms;
@@ -94,13 +98,15 @@ QStringList SymmetricEncryptor::getAlgorithms()
 }
 
 
-/*!
-    Returns the default algorithm used for new files QPaMaT. As my personal
-    preference I suggest Blowfish as default algorithm if available. It's fast,
-    not protected by patents and is held for secure. AES is the same but it's not
-    included in older versions of OpenSSL.
-    \return the name of the algorithm
-*/
+/**
+ * @brief Returns the default algorithm used for new files QPaMaT.
+ *
+ * As my personal preference I suggest Blowfish as default algorithm if available. It's
+ * fast, not protected by patents and is held for secure. AES is the same but it's not
+ * included in older versions of OpenSSL.
+ *
+ * @return the name of the algorithm
+ */
 QString SymmetricEncryptor::getSuggestedAlgorithm()
 {
     StringVector vec;
@@ -108,18 +114,21 @@ QString SymmetricEncryptor::getSuggestedAlgorithm()
     vec.push_back("AES");
     vec.push_back("CAST5");
 
-    for (StringVector::Iterator it = vec.begin(); it != vec.end(); ++it)
-        if (m_algorithms.contains(*it))
+    for (StringVector::Iterator it = vec.begin(); it != vec.end(); ++it) {
+        if (m_algorithms.contains(*it)) {
             return *it;
+        }
+    }
 
     return QString();
 }
 
 
-/*!
-    Initializes the algorithms map according to the OpenSSL library.
-    \return StringMap the map
-*/
+/**
+ * @brief Initializes the algorithms map according to the OpenSSL library.
+ *
+ * @return StringMap the map
+ */
 StringMap SymmetricEncryptor::initAlgorithmsMap()
 {
     StringMap map, returned;
@@ -141,34 +150,34 @@ StringMap SymmetricEncryptor::initAlgorithmsMap()
 }
 
 
-/*!
-    \copydoc Encryptor::encrypt
-*/
+/**
+ * @copydoc Encryptor::encrypt
+ */
 ByteVector SymmetricEncryptor::encrypt(const ByteVector& vector)
 {
     return crypt(vector, ENCRYPT);
 }
 
 
-/*!
-    \copydoc Encryptor::decrypt
-*/
+/**
+ * @copydoc Encryptor::decrypt
+ */
 ByteVector SymmetricEncryptor::decrypt(const ByteVector& vector)
 {
     return crypt(vector, DECRYPT);
 }
 
 
-/*!
-    \enum SymmetricEncryptor::OperationType
+/**
+ * @enum SymmetricEncryptor::OperationType
+ *
+ * The operation type that indicates whether it should be encrypted (\c ENCRYPT) or
+ * decrypted (\c DECRYPT).
+ */
 
-    The operation type that indicates whether it should be encrypted (\c ENCRYPT) or
-    decrypted (\c DECRYPT).
-*/
-
-/*!
-    Does the real encryption/decryption according to the operation type.
-*/
+/**
+ * Does the real encryption/decryption according to the operation type.
+ */
 ByteVector SymmetricEncryptor::crypt(const ByteVector& vector, OperationType operation) const
 {
     unsigned char buf[BUFLEN];
@@ -204,10 +213,11 @@ ByteVector SymmetricEncryptor::crypt(const ByteVector& vector, OperationType ope
 }
 
 
-/*!
-    Sets a new a new password.
-    \param password the password
-*/
+/**
+ * @brief Sets a new a new password.
+ *
+ * @param password the password
+ */
 void SymmetricEncryptor::setPassword(const QString& password)
 {
     Q3CString pwUtf8 = password.utf8();
@@ -216,10 +226,11 @@ void SymmetricEncryptor::setPassword(const QString& password)
 }
 
 
-/*!
-    Returns the cipher algorithm of this encryptor.
-    \return the algorithm as string as used by the constructor
-*/
+/**
+ * @brief Returns the cipher algorithm of this encryptor.
+ *
+ * @return the algorithm as string as used by the constructor
+ */
 QString SymmetricEncryptor::getCurrentAlgorithm() const
 {
     return m_currentAlgorithm;

@@ -19,102 +19,136 @@
 
 #include "cardexception.h"
 
-/*!
-    \class CardException
+/**
+ * @class CardException
+ *
+ * @brief Exception for communicating with smartcard.
+ *
+ * This exception is thrown if an error occurred while communicating with the smartcard
+ * terminal. It just encapsulates the error codes of CT-API in a programmer-friendly way.
+ * You don't have to deal with strange constants and returncodes.
+ *
+ * @ingroup smartcard
+ * @author Bernhard Walle
+ */
 
-    \brief Exception for communicating with smartcard.
+/**
+ * @enum CardException::ErrorCode
+ *
+ * Enumeration for CT-API errorcodes.
+ */
 
-    This exception is thrown if an error occurred while communicating with the smartcard
-    terminal. It just encapsulates the error codes of CT-API in a programmer-friendly way.
-    You don't have to deal with strange constants and returncodes.
+/**
+ * @var CardException::NoError
+ *
+ * No error, used for passing a message.
+ */
 
-    \ingroup smartcard
-    \author Bernhard Walle
-*/
+/**
+ * @var CardException::Invalid
+ *
+ * Invalid parameter or value.
+ */
 
-/*!
-    \enum CardException::ErrorCode
+/**
+ * @var CardException::CardTerminal
+ *
+ * Cardterminal Error. The terminal is temporary not accessible (busy with other or
+ * internal processes). The problem can be resolved by the application.
+ */
 
-    Enumeration for CT-API errorcodes.
-*/
-/*!
-    \var CardException::NoError
-    No error, used for passing a message.
-*/
-/*!
-    \var CardException::Invalid
-    Invalid parameter or value.
-*/
-/*!
-    \var CardException::CardTerminal
-    Cardterminal Error. The terminal is temporary not accessible (busy with other or internal
-    processes). The problem can be resolved by the application.
-*/
-/*!
-    \var CardException::Transmission
-    Transmission error. Transmission error due to mechanical, electrical or protocol failures.
-    Reset of of cardterminal is necessary.
-*/
-/*!
-    \var CardException::Memory
-    Memory assignment error. A memory error occurred (the allocated buffer is too small for
-    the returned data).
-*/
-/*!
-    \var CardException::HTSI
-    Host Transport Service Interface error. Commonly returned if the error is produced by the
-    software layer and not in the communication with the hardware.
-*/
-/*!
-    \var CardException::DataCorrupted
-    Read Binary: Data corrupted.
-*/
-/*!
-    \var CardException::EndReached
-    Read Binary: The specified data is not in the valid range for the chipcard.
-*/
-/*!
-    \var CardException::MemoryFailure
-    Read Binary: Memory failure.
-*/
-/*!
-    \var CardException::Error
-    General error.
-*/
-/*!
-    \var CardException::WrongVerification
-    The verification was wrong. You have to set the number of retries. Only a specified number
-    of retries are allowed, othwerwise the card is destroyed.
-*/
-/*!
-    \var CardException::VerificationBlocked
-    Verification method blocked
-*/
+/**
+ * @var CardException::Transmission
+ *
+ * Transmission error. Transmission error due to mechanical, electrical or protocol
+ * failures.  Reset of of cardterminal is necessary.
+ */
 
-/*!
-    Creates a new instance of the exception and includes the error message. This message is
-    returned by the what() method. Consider using the other constructor which takes an errorcode.
-    \param message the error message
-*/
+/**
+ * @var CardException::Memory
+ *
+ * Memory assignment error. A memory error occurred (the allocated buffer is too small for
+ * the returned data).
+ */
+
+/**
+ * @var CardException::HTSI
+ *
+ * Host Transport Service Interface error. Commonly returned if the error is produced by
+ * the software layer and not in the communication with the hardware.
+ */
+
+/**
+ * @var CardException::DataCorrupted
+ *
+ * Read Binary: Data corrupted.
+ */
+
+/**
+ * @var CardException::EndReached
+ *
+ * Read Binary: The specified data is not in the valid range for the chipcard.
+ */
+
+/**
+ * @var CardException::MemoryFailure
+ *
+ * Read Binary: Memory failure.
+ */
+
+/**
+ * @var CardException::Error
+ *
+ * General error.
+ */
+
+/**
+ * @var CardException::WrongVerification
+ *
+ * The verification was wrong. You have to set the number of retries. Only a specified
+ * number of retries are allowed, othwerwise the card is destroyed.
+ */
+
+/**
+ * @var CardException::VerificationBlocked
+ *
+ * Verification method blocked
+ */
+
+/**
+ * @brief Creates a new instance of the exception and includes the error message.
+ *
+ * This message is returned by the what() method. Consider using the other constructor
+ * which takes an errorcode.
+ *
+ * @param message the error message
+ */
 CardException::CardException(const std::string& message)
-    : std::runtime_error(message), m_errorcode(NoError), m_retryNumber(-1)
+    : std::runtime_error(message)
+    , m_errorcode(NoError)
+    , m_retryNumber(-1)
 {}
 
 
-/*!
-    Creates a new instance of the exception and sets the error code. The error message
-    is generated on the fly if requested.
-    \param errorcode the error code, see CardException::ErrorCode.
-*/
+/**
+ * Creates a new instance of the exception and sets the error code.
+ *
+ * The error message is generated on the fly if requested.
+ *
+ * @param errorcode the error code, see CardException::ErrorCode.
+ */
 CardException::CardException(ErrorCode errorcode)
-    : std::runtime_error(""), m_errorcode(errorcode), m_retryNumber(-1)
+    : std::runtime_error("")
+    , m_errorcode(errorcode)
+    , m_retryNumber(-1)
 {}
 
 
-/*!
-    Creates a human-readable errorcode message.
-    \return the message as English text
-*/
+/**
+ * @brief Creates a human-readable errorcode message.
+ *
+ * @return the message as English text
+ */
 const char* CardException::what() const throw ()
 {
     switch (m_errorcode) {
@@ -153,30 +187,36 @@ const char* CardException::what() const throw ()
 }
 
 
-/*!
-    Returns the error code
-    \return the error code or CardException::NoError if a error message but no error code was set
-*/
+/**
+ * @brief Returns the error code
+ *
+ * @return the error code or CardException::NoError if a error message but no error code
+ * was set
+ */
 CardException::ErrorCode CardException::getErrorCode() const
 {
     return m_errorcode;
 }
 
 
-/*!
-    Sets the number of retries. You have to set the number of retries if the exception type
-    is CardException::WrongVerification.
-*/
+/**
+ * @brief Sets the number of retries.
+ *
+ * You have to set the number of retries if the exception type is
+ * CardException::WrongVerification.
+ */
 void CardException::setRetryNumber(int num)
 {
     m_retryNumber = num;
 }
 
 
-/*!
-    Returns the number of retries. This value should be set if the type of the exception is
-    CardException::WrongVerification. If it was not set, \c -1 is returned.
-*/
+/**
+ * @brief Returns the number of retries.
+ *
+ * This value should be set if the type of the exception is
+ * CardException::WrongVerification. If it was not set, \c -1 is returned.
+ */
 int CardException::getRetryNumber() const
 {
     return m_retryNumber;

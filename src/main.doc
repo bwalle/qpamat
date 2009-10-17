@@ -13,73 +13,73 @@
  * -------------------------------------------------------------------------------------------------
  */
 
-/*!
-    \mainpage QPaMaT
+/**
+ * @mainpage QPaMaT
+ *
+ * @section intro Introduction
+ *
+ * This is the introduction.
+ *
+ * @section install Installation
+ *
+ * @subsection step1 Step 1: Opening the box
+ *
+ * etc...
+ */
 
-    \section intro Introduction
+/**
+ * @defgroup security Security
+ *
+ * Classes used for encryption, decryption and checking passworts.
+ */
 
-    This is the introduction.
+/**
+ * @defgroup smartcard SmartCard
+ *
+ * Classes for accessing memory cards
+ */
 
-    \section install Installation
-
-    \subsection step1 Step 1: Opening the box
-
-    etc...
-*/
-
-/*!
-    \defgroup security Security
-
-    Classes used for encryption, decryption and checking passworts.
-*/
-
-/*!
-    \defgroup smartcard SmartCard
-
-    Classes for accessing memory cards
-*/
-
-/*!
-    \defgroup gui GUI
-
-    Classes for GUI
-*/
+/**
+ * @defgroup gui GUI
+ *
+ * Classes for GUI
+ */
 
 /*@{*/
 
-/*!
-    \defgroup dialogs Dialogs
-
-    \brief Dialogs
-
-    That are the dialogs used in this application.
-*/
+/**
+ * @defgroup dialogs Dialogs
+ *
+ * @brief Dialogs
+ *
+ * That are the dialogs used in this application.
+ */
 
 /*@}*/
 
-/*!
-    \defgroup widgets Widgets
+/**
+ * @defgroup widgets Widgets
+ *
+ * Reusable widgets.
+ *
+ * This widgets have nothing to do with this application. Maybe I'll make a library out
+ * of this widgets later. We'll see.
+ */
 
-    Reusable widgets.
+/**
+ * @defgroup misc Misc
+ *
+ * All other
+ *
+ * This group contains classes that don't belong to the other groups logically.
+ */
 
-    This widgets have nothing to do with this application. Maybe I'll make a library out
-    of this widgets later. We'll see.
-*/
-
-/*!
-    \defgroup misc Misc
-
-    All other
-
-    This group contains classes that don't belong to the other groups logically.
-*/
-
-/*!
-    \defgroup unittest UnitTests
-
-    Unit Tests
-
-    This group contains all Unit test classes, developed with the QTest framework.
-*/
+/**
+ * @defgroup unittest UnitTests
+ *
+ * Unit Tests
+ *
+ * This group contains all Unit test classes, developed with the QTest framework.
+ */
 
 // vim: set sw=4 ts=4 et ft=doxygen:

@@ -25,35 +25,37 @@
 #include "tree.h"
 
 
-/*!
-    \class TreeEntry
+/**
+ * @class TreeEntry
+ *
+ * @brief Represents an entry in the tree.
+ *
+ * @ingroup gui
+ * @author Bernhard Walle
+ */
 
-    \brief Represents an entry in the tree.
+/**
+ * @typedef TreeEntry::PropertyIterator
+ *
+ * The iterator for the proeprties
+ */
 
-    \ingroup gui
-    \author Bernhard Walle
-*/
+/**
+ * @fn TreeEntry::propertyAppended()
+ *
+ * Fired is a property was added.
+ */
 
-/*!
-    \typedef TreeEntry::PropertyIterator
-
-    The iterator for the proeprties
-*/
-
-/*!
-    \fn TreeEntry::propertyAppended()
-
-    Fired is a property was added.
-*/
-
-/*!
-    Returns the weakest passwort strength of any children of the item. All password
-    strength should be computed because of speed issues (in other words, no wait cursor
-    or something else is displayed in this function).
-    \return the password strength, Property::PUndefined should be never returned
-    \exception PasswordCheckException if recomputing is necessary and the PasswordChecker
-               threw a PasswordCheckException
-*/
+/**
+ * @brief Returns the weakest passwort strength of any children of the item.
+ *
+ * All password strength should be computed because of speed issues (in other
+ * words, no wait cursor or something else is displayed in this function).
+ *
+ * @return the password strength, Property::PUndefined should be never returned
+ * @exception PasswordCheckException if recomputing is necessary and the PasswordChecker
+ *            threw a PasswordCheckException
+ */
 Property::PasswordStrength TreeEntry::weakestChildrenPassword() const throw (PasswordCheckException)
 {
     Property::PasswordStrength lowest = Property::PUndefined;
@@ -91,28 +93,29 @@ Property::PasswordStrength TreeEntry::weakestChildrenPassword() const throw (Pas
 }
 
 
-/*!
-    Returns the name of the entry.
-*/
+/**
+ * @brief Returns the name of the entry.
+ */
 QString TreeEntry::getName() const
 {
     return m_name;
 }
 
 
-/*!
-    Returns whether the entry is a categroy.
-*/
+/**
+ * @brief  Returns whether the entry is a categroy.
+ */
 bool TreeEntry::isCategory() const
 {
     return m_isCategory;
 }
 
 
-/*!
-    Returns an iterator to the first entry of the properties list.
-    \return the iterator
-*/
+/**
+ * @brief Returns an iterator to the first entry of the properties list.
+ *
+ * \return the iterator
+ */
 Property* TreeEntry::getProperty(unsigned int index)
 {
     Q_ASSERT(index < m_properties.count());
@@ -120,12 +123,13 @@ Property* TreeEntry::getProperty(unsigned int index)
 }
 
 
-/*!
-    Returns the name of the entry.
-    \param column the column
-    \return the name
-    \sa QListViewItem::text
-*/
+/**
+ * @brief Returns the name of the entry.
+ *
+ * @param column the column
+ * @return the name
+ * @sa QListViewItem::text
+ */
 QString TreeEntry::text(int column) const
 {
     Q_ASSERT( column == 0 );
@@ -134,11 +138,14 @@ QString TreeEntry::text(int column) const
 }
 
 
-/*!
-    Sets the text of the entry. Sets the name internally.
-    \param column the column
-    \param text the new text
-*/
+/**
+ * @brief Sets the text of the entry.
+ *
+ * Sets the name internally.
+ *
+ * @param column the column
+ * @param text the new text
+ */
 void TreeEntry::setText(int column, const QString& text)
 {
     UNUSED(column);
@@ -150,10 +157,11 @@ void TreeEntry::setText(int column, const QString& text)
 }
 
 
-/*!
-    Moves the given property one step up.
-    \param index the index of the property
-*/
+/**
+ * @brief Moves the given property one step up.
+ *
+ * @param index the index of the property
+ */
 void TreeEntry::movePropertyOneUp(unsigned int index)
 {
     Q_ASSERT( index < m_properties.count() - 1);
@@ -166,10 +174,11 @@ void TreeEntry::movePropertyOneUp(unsigned int index)
 }
 
 
-/*!
-    Moves the given property one step down.
-    \param index the index of the property
-*/
+/**
+ * @brief Moves the given property one step down.
+ *
+ * @param index the index of the property
+ */
 void TreeEntry::movePropertyOneDown(unsigned int index)
 {
     Q_ASSERT( index > 0 && index < m_properties.count() );
@@ -182,10 +191,11 @@ void TreeEntry::movePropertyOneDown(unsigned int index)
 }
 
 
-/*!
-    Deletes the property with the specified index
-    \param index the index
-*/
+/**
+ * @brief Deletes the property with the specified index
+ *
+ * @param index the index
+ */
 void TreeEntry::deleteProperty(unsigned int index)
 {
     Q_ASSERT( index < m_properties.count() );
@@ -193,19 +203,20 @@ void TreeEntry::deleteProperty(unsigned int index)
 }
 
 
-/*!
-    Removes all properties.
-*/
+/**
+ * @brief Removes all properties.
+ */
 void TreeEntry::deleteAllProperties()
 {
     m_properties.clear();
 }
 
 
-/*!
-    Inserts a new property at the end.
-    \param property the property
-*/
+/**
+ * @brief Inserts a new property at the end.
+ *
+ * @param property the property
+ */
 void TreeEntry::appendProperty(Property* property)
 {
     m_properties.append(property);
@@ -213,22 +224,22 @@ void TreeEntry::appendProperty(Property* property)
 }
 
 
-/*!
-    Returns an iterator for the list
-*/
+/**
+ * @brief Returns an iterator for the list
+ */
 TreeEntry::PropertyIterator TreeEntry::propertyIterator() const
 {
     return PropertyIterator(m_properties);
 }
 
 
-/*!
-    Returns the full name including the category.
-
-    This is required for the printout and for the label on the top.
-
-    \return the full name with category
-*/
+/**
+ * @brief Returns the full name including the category.
+ *
+ * This is required for the printout and for the label on the top.
+ *
+ * @return the full name with category
+ */
 QString TreeEntry::getFullName() const
 {
     QString catString;
@@ -238,11 +249,13 @@ QString TreeEntry::getFullName() const
     return catString + m_name;
 }
 
-/*!
-    This function converts a tree entry to HTML for printing. A TreeEntry represents one
-    big table.
-    \return the RichText
-*/
+/**
+ * @brief This function converts a tree entry to HTML for printing.
+ *
+ * A TreeEntry represents one big table.
+ *
+ * @return the RichText
+ */
 QString TreeEntry::toRichTextForPrint() const
 {
     if (m_isCategory)
@@ -268,21 +281,24 @@ QString TreeEntry::toRichTextForPrint() const
 }
 
 
-/*!
-    Appends the tree entry as text representation to the given stream. The text is formatted for
-    export.
-
-    \param stream the stream where the text is appended
-*/
+/**
+ * @brief Appends the tree entry as text representation to the given stream.
+ *
+ * The text is formatted for export.
+ *
+ * @param stream the stream where the text is appended
+ */
 void TreeEntry::appendTextForExport(QTextStream& stream)
 {
-    if (m_isCategory)
+    if (m_isCategory) {
         return;
+    }
 
     QString catString;
     const Q3ListViewItem* item = this;
-    while ((item = item->parent()))
+    while ((item = item->parent())) {
         catString = catString.prepend(dynamic_cast<const TreeEntry*>(item)->getName() + ": ");
+    }
 
     stream << "--------------------------------------------------------------------------------\n";
     stream << catString + m_name << "\n";
@@ -300,11 +316,12 @@ void TreeEntry::appendTextForExport(QTextStream& stream)
 }
 
 
-/*!
-    Appends the treeentry as \c category or \c entry tag in the XML structure.
-    \param document the document needed to create new elements
-    \param parent the parent to which the new created element should be attached
-*/
+/**
+ * @brief Appends the treeentry as \c category or \c entry tag in the XML structure.
+ *
+ * @param document the document needed to create new elements
+ * @param parent the parent to which the new created element should be attached
+ */
 void TreeEntry::appendXML(QDomDocument& document, QDomNode& parent) const
 {
     QDomElement newElement;
@@ -333,13 +350,17 @@ void TreeEntry::appendXML(QDomDocument& document, QDomNode& parent) const
 }
 
 
-/*!
-    Converts this TreeEntry to XML. This XML is used for drag and drop. It contains one
-    \<entry\> or \<category\> tag and this tag contains also an attribute named
-    \c memoryAddress which holds the memory address for this item. This can be used
-    for deleting the object or for determine whether the user is dragging to iself.
-    \return the XML string
-*/
+/**
+ * @brief Converts this TreeEntry to XML.
+ *
+ * This XML is used for drag and drop. It contains one \<entry\> or
+ * \<category\> tag and this tag contains also an attribute named \c
+ * memoryAddress which holds the memory address for this item. This can be
+ * used for deleting the object or for determine whether the user is dragging
+ * to iself.
+ *
+ * @return the XML string
+ */
 QString TreeEntry::toXML() const
 {
     QDomDocument doc;
@@ -350,23 +371,26 @@ QString TreeEntry::toXML() const
 }
 
 
-/*!
-    Checks if the item can accept drops of the type QMimeSource. The MIME type accepted is
-    <tt>application/x-qpamat</tt>. Only categories accept drops.
-    \param mime the QMimeSource object
-    \return \c true if the item can accept drops of type QMimeSource mime; otherwise
-            \c false.
-*/
+/**
+ * @brief Checks if the item can accept drops of the type QMimeSource.
+ *
+ * The MIME type accepted is <tt>application/x-qpamat</tt>. Only categories accept drops.
+ *
+ * @param mime the QMimeSource object
+ * @return \c true if the item can accept drops of type QMimeSource mime; otherwise
+ *         \c false.
+ */
 bool TreeEntry::acceptDrop(const QMimeSource* mime) const
 {
     return mime->provides("application/x-qpamat");
 }
 
 
-/*!
-    Overwritten drop handler
-    \param evt the event
-*/
+/**
+ * @brief Overwritten drop handler
+ *
+ * @param evt the event
+ */
 void TreeEntry::dropped(QDropEvent *evt)
 {
     if (evt->provides("application/x-qpamat")) {

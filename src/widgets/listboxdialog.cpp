@@ -27,62 +27,66 @@
 #include "listboxdialog.h"
 #include "widgets/listboxlabeledpict.h"
 
-/*!
-    \class ListBoxDialogPage
+/**
+ * @class ListBoxDialogPage
+ *
+ * @brief Represents a page in a ListBoxDialog
+ *
+ * Each page of the ListBoxDialog must be a subclass of this class. The applySettings() and
+ * fillSettings() method gets called if necessary.
+ *
+ * @ingroup widgets
+ */
 
-    \brief Represents a page in a ListBoxDialog
+/**
+ * @fn ListBoxDialogPage::ListBoxDialogPage(QWidget*, const char*)
+ *
+ * Creates a new instance of a ListBoxDialogPage.
+ *
+ * @param parent the parent widget
+ * @param name the name of the widget
+ */
 
-    Each page of the ListBoxDialog must be a subclass of this class. The applySettings() and
-    fillSettings() method gets called if necessary.
+/**
+ * @fn ListBoxDialogPage::applySettings()
+ *
+ * This method is called if the user pressed Ok on the dialog.
+ *
+ * It should store the settings.
+ */
 
-    \ingroup widgets
-*/
+/**
+ * @fn ListBoxDialogPage::fillSettings()
+ *
+ * This method is called if the page should be shown.
+ *
+ * It should fill the page with the current settings.
+ */
 
-/*!
-    \fn ListBoxDialogPage::ListBoxDialogPage(QWidget*, const char*)
+/**
+ * @class ListBoxDialog
+ *
+ * @brief Dialog with several pages that are choosen in a listbox
+ *
+ * This dialog normally is used for configuration issues. It has a listbox with big icons
+ * and labels on the left and pages on the right, just like normal KDE configuration
+ * dialogs.
+ *
+ * Each page on the right must be a subclass of ListBoxDialogPage and must be added with
+ * the addPage() method in the constructor of the subclassing dialog. The fillSettings()
+ * method of the page is called before it is shown and the applySettings() method is
+ * called if the user pressed Ok and the page was shown previously, so it's never called
+ * if the fillSettings() was not called. This increases performance.
+ *
+ * @ingroup widgets
+ */
 
-    Creates a new instance of a ListBoxDialogPage.
-
-    \param parent the parent widget
-    \param name the name of the widget
-*/
-
-/*!
-    \fn ListBoxDialogPage::applySettings()
-
-    This method is called if the user pressed Ok on the dialog. It should store the settings.
-*/
-
-/*!
-    \fn ListBoxDialogPage::fillSettings()
-
-    This method is called if the page should be shown. It should fill the page with the current
-    settings.
-*/
-
-/*!
-    \class ListBoxDialog
-
-    \brief Dialog with several pages that are choosen in a listbox
-
-    This dialog normally is used for configuration issues. It has a listbox with big icons
-    and labels on the left and pages on the right, just like normal KDE configuration dialogs.
-
-    Each page on the right must be a subclass of ListBoxDialogPage and must be added with
-    the addPage() method in the constructor of the subclassing dialog. The fillSettings()
-    method of the page is called before it is shown and the applySettings() method is called
-    if the user pressed Ok and the page was shown previously, so it's never called if the
-    fillSettings() was not called. This increases performance.
-
-    \ingroup widgets
-
-*/
-
-/*!
-    Creates a new instance of a ListBoxDialog.
-    \param parent the parent widget
-    \param name the name of the widget
-*/
+/**
+ * @brief Creates a new instance of a ListBoxDialog.
+ *
+ * @param parent the parent widget
+ * @param name the name of the widget
+ */
 ListBoxDialog::ListBoxDialog(QWidget* parent, const char* name)
     : QDialog(parent, name)
 {
@@ -125,12 +129,13 @@ ListBoxDialog::ListBoxDialog(QWidget* parent, const char* name)
 }
 
 
-/*!
-    Adds a page at the bottom of the list.
-    \param widget the page to add
-    \param pixmap the pixmap (must exist)
-    \param text the text that is displayed under the pixmap (must exist, one line only)
-*/
+/**
+ * @brief Adds a page at the bottom of the list.
+ *
+ * @param widget the page to add
+ * @param pixmap the pixmap (must exist)
+ * @param text the text that is displayed under the pixmap (must exist, one line only)
+ */
 void ListBoxDialog::addPage(ListBoxDialogPage* widget, const QPixmap& pixmap, const QString& text)
 {
     m_widgetStack->addWidget(widget, m_listBox->count());
@@ -138,9 +143,9 @@ void ListBoxDialog::addPage(ListBoxDialogPage* widget, const QPixmap& pixmap, co
 }
 
 
-/*!
-    Polishes the dialog, i.e. shows the first page.
-*/
+/**
+ * @brief Polishes the dialog, i.e. shows the first page.
+ */
 bool ListBoxDialog::event(QEvent* e)
 {
     if (e->type() == QEvent::Polish) {
@@ -156,11 +161,14 @@ bool ListBoxDialog::event(QEvent* e)
 }
 
 
-/*!
-    Handles aboutToShow() signals from the widget stack. The widget gets filled, i.e. the
-    fillSettings() method of the corresponding page is called.
-    \param widget the widget which gets shown
-*/
+/**
+ * @brief Handles aboutToShow() signals from the widget stack.
+ *
+ * The widget gets filled, i.e. the fillSettings() method of the corresponding page is
+ * called.
+ *
+ * @param widget the widget which gets shown
+ */
 void ListBoxDialog::aboutToShowHandler(QWidget* widget)
 {
     if (ListBoxDialogPage* t = static_cast<ListBoxDialogPage*>(widget)) {
@@ -172,10 +180,11 @@ void ListBoxDialog::aboutToShowHandler(QWidget* widget)
 }
 
 
-/*!
-    Handles the accept() signal of the dialog. Calls the applySettings() method of each page
-    that has been shown previously.
-*/
+/**
+ * @brief Handles the accept() signal of the dialog.
+ *
+ * Calls the applySettings() method of each page that has been shown previously.
+ */
 void ListBoxDialog::accept()
 {
     typedef std::set<ListBoxDialogPage*>::iterator ListBoxDlgPgSetIt;

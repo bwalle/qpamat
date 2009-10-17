@@ -32,40 +32,42 @@
 #include "southpanel.h"
 
 
-/*!
-    \class RightPanel
+/**
+ * @class RightPanel
+ *
+ * @brief Represents the panel on the right which contains the entry list.
+ *
+ * @ingroup gui
+ * @author Bernhard Walle
+ */
 
-    \brief Represents the panel on the right which contains the entry list.
 
-    \ingroup gui
+/**
+ * @fn RightPanel::stateModified()
+ *
+ * If something was modified, need to determine if saving is necessary.
+ */
 
-    \author Bernhard Walle
-*/
+/**
+ * @fn RightPanel::passwordLineEditGotFocus(bool)
+ *
+ * @brief This signal is emitted if the password field got this focus.
+ *
+ * @param focus \c true if it got the focus, \c false if the focus is lost
+ */
 
-/*!
-    \fn RightPanel::stateModified()
+/**
+ * @fn RightPanel::passwordStrengthUpdated()
+ *
+ * @brief This signal is emitted if the password strength of an item has
+ *        changed an therefore the displaying must be updated.
+ */
 
-    If something was modified, need to determine if saving is necessary.
-*/
-
-/*!
-    \fn RightPanel::passwordLineEditGotFocus(bool)
-
-    This signal is emitted if the password field got this focus.
-    \param focus \c true if it got the focus, \c false if the focus is lost
-*/
-
-/*!
-    \fn RightPanel::passwordStrengthUpdated()
-
-    This signal is emitted if the password strength of an item has changed an therefore
-    the displaying must be updated.
-*/
-
-/*!
-    Creates a new instance of the right panel.
-    \param parent the parent widget as usual for QObject
-*/
+/**
+ * @brief Creates a new instance of the right panel.
+ *
+ * @param parent the parent widget as usual for QObject
+ */
 RightPanel::RightPanel(QpamatWindow* parent) : Q3Frame(parent, "RightPanel")
 {
     QVBoxLayout* layout = new QVBoxLayout(this);
@@ -101,13 +103,14 @@ RightPanel::RightPanel(QpamatWindow* parent) : Q3Frame(parent, "RightPanel")
 }
 
 
-/*!
-    Clears the widget.
-
-    The <tt>bool=false</tt> is needed to avoid flickering when another item selected.
-
-    \param [in] full \c true if the label should be cleared, too, \c false otherwise
-*/
+/**
+ * @brief Clears the widget.
+ *
+ * The <tt>bool=false</tt> is needed to avoid flickering when another item
+ * selected.
+ *
+ * @param[in] full \c true if the label should be cleared, too, \c false otherwise
+ */
 void RightPanel::clear(bool full)
 {
     if (full)
@@ -117,22 +120,24 @@ void RightPanel::clear(bool full)
     setEnabled(false);
 }
 
-/*!
-    Clears the widget.
-
-    Just calls clear(true). We cannot use a default parameter here because of Qt signals and slots.
-*/
+/**
+ * @brief Clears the widget.
+ *
+ * Just calls clear(true). We cannot use a default parameter here because of
+ * Qt signals and slots.
+ */
 void RightPanel::clear()
 {
     clear(true);
 }
 
-/*!
-    Handler for deleted widgets. Selects the next item.
-
-    \param item the item number that was deleted.
-
-*/
+/**
+ * @brief Handler for deleted widgets.
+ *
+ * Selects the next item.
+ *
+ * @param item the item number that was deleted.
+ */
 void RightPanel::itemDeletedHandler(int item)
 {
     m_listView->updateView();
@@ -156,10 +161,11 @@ void RightPanel::itemDeletedHandler(int item)
 }
 
 
-/*!
-    Enables or diables the panel.
-    \param enabled \c true if the panel should be enabled, \c false otherwise
-*/
+/**
+ * @brief Enables or diables the panel.
+ *
+ * @param enabled \c true if the panel should be enabled, \c false otherwise
+ */
 void RightPanel::setEnabled(bool enabled)
 {
     Q3Frame::setEnabled(enabled);
@@ -168,11 +174,14 @@ void RightPanel::setEnabled(bool enabled)
 }
 
 
-/*!
-    Sets the current item. The item must be a TreeEntry, this type is only for
-    the signal and slots mechanism.
-    \param item the current item
-*/
+/**
+ * @brief Sets the current item.
+ *
+ * The item must be a TreeEntry, this type is only for the signal and slots
+ * mechanism.
+ *
+ * @param item the current item
+ */
 void RightPanel::setItem(Q3ListViewItem* item)
 {
     clear(false);
@@ -188,10 +197,11 @@ void RightPanel::setItem(Q3ListViewItem* item)
 }
 
 
-/*!
-    Handles changing of selections.
-    \param item the item
-*/
+/**
+ * @brief Handles changing of selections.
+ *
+ * @param item the item
+ */
 void RightPanel::selectionChangeHandler(Q3ListViewItem* item)
 {
     disconnect(m_listView, SLOT(updateSelected(Property*)));
@@ -204,10 +214,13 @@ void RightPanel::selectionChangeHandler(Q3ListViewItem* item)
 }
 
 
-/*!
-    Deletes the current item if the widget has the focus inside, i.e. if isFocusInside()
-    returns \c true.
-*/
+/**
+ * @brief Deletes the current item
+ *
+ * Deletes the current item if the widget has the focus inside, i.e. if
+ * isFocusInside() if the widget has the focus inside, i.e. if
+ * isFocusInside() return \c true.
+ */
 void RightPanel::deleteCurrent()
 {
     if (isFocusInside())
@@ -215,9 +228,9 @@ void RightPanel::deleteCurrent()
 }
 
 
-/*!
-    Inserts an item at the current position if the widget has the focus.
-*/
+/**
+ * @brief Inserts an item at the current position if the widget has the focus.
+ */
 void RightPanel::insertAtCurrentPos()
 {
     if (isFocusInside())
@@ -225,21 +238,22 @@ void RightPanel::insertAtCurrentPos()
 }
 
 
-/*!
-    Returns if the focus is inside this object.
-    \return \c true if the focus is inside this object, \c false otherwise.
-*/
+/**
+ * @brief Returns if the focus is inside this object.
+ *
+ * @return \c true if the focus is inside this object, \c false otherwise.
+ */
 bool RightPanel::isFocusInside() const
 {
     return m_listView->isFocusInside() || m_southPanel->isFocusInside();
 }
 
 
-/*!
-    \relates RightPanel
-
-    Stores the width of the columns of the listview.
-*/
+/**
+ * @relates RightPanel
+ *
+ * Stores the width of the columns of the listview.
+ */
 QTextStream& operator<<(QTextStream& ts, const RightPanel& panel)
 {
     ts << *panel.m_listView;
@@ -247,11 +261,11 @@ QTextStream& operator<<(QTextStream& ts, const RightPanel& panel)
 }
 
 
-/*!
-    \relates RightPanel
-
-    Reads the width of the columns of the listview.
-*/
+/**
+ * @relates RightPanel
+ *
+ * Reads the width of the columns of the listview.
+ */
 QTextStream& operator>>(QTextStream& ts, RightPanel& panel)
 {
     ts >> *panel.m_listView;

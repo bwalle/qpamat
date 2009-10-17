@@ -36,52 +36,54 @@
 #include "help.h"
 
 
-/*!
-    \class RightListView
+/**
+ * @class RightListView
+ *
+ * @brief Represents the list view on the right where the key-value pairs are displayed.
+ * @ingroup gui
+ * @author Bernhard Walle
+ */
 
-    \brief Represents the list view on the right where the key-value pairs are displayed.
-    \ingroup gui
-    \author Bernhard Walle
-*/
+/**
+ * @enum RightListView::MenuID
+ *
+ * Enumeration for menu.
+ */
 
-/*!
-    \enum RightListView::MenuID
+/**
+ * @fn RightListView::itemAppended()
+ *
+ * This signal is emitted if an item was appended.
+ */
 
-    Enumeration for menu.
-*/
+/**
+ * @fn RightListView::itemDeleted(int)
+ *
+ * This signal is emitted if an item was deleted.
+ *
+ * @param item the number of the deleted item (first item = 0)
+ */
 
-/*!
-    \fn RightListView::itemAppended()
+/**
+ * @fn RightListView::stateModified()
+ *
+ * If something was modified, need to determine if saving is necessary.
+ */
 
-    This signal is emitted if an item was appended.
-*/
+/**
+ * @fn RightListView::enableMoving(bool, bool)
+ *
+ * This signal is emitted always if the selection changes.
+ *
+ * @param up if moving up is enabled
+ * @param down if moving down is enabled
+ */
 
-/*!
-    \fn RightListView::itemDeleted(int)
-
-    This signal is emitted if an item was deleted.
-
-    \param item the number of the deleted item (first item = 0)
-*/
-
-/*!
-    \fn RightListView::stateModified()
-
-    If something was modified, need to determine if saving is necessary.
-*/
-
-/*!
-    \fn RightListView::enableMoving(bool, bool)
-
-    This signal is emitted always if the selection changes.
-    \param up if moving up is enabled
-    \param down if moving down is enabled
-*/
-
-/*!
-    Creates a new object of the list view.
-    \param parent the parent widget
-*/
+/**
+ * @brief Creates a new object of the list view.
+ *
+ * @param parent the parent widget
+ */
 RightListView::RightListView(QWidget* parent)
     : Q3ListView(parent)
 {
@@ -112,9 +114,9 @@ RightListView::RightListView(QWidget* parent)
 }
 
 
-/*!
-    Initializes the context menu.
-*/
+/**
+ * @brief Initializes the context menu.
+ */
 void RightListView::initContextMenu()
 {
     m_contextMenu = new Q3PopupMenu(this);
@@ -129,11 +131,14 @@ void RightListView::initContextMenu()
 }
 
 
-/*!
-    Shows the context Menu. Usually connected to QListView::contextMenuRequested.
-    \param item the list view item
-    \param point the coordinates of the click
-*/
+/**
+ * @brief Shows the context Menu.
+ *
+ * Usually connected to QListView::contextMenuRequested.
+ *
+ * @param item the list view item
+ * @param point the coordinates of the click
+ */
 void RightListView::showContextMenu(Q3ListViewItem* item, const QPoint& point)
 {
     if (!isEnabled())
@@ -173,10 +178,11 @@ void RightListView::showContextMenu(Q3ListViewItem* item, const QPoint& point)
 }
 
 
-/*!
-    Sets the selected index.
-    \param index the index
-*/
+/**
+ * @brief Sets the selected index.
+ *
+ * @param index the index
+ */
 void RightListView::setSelectedIndex(unsigned int index)
 {
     Q_ASSERT(index <= (unsigned int)childCount());
@@ -189,10 +195,11 @@ void RightListView::setSelectedIndex(unsigned int index)
 }
 
 
-/*!
-    Called if the user presses a key
-    \param evt the event
-*/
+/**
+ * @brief Called if the user presses a key
+ *
+ * @param evt the event
+ */
 void RightListView::keyPressEvent(QKeyEvent* evt)
 {
     Q3ListViewItem* selected = selectedItem();
@@ -209,10 +216,11 @@ void RightListView::keyPressEvent(QKeyEvent* evt)
 }
 
 
-/*!
-    Copies a item into the clipboard.
-    \param item
-*/
+/**
+ * @brief Copies a item into the clipboard.
+ *
+ * @param item
+ */
 void RightListView::copyItem(Q3ListViewItem* item)
 {
     if (item != 0) {
@@ -226,10 +234,11 @@ void RightListView::copyItem(Q3ListViewItem* item)
 }
 
 
-/*!
-    Handles double clicks (show the password or open the browser).
-    \param item the item
-*/
+/**
+ * @brief Handles double clicks (show the password or open the browser).
+ *
+ * @param item the item
+ */
 void RightListView::doubleClickHandler(Q3ListViewItem* item)
 {
     if (item != 0) {
@@ -249,13 +258,14 @@ void RightListView::doubleClickHandler(Q3ListViewItem* item)
 }
 
 
-/*!
-    Handles middle clicks (copy into clipboard)
-    \param but the mouse button
-    \param item the listview item
-    \param point the coordinares
-    \param col the column
-*/
+/**
+ * @brief Handles middle clicks (copy into clipboard)
+ *
+ * @param but the mouse button
+ * @param item the listview item
+ * @param point the coordinares
+ * @param col the column
+ */
 void RightListView::mouseButtonClickedHandler(int but, Q3ListViewItem* item,
                                               const QPoint& point, int col)
 {
@@ -266,9 +276,9 @@ void RightListView::mouseButtonClickedHandler(int but, Q3ListViewItem* item,
         copyItem(item);
 }
 
-/*!
-    Updates the view.
-*/
+/**
+ * @brief Updates the view.
+ */
 void RightListView::updateView()
 {
     clear();
@@ -289,10 +299,11 @@ void RightListView::updateView()
 }
 
 
-/*!
-    Updates the selected.
-    \param property the property
-*/
+/**
+ * @brief Updates the selected.
+ *
+ * @param property the property
+ */
 void RightListView::updateSelected(Property* property)
 {
     Q3ListViewItem* item = selectedItem();
@@ -305,10 +316,11 @@ void RightListView::updateSelected(Property* property)
 }
 
 
-/*!
-    Sets an item
-    \param item the item
-*/
+/**
+ * @brief Sets an item
+ *
+ * @param item the item
+ */
 void RightListView::setItem(Q3ListViewItem* item)
 {
     disconnect(this, SIGNAL(itemAppended()));
@@ -321,9 +333,9 @@ void RightListView::setItem(Q3ListViewItem* item)
 }
 
 
-/*!
-    Deletes the current item.
-*/
+/**
+ * @brief Deletes the current item.
+ */
 void RightListView::deleteCurrent()
 {
     Q3ListViewItem* selected = selectedItem();
@@ -338,18 +350,18 @@ void RightListView::deleteCurrent()
 }
 
 
-/*!
-    Inserts a new item at the current position.
-*/
+/**
+ * @brief Inserts a new item at the current position.
+ */
 void RightListView::insertAtCurrentPos()
 {
     m_currentItem->appendProperty(new Property());
 }
 
 
-/*!
-    Handler for appended items.
-*/
+/**
+ * @brief Handler for appended items.
+ */
 void RightListView::itemAppendedHandler()
 {
     Q3ListViewItem* addedItem = lastItem();
@@ -358,19 +370,20 @@ void RightListView::itemAppendedHandler()
 }
 
 
-/*!
-    Asks if the focus is in a widget inside the widget.
-    \return \c true if it is, \c false if not
-*/
+/**
+ * @brief Asks if the focus is in a widget inside the widget.
+ *
+ * @return \c true if it is, \c false if not
+ */
 bool RightListView::isFocusInside() const
 {
     return hasFocus();
 }
 
 
-/*!
-    Moves the current property one down.
-*/
+/**
+ * @brief Moves the current property one down.
+ */
 void RightListView::moveDown()
 {
     Q3ListViewItem* selected = selectedItem();
@@ -388,9 +401,9 @@ void RightListView::moveDown()
 }
 
 
-/*!
-    Moves the current property one up.
-*/
+/**
+ * @brief Moves the current property one up.
+ */
 void RightListView::moveUp()
 {
     Q3ListViewItem* selected = selectedItem();
@@ -408,10 +421,11 @@ void RightListView::moveUp()
 }
 
 
-/*!
-    Sets the move state correct, i.e. whether moving up or down is enabled. Emits the
-    enableMoving() signal.
-*/
+/**
+ * @brief Sets the move state correct, i.e. whether moving up or down is enabled.
+ *
+ * Emits the enableMoving() signal.
+ */
 void RightListView::setMoveStateCorrect()
 {
     bool up = false;
@@ -428,11 +442,11 @@ void RightListView::setMoveStateCorrect()
 }
 
 
-/*!
-    \relates RightListView
-
-    Writes the widths of the column to the text stream.
-*/
+/**
+ * @relates RightListView
+ *
+ * Writes the widths of the column to the text stream.
+ */
 QTextStream& operator<<(QTextStream& ts, const RightListView& listview)
 {
     ts << "column0width=" << listview.columnWidth(0)
@@ -441,11 +455,11 @@ QTextStream& operator<<(QTextStream& ts, const RightListView& listview)
 }
 
 
-/*!
-    \related RightListView
-
-    Restores the widths of the columns from the text stream.
-*/
+/**
+ * @related RightListView
+ *
+ * Restores the widths of the columns from the text stream.
+ */
 QTextStream& operator>>(QTextStream& ts, RightListView& listview)
 {
     QRegExp rx("column0width=(\\d+),column1width=(\\d+)");

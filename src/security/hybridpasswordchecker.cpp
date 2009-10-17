@@ -38,38 +38,43 @@ QMap<int, int>  HybridPasswordChecker::m_lengthBeginMap;
 
 
 
-/*!
-    \class HybridPasswordChecker
+/**
+ * @class HybridPasswordChecker
+ *
+ * @brief Hybrid password checker.
+ *
+ * This password checker works according to the algorithm described at
+ * https://passwortcheck.datenschutz.ch (only in German).
+ *
+ * The dictionary file consists of single word in each line. It needs to be \b sorted
+ * according to the length of the words. The first word must be the longest word and the
+ * last word must be the shortest word.
+ *
+ * @ingroup security
+ * @author Bernhard Walle
+ */
 
-    \brief Hybrid password checker.
 
-    This password checker works according to the algorithm described at
-    https://passwortcheck.datenschutz.ch (only in German).
-
-    The dictionary file consists of single word in each line. It needs to be \b sorted according
-    to the length of the words. The first word must be the longest word and the last word must
-    be the shortest word.
-
-    \ingroup security
-    \author Bernhard Walle
-*/
-
-
-/*!
-    Creates a new instance of a HybridPasswordChecker. Caching is performed, i.e. only
-    the first creation of the object reads the file. Following instantiations check the
-    modification time (see \p checkModtime) and if it is still the same, the cached data
-    is used. This increases performance dramatically but needs more memory. Since modern
-    computers have much memory this is better than having a slow program.
-    \param dictFileName the name of the dictionary.
-    \exception PasswordCheckException if the file does not exist or if the file cannot be opened
-*/
+/**
+ * @brief Creates a new instance of a HybridPasswordChecker.
+ *
+ * Caching is performed, i.e. only the first creation of the object reads the file.
+ * Following instantiations check the modification time (see \p checkModtime) and if it is
+ * still the same, the cached data is used. This increases performance dramatically but
+ * needs more memory. Since modern computers have much memory this is better than having a
+ * slow program.
+ *
+ * @param dictFileName the name of the dictionary.
+ * @exception PasswordCheckException if the file does not exist or if the file cannot be
+ *                                   opened
+ */
 HybridPasswordChecker::HybridPasswordChecker(const QString& dictFileName)
             throw (PasswordCheckException)
 {
-    if (!QFile::exists(dictFileName))
+    if (!QFile::exists(dictFileName)) {
         throw PasswordCheckException( QString("The file %1 does not exist.").arg(
             dictFileName).latin1());
+    }
 
     // do we need to re-read
     if (m_words.isEmpty() || (m_fileName != dictFileName)) {
@@ -112,12 +117,13 @@ HybridPasswordChecker::HybridPasswordChecker(const QString& dictFileName)
 }
 
 
-/*!
-    Checks the password.
-    \param password the password to check
-    \return the number of days that a cracker needs to crack according to the password
-            checker
-*/
+/**
+ * @brief Checks the password.
+ *
+ * @param password the password to check
+ * @return the number of days that a cracker needs to crack according to the password
+ *         checker
+ */
 double HybridPasswordChecker::passwordQuality(const QString& password) throw ()
 {
     const QString longest = findLongestWord(password);
@@ -135,11 +141,12 @@ double HybridPasswordChecker::passwordQuality(const QString& password) throw ()
 }
 
 
-/*!
-    Finds the longest word that occures in \p password and is in the dictionary.
-    \param password the password
-    \return the longest word
-*/
+/**
+ * @brief Finds the longest word that occures in \p password and is in the dictionary.
+ *
+ * @param password the password
+ * @return the longest word
+ */
 QString HybridPasswordChecker::findLongestWord(const QString& password) const
 {
     int initialPosition = 0;
@@ -159,34 +166,39 @@ QString HybridPasswordChecker::findLongestWord(const QString& password) const
     return "";
 }
 
-
-/*!
-    Returns the number of words that have the same length or a shorther length as the
-    given \p word.
-    \param word the word
-    \return the number of words
-*/
+/**
+ * Returns the number of words that have the same length or a shorther length as the
+ * given \p word.
+ *
+ * @param word the word
+ * @return the number of words
+ */
 int HybridPasswordChecker::getNumberOfWordsWithSameOrShorterLength(const QString& word) const
 {
     int len = word.length();
-    while (!m_lengthBeginMap.contains(len) && len >= 0)
+    while (!m_lengthBeginMap.contains(len) && len >= 0) {
         --len;
+    }
 
-    if (len < 0)
+    if (len < 0) {
         return 0;
+    }
 
     return m_lengthBeginMap[len];
 }
 
 
-/*!
-    Finds the number of characters in the character class of the word. For example if \p chars
-    is \c abcd, then all characters are lowercase letters so we must only search in the
-    character class "lowercase letters" and so the function return 26.
-    \param chars the word
-    \return the number in that character class
-    \todo Verify the documentation
-*/
+/**
+ * @brief Finds the number of characters in the character class of the word.
+ *
+ * For example if \p chars is \c abcd, then all characters are lowercase letters so we
+ * must only search in the character class "lowercase letters" and so the function return
+ * 26.
+ *
+ * @param chars the word
+ * @return the number in that character class
+ * @todo Verify the documentation
+ */
 int HybridPasswordChecker::findNumerOfCharsInClass(const QString& chars) const
 {
     int ret = 0;
@@ -195,65 +207,76 @@ int HybridPasswordChecker::findNumerOfCharsInClass(const QString& chars) const
 
     for (int i = 0; i < chars.length(); ++i) {
         QChar c = chars[i];
-	int l1 = c.latin1() & 0xff;
+        int l1 = c.latin1() & 0xff;
 
-        if (c.latin1() == 0)
+        if (c.latin1() == 0) {
             return 255;
-        else if (!hasDigits && ((c >= '0' && c <= '9') || c == ' '))
+        } else if (!hasDigits && ((c >= '0' && c <= '9') || c == ' ')) {
             hasDigits = true;
-        else if (!hasLowercase && c >= 'a' && c <= 'z')
+        } else if (!hasLowercase && c >= 'a' && c <= 'z') {
             hasLowercase = true;
-        else if (!hasUppercase && c >= 'A' && c <= 'Z')
+        } else if (!hasUppercase && c >= 'A' && c <= 'Z') {
             hasUppercase = true;
-        else if (!hasSpecial && (c == ',' || c == '.' || c == '-' || c == ';' || c == ':'
+        } else if (!hasSpecial && (c == ',' || c == '.' || c == '-' || c == ';' || c == ':'
                 || c == '_' || c == '=' || c == '(' || c == ')' || c == '*' || c == '+' || c == '?'
                 || c == '"' || c == '$' || c == '@' ||c == '#' || c == '%' || c == '&' || c == '/'
                 || c == '\\' || c == '{' || c == '}' || c == '[' || c == ']' || c == '!' || c == '^'
-                || c == '?' || c == '\'' || c == '?' || c == '`' || c == '~'))
+                || c == '?' || c == '\'' || c == '?' || c == '`' || c == '~')) {
             hasSpecial = true;
-        else if (!hasUmlauts && ((l1 >= 0xC0 && l1 <= 0xD6) || (l1 >= 0xD8 && l1 <= 0xFF)))
+        } else if (!hasUmlauts && ((l1 >= 0xC0 && l1 <= 0xD6) || (l1 >= 0xD8 && l1 <= 0xFF))) {
             hasUmlauts = true;
-        else
+        } else {
             hasOther = true;
+        }
     }
 
-    if (hasDigits)
+    if (hasDigits) {
         ret += 11;
-    if (hasLowercase)
+    }
+    if (hasLowercase) {
         ret += 26;
-    if (hasUppercase)
+    }
+    if (hasUppercase) {
         ret += 26;
-    if (hasUmlauts)
+    }
+    if (hasUmlauts) {
         ret += 13;
-    if (hasSpecial)
+    }
+    if (hasSpecial) {
         ret += 30;
-    if (hasOther)
+    }
+    if (hasOther) {
         ret += 118;
+    }
 
     return ret;
 }
 
 // -------------------------------------------------------------------------------------------------
 
-/*!
-    \relates HybridPasswordChecker
-    Compares the length of two strings.
-    \param a the first string
-    \param b the second string
-    \return \c true if length(a) < length(b)
-*/
+/**
+ * @relates HybridPasswordChecker
+ *
+ * Compares the length of two strings.
+ *
+ * @param a the first string
+ * @param b the second string
+ * @return \c true if length(a) < length(b)
+ */
 bool string_length_less(const QString& a, const QString& b)
 {
     return a.length() < b.length();
 }
 
-/*!
-    \relates HybridPasswordChecker
-    Compares the length of two strings.
-    \param a the first string
-    \param b the second string
-    \return \c true if length(a) > length(b)
-*/
+/**
+ * @relates HybridPasswordChecker
+ *
+ * Compares the length of two strings.
+ *
+ * @param a the first string
+ * @param b the second string
+ * @return \c true if length(a) > length(b)
+ */
 bool string_length_greater(const QString& a, const QString& b)
 {
     return a.length() > b.length();

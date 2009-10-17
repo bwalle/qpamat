@@ -26,21 +26,23 @@
 #include "copylabel.h"
 
 
-/*!
-    \class CopyLabel
+/**
+ * @class CopyLabel
+ *
+ * @brief This class provides a QLineEdit combined with a copy button.
+ *
+ * The copy buttons lets the user copy the displayed text chooser dialog of Qt.
+ *
+ * @ingroup widgets
+ * @author Bernhard Walle
+ */
 
-    \brief This class provides a QLineEdit combined with a copy button.
-
-    The copy buttons lets the user copy the displayed text chooser dialog of Qt.
-
-    \ingroup widgets
-    \author Bernhard Walle
-*/
-
-/*!
-     This constructor. function is provided only for convenience. It behaves exactly like the
-     above function, \p hidden is set to false.
-*/
+/**
+ * @brief This constructor.
+ *
+ * Function is provided only for convenience. It behaves exactly like the above function,
+ * \p hidden is set to false.
+ */
 CopyLabel::CopyLabel(QWidget* parent, const char* name)
     : QWidget(parent, name), m_hidden(false)
 {
@@ -48,12 +50,13 @@ CopyLabel::CopyLabel(QWidget* parent, const char* name)
 }
 
 
-/*!
-    Creates a new instance of a FileLineEdit widget.
-    \param hidden if the word should be hidden
-    \param parent the parent widget
-    \param name the name of the widget which can be NULL.
-*/
+/**
+ * @brief Creates a new instance of a FileLineEdit widget.
+ *
+ * @param hidden if the word should be hidden
+ * @param parent the parent widget
+ * @param name the name of the widget which can be NULL.
+ */
 CopyLabel::CopyLabel(bool hidden, QWidget* parent, const char* name)
     : QWidget(parent, name), m_hidden(hidden)
 {
@@ -61,9 +64,11 @@ CopyLabel::CopyLabel(bool hidden, QWidget* parent, const char* name)
 }
 
 
-/*!
-    Initializes the widget. Needed because of the two constructors.
-*/
+/**
+ * @brief Initializes the widget.
+ *
+ * Needed because of the two constructors.
+ */
 void CopyLabel::init()
 {
     QHBoxLayout* boxLayout = new QHBoxLayout(this, 0, 2);
@@ -88,16 +93,17 @@ void CopyLabel::init()
 }
 
 
-/*!
-    \property CopyLabel::content
+/**
+ * @property CopyLabel::content
+ *
+ * The content of the label.
+ */
 
-    The content of the label.
-*/
-
-/*!
-    Sets the content.
-    \param content the content string
-*/
+/**
+ * @brief Sets the content.
+ *
+ * @param content the content string
+ */
 void CopyLabel::setContent(const QString& content)
 {
     if (m_hidden) {
@@ -111,35 +117,37 @@ void CopyLabel::setContent(const QString& content)
 }
 
 
-/*!
-    This returns the current content.
-    \return the content of the CopyLabel widget
-*/
+/**
+ * @brief This returns the current content.
+ *
+ * @return the content of the CopyLabel widget
+ */
 QString CopyLabel::getContent() const
 {
     return m_label->text();
 }
 
 
-/*!
-    \property CopyLabel::hidden
+/**
+ * @property CopyLabel::hidden
+ *
+ * Whether the text is displayed hidden.
+ */
 
-    Whether the text is displayed hidden.
-*/
-
-/*!
-    If the word is displayed hidden.
-    \return the boolean value
-*/
+/**
+ * @brief If the word is displayed hidden.
+ *
+ * @return the boolean value
+ */
 bool CopyLabel::isHidden() const
 {
     return m_hidden;
 }
 
 
-/*!
-    Copys the text.
-*/
+/**
+ * @brief Copys the text.
+ */
 void CopyLabel::copyText()
 {
     QClipboard* cb = QApplication::clipboard();

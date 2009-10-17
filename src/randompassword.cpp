@@ -28,51 +28,57 @@
 #include "security/hybridpasswordchecker.h"
 
 
-/*!
-    \class RandomPassword
+/**
+ * @class RandomPassword
+ *
+ * @brief This class handles RandomPasswords in the QPaMaT application.
+ *
+ * It doesn't generate RandomPasswords but it manages displaying and sending
+ * them to other widgets.
+ *
+ * @ingroup gui
+ * @author Bernhard Walle
+ */
 
-    \brief This class handles RandomPasswords in the QPaMaT application.
+/**
+ * @fn RandomPassword::insertPassword(const QString&)
+ *
+ * This signal is emitted every time the user wants to insert the password at
+ * current position.
+ *
+ * @param password the password
+ */
 
-    It doesn't generate RandomPasswords but it manages displaying and sending them to other
-    widgets.
-
-    \ingroup gui
-    \author Bernhard Walle
-*/
-
-/*!
-    \fn RandomPassword::insertPassword(const QString&)
-
-    This signal is emitted every time the user wants to insert the password at current
-    position.
-    \param password the password
-*/
-
-/*!
-    Creates a new instance of a RandomPassword object. Inserting is not enabled initally.
-    \param parent the parent object
-    \param name the name of the object
-*/
+/**
+ * @brief Creates a new instance of a RandomPassword object.
+ *
+ * Inserting is not enabled initally.
+ *
+ * @param parent the parent object
+ * @param name the name of the object
+ */
 RandomPassword::RandomPassword(QpamatWindow* parent, const char* name)
     : QObject(parent, name), m_insertEnabled(false), m_parent(parent)
 { }
 
 
-/*!
-    Enables the insert function.
-    \param enabled if the insert function should be enabled
-*/
+/**
+ * @brief Enables the insert function.
+ *
+ * @param enabled if the insert function should be enabled
+ */
 void RandomPassword::setInsertEnabled(bool enabled)
 {
     m_insertEnabled = enabled;
 }
 
 
-/*!
-    Call this slot if you want a random password. A password dialog is displayed that
-    lets the user copy the password into the clipboard or insert (if possible) at the
-    current password QLineEdit.
-*/
+/**
+ * @brief Call this slot if you want a random password.
+ *
+ * A password dialog is displayed that lets the user copy the password into
+ * the clipboard or insert (if possible) at the current password QLineEdit.
+ */
 void RandomPassword::requestPassword()
 {
     PasswordGenerator* passwordgen = 0;

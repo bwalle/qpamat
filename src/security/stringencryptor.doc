@@ -13,62 +13,68 @@
  * -------------------------------------------------------------------------------------------------
  */
 
-/*!
-    \class StringEncryptor
+/**
+ * @class StringEncryptor
+ *
+ * @brief An interface for an object that encrypts bytes.
+ *
+ * @ingroup security
+ * @author Bernhard Walle
+ * @version $Revision: 1.1 $
+ * @date $Date: 2003/12/29 10:59:16 $
+ */
 
-    \brief An interface for an object that encrypts bytes.
-
-    \ingroup security
-    \author Bernhard Walle
-    \version $Revision: 1.1 $
-    \date $Date: 2003/12/29 10:59:16 $
-*/
-
-/*!
-    \fn StringEncryptor::~StringEncryptor
-
-    Destroys a StringEncryptor object.
-*/
-
-
-/*!
-    \fn StringEncryptor::encryptStrToStr(const QString&)
-
-    Encrypts the given string and returns a base 64 encoded string.
-    \param string the string to encrypt
-    \return the encrypted bytes
-*/
+/**
+ * @fn StringEncryptor::~StringEncryptor
+ *
+ * Destroys a StringEncryptor object.
+ */
 
 
-/*!
-    \fn StringEncryptor::decryptStrFromStr(const QString&)
+/**
+ * @fn StringEncryptor::encryptStrToStr(const QString&)
+ *
+ * @brief Encrypts the given string and returns a base 64 encoded string.
+ *
+ * @param string the string to encrypt
+ * @return the encrypted bytes
+ */
 
-    Decrypts the given Base 64 string. Call this method only if you are sure that
-    the string is a result of Encryptor::encryptBase64()!
-    \param string the encryted Base-64-encoded string
-    \return the decrypted string
-*/
+
+/**
+ * @fn StringEncryptor::decryptStrFromStr(const QString&)
+ *
+ * @brief Decrypts the given Base 64 string.
+ *
+ * Call this method only if you are sure that the string is a result of
+ * Encryptor::encryptBase64()!
+ *
+ * @param string the encryted Base-64-encoded string
+ * @return the decrypted string
+ */
 
 // -------------------------------------------------------------------------------------------------
 
-/*!
-    \class NoSuchAlgorithmException
+/**
+ * @class NoSuchAlgorithmException
+ *
+ * @brief Exception that is thrown if QPaMaT has not included the necessary algorithm
+ *        for encryption.
+ *
+ * @ingroup security
+ * @version $Revision: 1.1 $
+ * @author Bernhard Walle
+ * @date $Date: 2003/12/29 10:59:16 $
+ */
 
-    \brief Exception that is thrown if QPaMaT has not included the necessary algorithm
-    for encryption.
-
-    \ingroup security
-    \version $Revision: 1.1 $
-    \author Bernhard Walle
-    \date $Date: 2003/12/29 10:59:16 $
-*/
-
-/*!
-    \fn NoSuchAlgorithmException::NoSuchAlgorithmException(const std::string&)
-
-    Creates a new instance of the exception and includes the error message. This
-    message is returned by the what() method.
-    \param error the error message
-*/
+/**
+ * @fn NoSuchAlgorithmException::NoSuchAlgorithmException(const std::string&)
+ *
+ * @brief  Creates a new instance of the exception and includes the error message.
+ *
+ * This message is returned by the what() method.
+ *
+ * @param error the error message
+ */
 
 // vim: set sw=4 ts=4 et ft=doxygen:

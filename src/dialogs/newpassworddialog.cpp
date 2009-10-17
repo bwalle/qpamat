@@ -31,30 +31,32 @@
 #include "settings.h"
 #include "qpamat.h"
 
-/*!
-    \class NewPasswordDialog
+/**
+ * @class NewPasswordDialog
+ *
+ * @brief Password to enter a new password for new files.
+ *
+ * This dialog was made to enter a new password or to change the existing
+ * password. The mode depends on the argument \p oldPassword of the
+ * constructor. If it is QString::null, a new password can be made.
+ *
+ * This class uses not the dictionary-based checker but the
+ * MasterPasswordChecker. This is because maybe the user has not setup a
+ * dictionary at this time and because here the user cannot use a random
+ * password but must memorize the password.
+ *
+ * @ingroup dialogs
+ * @author Bernhard Walle
+ */
 
-    \brief Password to enter a new password for new files.
 
-    This dialog was made to enter a new password or to change the existing password. The
-    mode depends on the argument \p oldPassword of the constructor. If it is QString::null,
-    a new password can be made.
-
-    This class uses not the dictionary-based checker but the MasterPasswordChecker. This is
-    because maybe the user has not setup a dictionary at this time and because here the
-    user cannot use a random password but must memorize the password.
-
-    \ingroup dialogs
-    \author Bernhard Walle
-*/
-
-
-/*!
-    Creates a new instance of a NewPasswordDialog.
-    \param parent the parent widget
-    \param oldPassword the old password (the user has to enter it and it must be right) or
-                       QString::null if a new password should be entered.
-*/
+/**
+ * @brief Creates a new instance of a NewPasswordDialog.
+ *
+ * @param parent      the parent widget
+ * @param oldPassword the old password (the user has to enter it and it must be right)
+ *                    or QString::null if a new password should be entered.
+ */
 NewPasswordDialog::NewPasswordDialog(QWidget* parent, const QString& oldPassword)
     : QDialog(parent)
     , m_oldPassword(oldPassword)
@@ -88,9 +90,9 @@ NewPasswordDialog::NewPasswordDialog(QWidget* parent, const QString& oldPassword
     }
 }
 
-/*!
-    Creates and layout the widgets of the dialog.
-*/
+/**
+ * Creates and layout the widgets of the dialog.
+ */
 void NewPasswordDialog::createAndLayout()
 {
     // text fields
@@ -162,11 +164,12 @@ void NewPasswordDialog::createAndLayout()
 }
 
 
-/*!
-    Method that is called if the user presses Ok.
-    It checks the password for quality and if the old password was right. If not, it displays
-    a message box and the user has the chance to try again.
-*/
+/**
+ * Method that is called if the user presses Ok.
+ *
+ * It checks the password for quality and if the old password was right. If
+ * not, it displays a message box and the user has the chance to try again.
+ */
 void NewPasswordDialog::accept()
 {
     if (m_secondPasswordEdit->text()!= m_secondPasswordEdit->text()) {
@@ -215,40 +218,48 @@ void NewPasswordDialog::accept()
     QDialog::accept();
 }
 
-/*!
-    Grabs the old password edit. Should be connected to the gotFocus() signal of the password
-    lineedit widget.
-*/
+/**
+ * @brief Grabs the old password edit.
+ *
+ * Should be connected to the gotFocus() signal of the password lineedit
+ * widget.
+ */
 void NewPasswordDialog::grabOldPassword()
 {
     m_oldPasswordEdit->grabKeyboard();
 }
 
 
-/*!
-    Grabs the first password edit. Should be connected to the gotFocus() signal of the password
-    lineedit widget.
-*/
+/**
+ * @brief Grabs the first password edit.
+ *
+ * Should be connected to the gotFocus() signal of the password lineedit
+ * widget.
+ */
 void NewPasswordDialog::grabFirstPassword()
 {
     m_firstPasswordEdit->grabKeyboard();
 }
 
 
-/*!
-    Grabs the second password edit. Should be connected to the gotFocus() signal of the password
-    lineedit widget.
-*/
+/**
+ * @brief Grabs the second password edit.
+ *
+ * Should be connected to the gotFocus() signal of the password lineedit
+ * widget.
+ */
 void NewPasswordDialog::grabSecondPassword()
 {
     m_secondPasswordEdit->grabKeyboard();
 }
 
 
-/*!
-    Releases the password edit. Should be connected to the lostFocus() signal of the password
-    lineedit widget
-*/
+/**
+ * @brief Releases the password edit.
+ *
+ * Should be connected to the lostFocus() signal of the password lineedit
+ * widget.
+ */
 void NewPasswordDialog::release()
 {
     QWidget* widget = keyboardGrabber();
@@ -257,20 +268,22 @@ void NewPasswordDialog::release()
 }
 
 
-/*!
-    Returns the (new) password the user has entered.
-    \return the password
-*/
+/**
+ * @brief Returns the (new) password the user has entered.
+ *
+ * @return the password
+ */
 QString NewPasswordDialog::getPassword() const
 {
     return m_firstPasswordEdit->text();
 }
 
 
-/*!
-    Checks the user's input and enables the Ok button if necessary. This slot is called always
-    if the users changes the input.
-*/
+/**
+ * @brief Checks the user's input and enables the Ok button if necessary.
+ *
+ * This slot is called always if the users changes the input.
+ */
 void NewPasswordDialog::checkOkEnabled() const
 {
     if (m_firstPasswordEdit->hasAcceptableInput() && m_secondPasswordEdit->hasAcceptableInput()
@@ -286,34 +299,38 @@ void NewPasswordDialog::checkOkEnabled() const
 //                                     Validator
 // -------------------------------------------------------------------------------------------------
 
-/*!
-    \class PasswordValidator
+/**
+ * @class PasswordValidator
+ *
+ * @brief Validator for the passwords in the NewPasswordDialog dialog.
+ *
+ * The validator simply checks if the password has less than six characters. It
+ * is used to enable or disable the Ok button.
+ *
+ * @ingroup gui
+ * @author Bernhard Walle
+ */
 
-    \brief Validator for the passwords in the NewPasswordDialog dialog.
-
-    The validator simply checks if the password has less than six characters. It is used to
-    enable or disable the Ok button.
-
-    \ingroup gui
-    \author Bernhard Walle
-*/
-
-/*!
-    Creates a new instance of a PasswordValidator.
-    \param parent the parent widget
-    \param name the name of the widget
-*/
+/**
+ * @brief Creates a new instance of a PasswordValidator.
+ *
+ * @param parent the parent widget
+ * @param name the name of the widget
+ */
 PasswordValidator::PasswordValidator(QObject* parent, const char* name)
     : QValidator(parent, name)
 {}
 
 
-/*!
-    Does the validation. It returns QValidator::Intermediate if the password has less than
-    six characters and QValidator::Acceptable if it has equal or more than six.
-    \param input the input
-    \param pos the position of the inserted stuff (unused here)
-*/
+/**
+ * @brief Does the validation.
+ *
+ * It returns QValidator::Intermediate if the password has less than six
+ * characters and QValidator::Acceptable if it has equal or more than six.
+ *
+ * @param input the input
+ * @param pos the position of the inserted stuff (unused here)
+ */
 PasswordValidator::State PasswordValidator::validate(QString& input, int& pos) const
 {
     UNUSED(pos);

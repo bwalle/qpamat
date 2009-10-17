@@ -26,32 +26,34 @@
 #include "insertcarddialog.h"
 
 
-/*!
-    \class InsertCardDialog
+/**
+ * @class InsertCardDialog
+ *
+ * @brief Dialog that is displayed if the user should insert the card
+ *
+ * This dialog is displayed if the user should insert the smartcard into the
+ * terminal. There a two formes of the dialog:
+ *
+ *  - If the card is PIN-protected, the user should enter a pin. Therefore you
+ *    have to set \p pin to \c true in the constructor. The user can enter a PIN
+ *    containing six hexadecimal characters.
+ *  - If the card is not PIN-protected, it contains just a message.
+ *
+ * In envery case, a Ok button and a Cancel button is displayed.
+ *
+ * @ingroup dialogs
+ * @author Bernhard Walle
+ */
 
-    \brief Dialog that is displayed if the user should insert the card
 
-    This dialog is displayed if the user should insert the smartcard into the terminal.
-    There a two formes of the dialog:
-
-     - If the card is PIN-protected, the user should enter a pin. Therefore you
-       have to set \p pin to \c true in the constructor. The user can enter a PIN
-       containing six hexadecimal characters.
-     - If the card is not PIN-protected, it contains just a message.
-
-    In envery case, a Ok button and a Cancel button is displayed.
-
-    \ingroup dialogs
-    \author Bernhard Walle
-*/
-
-
-/*!
-    Creates a new instance of a InsertCardDialog.
-    \param pin \c true if there should be a text field for entering the pin, \c false otherwise
-    \param parent the parent widget
-    \param name the widget's name
-*/
+/**
+ * @brief Creates a new instance of a InsertCardDialog.
+ *
+ * @param pin       @c true if there should be a text field for entering the pin,
+ *                  @c false otherwise
+ * @param parent    the parent widget
+ * @param name      the widget's name
+ */
 InsertCardDialog::InsertCardDialog(bool pin, QWidget* parent, const char* name)
     : QDialog(parent, name)
     , m_pinEdit(0)
@@ -107,22 +109,25 @@ InsertCardDialog::InsertCardDialog(bool pin, QWidget* parent, const char* name)
     }
 }
 
-/*!
-    Returns the entered PIN.
-    \return the pin or QString::null if there's no PIN. The result is only validated if the
-            status of the dialog is Ok.
-*/
+/**
+ * @brief Returns the entered PIN.
+ *
+ * @return the pin or QString::null if there's no PIN. The result is only
+ *         validated if the status of the dialog is Ok.
+ */
 QString InsertCardDialog::getPIN() const
 {
     return m_pinEdit ? m_pinEdit->text() : QString::null;
 }
 
 
-/*!
-    Handler if the user changed the value of the PIN line edit. Checks if the value is
-    valid and enables the Ok button if needed.
-    \param text the current text
-*/
+/**
+ * @brief Handler if the user changed the value of the PIN line edit.
+ *
+ * Checks if the value is valid and enables the Ok button if needed.
+ *
+ * @param text the current text
+ */
 void InsertCardDialog::pinEditHandler(const QString& text)
 {
     UNUSED(text);

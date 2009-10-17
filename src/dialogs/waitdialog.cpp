@@ -21,35 +21,37 @@
 #include "waitdialog.h"
 
 
-/*!
-    \class WaitDialog
+/**
+ * @class WaitDialog
+ *
+ * @brief Displays a dialog which a simple icon and a message.
+ *
+ * This is a dialog used to tell the user that something is done and he should wait. This
+ * is where a progress dialog makes no or little sense because we don't know exactly how
+ * long it takes.  Of course, the dialog is modal.
+ *
+ * @code
+ * QIconSet icon(myicon_xpm);
+ * WaitDialog* dlg = new WaitDialog(icon, tr("Message"), "QPaMaT", this, "Wait Dialog");
+ * dlg->exec();
+ * // do something
+ * delete dlg;
+ * @endcode
+ *
+ * @ingroup dialogs
+ * @author Bernhard Walle
+ */
 
-    \brief Displays a dialog which a simple icon and a message.
-
-    This is a dialog used to tell the user that something is done and he should wait. This is where
-    a progress dialog makes no or little sense because we don't know exactly how long it takes.
-    Of course, the dialog is modal.
-
-    \code
-  QIconSet icon(myicon_xpm);
-  WaitDialog* dlg = new WaitDialog(icon, tr("Message"), "QPaMaT", this, "Wait Dialog");
-  dlg->exec();
-  // do something
-  delete dlg;
-    \endcode
-
-    \ingroup dialogs
-    \author Bernhard Walle
-*/
-
-/*!
-    Creates a new instance of a wait dialog.
-    \param icon the icon that should be displayed (use a null pixmap if there should beno icon
-    \param message the message text that should be displayed
-    \param title the title
-    \param parent the parent widget
-    \param name the name of the widget
-*/
+/**
+ * Creates a new instance of a wait dialog.
+ *
+ * @param icon    the icon that should be displayed (use a null pixmap if there should 
+ *                be no icon)
+ * @param message the message text that should be displayed
+ * @param title   the title
+ * @param parent  the parent widget
+ * @param name    the name of the widget
+ */
 WaitDialog::WaitDialog(const QPixmap& icon, const QString& message, const QString& title,
                        QWidget* parent, const char* name)
     : QDialog(parent, name, true)

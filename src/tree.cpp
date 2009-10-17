@@ -50,45 +50,48 @@
 #include "settings.h"
 
 
-/*!
-    \class Tree
+/**
+ * @class Tree
+ *
+ * @brief Represents the tree that holds the password entries.
+ *
+ * This class also handles reading and writing to XML files (by calling the
+ * right methods of an TreeEntry) and -- very important -- writing to the
+ * smartcard. Each XML file has a random number which is created on each
+ * successful write. It is used to identify the card.
+ *
+ * So the first byte (a value between 0 and 255) is the random number. Then
+ * two bytes on the card indicate the number of bytes stored. Then a fill byte
+ * is stored which is reserved for future use. The 5th byte on the card is
+ * then the first real byte for passwords.
+ *
+ * @ingroup gui
+ * @author Bernhard Walle
+ */
 
-    \brief Represents the tree that holds the password entries.
+/**
+ * @enum Tree::MenuID
+ *
+ * @brief Holds the menu ids (context menu)
+ */
 
-    This class also handles reading and writing to XML files (by calling the right methods
-    of an TreeEntry) and -- very important -- writing to the smartcard. Each XML file has a
-    random number which is created on each successful write. It is used to identify the card.
+/**
+ * @fn Tree::selectionCleared()
+ *
+ * If the tree has a current item but no item is selected.
+ */
 
-    So the first byte (a value between 0 and 255) is the random number. Then two bytes on the
-    card indicate the number of bytes stored. Then a fill byte is stored which is reserved for future
-    use. The 5th byte on the card is then the first real byte for passwords.
+/**
+ * @fn Tree::stateModified()
+ *
+ * If something was modified, need to determine if saving is necessary.
+ */
 
-    \ingroup gui
-    \author Bernhard Walle
-*/
-
-/*!
-    \enum Tree::MenuID
-
-    Holds the menu ids (context menu)
-*/
-
-/*!
-    \fn Tree::selectionCleared()
-
-    If the tree has a current item but no item is selected.
-*/
-
-/*!
-    \fn Tree::stateModified()
-
-    If something was modified, need to determine if saving is necessary.
-*/
-
-/*!
-    Creates a new instance of a Tree.
-    \param parent the parent
-*/
+/**
+ * @brief Creates a new instance of a Tree.
+ *
+ * @param parent the parent
+ */
 Tree::Tree(QWidget* parent)
     : Q3ListView(parent)
     , m_showPasswordStrength(false)
@@ -112,9 +115,9 @@ Tree::Tree(QWidget* parent)
 }
 
 
-/*!
-    Initializes the context menu
-*/
+/**
+ * @brief Initializes the context menu
+ */
 void Tree::initTreeContextMenu()
 {
     m_contextMenu = new Q3PopupMenu(this);
@@ -132,10 +135,11 @@ void Tree::initTreeContextMenu()
 }
 
 
-/*!
-    If the users presses a key.
-    \param evt the key event
-*/
+/**
+ * @brief If the users presses a key.
+ *
+ * @param evt the key event
+ */
 void Tree::keyPressEvent(QKeyEvent* evt)
 {
     switch (evt->key()) {
@@ -151,10 +155,11 @@ void Tree::keyPressEvent(QKeyEvent* evt)
 }
 
 
-/*!
-    Reads and updates the tree from the given XML file.
-    \param rootElement the XML element which represents the <tt>\<qpamat\></tt> tag
-*/
+/**
+ * @brief Reads and updates the tree from the given XML file.
+ *
+ * @param rootElement the XML element which represents the <tt>\<qpamat\></tt> tag
+ */
 void Tree::readFromXML(const QDomElement& rootElement)
 {
     // delete the old tree
@@ -173,12 +178,14 @@ void Tree::readFromXML(const QDomElement& rootElement)
 }
 
 
-/*!
-    Appends the tree data to the specified QDomDocument. The document must contain a
-    <tt>\<qpamat\></tt> document element which must contain a <tt>\<passwords\></tt> child.
-    \param doc the QDomDocument to which the tree is appended. If the tree is empty, nothing is
-               appended
-    \exception std::invalid_argument if the given document does not met the described requirements
+/**
+ * @brief Appends the tree data to the specified QDomDocument.
+ *
+ * The document must contain a <tt>\<qpamat\></tt> document element which must contain a <tt>\<passwords\></tt> child.
+ *
+ * @param doc the QDomDocument to which the tree is appended. If the tree is empty,
+ *            nothing is appended
+ * @exception std::invalid_argument if the given document does not met the described requirements
 */
 void Tree::appendXML(QDomDocument& doc) const throw (std::invalid_argument)
 {
@@ -198,10 +205,11 @@ void Tree::appendXML(QDomDocument& doc) const throw (std::invalid_argument)
 }
 
 
-/*!
-    Returns the appropriage QDragObject for performing Drag and drop
-    \return the object
-*/
+/**
+ * @brief Returns the appropriage QDragObject for performing Drag and drop
+ *
+ * @return the object
+ */
 Q3DragObject* Tree::dragObject()
 {
     Q3ListViewItem* current = currentItem();
@@ -216,10 +224,11 @@ Q3DragObject* Tree::dragObject()
 }
 
 
-/*!
-    Helping function that shows a message box that indicates that a read error has occured
-    \param message the real error message (from the smart card classes)
-*/
+/**
+ * @brief Helping function that shows a message box that indicates that a read error has occured
+ *
+ * @param message the real error message (from the smart card classes)
+ */
 void Tree::showReadErrorMessage(const QString& message)
 {
     QMessageBox::critical(this, "QPaMaT", tr("An unknown error occured while reading the "
@@ -229,12 +238,14 @@ void Tree::showReadErrorMessage(const QString& message)
 }
 
 
-/*!
-    Displays the context menu. Should be connected to the contextMenuRequested() signal of the
-    Tree.
-    \param item the menu item
-    \param point the coordinates of the click
-*/
+/**
+ * @brief Displays the context menu.
+ *
+ * Should be connected to the contextMenuRequested() signal of the Tree.
+ *
+ * @param item the menu item
+ * @param point the coordinates of the click
+ */
 void Tree::showContextMenu(Q3ListViewItem* item, const QPoint& point)
 {
     if (!isEnabled())
@@ -272,11 +283,12 @@ void Tree::showContextMenu(Q3ListViewItem* item, const QPoint& point)
 }
 
 
-/*!
-    Inserts a item at the specified position
-    \param item the item
-    \param category if the new item should be a category
-*/
+/**
+ * @brief Inserts a item at the specified position
+ *
+ * @param item the item
+ * @param category if the new item should be a category
+ */
 void Tree::insertItem(TreeEntry* item, bool category)
 {
     if (!hasFocus())
@@ -303,9 +315,9 @@ void Tree::insertItem(TreeEntry* item, bool category)
 }
 
 
-/*!
-    Deletes the currently \b selected entry
-*/
+/**
+ * @brief Deletes the currently \b selected entry
+ */
 void Tree::deleteCurrent()
 {
     if (hasFocus()) {
@@ -346,9 +358,9 @@ void Tree::deleteCurrent()
 }
 
 
-/*!
-    Inserts an item at the current position
-*/
+/**
+ * @brief Inserts an item at the current position
+ */
 void Tree::insertAtCurrentPos()
 {
     if (hasFocus())
@@ -356,10 +368,12 @@ void Tree::insertAtCurrentPos()
 }
 
 
-/*!
-    Converts the tree to Rich text (HTML). This function is for printing.
-    \return the text
-*/
+/**
+ * @brief Converts the tree to Rich text (HTML).
+ *
+ * This function is for printing.
+ * @return the text
+ */
 QString Tree::toRichTextForPrint()
 {
     Q3ListViewItemIterator it(this);
@@ -375,12 +389,13 @@ QString Tree::toRichTextForPrint()
 }
 
 
-/*!
-    Appends the tree as text representation to the given stream. The text is formatted for
-    export.
-
-    \param stream the stream where the text is appended
-*/
+/**
+ * @brief Appends the tree as text representation to the given stream.
+ *
+ * The text is formatted for export.
+ *
+ * @param stream the stream where the text is appended
+ */
 void Tree::appendTextForExport(QTextStream& stream)
 {
     Q3ListViewItemIterator it(this);
@@ -400,10 +415,11 @@ void Tree::appendTextForExport(QTextStream& stream)
 }
 
 
-/*!
-    Performs a search operation.
-    \param word the word to search for (case insensitive)
-*/
+/**
+ * @brief Performs a search operation.
+ *
+ * @param word the word to search for (case insensitive)
+ */
 void Tree::searchFor(const QString& word)
 {
     Q3ListViewItem* selected = selectedItem();
@@ -447,10 +463,12 @@ void Tree::searchFor(const QString& word)
 }
 
 
-/*!
-    Handler that is called if the current item has changed (usually after delete operations). It
-    Must change the selection on the right panel.
-*/
+/**
+ * @brief Handler that is called if the current item has changed (usually after
+ *        delete operations).
+ *
+ * It must change the selection on the right panel.
+ */
 void Tree::currentChangedHandler(Q3ListViewItem*)
 {
     if (selectedItem() == 0)
@@ -458,10 +476,11 @@ void Tree::currentChangedHandler(Q3ListViewItem*)
 }
 
 
-/*!
-    Handler for items that are dropped directly to the white space at the list view.
-    \param evt the event
-*/
+/**
+ * @brief Handler for items that are dropped directly to the white space at the list view.
+ *
+ * @param evt the event
+ */
 void Tree::droppedHandler(QDropEvent* evt)
 {
     if (evt->provides("application/x-qpamat")) {
@@ -479,19 +498,24 @@ void Tree::droppedHandler(QDropEvent* evt)
 }
 
 
-/*!
-    Recomputes the password strength. This function should be called before showing the password
-    strength in the tree and it must be called after changing the configuration related to
-    password strength. It shows a progress dialog.
-    \param error is set to \c true if an error occured and if \p error is not \c NULL
-*/
+/**
+ * @brief Recomputes the password strength.
+ *
+ * This function should be called before showing the password strength in the
+ * tree and it must be called after changing the configuration related to
+ * password strength. It shows a progress dialog.
+ *
+ * @param error is set to \c true if an error occured and if \p error is not \c NULL
+ */
 void Tree::recomputePasswordStrength(bool* error)
 {
-    if (!m_showPasswordStrength)
+    if (!m_showPasswordStrength) {
         return;
+    }
 
-    if (error)
+    if (error) {
         *error = true;
+    }
 
     QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
     int num = 0;
@@ -551,19 +575,20 @@ void Tree::recomputePasswordStrength(bool* error)
 }
 
 
-/*!
-    Shows the icons that indicate weak passwords on the left.
-    \param enabled if \p show is \c true, the markers are shown, otherwise they get hidden
-*/
+/**
+ * @brief Shows the icons that indicate weak passwords on the left.
+ *
+ * @param enabled if \p show is \c true, the markers are shown, otherwise they get hidden
+ */
 void Tree::setShowPasswordStrength(bool enabled)
 {
     m_showPasswordStrength = enabled;
 }
 
 
-/*!
-    Updates the icons based on the last settings of setShowPasswordStrength()
-*/
+/**
+ * @brief Updates the icons based on the last settings of setShowPasswordStrength()
+ */
 void Tree::updatePasswordStrengthView()
 {
     try {

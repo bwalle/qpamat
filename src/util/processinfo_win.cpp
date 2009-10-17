@@ -22,8 +22,7 @@ bool ProcessInfo::isProcessRunning(q_pid_t pid)
     HANDLE process;
 
     process = OpenProcess(PROCESS_QUERY_INFORMATION, false, pid);
-    if (!process)
-    {
+    if (!process) {
         return false;
     }
 

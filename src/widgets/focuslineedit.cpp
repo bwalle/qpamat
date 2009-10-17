@@ -21,63 +21,68 @@
 #include "focuslineedit.h"
 
 
-/*!
-    \class FocusLineEdit
+/**
+ * \class FocusLineEdit
+ *
+ * \brief Implements a QLineEdit which notifies the user when it gets the focus.
+ *
+ * This FocusLineEdit is exactly the same as a normal QLineEdit but it has an additional signal
+ * gotFocus() which notifies the user of this widget to do something if the element got the focus.
+ *
+ * @ingroup widgets
+ * @author Bernhard Walle
+ */
 
-    \brief Implements a QLineEdit which notifies the user when it gets the focus.
+/**
+ * @brief FocusLineEdit::gotFocus()
+ *
+ * This signal is emitted if the widget got the focus.
+ */
 
-    This FocusLineEdit is exactly the same as a normal QLineEdit but it has an additional signal
-    gotFocus() which notifies the user of this widget to do something if the element got the focus.
-
-    \ingroup widgets
-    \author Bernhard Walle
-*/
-
-/*!
-    \fn FocusLineEdit::gotFocus()
-
-    This signal is emitted if the widget got the focus.
-*/
-
-/*!
-    Constructor passed to QLineEdit.
-    \param parent the parent
-    \param name the name
-*/
+/**
+ * @brief Constructor passed to QLineEdit.
+ *
+ * @param parent the parent
+ * @param name the name
+ */
 FocusLineEdit::FocusLineEdit(QWidget* parent, const char* name)
     : QLineEdit(parent, name)
 {}
 
 
-/*!
-    Constructor passed to QLineEdit.
-    \param contents initial content
-    \param parent the parent
-    \param name the name
-*/
+/**
+ * @brief Constructor passed to QLineEdit.
+ *
+ * @param contents initial content
+ * @param parent the parent
+ * @param name the name
+ */
 FocusLineEdit::FocusLineEdit(const QString& contents, QWidget* parent, const char* name)
     : QLineEdit(contents, parent, name)
 {}
 
 
-/*!
-    Constructor passed to QLineEdit.
-    \param contents initial content
-    \param inputMask the input mask
-    \param parent the parent
-    \param name the name
-*/
+/**
+ * @brief Constructor passed to QLineEdit.
+ *
+ * @param contents initial content
+ * @param inputMask the input mask
+ * @param parent the parent
+ * @param name the name
+ */
 FocusLineEdit::FocusLineEdit(const QString& contents, const QString& inputMask, QWidget* parent,
             const char* name)
     : QLineEdit(contents, inputMask, parent, name)
 {}
 
 
-/*!
-    Event that happens if the line edit gets the focus. It just calls the QLineEdit::focusInEvent()
-    and emits a gotFocus() signal.
-    \param evt the event
-*/
+/**
+ * @brief Event that happens if the line edit gets the focus.
+ *
+ * It just calls the QLineEdit::focusInEvent() and emits a gotFocus() signal.
+ *
+ * @param evt the event
+ */
 void FocusLineEdit::focusInEvent(QFocusEvent* evt)
 {
     QLineEdit::focusInEvent(evt);

@@ -26,26 +26,27 @@
 #include "qpamatwindow.h"
 #include "qpamat.h"
 
-/*!
-    \class PasswordDialog
+/**
+ * @class PasswordDialog
+ *
+ * @brief Dialog to enter the password
+ *
+ * This dialog is just used to enter a password. It's the dialog that is shown
+ * on startup and lets the user type-in the password. No checking is done here.
+ *
+ * It grabs the keyboard unless the user turned it off with the global setting
+ * <tt>Password/NoGrabbing</tt>.
+ *
+ * @ingroup dialogs
+ * @author Bernhard Walle
+ */
 
-    \brief Dialog to enter the password
-
-    This dialog is just used to enter a password. It's the dialog that is shown on startup and
-    lets the user type-in the password. No checking is done here.
-
-    It grabs the keyboard unless the user turned it off with the global setting
-    <tt>Password/NoGrabbing</tt>.
-
-    \ingroup dialogs
-    \author Bernhard Walle
-*/
-
-/*!
-    Creates a new instance of a PasswordDialog.
-    \param parent the parent widget
-    \param name the name of the widget
-*/
+/**
+ * Creates a new instance of a PasswordDialog.
+ *
+ * @param parent the parent widget
+ * @param name the name of the widget
+ */
 PasswordDialog::PasswordDialog(QWidget* parent, const char* name)
     : QDialog(parent, name, false)
 {
@@ -82,20 +83,23 @@ PasswordDialog::PasswordDialog(QWidget* parent, const char* name)
 }
 
 
-/*!
-    Grabs the password edit. Should be connected to the gotFocus() signal of the password
-    lineedit widget.
-*/
+/**
+ * @brief Grabs the password edit.
+ *
+ * Should be connected to the gotFocus() signal of the password lineedit
+ * widget.
+ */
 void PasswordDialog::grab()
 {
     m_passwordEdit->grabKeyboard();
 }
 
 
-/*!
-    Releases the password edit. Should be connected to the lostFocus() signal of the password
-    lineedit widget.
-*/
+/**
+ * @brief Releases the password edit.
+ *
+ * Should be connected to the lostFocus() signal of the password lineedit widget.
+ */
 void PasswordDialog::release()
 {
     if (QWidget* widget = keyboardGrabber())
@@ -103,10 +107,11 @@ void PasswordDialog::release()
 }
 
 
-/*!
-    Returns the password the user has entered.
-    \return the password
-*/
+/**
+ * @brief Returns the password the user has entered.
+ *
+ * @return the password
+ */
 QString PasswordDialog::getPassword() const
 {
     return m_passwordEdit->text();

@@ -29,45 +29,49 @@
 #include "qpamat.h"
 #include "showpassworddialog.h"
 
-/*!
-    \class ShowPasswordDialog
+/**
+ * @class ShowPasswordDialog
+ *
+ * @brief Dialog which displayes a password.
+ *
+ * This dialog displays a password. It can display the password as cleartext and with stars.
+ * The user has the ability to copy it using a special button. He can also insert the password
+ * at the current position. For this, the dialog can show a Insert button and the dialog
+ * emits the insertPassword() signal.
+ *
+ * It depends on the global property <tt>Presentation/HideRandomPass</tt> and on the constructor
+ * parameter if the dialog shows the insert button or not.
+ *
+ * @ingroup dialogs
+ * @author Bernhard Walle
+ */
 
-    \brief Dialog which displayes a password.
+/**
+ * @enum ShowPasswordDialog::DialogType
+ *
+ * @brief Specifies the type of the dialog.
+ *
+ * Use @c TRandomPasswordDlg if the dialog should show a random password,
+ * @c TRandomPasswordDlg if it should show a random password with an insert button
+ * or @c TNormalPasswordDlg if it should show a normal password. The message
+ * text changes between random password and normal password.
+ */
 
-    This dialog displays a password. It can display the password as cleartext and with stars.
-    The user has the ability to copy it using a special button. He can also insert the password
-    at the current position. For this, the dialog can show a Insert button and the dialog
-    emits the insertPassword() signal.
+/**
+ * @fn ShowPasswordDialog::insertPassword(const QString&)
+ *
+ * Signal that is emitted if the user wants to insert a password.
+ *
+ * @param password the password the user wants to insert
+ */
 
-    It depends on the global property <tt>Presentation/HideRandomPass</tt> and on the constructor
-    parameter if the dialog shows the insert button or not.
-
-    \ingroup dialogs
-    \author Bernhard Walle
-*/
-
-/*!
-    \enum ShowPasswordDialog::DialogType
-
-    Specifies the type of the dialog. Use \c TRandomPasswordDlg if the dialog should show
-    a random password, \c TRandomPasswordDlg if it should show a random password with an insert
-    button or \c TNormalPasswordDlg if it should show a normal password. The message text changes
-    between random password and normal password.
-*/
-
-/*!
-    \fn ShowPasswordDialog::insertPassword(const QString&)
-
-    Signal that is emitted if the user wants to insert a password.
-    \param password the password the user wants to insert
-*/
-
-/*!
-    Creates a new instance of the password dialog.
-    \param parent the parent widget
-    \param type the type of the dialog
-    \param name the name of the object
-*/
+/**
+ * @brief Creates a new instance of the password dialog.
+ *
+ * @param parent the parent widget
+ * @param type the type of the dialog
+ * @param name the name of the object
+ */
 ShowPasswordDialog::ShowPasswordDialog(QWidget* parent, DialogType type, const char* name)
     : QDialog(parent, name)
 {
@@ -111,29 +115,31 @@ ShowPasswordDialog::ShowPasswordDialog(QWidget* parent, DialogType type, const c
 }
 
 
-/*!
-    Returns the password which the user entered.
-    \return the password
-*/
+/**
+ * Returns the password which the user entered.
+ *
+ * @return the password
+ */
 QString ShowPasswordDialog::getPassword() const
 {
     return m_passwordEdit->getContent();
 }
 
 
-/*!
-    Sets the displayed password.
-    \param newPassword the new password
-*/
+/**
+ * Sets the displayed password.
+ *
+ * @param newPassword the new password
+ */
 void ShowPasswordDialog::setPassword(const QString& newPassword)
 {
     m_passwordEdit->setContent(newPassword);
 }
 
 
-/*!
-    Slot that is called if the user pressed the Insert button.
-*/
+/**
+ * Slot that is called if the user pressed the Insert button.
+ */
 void ShowPasswordDialog::insertButtonHandler()
 {
     emit insertPassword(m_passwordEdit->getContent());

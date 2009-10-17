@@ -56,40 +56,40 @@
 #include "security/hybridpasswordchecker.h"
 #include "smartcard/memorycard.h"
 
-/*!
-    \class ConfigurationDialog
-
-    \brief This dialog displays the configuration and lets the user change it.
-
-    The whole configuration is done by this dialog. There's not very much to say, the
-    dialog has four tabs:
-
-     - \b General which describes general display options
-     - \b Password which does the password settings
-     - \b Security which does the security settings
-     - \b SmartCard which controls all stuff about smartcards
-     - \b Presentation which holds all about printing and some other things
-
-    Just use following to use the dialog:
-
-    \code
-#include <QScopedPointer>
-
-QScopedPointer<ConfigurationDialog> dlg(new ConfigurationDialog(this));
-if (dlg->exec() == QDialog::Accepted) {
-      // do something
-}
-    \endcode
-
-    Using QScopedPointer or std::auto_ptr here is a good idea but not neccessary.
-
-    \ingroup dialogs
-    \author Bernhard Walle
+/**
+ * @class ConfigurationDialog
+ *
+ * @brief This dialog displays the configuration and lets the user change it.
+ *
+ * The whole configuration is done by this dialog. There's not very much to
+ * say, the dialog has four tabs:
+ *
+ *  - @b General which describes general display options
+ *  - @b Password which does the password settings
+ *  - @b Security which does the security settings
+ *  - @b SmartCard which controls all stuff about smartcards
+ *  - @b Presentation which holds all about printing and some other things
+ *
+ * Just use following to use the dialog:
+ *
+ * @code
+ * #include <QScopedPointer>
+ * 
+ * QScopedPointer<ConfigurationDialog> dlg(new ConfigurationDialog(this));
+ * if (dlg->exec() == QDialog::Accepted) {
+ *     // do something
+ * }
+ * @endcode
+ *
+ * Using QScopedPointer or std::auto_ptr here is a good idea but not neccessary.
+ *
+ * @ingroup dialogs
+ * @author Bernhard Walle
  */
 
-/*!
-    Creates a new instance of a ConfigurationDialog.
-*/
+/**
+ * Creates a new instance of a ConfigurationDialog.
+ */
 ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     : ListBoxDialog(parent)
 {
@@ -124,62 +124,65 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
 //                                     Configuration dialog tab
 // -------------------------------------------------------------------------------------------------
 
-/*!
-    \class ConfDlgTab
+/**
+ *
+ * @class ConfDlgTab
+ *
+ * @brief Base class for all tabs displayed in the configuration dialog
+ *
+ * This is a interface that all tabs in the configuration dialog must implement.
+ *
+ * @ingroup gui
+ * @author Bernhard Walle
+ */
 
-    \brief Base class for all tabs displayed in the configuration dialog
+/**
+ * @fn ConfDlgTab::ConfDlgTab(QWidget*, const char*)
+ *
+ * Creates a new instance of a ConfDlgTab
+ *
+ * @param parent the parent widget
+ * @param name the name of the widget
+ */
 
-    This is a interface that all tabs in the configuration dialog must implement.
+/**
+ * @fn ConfDlgTab::fillSettings()
+ *
+ * This function reads all settings from the global Settings object and fills the GUI with
+ * this values.
+ */
 
-    \ingroup gui
-    \author Bernhard Walle
-*/
-
-/*!
-    \fn ConfDlgTab::ConfDlgTab(QWidget*, const char*)
-
-    Creates a new instance of a ConfDlgTab
-    \param parent the parent widget
-    \param name the name of the widget
-*/
-
-/*!
-    \fn ConfDlgTab::fillSettings()
-
-    This function reads all settings from the global Settings object and fills the GUI with
-    this values.
-*/
-
-/*!
-    \fn ConfDlgTab::applySettings()
-
-    This function stores all settings made in the GUI to the global Settings object.
-*/
+/**
+ * @fn ConfDlgTab::applySettings()
+ *
+ * This function stores all settings made in the GUI to the global Settings object.
+ */
 
 // -------------------------------------------------------------------------------------------------
 //                                     General tab
 // -------------------------------------------------------------------------------------------------
 
-/*!
-    \class ConfDlgGeneralTab
+/**
+ * @class ConfDlgGeneralTab
+ *
+ * @brief Represents general settings in the configuration dialog
+ *
+ * This tab holds all general settings
+ *
+ *   - startup (AutoLogin)
+ *   - locations of external applications
+ *   - AutoText function
+ *
+ * @ingroup gui
+ * @author Bernhard Walle
+ */
 
-    \brief Represents general settings in the configuration dialog
 
-    This tab holds all general settings
-
-     - startup (AutoLogin)
-     - locations of external applications
-     - AutoText function
-
-    \ingroup gui
-    \author Bernhard Walle
-*/
-
-
-/*!
-    Creates a new instance of an ConfDlgGeneralTab object.
-    \param parent the parent widget
-*/
+/**
+ * @brief Creates a new instance of an ConfDlgGeneralTab object.
+ *
+ * @param parent the parent widget
+ */
 ConfDlgGeneralTab::ConfDlgGeneralTab(QWidget* parent, const char* name)
     : ListBoxDialogPage(parent, name)
 {
@@ -187,9 +190,9 @@ ConfDlgGeneralTab::ConfDlgGeneralTab(QWidget* parent, const char* name)
 }
 
 
-/*!
-    Does creating of subwidgets and layout of the GeneralTab.
-*/
+/**
+ * @brief Does creating of subwidgets and layout of the GeneralTab.
+ */
 void ConfDlgGeneralTab::createAndLayout()
 {
     // create layouts
@@ -232,9 +235,11 @@ void ConfDlgGeneralTab::createAndLayout()
 }
 
 
-/*!
-    Fills the settings. This method is called from the dialog's constructor.
-*/
+/**
+ * @brief Fills the settings.
+ *
+ * This method is called from the dialog's constructor.
+ */
 void ConfDlgGeneralTab::fillSettings()
 {
     QpamatWindow *win = Qpamat::instance()->getWindow();
@@ -248,9 +253,11 @@ void ConfDlgGeneralTab::fillSettings()
 }
 
 
-/*!
-    Applys the settings. This method is called by if the user presses the Ok button.
-*/
+/**
+ * @brief Applys the settings.
+ *
+ * This method is called by if the user presses the Ok button.
+ */
 void ConfDlgGeneralTab::applySettings()
 {
     QpamatWindow *win = Qpamat::instance()->getWindow();
@@ -268,25 +275,26 @@ void ConfDlgGeneralTab::applySettings()
 //                                     Password tab
 // -------------------------------------------------------------------------------------------------
 
-/*!
-    \class ConfDlgPasswordTab
+/**
+ * @class ConfDlgPasswordTab
+ *
+ * @brief Represents password settings in the configuration dialog
+ *
+ * This tab holds security general settings
+ *
+ *   - settings for generated passwords
+ *   - password strength settings
+ *
+ * @ingroup gui
+ * @author Bernhard Walle
+ */
 
-    \brief Represents password settings in the configuration dialog
 
-    This tab holds security general settings
-
-     - settings for generated passwords
-     - password strength settings
-
-    \ingroup gui
-    \author Bernhard Walle
-*/
-
-
-/*!
-    Creates a new instance of an ConfDlgPasswordTab object.
-    \param parent the parent widget
-*/
+/**
+ * Creates a new instance of an ConfDlgPasswordTab object.
+ *
+ * @param parent the parent widget
+ */
 ConfDlgPasswordTab::ConfDlgPasswordTab(QWidget* parent, const char* name)
     : ListBoxDialogPage(parent, name)
     , m_lengthSpinner(0)
@@ -308,9 +316,9 @@ ConfDlgPasswordTab::ConfDlgPasswordTab(QWidget* parent, const char* name)
 }
 
 
-/*!
-    Does creating of subwidgets and layout of the GeneralTab.
-*/
+/**
+ * @brief Does creating of subwidgets and layout of the GeneralTab.
+ */
 void ConfDlgPasswordTab::createAndLayout()
 {
     // create layouts
@@ -383,9 +391,11 @@ void ConfDlgPasswordTab::createAndLayout()
 }
 
 
-/*!
-    Applys the settings. This method is called by if the user presses the Ok button.
-*/
+/**
+ * @brief Applys the settings.
+ *
+ * This method is called by if the user presses the Ok button.
+ */
 void ConfDlgPasswordTab::checkboxHandler(bool on)
 {
     m_externalEdit->setEnabled(on);
@@ -394,9 +404,11 @@ void ConfDlgPasswordTab::checkboxHandler(bool on)
 }
 
 
-/*!
-    Fills the settings. This method is called from the dialog's constructor.
-*/
+/**
+ * @brief Fills the settings.
+ *
+ * This method is called from the dialog's constructor.
+ */
 void ConfDlgPasswordTab::fillSettings()
 {
     QpamatWindow *win = Qpamat::instance()->getWindow();
@@ -414,9 +426,11 @@ void ConfDlgPasswordTab::fillSettings()
     strongSliderHandler(m_strongSlider->value());
 }
 
-/*!
-    Applys the settings. This method is called by if the user presses the Ok button.
-*/
+/**
+ * @brief Applys the settings.
+ *
+ * This method is called by if the user presses the Ok button.
+ */
 void ConfDlgPasswordTab::applySettings()
 {
     QString passGen = m_useExternalCB->isChecked() ? "EXTERNAL" : "RANDOM";
@@ -432,10 +446,13 @@ void ConfDlgPasswordTab::applySettings()
 }
 
 
-/*!
-    Handles events of the weak slider. If the weak slider is moved, it needs to update the
-    strong slider if necessary and to update the LCD on the right.
-    \param value the new value
+/**
+ * @brief Handles events of the weak slider.
+ *
+ * If the weak slider is moved, it needs to update the strong slider if
+ * necessary and to update the LCD on the right.
+ *
+ * @param value the new value
  */
 void ConfDlgPasswordTab::weakSliderHandler(int value)
 {
@@ -445,11 +462,14 @@ void ConfDlgPasswordTab::weakSliderHandler(int value)
 }
 
 
-/*!
-    Handles events of the strong slider. If the strong slider is moved, it needs to update the
-    weak slider if necessary and to update the LCD on the right.
-    \param value the new value
-*/
+/**
+ * @brief Handles events of the strong slider.
+ *
+ * If the strong slider is moved, it needs to update the weak slider if
+ * necessary and to update the LCD on the right.
+ *
+ * @param value the new value
+ */
 void ConfDlgPasswordTab::strongSliderHandler(int value)
 {
     if (m_weakSlider->value() > value)
@@ -458,10 +478,11 @@ void ConfDlgPasswordTab::strongSliderHandler(int value)
 }
 
 
-/*!
-    Sorts the dictionary that was specified in the dictionary line edit. Stores a backup
-    copy of the file in filename.bak.
-*/
+/**
+ * @brief Sorts the dictionary that was specified in the dictionary line edit.
+ *
+ * Stores a backup copy of the file in filename.bak.
+ */
 void ConfDlgPasswordTab::sortDictionary()
 {
     StringVector words;
@@ -511,35 +532,37 @@ void ConfDlgPasswordTab::sortDictionary()
 //                                     Security tab
 // -------------------------------------------------------------------------------------------------
 
-/*!
-    \class ConfDlgPasswordTab
+/**
+ * @class ConfDlgPasswordTab
+ *
+ * @brief Represents security settings in the configuration dialog
+ *
+ * This tab holds security general settings
+ *
+ *   - cipher algorithm
+ *   - automatic logout
+ *
+ * @ingroup gui
+ * @author Bernhard Walle
+ */
 
-    \brief Represents security settings in the configuration dialog
-
-    This tab holds security general settings
-
-     - cipher algorithm
-     - automatic logout
-
-    \ingroup gui
-    \author Bernhard Walle
-*/
-
-/*!
-    Maps combo box index to minutes.
-*/
+/**
+ * @brief Maps combo box index to minutes.
+ */
 const int ConfDlgSecurityTab::m_minuteMap[] = {
-    0,          /*!< disabled */
-    15,         /*!< 15 minutes */
-    30,         /*!< 30 minutes */
-    60,         /*!< 60 minutes */
-    120         /*!< 2 hours */
+    0,          /**< disabled */
+    15,         /**< 15 minutes */
+    30,         /**< 30 minutes */
+    60,         /**< 60 minutes */
+    120         /**< 2 hours */
 };
 
-/*!
-    Creates a new instance of an ConfDlgPasswordTab object.
-    \param parent the parent widget
-*/
+/**
+ * @brief Creates a new instance of an ConfDlgPasswordTab object.
+ *
+ * @param parent the parent widget
+ * @param name the name of the widget
+ */
 ConfDlgSecurityTab::ConfDlgSecurityTab(QWidget* parent, const char* name)
     : ListBoxDialogPage(parent, name)
     , m_algorithmCombo(0)
@@ -548,9 +571,9 @@ ConfDlgSecurityTab::ConfDlgSecurityTab(QWidget* parent, const char* name)
 }
 
 
-/*!
-    Does creating of subwidgets and layout of the GeneralTab.
-*/
+/**
+ * @brief Does creating of subwidgets and layout of the GeneralTab.
+ */
 void ConfDlgSecurityTab::createAndLayout()
 {
     // create layouts
@@ -576,9 +599,11 @@ void ConfDlgSecurityTab::createAndLayout()
 }
 
 
-/*!
-    Fills the settings. This method is called from the dialog's constructor.
-*/
+/**
+ * @brief Fills the settings.
+ *
+ * This method is called from the dialog's constructor.
+ */
 void ConfDlgSecurityTab::fillSettings()
 {
     qDebug() << CURRENT_FUNCTION << "Insert algorithm";
@@ -604,9 +629,11 @@ void ConfDlgSecurityTab::fillSettings()
     m_logoutCombo->setCurrentItem(val - ConfDlgSecurityTab::m_minuteMap);
 }
 
-/*!
-    Applys the settings. This method is called by if the user presses the Ok button.
-*/
+/**
+ * @brief Applys the settings.
+ *
+ * This method is called by if the user presses the Ok button.
+ */
 void ConfDlgSecurityTab::applySettings()
 {
     QpamatWindow *win = Qpamat::instance()->getWindow();
@@ -621,25 +648,26 @@ void ConfDlgSecurityTab::applySettings()
 // -------------------------------------------------------------------------------------------------
 
 
-/*!
-    \class ConfDlgPresentationTab
+/**
+ * @class ConfDlgPresentationTab
+ *
+ * @brief Represents presentation settings in the configuration dialog
+ *
+ * This tab holds all presentation settings
+ *
+ *   - displaying of passwords in the RandomPasswordDialog
+ *   - fonts used for printing
+ *
+ * @ingroup gui
+ * @author Bernhard Walle
+ */
 
-    \brief Represents presentation settings in the configuration dialog
 
-    This tab holds all presentation settings
-
-     - displaying of passwords in the RandomPasswordDialog
-     - fonts used for printing
-
-    \ingroup gui
-    \author Bernhard Walle
-*/
-
-
-/*!
-    Creates a new instance of an ConfDlgPresentationTab object.
-    \param parent the parent widget
-*/
+/**
+ * @brief Creates a new instance of an ConfDlgPresentationTab object.
+ *
+ * @param parent the parent widget
+ */
 ConfDlgPresentationTab::ConfDlgPresentationTab(QWidget* parent, const char* name)
     : ListBoxDialogPage(parent, name)
     , m_nograbCB(0)
@@ -650,9 +678,9 @@ ConfDlgPresentationTab::ConfDlgPresentationTab(QWidget* parent, const char* name
 }
 
 
-/*!
-    Does creating of subwidgets and layout of the GeneralTab.
-*/
+/**
+ * @brief Does creating of subwidgets and layout of the GeneralTab.
+ */
 void ConfDlgPresentationTab::createAndLayout()
 {
     // create layouts
@@ -690,9 +718,11 @@ void ConfDlgPresentationTab::createAndLayout()
 }
 
 
-/*!
-    Fills the settings. This method is called from the dialog's constructor.
-*/
+/**
+ * @brief Fills the settings.
+ *
+ * This method is called from the dialog's constructor.
+ */
 void ConfDlgPresentationTab::fillSettings()
 {
     QFont font;
@@ -709,9 +739,11 @@ void ConfDlgPresentationTab::fillSettings()
 }
 
 
-/*!
-    Applys the settings. This method is called by if the user presses the Ok button.
-*/
+/**
+ * @brief Applys the settings.
+ *
+ * This method is called by if the user presses the Ok button.
+ */
 void ConfDlgPresentationTab::applySettings()
 {
     QpamatWindow *win = Qpamat::instance()->getWindow();
@@ -730,31 +762,32 @@ void ConfDlgPresentationTab::applySettings()
 // -------------------------------------------------------------------------------------------------
 
 
-/*!
-    \class ConfDlgSmartcardTab
+/**
+ * @class ConfDlgSmartcardTab
+ *
+ * @brief Represents smartcard settings in the configuration dialog
+ *
+ * This tab holds all smartcard settings
+ *
+ *   - library
+ *   - port
+ *   - testing faclity
+ *
+ * @ingroup gui
+ * @author Bernhard Walle
+ */
 
-    \brief Represents smartcard settings in the configuration dialog
+/**
+ * @enum ConfDlgSmartcardTab::SmartcardEnabled
+ *
+ * Enumeration type to represent enabled/not enabled as radio button group.
+ */
 
-    This tab holds all smartcard settings
-
-     - library
-     - port
-     - testing faclity
-
-    \ingroup gui
-    \author Bernhard Walle
-*/
-
-/*!
-    \enum ConfDlgSmartcardTab::SmartcardEnabled
-
-    Enumeration type to represent enabled/not enabled as radio button group.
-*/
-
-/*!
-    Creates a new instance of an ConfDlgSmartcardTab object.
-    \param parent the parent widget
-*/
+/**
+ * Creates a new instance of an ConfDlgSmartcardTab object.
+ *
+ * @param parent the parent widget
+ */
 ConfDlgSmartcardTab::ConfDlgSmartcardTab(QWidget* parent, const char* name)
         : ListBoxDialogPage(parent, name)
 {
@@ -765,9 +798,9 @@ ConfDlgSmartcardTab::ConfDlgSmartcardTab(QWidget* parent, const char* name)
 }
 
 
-/*!
-    Does creating of subwidgets and layout of the GeneralTab.
-*/
+/**
+ * @brief Does creating of subwidgets and layout of the GeneralTab.
+ */
 void ConfDlgSmartcardTab::createAndLayout()
 {
     // create layouts
@@ -818,11 +851,14 @@ void ConfDlgSmartcardTab::createAndLayout()
 }
 
 
-/*!
-    Handles the smart card enabled button. If it is checked, the configuration widgets get
-    displayed, otherwise they get hidden.
-    \param enabled \c true if smart card support is enabled
-*/
+/**
+ * @brief Handles the smart card enabled button.
+ *
+ * If it is checked, the configuration widgets get displayed, otherwise they
+ * get hidden.
+ *
+ * @param enabled \c true if smart card support is enabled
+ */
 void ConfDlgSmartcardTab::setUseSmartcardEnabled(bool enabled)
 {
     m_usePinCB->setEnabled(enabled);
@@ -831,9 +867,11 @@ void ConfDlgSmartcardTab::setUseSmartcardEnabled(bool enabled)
 }
 
 
-/*!
-    Fills the settings. This method is called from the dialog's constructor.
-*/
+/**
+ * @brief Fills the settings.
+ *
+ * This method is called from the dialog's constructor.
+ */
 void ConfDlgSmartcardTab::fillSettings()
 {
     m_portCombo->clear();
@@ -860,9 +898,11 @@ void ConfDlgSmartcardTab::fillSettings()
 }
 
 
-/*!
-    Applys the settings. This method is called by if the user presses the Ok button.
-*/
+/**
+ * @brief Applys the settings.
+ *
+ * This method is called by if the user presses the Ok button.
+ */
 void ConfDlgSmartcardTab::applySettings()
 {
     QpamatWindow *win = Qpamat::instance()->getWindow();
@@ -874,11 +914,13 @@ void ConfDlgSmartcardTab::applySettings()
 }
 
 
-/*!
-    Tests the smartcard. This is to verify the settings.
-    It tries to read from the reader. It checks the type of the smartcard and if it's a memory
-    card, it displays the avalable memory in a dialog.
-*/
+/**
+ * @brief Tests the smartcard.
+ *
+ * This is to verify the settings.  It tries to read from the reader. It checks
+ * the type of the smartcard and if it's a memory card, it displays the
+ * avalable memory in a dialog.
+ */
 void ConfDlgSmartcardTab::testSmartCard()
 {
     QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );

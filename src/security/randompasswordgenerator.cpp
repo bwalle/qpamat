@@ -21,30 +21,32 @@
 #include "randompasswordgenerator.h"
 
 
-/*!
-    \class RandomPasswordGenerator
+/**
+ * @class RandomPasswordGenerator
+ *
+ * @brief Object to generate random passwords.
+ *
+ * The passwords are \b really random since it is used the OpenSSL library for randomness.
+ *
+ * @ingroup security
+ * @author Bernhard Walle
+ */
 
-    \brief Object to generate random passwords.
-
-    The passwords are \b really random since it is used the OpenSSL library for randomness.
-
-    \ingroup security
-    \author Bernhard Walle
-*/
-
-/*!
-    Generates a random password. There's a random password generated using a
-    function of the OpenSSL library. This password consists of bytes. The
-    bytes are transformed to a string using the base64 algorithm, which
-    ensures that there could be no charset conversion problem.
-    The passwords are not easy to memorize but you have QPaMaT and your clipboard.
-    However, if you need a good password to memorize, just use your brain. A
-    computer cannot output what is easy to memorize for <b>you</b>!
-    \param length the length of the password
-    \param pAllowedChars list of all allowed characters (see PasswordGenerator::getPassword())
-    \return the password
-    \exception PasswordGenerateException if the object was not seeded
-*/
+/**
+ * @brief Generates a random password.
+ *
+ * There's a random password generated using a function of the OpenSSL library. This
+ * password consists of bytes. The bytes are transformed to a string using the base64
+ * algorithm, which ensures that there could be no charset conversion problem.  The
+ * passwords are not easy to memorize but you have QPaMaT and your clipboard.  However, if
+ * you need a good password to memorize, just use your brain. A computer cannot output
+ * what is easy to memorize for <b>you</b>!
+ *
+ * @param length the length of the password @param pAllowedChars list of all allowed
+ *               characters (see PasswordGenerator::getPassword())
+ * @return the password
+ * @exception PasswordGenerateException if the object was not seeded
+ */
 QString RandomPasswordGenerator::getPassword(unsigned int length, const QString& pAllowedChars)
         throw (PasswordGenerateException)
 {
@@ -75,7 +77,8 @@ QString RandomPasswordGenerator::getPassword(unsigned int length, const QString&
 }
 
 
-/*!
+/**
+ *
     Returns if the object was seeded. On Linux or other operating systems with
     a /dev/urandom device this is done automatically, on other system this
     must be done with user input. (System time or something else is not
@@ -87,10 +90,11 @@ bool RandomPasswordGenerator::isSeeded()
 }
 
 
-/*!
-    Returns \c false
-    \return \c false
-*/
+/**
+ * Returns \c false
+ *
+ * @return \c false
+ */
 bool RandomPasswordGenerator::isSlow() const
 {
     return false;

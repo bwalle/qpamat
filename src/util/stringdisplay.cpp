@@ -18,84 +18,64 @@
 #include "stringdisplay.h"
 
 
-/*!
-    \class StringDisplay
+/**
+ * @class StringDisplay
+ *
+ * @brief This class provides functions for displaying a amount as pretty string.
+ *
+ * The only available function at the moment is meant for displaying a amount of time in a
+ * suitable unit.
+ *
+ * @ingroup misc
+ * @author Bernhard Walle
+ */
 
-    \brief This class provides functions for displaying a amount as pretty string.
-
-    The only available function at the moment is meant for displaying a amount of time
-    in a suitable unit.
-
-    \ingroup misc
-    \author Bernhard Walle
-*/
-
-/*!
-    This function converts a day into a suitable unit, i.e. 120 days are displayed as 4 month.
-    \param days the time in days
-*/
+/**
+ * @brief This function converts a day into a suitable unit
+ *
+ * This function converts a day into a suitable unit, i.e. 120 days are displayed as 4
+ * month.
+ *
+ * @param days the time in days
+ */
 QString StringDisplay::displayTimeSuitable(double days)
 {
-    if (days > 365)
-    {
+    if (days > 365) {
         QLocale loc;
 
         int num = int(days / 365);
 
-        if (num <= 1)
-        {
+        if (num <= 1) {
             return QObject::tr("%1 year").arg(loc.toString(num));
-        }
-        else
-        {
+        } else {
             return QObject::tr("%1 years").arg(loc.toString(num));
         }
-    }
-    else if (days > 30)
-    {
+    } else if (days > 30) {
         int num = int(days / 30);
-        if (num <= 1)
-        {
+        if (num <= 1) {
             return QObject::tr("%1 month").arg(QString::number(num));
-        }
-        else
-        {
+        } else {
             return QObject::tr("%1 months").arg(QString::number(num));
         }
-    }
-    else if (days > 7)
-    {
+    } else if (days > 7) {
         int num = int(days / 7);
-        if (num <= 1)
-        {
+        if (num <= 1) {
             return QObject::tr("%1 week").arg(QString::number(num));
-        }
-        else
-        {
+        } else {
             return QObject::tr("%1 weeks").arg(QString::number(num));
         }
-    }
-    else if (days >= 1.0)
-    {
+    } else if (days >= 1.0) {
         int num = int(days);
-        if (num <= 1)
-        {
+        if (num <= 1) {
             return QObject::tr("%1 day").arg(QString::number(num));
-        }
-        else
-        {
+        } else {
             return QObject::tr("%1 days").arg(QString::number(num));
         }
-    }
-    else
-    {
+    } else {
         int num = int(days * 24);
-        if (num <= 1)
-        {
+        if (num <= 1) {
             return QObject::tr("a few minutes");
-        }
-        else
-        {
+        } else {
             return QObject::tr("%1 hours").arg(QString::number(num));
         }
     }

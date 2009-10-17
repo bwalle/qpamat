@@ -33,103 +33,114 @@
 int MemoryCard::m_lastNumber = 1;
 
 
-/*!
-    \class MemoryCard
+/**
+ * @class MemoryCard
+ *
+ * @brief Class for handling memory cards.
+ *
+ * Here's some background information about programming with smartcards etc. The
+ * information which was used to program this class is from following sources:
+ *
+ *   - Manual pages ctapi(3) and ctbcs(3) from the Towitoko CT-API driver at
+ *     http://www.geocities.com/cprados/ .
+ *   - Official CT-API specification at http://www.panstruga.de/ct-api/spec/spec_v09.html .
+ *   - c't (very good German computer magazine) article "Kartenspiele", "Grundlagen der
+ *     Chipkartenprogrammierung", Kai-Uwe Mrkor, c't 8/2000, page 208.
+ *
+ * A very good overview about the different APIs for programming with chipcards was in the
+ * article "Karten-Spiele", "Smartcard-Programmierung unter Linux", Frank Haubenschild in
+ * the German magazine "Linux-Magazin" 06/2002 which is also available online at
+ * http://www.linux-magazin.de/Artikel/ausgabe/2002/06/smartcards/smartcards.html. I
+ * choosed the CT-API because there was a driver available for my reader, this API is
+ * wide-spread in Germany, it's available on both *nix and Windows and my homebanking
+ * programme Moneyplex from Matrica also uses this API and chipcard communication works
+ * well.
+ *
+ * There's no need to start a server on machine and the user only has to specify one
+ * library.  You don't need root permissions if you have access to the serial port, of
+ * course.
+ *
+ * @par Normal Usage:
+ *
+ *   - At first you have to create a new object,
+ *   - then you have to call the init() method with the right port.
+ *   - After that you have to request the type of the card.
+ *   - Now you can call the read() or write() method.
+ *   - After this you have to call the close() method or simply let the destructor do the work!
+ *
+ * @ingroup smartcard
+ * @author Bernhard Walle
+ */
 
-    \brief Class for handling memory cards.
+/**
+ * @typedef char (*MemoryCard::CT_init_ptr) (unsigned short ctn, unsigned short pn);
+ *
+ * Typedef for the init function of the CT-API.
+ */
 
-    Here's some background information about programming with smartcards etc.
-    The information which was used to program this class is from following sources:
+/**
+ * @typedef typedef char (*MemoryCard::CT_data_ptr) (unsigned short ctn, uchar* dad,
+ *                                        unsigned char* sad, unsigned short lenc,
+ *                                        unsigned char* command, unsigned short* lenr,
+ *                                        unsigned char* response);
+ *
+ *  Typedef for the data function of the CT-API.
+ */
 
-     - Manual pages ctapi(3) and ctbcs(3) from the Towitoko CT-API driver at
-       http://www.geocities.com/cprados/ .
-     - Official CT-API specification at http://www.panstruga.de/ct-api/spec/spec_v09.html .
-     - c't (very good German computer magazine) article "Kartenspiele", "Grundlagen der
-       Chipkartenprogrammierung", Kai-Uwe Mrkor, c't 8/2000, page 208.
+/**
+ * @typedef char (*MemoryCard::CT_close_ptr) (unsigned short ctn);
+ *
+ * Typedef for the close function of the CT-API.
+ */
 
-    A very good overview about the different APIs for programming with chipcards was in the
-    article "Karten-Spiele", "Smartcard-Programmierung unter Linux", Frank Haubenschild in
-    the German magazine "Linux-Magazin" 06/2002 which is also available online at
-    http://www.linux-magazin.de/Artikel/ausgabe/2002/06/smartcards/smartcards.html. I choosed
-    the CT-API because there was a driver available for my reader, this API is wide-spread in
-    Germany, it's available on both *nix and Windows and my homebanking programme Moneyplex
-    from Matrica also uses this API and chipcard communication works well.
+/**
+ * @enum MemoryCard::CardSlot
+ *
+ * The cards in slot 1 to slot 14, used for destination adresses. If the destination is
+ * the terminal, use CT from ctapi.h.
+ */
 
-    There's no need to start a server on machine and the user only has to specify one library.
-    You don't need root permissions if you have access to the serial port, of course.
+/**
+ * @enum MemoryCard::CardType
+ *
+ * The card type.
+ */
 
-    \par Normal Usage:
+/**
+ * @var MemoryCard::TMemoryCard
+ *
+ * Memory card
+ */
 
-     - At first you have to create a new object,
-     - then you have to call the init() method with the right port.
-     - After that you have to request the type of the card.
-     - Now you can call the read() or write() method.
-     - After this you have to call the close() method or simply let the destructor do the work!
+/**
+ * @var MemoryCard::TProcessorCard
+ *
+ * Processor card
+ */
 
-    \ingroup smartcard
-    \author Bernhard Walle
-*/
+/**
+ * @var MemoryCard::OtherResponse
+ *
+ * Shows that the program detected no memory card or processor card.
+ */
 
-/*!
-    \typedef char (*MemoryCard::CT_init_ptr) (unsigned short ctn, unsigned short pn);
-
-    Typedef for the init function of the CT-API.
-*/
-
-/*!
-    \typedef typedef char (*MemoryCard::CT_data_ptr) (unsigned short ctn, uchar* dad,
-                                          unsigned char* sad, unsigned short lenc,
-                                          unsigned char* command, unsigned short* lenr,
-                                          unsigned char* response);
-
-    Typedef for the data function of the CT-API.
-*/
-
-/*!
-    \typedef char (*MemoryCard::CT_close_ptr) (unsigned short ctn);
-
-    Typedef for the close function of the CT-API.
-*/
-
-/*!
-    \enum MemoryCard::CardSlot
-
-    The cards in slot 1 to slot 14, used for destination adresses. If the destination is
-    the terminal, use CT from ctapi.h.
-*/
-
-/*!
-    \enum MemoryCard::CardType
-
-    The card type.
-*/
-/*!
-    \var MemoryCard::TMemoryCard
-    Memory card
-*/
-/*!
-    \var MemoryCard::TProcessorCard
-    Processor card
-*/
-/*!
-    \var MemoryCard::OtherResponse
-    Shows that the program detected no memory card or processor card.
-*/
-
-/*!
-    \enum MemoryCard::ProtocolType
-
-    The protocol type.
-*/
+/**
+ * @enum MemoryCard::ProtocolType
+ *
+ * The protocol type.
+ */
 
 
-/*!
-     Creates a new instance of MemoryCard.
-     \param library path to the CT-API library
-     \exception NoSuchLibraryException if the loading of the library failed
-*/
+/**
+ * Creates a new instance of MemoryCard.
+ *
+ * @param library path to the CT-API library
+ * @exception NoSuchLibraryException if the loading of the library failed
+ */
 MemoryCard::MemoryCard(QString library) throw (NoSuchLibraryException)
-    : m_library(library), m_initialized(false), m_waitTime(0)
+    : m_library(library)
+    , m_initialized(false)
+    , m_waitTime(0)
 {
     if (! m_library.load())
         throw NoSuchLibraryException("The library \""+ library + "\" could not be loaded." );
@@ -151,10 +162,12 @@ MemoryCard::MemoryCard(QString library) throw (NoSuchLibraryException)
 }
 
 
-/*!
-    Deletes a MemoryCard object. Calls the close() method if this was not done before. This is very
-    important for exception handling!
-*/
+/**
+ * @brief Deletes a MemoryCard object.
+ *
+ * Calls the close() method if this was not done before. This is very important for
+ * exception handling!
+ */
 MemoryCard::~MemoryCard()
 {
     if (m_initialized) {
@@ -169,17 +182,20 @@ MemoryCard::~MemoryCard()
 }
 
 
-/*!
-    Initializes the MemoryCard object for reading from or writing to a smart card
-    reader. You \b must call this function before accessing any other operations.
-    \param portNumber the port number. According to CT-API the mapping between
-                      port number and real hardware port is manufactor specific.
-                      There are some defines in ctapi.h like COM_1 which may work or
-                      may not work. On Unix often 1 is mapped to COM1 (/dev/ttyS0), on
-                      Windows it is COM2. For USB or PS/2 there's no rule at all. Just
-                      let the user test all possibilities. :-)
-    \exception CardException if an exception occurred
-*/
+/**
+ * @brief Initializes the MemoryCard object for reading from or writing to a smart card reader.
+ *
+ * You \b must call this function before accessing any other operations.
+ *
+ * @param portNumber the port number. According to CT-API the mapping between
+ *                   port number and real hardware port is manufactor specific.
+ *                   There are some defines in ctapi.h like COM_1 which may work or
+ *                   may not work. On Unix often 1 is mapped to COM1 (/dev/ttyS0), on
+ *                   Windows it is COM2. For USB or PS/2 there's no rule at all. Just
+ *                   let the user test all possibilities. :-)
+ *
+ * @exception CardException if an exception occurred
+ */
 void MemoryCard::init(int portNumber) throw (CardException)
 {
     if (m_initialized)
@@ -195,11 +211,14 @@ void MemoryCard::init(int portNumber) throw (CardException)
 }
 
 
-/*!
-    Closes the MemoryCard communtion. This method must be called after the communction.
-    \exception CardException if an exception occurred
-    \exception NotInitializedException if the object was not initialized
-*/
+/**
+ * Closes the MemoryCard communtion.
+ *
+ * This method must be called after the communction.
+ *
+ * @exception CardException if an exception occurred
+ * @exception NotInitializedException if the object was not initialized
+ */
 void MemoryCard::close() throw (CardException, NotInitializedException)
 {
     checkInitialzed("close");
@@ -212,31 +231,35 @@ void MemoryCard::close() throw (CardException, NotInitializedException)
 }
 
 
-/*!
-    Returns the time that the program wiats for the user to insert the card in the terminal.
-    \return the time in seconds.
-*/
+/**
+ * Returns the time that the program waits for the user to insert the card in the
+ * terminal.
+ *
+ * @return the time in seconds.
+ */
 unsigned char MemoryCard::getWaitTime() const
 {
     return m_waitTime;
 }
 
 
-/*!
-    Sets the time that the program waits for the user to insert the card in the terminal.
-    \param newTime the time in seconds
-*/
+/**
+ * Sets the time that the program waits for the user to insert the card in the terminal.
+ *
+ * @param newTime the time in seconds
+ */
 void MemoryCard::setWaitTime(unsigned char newTime)
 {
     m_waitTime = newTime;
 }
 
 
-/*!
-    Returns the type of the smartcard in the reader. Even though the name of the class is
-    "MemoryCard", this method can also return another type. It was programmed for checking
-    the type before doing anything other.
-*/
+/**
+ * @brief Returns the type of the smartcard in the reader.
+ *
+ * Even though the name of the class is "MemoryCard", this method can also return another
+ * type. It was programmed for checking the type before doing anything other.
+ */
 MemoryCard::CardType MemoryCard::getType() const throw (CardException, NotInitializedException)
 {
     checkInitialzed();
@@ -271,16 +294,19 @@ MemoryCard::CardType MemoryCard::getType() const throw (CardException, NotInitia
 }
 
 
-/*!
-    Resets the card in slot 1 and returns some information that is returned by the CT-API
-    as response to this action (so-called ATR).
-    \param capacity a pointer to a integer variable where the capacity is stored. If it's
-                    0, then no value is stored
-    \param protocolType a pointer to a ProtocolType enumeration value where the protocol
-                        type is stored. If it's 0, then no value is stored
-    \exception CardException if an exception occurred while resetting the card
-    \exception NotInitializedException if the object was not initialized
-*/
+/**
+ * @brief Resets the card
+ *
+ * Resets the card in slot 1 and returns some information that is returned by the CT-API
+ * as response to this action (so-called ATR).
+ *
+ * @param capacity     a pointer to a integer variable where the capacity is stored. If
+ *                     it's 0, then no value is stored
+ * @param protocolType a pointer to a ProtocolType enumeration value where the protocol
+ *                     type is stored. If it's 0, then no value is stored
+ * @exception CardException if an exception occurred while resetting the card
+ * @exception NotInitializedException if the object was not initialized
+ */
 void MemoryCard::resetCard(int* capacity, ProtocolType* protocolType) const
     throw (CardException, NotInitializedException)
 {
@@ -350,18 +376,23 @@ void MemoryCard::resetCard(int* capacity, ProtocolType* protocolType) const
 }
 
 
-/*!
-    Reads some status information from the chipcard terminal. This information is not
-    card dependand but depends on the terminal. The information is returned by setting
-    the paramters to a sensible value.
-    \param manufacturer 5 characters, the first two are the country code and the following
-                        3 are the manufacturer acronym
-    \param terminalType the terminal type which is manufacturer dependant
-    \param software     the software version which is manufacturer dependant, too.
-    \param discrData    additional, optional information
-*/
-void MemoryCard::getStatusInformation(QString* manufacturer, QString* terminalType,
-        QString* software, QString* discrData) throw (CardException, NotInitializedException)
+/**
+ * @brief Reads some status information from the chipcard terminal.
+ *
+ * This information is not card dependand but depends on the terminal. The information is
+ * returned by setting the paramters to a sensible value.
+ *
+ * @param manufacturer 5 characters, the first two are the country code and the following
+ *                     3 are the manufacturer acronym
+ * @param terminalType the terminal type which is manufacturer dependant
+ * @param software     the software version which is manufacturer dependant, too.
+ * @param discrData    additional, optional information
+ */
+void MemoryCard::getStatusInformation(QString      *manufacturer,
+                                      QString      *terminalType,
+                                      QString      *software,
+                                      QString      *discrData)
+    throw (CardException, NotInitializedException)
 {
     checkInitialzed();
 
@@ -378,32 +409,40 @@ void MemoryCard::getStatusInformation(QString* manufacturer, QString* terminalTy
     char ret = m_CT_data_function(m_cardTerminalNumber, &dad, &sad, sizeof(REQUEST_STATUS),
         REQUEST_STATUS, &lenr, response);
 
-    if (ret != OK)
+    if (ret != OK) {
         throw CardException(CardException::ErrorCode(ret));
+    }
 
     QString resp = QString::fromLatin1(reinterpret_cast<char*>(response), lenr);
 
-    if (manufacturer != 0)
+    if (manufacturer != 0) {
         *manufacturer = resp.left(5);
+    }
 
-    if (terminalType != 0)
+    if (terminalType != 0) {
         *terminalType = resp.mid(5, 5);
+    }
 
-    if (software != 0)
+    if (software != 0) {
         *software = resp.mid(10, 5);
+    }
 
-    if (discrData != 0)
+    if (discrData != 0) {
         *discrData = resp.right(lenr - 15);
+    }
 }
 
 
-/*!
-    This selects a file on the chipcard. It is implemented in a way that selects the whole
-    data area on the chipcard. The return value of this function indicates the success.
-    \return \c true if the command was successfull, \c false otherwise.
-    \exception CardException if an exception occurred while selecting the file
-    \exception NotInitializedException if the object was not initialized
-*/
+/**
+ * @brief This selects a file on the chipcard.
+ *
+ * It is implemented in a way that selects the whole data area on the chipcard. The return
+ * value of this function indicates the success.
+ *
+ * @return @c true if the command was successfull, \c false otherwise.
+ * @exception CardException if an exception occurred while selecting the file
+ * @exception NotInitializedException if the object was not initialized
+ */
 bool MemoryCard::selectFile() const throw (CardException, NotInitializedException)
 {
     checkInitialzed();
@@ -430,14 +469,15 @@ bool MemoryCard::selectFile() const throw (CardException, NotInitializedExceptio
 }
 
 
-/*!
-    Reads the specified number of bytes from the chipcard.
-    \param offset the offset
-    \param length the number of bytes that should be read
-    \return the read bytes
-    \exception CardException if an exception occurred while reading
-    \exception NotInitializedException if the object was not initialized
-*/
+/**
+ * @brief Reads the specified number of bytes from the chipcard.
+ *
+ * @param offset the offset
+ * @param length the number of bytes that should be read
+ * @return the read bytes
+ * @exception CardException if an exception occurred while reading
+ * @exception NotInitializedException if the object was not initialized
+ */
 ByteVector MemoryCard::read(unsigned short offset, unsigned short length)
     throw (CardException, NotInitializedException)
 {
@@ -494,13 +534,16 @@ ByteVector MemoryCard::read(unsigned short offset, unsigned short length)
 }
 
 
-/*!
-    Writes the specified data to the smartcard. The data must fit on the card.
-    \param offset the offset where the data should be written
-    \param data the data that should be written
-    \exception CardException if an exception occurred while writing
-    \exception NotInitializedException if the object was not initialized
-*/
+/**
+ * @brief Writes the specified data to the smartcard.
+ *
+ * The data must fit on the card.
+ *
+ * @param offset the offset where the data should be written
+ * @param data the data that should be written
+ * @exception CardException if an exception occurred while writing
+ * @exception NotInitializedException if the object was not initialized
+ */
 void MemoryCard::write(unsigned short offset, const ByteVector& data)
     throw (CardException, NotInitializedException)
 {
@@ -553,22 +596,23 @@ void MemoryCard::write(unsigned short offset, const ByteVector& data)
 }
 
 
-/*!
-    This command verifies the PIN stored on the smartcard. It must be called before writing
-    to a protected smartcard. A exception is thrown if the verfification was unsuccessfull.
-    The command is only sensible with protected smartcards but it is always successful on
-    "normal" memory cards, so there's no problem if you call it in this case.
-
-    Be careful: The memory card contains a counter, normally beginning with 8. If a verification
-    was unsuccessful, the counter is decreased by one. If the counter is zero, the card is
-    de-facto \b waste!
-
-    \param pin the PIN as string with a hexadecimal number of six (or less) characters. If the
-           length is less than six, "F"s are appended
-    \exception std::invalid_argument if the \p pin contains invalid characters or if it is too
-               long (more than six characters). Allowed are \c 0-9, \c A-F and \c a-f.
-
-*/
+/**
+ * @brief This command verifies the PIN stored on the smartcard.
+ *
+ * It must be called before writing to a protected smartcard. A exception is thrown if the
+ * verfification was unsuccessfull.  The command is only sensible with protected
+ * smartcards but it is always successful on "normal" memory cards, so there's no problem
+ * if you call it in this case.
+ *
+ * Be careful: The memory card contains a counter, normally beginning with 8. If a
+ * verification was unsuccessful, the counter is decreased by one. If the counter is zero,
+ * the card is de-facto \b waste!
+ *
+ * @param pin the PIN as string with a hexadecimal number of six (or less) characters. If the
+ *            length is less than six, "F"s are appended
+ * @exception std::invalid_argument if the \p pin contains invalid characters or if it is too
+ *            long (more than six characters). Allowed are \c 0-9, \c A-F and \c a-f.
+ */
 void MemoryCard::verify(const QString& pin) const
     throw (std::invalid_argument, NotInitializedException, CardException)
 {
@@ -607,22 +651,24 @@ void MemoryCard::verify(const QString& pin) const
 }
 
 
-/*!
-    Changes the verification data on the smartcard. This is only possible with memory cards
-    that have a write protection, see MemoryCard::verify().
-
-    A exception is thrown if the change was unsuccessfull, i.e. if \p oldPin was wrong.
-    Be careful: The memory card contains a counter, normally beginning with 8. If a verification
-    was unsuccessful, the counter is decreased by one. If the counter is zero, the card is
-    de-facto \b waste!
-
-    \param oldPin the old PIN as string with a hexadecimal number of six (or less) characters.
-                  If the length is less than six, "F"s are appended
-    \param newPin the new PIN, the same rules as for the \p oldPin are valid here
-    \exception std::invalid_argument if the \p pin contains invalid characters or if it is too
-               long (more than six characters). Allowed are \c 0-9, \c A-F and \c a-f.
-
-*/
+/**
+ * @brief Changes the verification data on the smartcard.
+ *
+ * This is only possible with memory cards that have a write protection, see
+ * MemoryCard::verify().
+ *
+ * A exception is thrown if the change was unsuccessfull, i.e. if \p oldPin was wrong.  Be
+ * careful: The memory card contains a counter, normally beginning with 8. If a
+ * verification was unsuccessful, the counter is decreased by one. If the counter is zero,
+ * the card is de-facto \b waste!
+ *
+ * @param oldPin the old PIN as string with a hexadecimal number of six (or less)
+ *               characters. If the length is less than six, "F"s are appended
+ * @param newPin the new PIN, the same rules as for the \p oldPin are valid here
+ *
+ * @exception std::invalid_argument if the \p pin contains invalid characters or if it is too
+ *            long (more than six characters). Allowed are \c 0-9, \c A-F and \c a-f.
+ */
 void MemoryCard::changeVerificationData(const QString& oldPin, const QString& newPin)
     throw (NotInitializedException, CardException)
 {
@@ -661,14 +707,17 @@ void MemoryCard::changeVerificationData(const QString& oldPin, const QString& ne
 }
 
 
-/*!
-    Savely copies a PIN of six characters which was specified as hexadecimal string into a
-    byte array of exactly three bytes three bytes. If the pin is too long, a std::invalid_argument
-    exception is thrown. If it is to short, 'F' is appended.
-    \param pin the pin as string
-    \param std::invalid_argument if the string contains illegal characters or has not the right
-           length
-*/
+/**
+ * @brief Creates a PIN
+ *
+ * Savely copies a PIN of six characters which was specified as hexadecimal string into a
+ * byte array of exactly three bytes three bytes. If the pin is too long, a
+ * std::invalid_argument exception is thrown. If it is to short, 'F' is appended.
+ *
+ * @param pin the pin as string
+ * @param std::invalid_argument if the string contains illegal characters or has not the 
+ *                              right length
+ */
 void MemoryCard::createPIN(QString pin, unsigned char* pinBytes) const throw (std::invalid_argument)
 {
     if (pin.length() > 6)
@@ -688,10 +737,13 @@ void MemoryCard::createPIN(QString pin, unsigned char* pinBytes) const throw (st
 }
 
 
-/*!
-    Checks if the class was initilized. If not a NotInitializedException is thrown.
-    \exception NotInitializedException if the class was not initialized
-*/
+/**
+ * @brief Checks if the class was initilized.
+ *
+ * If not a NotInitializedException is thrown.
+ *
+ * @exception NotInitializedException if the class was not initialized
+ */
 void MemoryCard::checkInitialzed(const QString& functionName) const
     throw (NotInitializedException)
 {

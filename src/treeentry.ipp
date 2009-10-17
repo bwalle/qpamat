@@ -13,12 +13,13 @@
  * -------------------------------------------------------------------------------------------------
  */
 
-/*!
-    Creates a new TreeEntry.
-    \param parent the parent entry. There must be a parent, i.e. parent must not be 0.
-    \param name the name of the entry. This property may be set later.
-    \param isCategory whether the entry is a category
-*/
+/**
+ * @brief Creates a new TreeEntry.
+ *
+ * @param parent the parent entry. There must be a parent, i.e. parent must not be 0.
+ * @param name the name of the entry. This property may be set later.
+ * @param isCategory whether the entry is a category
+ */
 template<class T>
 TreeEntry::TreeEntry(T* parent, const QString& name, bool isCategory)
     : Q3ListViewItem(parent)
@@ -33,12 +34,13 @@ TreeEntry::TreeEntry(T* parent, const QString& name, bool isCategory)
 }
 
 
-/*!
-    Creates a Propery element from a XML \c property tag.
-    \param parent the parent
-    \param element the \c property or \c element tag
-    \return the appended value
-*/
+/**
+ * @brief Creates a Propery element from a XML \c property tag.
+ *
+ * @param parent the parent
+ * @param element the \c property or \c element tag
+ * @return the appended value
+ */
 template<class T>
 TreeEntry* TreeEntry::appendFromXML(T* parent, QDomElement& element)
 {

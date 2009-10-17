@@ -35,33 +35,39 @@
 
 const int PasswordHash::numberOfRandomBytes = 8;
 
-/*!
-    This constant describes the maximal length of the hash. The current implementation uses
-    8 byte of salt and 20 bytes (160 bit) of hash data, that makes 28 bytes. Since SHA1 has the
-    same length, a change from RIPE-MD160 to SHA1 doesn't affect the length.
-
-    This value is used for the alignment on the chipcard. We need fixed alignments, so a
-    change of this constant makes old chipcards unusable. That is the reason why I don't use
-    the constant \c EVP_MAX_MD_SIZE here. I use an assertion to check that the actual value
-    has a length smaller or equal to this constant.
-*/
+/**
+ * This constant describes the maximal length of the hash.
+ *
+ * The current implementation uses 8 byte of salt and 20 bytes (160 bit) of hash data,
+ * that makes 28 bytes. Since SHA1 has the same length, a change from RIPE-MD160 to SHA1
+ * doesn't affect the length.
+ *
+ * This value is used for the alignment on the chipcard. We need fixed alignments, so a
+ * change of this constant makes old chipcards unusable. That is the reason why I don't
+ * use the constant \c EVP_MAX_MD_SIZE here. I use an assertion to check that the actual
+ * value has a length smaller or equal to this constant.
+ */
 const int PasswordHash::MAX_HASH_LENGTH = 40;
 
-/*!
-    \class PasswordHash
+/**
+ * @class PasswordHash
+ *
+ * @brief Helping functions for dealing with passwords and hashes.
+ * @ingroup security
+ * @author Bernhard Walle
+ */
 
-    \brief Helping functions for dealing with passwords and hashes.
-    \ingroup security
-    \author Bernhard Walle
-*/
-
-/*!
-    Checks the given password. Calls the PasswordHash::isCorrect(QString, const ByteVector&)
-    method but decodes the string with base64 previously.
-    \param password the password
-    \param hash the hash object
-    \return \c true if the password is correct, \c false otherwise
-*/
+/**
+ * Checks the given password.
+ *
+ * Calls the PasswordHash::isCorrect(QString, const ByteVector&) method but decodes the
+ * string with base64 previously.
+ *
+ * @param password the password
+ * @param hash the hash object
+ *
+ * @return \c true if the password is correct, \c false otherwise
+ */
 bool PasswordHash::isCorrect(QString password, const QString& hash)
 {
     bool correct = false;
@@ -74,15 +80,16 @@ bool PasswordHash::isCorrect(QString password, const QString& hash)
 }
 
 
-/*!
-    Checks the given password if it is the same as the one stored in the hash.
-    (There's no way to re-construct the password from the hash. There's a hash
-    generated from the password and this one is compared to that which was
-    provided by \p hash.)
-    \param password the password
-    \param hash the hash object
-    \return \c true if the password is correct, \c false otherwise
-*/
+/**
+ * @brief Checks the given password if it is the same as the one stored in the hash.
+ *
+ * (There's no way to re-construct the password from the hash. There's a hash generated
+ * from the password and this one is compared to that which was provided by \p hash.)
+ *
+ * @param password the password
+ * @param hash the hash object
+ * @return \c true if the password is correct, \c false otherwise
+ */
 bool PasswordHash::isCorrect(QString password, const ByteVector& hash)
 {
     ByteVector output;
@@ -103,12 +110,13 @@ bool PasswordHash::isCorrect(QString password, const ByteVector& hash)
 }
 
 
-/*!
-    Generates a hash from the password. That hash contains a salt, too, which
-    makes storing and veryfiing hashes more secure. To be more precisely, a
-    so-called dictinoary attack is prepended which this method because the
-    dictionary would be very large.
-*/
+/**
+ * Generates a hash from the password.
+ *
+ * That hash contains a salt, too, which makes storing and veryfiing hashes more secure.
+ * To be more precisely, a so-called dictinoary attack is prepended which this method
+ * because the dictionary would be very large.
+ */
 ByteVector PasswordHash::generateHash(QString password)
 {
     StdRandomNumberGenerator<unsigned char> rand;
@@ -131,23 +139,26 @@ ByteVector PasswordHash::generateHash(QString password)
 }
 
 
-/*!
-    Generates a hash from the password. Calls the PasswordHash::generateHash() method
-    and encodes the bytes with base 64.
-    \param password the password to hash
-*/
+/**
+ * @brief Generates a hash from the password.
+ *
+ * Calls the PasswordHash::generateHash() method and encodes the bytes with base 64.
+ *
+ * @param password the password to hash
+ */
 QString PasswordHash::generateHashString(const QString& password)
 {
     return EncodingHelper::toBase64(generateHash(password));
 }
 
 
-/*!
-    Attaches hash without salt
-    \param output the output
-    \param passwordBytes the password including the "salt" attached
-    \todo Find out what the function really does
-*/
+/**
+ * @brief Attaches hash without salt
+ *
+ * @param output the output
+ * @param passwordBytes the password including the "salt" attached
+ * @todo Find out what the function really does
+ */
 void PasswordHash::attachHashWithoutSalt(ByteVector& output, const ByteVector& passwordBytes)
 {
     EVP_MD_CTX mdctx;

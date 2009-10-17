@@ -20,22 +20,22 @@
 #include "abstractencryptor.h"
 #include "encodinghelper.h"
 
-/*!
-    \class AbstractEncryptor
+/**
+ * @class AbstractEncryptor
+ *
+ * @brief Abstract base class for Encryptor objects.
+ *
+ * This class implements the Encryptor::encryptStrToBytes() and
+ * Encryptor::decryptStrFromBytes() methods by converting data and passing them to the
+ * Encryptor::encrypt() or Encryptor::decrypt() methods.
+ *
+ * @ingroup security
+ * @author Bernhard Walle
+ */
 
-    \brief Abstract base class for Encryptor objects.
-
-    This class implements the Encryptor::encryptStrToBytes() and Encryptor::decryptStrFromBytes()
-    methods by converting data and passing them to the Encryptor::encrypt() or Encryptor::decrypt()
-    methods.
-
-    \ingroup security
-    \author Bernhard Walle
-*/
-
-/*!
-    \copydoc Encryptor::encryptStrToBytes
-*/
+/**
+ * @copydoc Encryptor::encryptStrToBytes
+ */
 ByteVector AbstractEncryptor::encryptStrToBytes(const QString& string)
 {
     Q3CString utf8CString = string.utf8();
@@ -47,18 +47,18 @@ ByteVector AbstractEncryptor::encryptStrToBytes(const QString& string)
 }
 
 
-/*!
-    \copydoc StringEncryptor::encryptStrToStr
-*/
+/**
+ * @copydoc StringEncryptor::encryptStrToStr
+ */
 QString AbstractEncryptor::encryptStrToStr(const QString& string)
 {
     return EncodingHelper::toBase64(encryptStrToBytes(string));
 }
 
 
-/*!
-    \copydoc Encryptor::decryptStrFromBytes
-*/
+/**
+ * @copydoc Encryptor::decryptStrFromBytes
+ */
 QString AbstractEncryptor::decryptStrFromBytes(const ByteVector& vector)
 {
     QString result;
@@ -74,9 +74,9 @@ QString AbstractEncryptor::decryptStrFromBytes(const ByteVector& vector)
 }
 
 
-/*!
-    \copydoc StringEncryptor::decryptStrFromStr
-*/
+/**
+ * @copydoc StringEncryptor::decryptStrFromStr
+ */
 QString AbstractEncryptor::decryptStrFromStr(const QString& string)
 {
     return decryptStrFromBytes(EncodingHelper::fromBase64(string));
