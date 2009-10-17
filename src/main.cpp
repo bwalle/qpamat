@@ -44,7 +44,6 @@ int main(int argc, char** argv)
 
     Qpamat *qpamat = Qpamat::instance();
     qpamat->parseCommandLine(argc, argv);
-    qpamat->registerDBus();
 
     SingleApplication::init(QDir::homeDirPath(), "QPaMaT");
 
@@ -54,6 +53,7 @@ int main(int argc, char** argv)
 
         QpamatWindow *win = qpamat->getWindow();
         app.setMainWidget(win);
+        qpamat->registerDBus();
 
         QObject::connect(qpamat->getWindow(), SIGNAL(quit()), &app, SLOT(quit()));
         if (!(win->set().readBoolEntry("Presentation/StartHidden")
