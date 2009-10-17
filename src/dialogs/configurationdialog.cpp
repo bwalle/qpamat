@@ -73,15 +73,15 @@
     Just use following to use the dialog:
 
     \code
-#include <boost/scoped_ptr.h>
+#include <QScopedPointer>
 
-boost::scoped_ptr<ConfigurationDialog> dlg(new ConfigurationDialog(this));
+QScopedPointer<ConfigurationDialog> dlg(new ConfigurationDialog(this));
 if (dlg->exec() == QDialog::Accepted) {
       // do something
 }
     \endcode
 
-    Using std::auto_ptr or even boost::scoped_ptr here is a good idea but not neccessary.
+    Using QScopedPointer or std::auto_ptr here is a good idea but not neccessary.
 
     \ingroup dialogs
     \author Bernhard Walle
