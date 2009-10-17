@@ -12,8 +12,6 @@
  *
  * -------------------------------------------------------------------------------------------------
  */
-#include <boost/cast.hpp>
-
 #include <QDebug>
 #include <Q3ListView>
 #include <QWidget>
