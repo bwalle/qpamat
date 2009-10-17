@@ -15,7 +15,6 @@
 #include <ctime>
 #include <cstdlib>
 
-#include <boost/scoped_ptr.hpp>
 #include <boost/cast.hpp>
 
 #include <QThread>
@@ -31,6 +30,7 @@
 #include <QPixmap>
 #include <QTextStream>
 #include <QDebug>
+#include <QScopedPointer>
 
 #include "qpamatwindow.h"
 #include "qpamat.h"
@@ -476,8 +476,8 @@ void DataReadWriter::writeXML(const QDomDocument& document, const QString& passw
             "</qt>"), ReadWriteException::CIOError);
 
     // set up the needed encryptors
-    boost::scoped_ptr<StringEncryptor> enc;
-    boost::scoped_ptr<Encryptor> realEncryptor;
+    QScopedPointer<StringEncryptor> enc;
+    QScopedPointer<Encryptor> realEncryptor;
     try {
         if (smartcard) {
             realEncryptor.reset(new SymmetricEncryptor(algorithm, password));
@@ -507,7 +507,7 @@ void DataReadWriter::writeXML(const QDomDocument& document, const QString& passw
 
     unsigned char id = 0;
     if (smartcard) {
-        ByteVector vec = boost::polymorphic_cast<CollectEncryptor*>(enc.get())->getBytes();
+        ByteVector vec = boost::polymorphic_cast<CollectEncryptor*>(enc.data())->getBytes();
         writeOrReadSmartcard(vec, true, id, password);
         appData.namedItem("smartcard").toElement().setAttribute("card-id", id);
     }
@@ -579,8 +579,8 @@ QDomDocument DataReadWriter::readXML(const QString& password)
     }
 
     QString algorithm = appData.namedItem("crypt-algorithm").toElement().text();
-    boost::scoped_ptr<StringEncryptor> enc;
-    boost::scoped_ptr<Encryptor> realEncryptor;
+    QScopedPointer<StringEncryptor> enc;
+    QScopedPointer<Encryptor> realEncryptor;
     try {
         if (smartcard) {
             realEncryptor.reset(new SymmetricEncryptor(algorithm, password));
@@ -601,7 +601,7 @@ QDomDocument DataReadWriter::readXML(const QString& password)
 
         // also throws exception
         writeOrReadSmartcard(vec, false, id, password);
-        boost::polymorphic_cast<CollectEncryptor*>(enc.get())->setBytes(vec);
+        boost::polymorphic_cast<CollectEncryptor*>(enc.data())->setBytes(vec);
     }
 
     QDomElement pwData = doc.documentElement().namedItem("passwords").toElement();
@@ -632,7 +632,7 @@ void DataReadWriter::writeOrReadSmartcard(ByteVector        &bytes,
         randomNumber = (unsigned char)((double(std::rand())/RAND_MAX)*256);
     }
 
-    boost::scoped_ptr<MemoryCard> card;
+    QScopedPointer<MemoryCard> card;
     QpamatWindow *win = Qpamat::instance()->getWindow();
     try {
         card.reset(new MemoryCard(win->set().readEntry("Smartcard/Library")) );
@@ -658,7 +658,7 @@ void DataReadWriter::writeOrReadSmartcard(ByteVector        &bytes,
 
     QString pin;
     bool havePin = win->set().readBoolEntry("Smartcard/HasWriteProtection") && write;
-    boost::scoped_ptr<InsertCardDialog> dlg(new InsertCardDialog(havePin, m_parent, "InsertCardDlg"));
+    QScopedPointer<InsertCardDialog> dlg(new InsertCardDialog(havePin, m_parent, "InsertCardDlg"));
     if (dlg->exec() != QDialog::Accepted)
         throw ReadWriteException(0, ReadWriteException::CAbort);
 
@@ -675,7 +675,7 @@ void DataReadWriter::writeOrReadSmartcard(ByteVector        &bytes,
     QString dlgText = write
         ? QObject::tr("<b>Writing</b> to the smartcard...")
         : QObject::tr("<b>Reading</b> from the smartcard...");
-    boost::scoped_ptr<WaitDialog> msg(new WaitDialog(QPixmap(
+    QScopedPointer<WaitDialog> msg(new WaitDialog(QPixmap(
         QPixmap(":/images/smartcard_24.png")), dlgText,
          "QPaMaT", m_parent, "Wait dialog"));
     msg->show();
