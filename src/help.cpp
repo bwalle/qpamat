@@ -12,8 +12,6 @@
  *
  * -------------------------------------------------------------------------------------------------
  */
-#include <boost/scoped_ptr.hpp>
-
 #include <QObject>
 #include <QApplication>
 #include <QMessageBox>
@@ -23,6 +21,7 @@
 #include <QFile>
 #include <QDesktopServices>
 #include <QUrl>
+#include <QScopedPointer>
 
 #include "global.h"
 #include "qpamatwindow.h"
@@ -45,7 +44,7 @@
 */
 void Help::showAbout()
 {
-    boost::scoped_ptr<AboutDialog> dlg(new AboutDialog(qApp->mainWidget(), "About Dialog"));
+    QScopedPointer<AboutDialog> dlg(new AboutDialog(qApp->mainWidget(), "About Dialog"));
 
     dlg->exec();
 }
