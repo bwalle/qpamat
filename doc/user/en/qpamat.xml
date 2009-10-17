@@ -170,12 +170,6 @@
         </listitem>
         <listitem>
           <para>
-            The C++ library <ulink url="http://www.boost.org">Boost</ulink>, tested with 1.36.0 and
-            1.37.0 on both Windows and Linux.
-          </para>
-        </listitem>
-        <listitem>
-          <para>
             The crypo library <ulink url="http://www.openssl.org">OpenSSL</ulink>; any version that
             is younger than 4 years should work.
           </para>
@@ -221,7 +215,7 @@
         packages. If not, honestly, switch your distribution. If you use any other Unix flavour
         the chances are lower that everything is available. However, every piece of software listed
         here is known to be very portable (and doesn't have much dependencies itself), so even
-        installing Qt, CMake and Boost from sources on that platform (OpenSSL should be really in
+        installing Qt and CMake from sources on that platform (OpenSSL should be really in
         place since that's the most widespread SSL library) from sources there should be not a
         major effort. That's not a GNOME program that requires CVS versions from some libraries
         to work. <literal>:-)</literal>
