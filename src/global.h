@@ -15,8 +15,6 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-#include <boost/current_function.hpp>
-
 #include <Q3ValueVector>
 #include <QMap>
 #include <QString>
@@ -86,6 +84,24 @@ typedef Q3ValueVector<QChar>     QCharVector;
  */
 #define UNUSED(param) (void)param;
 
+#ifndef DOXYGEN
+#if defined(__GNUC__) || (defined(__MWERKS__) && (__MWERKS__ >= 0x3000)) || (defined(__ICC) && (__ICC >= 600))
+# define _CURRENT_FUNCTION __PRETTY_FUNCTION__
+#elif defined(__DMC__) && (__DMC__ >= 0x810)
+# define _CURRENT_FUNCTION __PRETTY_FUNCTION__
+#elif defined(__FUNCSIG__)
+# define _CURRENT_FUNCTION __FUNCSIG__
+#elif (defined(__INTEL_COMPILER) && (__INTEL_COMPILER >= 600)) || (defined(__IBMCPP__) && (__IBMCPP__ >= 500))
+# define _CURRENT_FUNCTION __FUNCTION__
+#elif defined(__BORLANDC__) && (__BORLANDC__ >= 0x550)
+# define _CURRENT_FUNCTION __FUNC__
+#elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901)
+# define _CURRENT_FUNCTION __func__
+#else
+# define _CURRENT_FUNCTION "(unknown)"
+#endif
+#endif // DOXYGEN
+
 /**
  * Macro for the current function with signature included in brackets. Example:
  *
@@ -96,12 +112,12 @@ typedef Q3ValueVector<QChar>     QCharVector;
  * Since the streaming operators are used, that only works for straming objects. Examples:
  *
  * @code
- * std::cout << BOOST_CURRENT_FUNCTION << "Hello!" << std::endl;
- * qDebug() << BOOST_CURRENT_FUNCTION << "Hello!";
+ * std::cout << CURRENT_FUNCTION << "Hello!" << std::endl;
+ * qDebug() << CURRENT_FUNCTION << "Hello!";
  * @endcode
  */
 #define CURRENT_FUNCTION \
-        "[" << BOOST_CURRENT_FUNCTION << "]"
+        "[" << _CURRENT_FUNCTION << "]"
 
 #endif // GLOBAL_H
 
