@@ -155,7 +155,7 @@ QpamatWindow::QpamatWindow()
 
     // display statusbar
     statusBar();
-    m_message = new TimerStatusmessage(statusBar());
+    m_message.reset(new TimerStatusmessage(statusBar()));
     setLogin(false);
 
     // restore history
@@ -213,9 +213,7 @@ QpamatWindow::QpamatWindow()
     Deletes the application.
  */
 QpamatWindow::~QpamatWindow()
-{
-    delete m_message;
-}
+{}
 
 
 /*!

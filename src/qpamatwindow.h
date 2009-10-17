@@ -25,6 +25,7 @@
 #include <QCloseEvent>
 #include <QLabel>
 #include <QSystemTrayIcon>
+#include <QScopedPointer>
 
 #include "settings.h"
 #include "randompassword.h"
@@ -108,21 +109,21 @@ class QpamatWindow : public QMainWindow
         };
 
     private:
-        QLabel*             m_searchLabel;
-        Settings            m_settings;
-        Tree*               m_tree;
-        QString             m_password;
-        Help                m_help;
-        Q3PopupMenu*         m_treeContextMenu;
-        TimerStatusmessage* m_message;
-        RightPanel*         m_rightPanel;
-        QComboBox*          m_searchCombo;
-        RandomPassword*     m_randomPassword;
-        bool                m_loggedIn;
-        bool                m_modified;
-        Actions             m_actions;
-        QSystemTrayIcon*    m_trayIcon;
-        QRect               m_lastGeometry;
+        QLabel*                            m_searchLabel;
+        Settings                           m_settings;
+        Tree*                              m_tree;
+        QString                            m_password;
+        Help                               m_help;
+        Q3PopupMenu*                       m_treeContextMenu;
+        QScopedPointer<TimerStatusmessage> m_message;
+        RightPanel*                        m_rightPanel;
+        QComboBox*                         m_searchCombo;
+        RandomPassword*                    m_randomPassword;
+        bool                               m_loggedIn;
+        bool                               m_modified;
+        Actions                            m_actions;
+        QSystemTrayIcon*                   m_trayIcon;
+        QRect                              m_lastGeometry;
 
     private:
         QpamatWindow(const QpamatWindow&);
