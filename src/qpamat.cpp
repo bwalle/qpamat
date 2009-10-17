@@ -48,7 +48,7 @@ Qpamat *Qpamat::m_instance = NULL;
  * Creates a new instance of Qpamat.
  */
 Qpamat::Qpamat()
-    : m_qpamatWindow(new QpamatWindow())
+    : m_qpamatWindow(NULL)
 {}
 
 /**
@@ -145,7 +145,11 @@ void Qpamat::printVersion()
  */
 QpamatWindow *Qpamat::getWindow()
 {
-    return m_qpamatWindow.get();
+    if (!m_qpamatWindow) {
+        m_qpamatWindow.reset(new QpamatWindow());
+    }
+
+    return m_qpamatWindow.data();
 }
 
 /** 

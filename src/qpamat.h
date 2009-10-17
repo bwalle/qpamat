@@ -15,9 +15,7 @@
 #ifndef QPAMAT_H
 #define QPAMAT_H
 
-#include <boost/utility.hpp>
-#include <boost/scoped_ptr.hpp>
-
+#include <QScopedPointer>
 #include <QString>
 
 class QpamatWindow;
@@ -45,7 +43,7 @@ class Qpamat
 
     private:
         Q_DISABLE_COPY(Qpamat);
-        boost::scoped_ptr<QpamatWindow> m_qpamatWindow;
+        QScopedPointer<QpamatWindow> m_qpamatWindow;
 };
 
 #endif // QPAMAT_H
