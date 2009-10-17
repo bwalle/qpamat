@@ -16,7 +16,6 @@
 #include <stdexcept>
 #include <cstdlib>
 #include <cstdio>
-#include <boost/scoped_ptr.hpp>
 
 #include <QApplication>
 #include <QTextStream>
