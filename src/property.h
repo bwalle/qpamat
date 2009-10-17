@@ -15,17 +15,31 @@
 #ifndef PROPERTY_H
 #define PROPERTY_H
 
-#include <boost/any.hpp>
-
 #include <QString>
 #include <QDomDocument>
 #include <QObject>
 #include <QTextStream>
 
+#include "util/securestring.h"
 #include "security/passwordchecker.h"
 
 class TreeEntry;
 
+class PropertyValue
+{
+    public:
+        PropertyValue(const QString &string, bool storeSecure=false);
+
+    public:
+        void set(const QString &string, bool storeSecure=false);
+        QString get() const;
+        QString getVisible() const;
+
+    private:
+        QString         m_string;
+        SecureString    m_secureString;
+        bool            m_isSecureString;
+};
 
 class Property : public QObject
 {
@@ -86,7 +100,7 @@ class Property : public QObject
 
     private:
         QString          m_key;
-        boost::any       m_value;
+        PropertyValue    m_value;
         Type             m_type;
         bool             m_encrypted;
         bool             m_hidden;

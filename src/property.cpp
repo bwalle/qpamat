@@ -12,8 +12,6 @@
  *
  * -------------------------------------------------------------------------------------------------
  */
-#include <boost/any.hpp>
-
 #include <QString>
 #include <QDomDocument>
 #include <Q3ListView>
@@ -27,6 +25,94 @@
 #include "property.h"
 #include "security/encodinghelper.h"
 #include "treeentry.h"
+
+/**
+ * @class PropertyValue
+ *
+ * @brief Represents the value of a property.
+ *
+ * This is some kind of union class for a QString and a SecureString.
+ *
+ * @ingroup gui
+ * @author Bernhard Walle
+ */
+
+
+/**
+ * @brief Constructor
+ *
+ * Creates a new instance of a PropertyValue.
+ *
+ * @param[in] string the value as string
+ * @param[in] storeSecure @c true if the string should be stored as SecureString,
+ *                        @c false otherwise
+ */
+PropertyValue::PropertyValue(const QString &string, bool storeSecure)
+    : m_string(QString::null)
+    , m_secureString()
+    , m_isSecureString(false)
+{
+    set(string, storeSecure);
+}
+
+
+/**
+ * @brief Sets a value to a PropertyValue
+ *
+ * Sets a value.
+ *
+ * @param[in] string the value as string
+ * @param[in] storeSecure @c true if the string should be stored as SecureString,
+ *                        @c false otherwise
+ */
+void PropertyValue::set(const QString &string, bool storeSecure)
+{
+    if (storeSecure) {
+        m_secureString = SecureString(string);
+        m_isSecureString = true;
+    } else {
+        m_string = string;
+        m_isSecureString = false;
+    }
+}
+
+
+/**
+ * @brief Returns the value
+ *
+ * Returns the value as QString.
+ *
+ * @return the value
+ */
+QString PropertyValue::get() const
+{
+    if (m_isSecureString) {
+        return m_secureString.qString();
+    } else {
+        return m_string;
+    }
+}
+
+
+/**
+ * @brief Returns the visible value
+ *
+ * The same as get(), but in case the string is stored secure, all characters are replaced
+ * with stars <tt>(*)</tt>.
+ *
+ * @return the visible value as string
+ */
+QString PropertyValue::getVisible() const
+{
+    if (m_isSecureString) {
+        QString s;
+        s.fill('*', m_secureString.length());
+        return s;
+    } else {
+        return m_string;
+    }
+}
+
 
 /**
  * @class Property
@@ -114,12 +200,7 @@ void Property::setKey(const QString& key)
  */
 QString Property::getValue() const
 {
-    if (boost::any_cast<SecureString>(&m_value))
-        return boost::any_cast<SecureString>(m_value).qString();
-    else if (boost::any_cast<QString>(&m_value))
-        return boost::any_cast<QString>(m_value);
-    else
-        return QString();
+    return m_value.get();
 }
 
 
@@ -130,16 +211,7 @@ QString Property::getValue() const
  */
 QString Property::getVisibleValue() const
 {
-    if (m_hidden) {
-        try {
-            QString s;
-            s.fill('*', boost::any_cast<SecureString>(m_value).length());
-            return s;
-        } catch (const std::bad_cast &ex) {
-            return QString();
-        }
-    } else
-        return boost::any_cast<QString>(m_value);
+    return m_value.getVisible();
 }
 
 
@@ -150,10 +222,7 @@ QString Property::getVisibleValue() const
  */
 void Property::setValue(const QString& value)
 {
-    if (m_hidden)
-        m_value = SecureString(value);
-    else
-        m_value = value;
+    m_value.set(value, m_hidden);
     emit propertyChanged(this);
 }
 
@@ -208,7 +277,7 @@ void Property::updatePasswordStrength() throw (PasswordCheckException)
         QString ensured = win->set().readEntry("Security/EnsuredCharacters");
         double days = -1.0;
         HybridPasswordChecker checker(win->set().readEntry("Security/DictionaryFile"));
-        days = checker.passwordQuality(boost::any_cast<SecureString>(m_value).qString()); // XXX
+        days = checker.passwordQuality(m_value.get()); // XXX
         m_daysToCrack = days;
         double weakLimit = win->set().readDoubleEntry("Security/WeakPasswordLimit");
         double strongLimit = win->set().readDoubleEntry("Security/StrongPasswordLimit");
