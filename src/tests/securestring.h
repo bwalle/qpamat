@@ -17,7 +17,8 @@
 
 #include <util/securestring.h>
 
-class TestSecureString : public QObject {
+class TestSecureString : public QObject
+{
     Q_OBJECT
 
     private slots:
