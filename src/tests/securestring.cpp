@@ -19,7 +19,7 @@
 #include <tests/securestring.h>
 
 /**
- * @brief TestSecureString
+ * @class TestSecureString
  *
  * @brief Tests for the SecureString class
  *
