@@ -62,7 +62,7 @@
 #define CON_MM(x)( int( ( (x)/25.4)*dpiy ) )
 
 /**
- * @brief QpamatWindow
+ * @class QpamatWindow
  *
  * @brief This is the main class of the QPaMaT application.
  *
