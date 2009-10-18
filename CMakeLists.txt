@@ -66,6 +66,7 @@ ENDIF (MSVC)
 
 
 SET(qpamat_SRCS
+    src/ext/getopt.cpp
     src/dialogs/passworddialog.cpp
     src/dialogs/newpassworddialog.cpp
     src/dialogs/configurationdialog.cpp
