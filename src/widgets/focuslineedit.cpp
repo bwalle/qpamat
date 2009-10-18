@@ -34,7 +34,7 @@
  */
 
 /**
- * @brief FocusLineEdit::gotFocus()
+ * @fn FocusLineEdit::gotFocus()
  *
  * This signal is emitted if the widget got the focus.
  */
