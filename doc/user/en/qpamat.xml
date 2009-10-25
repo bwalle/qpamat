@@ -14,7 +14,7 @@
     <firstname>Bernhard</firstname>
     <surname>Walle</surname>
     <affiliation>
-      <address><email>bernhard.walle@gmx.de</email></address>
+      <address><email>bernhard@bwalle.de</email></address>
     </affiliation>
   </author>
 
@@ -24,7 +24,7 @@
 
   <copyright>
     <year>2003-2009</year>
-    <holder role="mailto:bernhard.walle@gmx.de">Bernhard Walle</holder>
+    <holder role="mailto:bernhard@bwalle.de">Bernhard Walle</holder>
   </copyright>
 
 </articleinfo>

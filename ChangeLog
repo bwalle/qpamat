@@ -12,21 +12,21 @@
 
 	* Refactoring.
 
-2009-02-12  Bernhard Walle <bernhard.walle@gmx.de>
+2009-02-12  Bernhard Walle <bernhard@bwalle.de>
 
 	* Translate "wrote data successfully"
 
-2009-02-05  Bernhard Walle <bernhard.walle@gmx.de>
+2009-02-05  Bernhard Walle <bernhard@bwalle.de>
 
 	* Fix another crash because of wrong boost::any_cast.
 
-2009-02-04  Bernhard Walle <bernhard.walle@gmx.de>
+2009-02-04  Bernhard Walle <bernhard@bwalle.de>
 
 	* Fix crash because of wrong boost::any_cast.
 	* Add desktop file on Unix.
 	* Install icon on Unix.
 
-2009-01-06  Bernhard Walle <bernhard.walle@gmx.de>
+2009-01-06  Bernhard Walle <bernhard@bwalle.de>
 
 	* Changes in coding style.
 	* Use boost::polymorphic_cast when appropriate.
@@ -37,59 +37,59 @@
 	* Implement label that shows the name and the category of the currently
 	  selected item.
 
-2009-01-01  Bernhard Walle <bernhard.walle@gmx.de>
+2009-01-01  Bernhard Walle <bernhard@bwalle.de>
 
 	* Switch from PRINT_DEBUG() and PRINT_TRACE() to qDebug()
 	* Require Boost (update cmake build files)
 	* Convert std::auto_ptr to boost::scoped_ptr
 
-2008-12-07  Bernhard Walle <bernhard.walle@gmx.de>
+2008-12-07  Bernhard Walle <bernhard@bwalle.de>
 
 	* Cleanup.
 	* Switch to cmake build system.
 	* Switch from Docbook/SGML to Docbook/XML for the documentation.
 
-2008-11-16  Bernhard Walle <bernhard.walle@gmx.de>
+2008-11-16  Bernhard Walle <bernhard@bwalle.de>
 
 	* Remove old Trolltech icon in the "About Qt" menu entry.
 
-2007-08-23  Bernhard Walle <bernhard.walle@gmx.de>
+2007-08-23  Bernhard Walle <bernhard@bwalle.de>
 
 	* fix spacing in configuration dialog with new Qt version
 
-2007-06-11  Bernhard Walle <bernhard.walle@gmx.de>
+2007-06-11  Bernhard Walle <bernhard@bwalle.de>
 
 	* implemented testing if the process that is specified in the lock
 	  file is still running also on Windows
 
-2007-06-10  Bernhard Walle <bernhard.walle@gmx.de>
+2007-06-10  Bernhard Walle <bernhard@bwalle.de>
 
 	* get rid of multi-byte character constants in
 	  src/security/hybridpasswordchecker.cpp
 
-2007-06-09  Bernhard Walle <bernhard.walle@gmx.de>
+2007-06-09  Bernhard Walle <bernhard@bwalle.de>
 
 	* added documentation for D-Bus interface
 	* use ISO date format for the ChangeLog
 	* update the Windows documentation (Cygwin is not needed any more)
 
-2007-06-08  Bernhard Walle <bernhard.walle@gmx.de>
+2007-06-08  Bernhard Walle <bernhard@bwalle.de>
 
 	* implement D-Bus interface for showing/hiding the application
 	  (can be used with dbus-send)
 
-2007-04-22  Bernhard Walle <bernhard.walle@gmx.de>
+2007-04-22  Bernhard Walle <bernhard@bwalle.de>
 
 	* use only width information of the current screen, not of all screens
 	  on a multihead configuration
 
-2006-10-17  Bernhard Walle <bernhard.walle@gmx.de>
+2006-10-17  Bernhard Walle <bernhard@bwalle.de>
 
 	* QString::null as QGroupBox label doesn't work, so give it a
 	  name
 	* Released 0.5.2.
 
-2006-10-16  Bernhard Walle <bernhard.walle@gmx.de>
+2006-10-16  Bernhard Walle <bernhard@bwalle.de>
 
 	* Removed bringToFront(), a simple show() also works
 	* fix code to compile without warnings
@@ -99,7 +99,7 @@
 	* added OpenSSL exception to the license
 	* use QLocale instead of std::ostringstream
 
-2006-10-16  Bernhard Walle <bernhard.walle@gmx.de>
+2006-10-16  Bernhard Walle <bernhard@bwalle.de>
 
 	* Require Qt 4.2
 	* Remove TrayIcon implementation and use the implementation
@@ -108,7 +108,7 @@
 	* Use QDesktopServices for opening the web browser and remove
 	  the corresponding setting
 
-2006-02-17  Bernhard Walle <bernhard.walle@gmx.de>
+2006-02-17  Bernhard Walle <bernhard@bwalle.de>
 
 	* Important Bugfix: Retry of smartcard store writes the correct
 	  data on the smartcard. Previously, 'SMARTCARD:x:x' was written
@@ -118,72 +118,72 @@
 	  -> works on Windows now
 	* Released 0.5.1.
 
-2005-12-26  Bernhard Walle <bernhard.walle@gmx.de>
+2005-12-26  Bernhard Walle <bernhard@bwalle.de>
 
 	* Bugfixes for Qt 4.1.0
 	* Bugfix: events on the system tray doesn't count as events for the
 	  timeout
 	* small layout improvements
 
-2005-07-29  Bernhard Walle <bernhard.walle@gmx.de>
+2005-07-29  Bernhard Walle <bernhard@bwalle.de>
 
 	* Porting to Qt 4.0.0.
 	* Released 0.5.0.
 
-2005-07-19  Bernhard Walle <bernhard.walle@gmx.de>
+2005-07-19  Bernhard Walle <bernhard@bwalle.de>
 
 	* Improved systray implementation (tooltip, menu, support removing
 	  and re-adding on X11)
 
 
-2005-07-05  Bernhard Walle <bernhard.walle@gmx.de>
+2005-07-05  Bernhard Walle <bernhard@bwalle.de>
 
 	* Implemented detection if the process in .qpamat.lock with specified
 	  PID is still running. Of course, if it is running it could be
 	  another process, but the probability is low (maybe check for process
 	  name in future but that is not portable).
 
-2005-05-29  Bernhard Walle <bernhard.walle@gmx.de>
+2005-05-29  Bernhard Walle <bernhard@bwalle.de>
 
 	* Icon renaming
 	* Windows trayicon improvement (at least Windows XP)
 	* rc-file for windows
 	* Released 0.4.3
 
-2005-05-27  Bernhard Walle <bernhard.walle@gmx.de>
+2005-05-27  Bernhard Walle <bernhard@bwalle.de>
 
 	* Various Win32 fixes.
 	* Bugfix: If system tray is unchecked and "start hidden" is still
 	  checked, don't start hidden.
 
-2005-03-06  Bernhard Walle <bernhard.walle@gmx.de>
+2005-03-06  Bernhard Walle <bernhard@bwalle.de>
 
 	* Make login action and logout action one combined action
 	* Released 0.4.2.
 
-2005-03-04  Bernhard Walle <bernhard.walle@gmx.de>
+2005-03-04  Bernhard Walle <bernhard@bwalle.de>
 
 	* Bugfix: If the timeout exceeded multiple times, the save question
 	  was displayed multiple times, too.
 
-2005-02-27  Bernhard Walle <bernhard.walle@gmx.de>
+2005-02-27  Bernhard Walle <bernhard@bwalle.de>
 
 	* implemented text export function
 	* Released 0.4.1.
 
-2005-02-23  Bernhard Walle <bernhard.walle@gmx.de>
+2005-02-23  Bernhard Walle <bernhard@bwalle.de>
 
 	* Changed email address in this changelog
 	* Don't use qt.h any more (build problems on Debian)
 	* Filled README file.
 
-2005-02-14  Bernhard Walle <bernhard.walle@gmx.de>
+2005-02-14  Bernhard Walle <bernhard@bwalle.de>
 
 	* Implemented systray support.
 	* Added "start hidden" option.
 	* Released 0.4.0.
 
-2005-02-12  Bernhard Walle <bernhard.walle@gmx.de>
+2005-02-12  Bernhard Walle <bernhard@bwalle.de>
 
 	* Implemented AutoLogout function.
 	* Icons for login/logout.
@@ -191,36 +191,36 @@
 	* Added export icon.
 	* Released 0.3.4.
 
-2005-01-01  Bernhard Walle <bernhard.walle@gmx.de>
+2005-01-01  Bernhard Walle <bernhard@bwalle.de>
 
 	* Fixed missing documentation.
 	* Released 0.3.3.
 
-2004-12-26  Bernhard Walle <bernhard.walle@gmx.de>
+2004-12-26  Bernhard Walle <bernhard@bwalle.de>
 
 	* Added "Cancel" in the dialog that appears if a user wants to
 	  log out without saving.
 	* Released 0.3.2.
 
-2004-09-25  Bernhard Walle <bernhard.walle@gmx.de>
+2004-09-25  Bernhard Walle <bernhard@bwalle.de>
 
 	* Fixed compile error in help.cpp.
 	* Released 0.3.1.
 
-2004-09-03  Bernhard Walle <bernhard.walle@gmx.de>
+2004-09-03  Bernhard Walle <bernhard@bwalle.de>
 
 	* Removed superflous code (QErrorMessage) in qpamat.cpp.
 	* Improved AboutDialog (increased border).
 
-2004-07-24  Bernhard Walle <bernhard.walle@gmx.de>
+2004-07-24  Bernhard Walle <bernhard@bwalle.de>
 
 	* Bufix: If a new document is created, it's now in "modified" state
 
-2004-07-24  Bernhard Walle <bernhard.walle@gmx.de>
+2004-07-24  Bernhard Walle <bernhard@bwalle.de>
 
 	* Released 0.3.0
 
-2004-07-23  Bernhard Walle <bernhard.walle@gmx.de>
+2004-07-23  Bernhard Walle <bernhard@bwalle.de>
 
 	* Changed icons to PNG format.
 	* Using stock icons from Gtk+.
@@ -229,7 +229,7 @@
 	* Added German translation.
 	* Added documentation.
 
-2004-06-05  Bernhard Walle <bernhard.walle@gmx.de>
+2004-06-05  Bernhard Walle <bernhard@bwalle.de>
 
 	* Beginning with logging the changes.
 
