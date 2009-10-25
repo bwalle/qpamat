@@ -58,7 +58,8 @@ CopyLabel::CopyLabel(QWidget* parent, const char* name)
  * @param name the name of the widget which can be NULL.
  */
 CopyLabel::CopyLabel(bool hidden, QWidget* parent, const char* name)
-    : QWidget(parent, name), m_hidden(hidden)
+    : QWidget(parent, name)
+    , m_hidden(hidden)
 {
     init();
 }
