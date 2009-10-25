@@ -3,6 +3,8 @@
 	* Implement logging framework.
 	* Use icons from the system theme where possible.
 	* Fix crash in SecureString.
+	* Only print a warning message once when memory locking for the
+	  SecureString fails.
 
 2009-10-18  Bernhard Walle <bernhard@bwalle.de>
 

@@ -98,6 +98,7 @@ class SecureString
     private:
         char *m_text;
         bool m_locked;
+        static bool s_warned;
 };
 
 #endif // SECURESTRING_H

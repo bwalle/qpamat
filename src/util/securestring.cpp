@@ -44,6 +44,7 @@
  * @author Bernhard Walle
  */
 
+bool SecureString::s_warned = false;
 
 /**
  * @brief Checks if the current platform (operating system) supports memory locking.
@@ -425,10 +426,14 @@ void SecureString::lock()
 #ifdef _POSIX_MEMLOCK_RANGE
     // lock the whole string including the trailing newline
     int ret = mlock(m_text, strlen(m_text)+1);
-    if (ret != 0)
-        qDebug() << "Cannot lock memory " << strerror(errno);
-    else
+    if (ret != 0) {
+        if (!s_warned) {
+            s_warned = true;
+            qWarning() << "Cannot lock memory:" << strerror(errno);
+        }
+    } else {
         m_locked = true;
+    }
 #endif
 }
 
