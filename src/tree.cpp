@@ -23,7 +23,6 @@
 #include <QTimer>
 #include <QApplication>
 #include <Q3Header>
-#include <QIcon>
 #include <QEvent>
 #include <QCursor>
 #include <QEventLoop>
@@ -121,15 +120,15 @@ Tree::Tree(QWidget* parent)
 void Tree::initTreeContextMenu()
 {
     m_contextMenu = new Q3PopupMenu(this);
-    m_contextMenu->insertItem(QIcon(QPixmap(":/images/stock_add_16.png")),
+    m_contextMenu->insertItem(QpamatWindow::createIcon("stock_add", "list-add"),
         tr("Insert &Item") + "\t" + QString(QKeySequence(Qt::Key_Insert)), INSERT_ITEM);
     m_contextMenu->insertItem(tr("Insert &Category"), INSERT_CATEGORY);
 
     m_contextMenu->insertSeparator();
 
-    m_contextMenu->insertItem(QIcon(QPixmap(":/images/rename_16.png")),
+    m_contextMenu->insertItem(QpamatWindow::createIcon("rename"),
         tr("&Rename") + "\t" + QString(QKeySequence(Qt::Key_F2)), RENAME_ITEM);
-    m_contextMenu->insertItem(QIcon(QPixmap(":/images/stock_remove_16.png")),
+    m_contextMenu->insertItem(QpamatWindow::createIcon("stock_remove", "list-remove"),
         tr("Delete &Item") + "\t" + QString(QKeySequence(Qt::Key_Delete)), DELETE_ITEM);
 
 }

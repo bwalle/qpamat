@@ -14,7 +14,6 @@
  */
 #include <QLayout>
 #include <QPushButton>
-#include <QPixmap>
 #include <QAction>
 #include <QDir>
 #include <QApplication>
@@ -24,6 +23,7 @@
 #include <QHBoxLayout>
 
 #include "copylabel.h"
+#include "qpamatwindow.h"
 
 
 /**
@@ -79,7 +79,7 @@ void CopyLabel::init()
     // we need a tool button because it has no border and it looks better in this size
     // in Platin style
     m_copyButton = new QToolButton(this);
-    m_copyButton->setIconSet(QIcon(QPixmap(":/images/stock_copy_16.png")));
+    m_copyButton->setIconSet(QpamatWindow::createIcon("stock_copy", "edit-copy"));
 
     boxLayout->addWidget(m_label);
     boxLayout->addWidget(m_copyButton);

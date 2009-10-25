@@ -21,7 +21,6 @@
 #include <QEvent>
 #include <QRegExp>
 #include <QStringList>
-#include <QPixmap>
 #include <QKeyEvent>
 #include <QTextStream>
 #include <Q3PopupMenu>
@@ -118,13 +117,13 @@ RightListView::RightListView(QWidget* parent)
 void RightListView::initContextMenu()
 {
     m_contextMenu = new Q3PopupMenu(this);
-    m_contextMenu->insertItem(QIcon(QPixmap(":/images/stock_add_16.png")), tr("&New"), M_NEW);
-    m_contextMenu->insertItem(QIcon(QPixmap(":/images/stock_remove_16.png")),
+    m_contextMenu->insertItem(QpamatWindow::createIcon("stock_add", "list-add"), tr("&New"), M_NEW);
+    m_contextMenu->insertItem(QpamatWindow::createIcon("stock_remove", "list-remove"),
         tr("&Delete") + "\t" + QString(QKeySequence(Qt::Key_Delete)), M_DELETE);
     m_contextMenu->insertSeparator();
-    m_contextMenu->insertItem(QIcon(QPixmap(":/images/stock_copy_16.png")),
+    m_contextMenu->insertItem(QpamatWindow::createIcon("stock_copy", "edit-copy"),
         tr("&Copy") + "\t" + QString(QKeySequence(Qt::CTRL|Qt::Key_C)), M_COPY);
-    m_contextMenu->insertItem(QIcon(QPixmap(":/images/eye_16.png")),
+    m_contextMenu->insertItem(QpamatWindow::createIcon("eye"),
         tr("Show &password..."), M_SHOW_PW);
 }
 

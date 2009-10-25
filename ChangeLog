@@ -1,6 +1,7 @@
 2009-10-25  Bernhard Walle <bernhard@bwalle.de>
 
 	* Implement logging framework.
+	* Use icons from the system theme where possible.
 
 2009-10-18  Bernhard Walle <bernhard@bwalle.de>
 

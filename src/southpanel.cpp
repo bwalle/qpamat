@@ -118,19 +118,13 @@ SouthPanel::SouthPanel(QWidget* parent)
 
     // up button
     m_upButton = new QToolButton(vbox, "SouthPanel up button");
-    QIcon upIcon(QPixmap(":/images/stock_up_arrow_16.png"));
-    upIcon.addPixmap(QPixmap(":/images/stock_up_arrow_24.png"));
-    m_upButton->setIconSet(upIcon);
-    //m_upButton->setUsesBigPixmap(true);
+    m_upButton->setIconSet(QpamatWindow::createIcon("stock_up_arrow", "go-up"));
     m_upButton->setIconSize(QSize(22, 22));
 
     // down button
     m_downButton = new QToolButton(vbox, "SouthPanel down button");
-    QIcon downIcon(QPixmap(":/images/stock_down_arrow_16.png"));
-    downIcon.addPixmap(QPixmap(":/images/stock_down_arrow_24.png"));
-    m_downButton->setIconSet(downIcon);
+    m_downButton->setIconSet(QpamatWindow::createIcon("stock_down_arrow", "go-down"));
     m_downButton->setIconSize(QSize(22, 22));
-    //m_downButton->setUsesBigPixmap(true);
 
     // filler widget
     QWidget* filler = new QWidget(vbox);

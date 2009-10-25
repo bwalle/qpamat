@@ -48,6 +48,9 @@ class QpamatWindow : public QMainWindow
 
         Settings& set();
 
+    public:
+        static QIcon createIcon(const QString &qpamatName, const QString &freedesktopName = QString::null);
+
     protected slots:
         void login();
         bool logout();

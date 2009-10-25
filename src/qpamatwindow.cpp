@@ -262,7 +262,6 @@ void QpamatWindow::initToolbar()
     m_searchLabel = new QLabel(tr("Search:")+" ", searchToolbar);
 
     m_searchCombo = new QComboBox(true, searchToolbar);
-    //m_searchCombo->setFixedWidth(120);
     m_searchCombo->setSizeAdjustPolicy(QComboBox::AdjustToContentsOnFirstShow);
     m_searchCombo->setObjectName("SearchCombo");
     m_searchCombo->setDuplicatesEnabled(false);
@@ -491,16 +490,12 @@ void QpamatWindow::setLogin(bool loggedIn)
     // toggle action
     disconnect(m_actions.loginLogoutAction, SIGNAL(activated()), 0, 0 );
     if (loggedIn) {
-        QIcon loginLogoutActionIcon(QPixmap(":/images/logout_16.png"));
-        loginLogoutActionIcon.addPixmap(QPixmap(":/images/logout_24.png"));
-        m_actions.loginLogoutAction->setIcon(loginLogoutActionIcon);
+        m_actions.loginLogoutAction->setIcon(createIcon("logout"));
         m_actions.loginLogoutAction->setMenuText(tr("&Logout"));
         m_actions.loginLogoutAction->setToolTip(tr("Logout"));
         connect(m_actions.loginLogoutAction, SIGNAL(activated()), SLOT(logout()));
     } else {
-        QIcon loginLogoutActionIcon(QPixmap(":/images/login_16.png"));
-        loginLogoutActionIcon.addPixmap(QPixmap(":/images/login_24.png"));
-        m_actions.loginLogoutAction->setIconSet(loginLogoutActionIcon);
+        m_actions.loginLogoutAction->setIconSet(createIcon("login"));
         m_actions.loginLogoutAction->setMenuText(tr("&Login"));
         m_actions.loginLogoutAction->setToolTip(tr("Login"));
         connect(m_actions.loginLogoutAction, SIGNAL(activated()), SLOT(login()));
@@ -907,6 +902,16 @@ void QpamatWindow::connectSignalsAndSlots()
     connect(focusSearch, SIGNAL(activated()), m_searchCombo, SLOT(setFocus()));
 }
 
+QIcon QpamatWindow::createIcon(const QString &qpamatName, const QString &freedesktopName)
+{
+    QString smallIcon = qpamatName + "_16.png";
+    QString largeIcon = qpamatName + "_24.png";
+
+    QIcon fallbackIcon(QPixmap(":/images/" + smallIcon));
+    fallbackIcon.addPixmap(QPixmap(":/images/" + largeIcon));
+
+    return QIcon::fromTheme(freedesktopName, fallbackIcon);
+}
 
 /**
  * @brief Initializes the actions.
@@ -914,46 +919,26 @@ void QpamatWindow::connectSignalsAndSlots()
 void QpamatWindow::initActions()
 {
     // ----- File ----------------------------------------------------------------------------------
-    QIcon newActionIcon(QPixmap(":/images/stock_new_16.png"));
-    newActionIcon.addPixmap(QPixmap(":/images/stock_new_24.png"));
-    m_actions.newAction = new QAction(newActionIcon, tr("&New"), this);
+    m_actions.newAction = new QAction(createIcon("stock_new", "document-new"), tr("&New"), this);
     m_actions.newAction->setShortcut(QKeySequence(Qt::CTRL|Qt::Key_N));
-
-    QIcon quitActionIcon(QPixmap(":/images/stock_exit_16.png"));
-    quitActionIcon.addPixmap(QPixmap(":/images/stock_exit_24.png"));
-    m_actions.quitAction = new QAction(quitActionIcon, tr("E&xit"),this);
+    m_actions.quitAction = new QAction(createIcon("stock_exit", "application-exit"), tr("E&xit"),this);
     m_actions.quitAction->setShortcut(QKeySequence(Qt::CTRL|Qt::Key_Q));
-
-    QIcon quitActionNoKeyboardShortcutIcon(QPixmap(":/images/stock_exit_16.png"));
-    quitActionNoKeyboardShortcutIcon.addPixmap(QPixmap(":/images/stock_exit_24.png"));
-    m_actions.quitActionNoKeyboardShortcut = new QAction(quitActionNoKeyboardShortcutIcon,
-        tr("E&xit"), this);
-
-    QIcon loginLogoutActionIcon(QPixmap(":/images/login_16.png"));
-    loginLogoutActionIcon.addPixmap(QPixmap(":/images/login_24.png"));
-    m_actions.loginLogoutAction = new QAction(loginLogoutActionIcon, tr("&Login"), this);
+    m_actions.quitActionNoKeyboardShortcut = new QAction(
+        createIcon("stock_exit", "application-exit"), tr("E&xit"), this);
+    m_actions.loginLogoutAction = new QAction(createIcon("login"), tr("&Login"), this);
     m_actions.loginLogoutAction->setShortcut(QKeySequence(Qt::CTRL|Qt::Key_L));
-
-    QIcon saveActionIcon(QPixmap(":/images/stock_save_16.png"));
-    saveActionIcon.addPixmap(QPixmap(":/images/stock_save_24.png"));
-    m_actions.saveAction = new QAction(saveActionIcon, tr("&Save"), this);
+    m_actions.saveAction = new QAction(createIcon("stock_save", "document-save"), tr("&Save"), this);
     m_actions.saveAction->setShortcut(QKeySequence(Qt::CTRL|Qt::Key_S));
-
-    QIcon exportActionIcon(QPixmap(":/images/export_16.png"));
-    exportActionIcon.addPixmap(QPixmap(":/images/export_24.png"));
-    m_actions.exportAction = new QAction(exportActionIcon, tr("&Export..."), this);
-
-    QIcon printActionIcon(QPixmap(":/images/stock_print_16.png"));
-    printActionIcon.addPixmap(QPixmap(":/images/stock_print_24.png"));
-    m_actions.printAction = new QAction(printActionIcon, tr("&Print..."), this);
+    m_actions.exportAction = new QAction(createIcon("export", "document-save-as"),
+                                         tr("&Export..."), this);
+    m_actions.printAction = new QAction(createIcon("stock_print", "document-print"),
+                                        tr("&Print..."), this);
     m_actions.printAction->setShortcut(QKeySequence(Qt::CTRL|Qt::Key_P));
 
     // ----- Options -------------------------------------------------------------------------------
     m_actions.changePasswordAction = new QAction(tr("&Change Password..."), this);
-
-    QIcon settingsActionIcon(QPixmap(":/images/stock_preferences_16.png"));
-    settingsActionIcon.addPixmap(QPixmap(":/images/stock_preferences_24.png"));
-    m_actions.settingsAction = new QAction(settingsActionIcon, tr("&Settings..."), this);
+    m_actions.settingsAction = new QAction(createIcon("stock_preferences", "preferences-other"),
+                                           tr("&Settings..."), this);
     m_actions.settingsAction->setShortcut(QKeySequence(Qt::CTRL|Qt::Key_T));
 
     // ----- Extras --------------------------------------------------------------------------------
@@ -971,31 +956,18 @@ void QpamatWindow::initActions()
     m_actions.clearClipboardAction->setShortcut(QKeySequence(Qt::CTRL|Qt::Key_E));
 
     // ----- Help ----------------------------------------------------------------------------------
-    QIcon helpActionIcon(QPixmap(":/images/stock_help_16.png"));
-    helpActionIcon.addPixmap(QPixmap(":/images/stock_help__24.png"));
-    m_actions.helpAction = new QAction(helpActionIcon, tr("&Help"), this);
+    m_actions.helpAction = new QAction(createIcon("stock_help", "system-help"), tr("&Help"), this);
     m_actions.helpAction->setShortcut(QKeySequence(Qt::Key_F1));
-
-    QIcon aboutActionIcon(QPixmap(":/images/info_16.png"));
-    aboutActionIcon.addPixmap(QPixmap(":/images/info_24.png"));
-    m_actions.aboutAction = new QAction(aboutActionIcon, tr("&About..."), this);
-
+    m_actions.aboutAction = new QAction(createIcon("info"), tr("&About..."), this);
     m_actions.aboutQtAction = new QAction(tr("About &Qt..."), this);
 
     // ------ Toolbar ------------------------------------------------------------------------------
-    QIcon addItemActionIcon(QPixmap(":/images/stock_add_16.png"));
-    addItemActionIcon.addPixmap(QPixmap(":/images/stock_add_24.png"));
-    m_actions.addItemAction = new QAction(addItemActionIcon, tr("Add item"), this);
+    m_actions.addItemAction = new QAction(createIcon("stock_add", "list-add"), tr("Add item"), this);
     m_actions.addItemAction->setShortcut(QKeySequence(Qt::Key_Insert));
-
-    QIcon removeItemActionIcon(QPixmap(":/images/stock_remove_16.png"));
-    removeItemActionIcon.addPixmap(QPixmap(":/images/stock_remove_24.png"));
-    m_actions.removeItemAction = new QAction(removeItemActionIcon, tr("Remove item"), this);
+    m_actions.removeItemAction = new QAction(createIcon("stock_remove", "list-remove"), tr("Remove item"), this);
 
     // ------ Misc ---------------------------------------------------------------------------------
-    QIcon searchActionIcon(QPixmap(":/images/stock_search_16.png"));
-    searchActionIcon.addPixmap(QPixmap(":/images/stock_search_24"));
-    m_actions.searchAction = new QAction(searchActionIcon, tr("Search"), this);
+    m_actions.searchAction = new QAction(createIcon("stock_search", "edit-find"), tr("Search"), this);
 
     m_actions.showHideAction = new QAction(tr("&Show"), this);
 }
