@@ -21,7 +21,7 @@
 // before the include of <sys/mman.h> to get the Q_WS_X11 define
 #include <QDebug>
 
-#ifdef Q_WS_X11
+#if defined(Q_WS_X11) || defined(Q_WS_MAC)
 #  include <sys/mman.h>
 #endif
 
