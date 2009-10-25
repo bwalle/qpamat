@@ -36,7 +36,7 @@
  * @endcode
  *
  * You can always configure the log handler. To also print out debugging
- * message, use: 
+ * message, use:
  *
  * @code
  * QpamatDebug::instance()->setMessageLevel(QtDebugMsg);
@@ -110,11 +110,11 @@ QpamatDebug *QpamatDebug::instance()
 QString QpamatDebug::typeToString(QtMsgType type)
 {
     switch (type) {
-        case QtDebugMsg:        
+        case QtDebugMsg:
             return "DEBUG";
-        case QtWarningMsg:      
+        case QtWarningMsg:
             return "WARNING";
-        case QtCriticalMsg:     
+        case QtCriticalMsg:
             return "CRITICAL";
         case QtFatalMsg:
             return "FATAL";
@@ -214,7 +214,7 @@ void QpamatDebug::setMessageLevel(QtMsgType level)
     m_msgLevel = level;
 }
 
-/** 
+/**
  * @brief Sets the components to filter
  *
  * When no components are set (empty @p components list), then it's not filtered
@@ -223,7 +223,7 @@ void QpamatDebug::setMessageLevel(QtMsgType level)
  * qWarning(), qFatal() or qCritical()) should be included.
  *
  * To reset filtering, call with an empty @p components.
- * 
+ *
  * @param[in] components the component list
  */
 void QpamatDebug::setFilterComponents(const QStringList &components)
@@ -232,7 +232,7 @@ void QpamatDebug::setFilterComponents(const QStringList &components)
 }
 
 
-/** 
+/**
  * @brief Redirects the log messages to stderr
  *
  * This is the default behaviour.
@@ -245,11 +245,11 @@ void QpamatDebug::redirectConsole()
 
 
 
-/** 
+/**
  * @brief Redirects the log messages to a file
  *
  * If the file cannot be opened, the fallback is console logging.
- * 
+ *
  * @param[in] filename the file name, relative to the working directory of the
  *                     application. If @p filename is QString::null, then
  *                     redirectConsole() is called internally.
