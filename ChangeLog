@@ -2,6 +2,7 @@
 
 	* Implement logging framework.
 	* Use icons from the system theme where possible.
+	* Fix crash in SecureString.
 
 2009-10-18  Bernhard Walle <bernhard@bwalle.de>
 
