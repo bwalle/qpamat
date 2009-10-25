@@ -20,8 +20,6 @@
  *
  * @ingroup security
  * @author Bernhard Walle
- * @version $Revision: 1.1 $
- * @date $Date: 2003/12/29 10:59:16 $
  */
 
 /**
@@ -62,9 +60,7 @@
  *        for encryption.
  *
  * @ingroup security
- * @version $Revision: 1.1 $
  * @author Bernhard Walle
- * @date $Date: 2003/12/29 10:59:16 $
  */
 
 /**
