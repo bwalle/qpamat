@@ -44,6 +44,7 @@
  * @author Bernhard Walle
  */
 
+
 /**
  * @brief Checks if the current platform (operating system) supports memory locking.
  *
@@ -61,6 +62,7 @@ bool SecureString::platformSupportsLocking()
 #endif
 }
 
+
 /**
  * @brief Creates a new SecureString that is empty
  */
@@ -69,6 +71,7 @@ SecureString::SecureString()
     : m_text(NULL)
     , m_locked(false)
 {}
+
 
 /**
  * @brief Creates a new SecureString from a C string representation.
@@ -83,6 +86,7 @@ SecureString::SecureString(const char *text)
 {
     fromCString(text);
 }
+
 
 /**
  * @brief Creates a new SecureString from a std::string represenation.
@@ -105,6 +109,7 @@ SecureString::SecureString(const std::string &text)
     fromCString(text.c_str());
 }
 
+
 /**
  * @brief Creates a SecureString from a QString.
  *
@@ -121,6 +126,7 @@ SecureString::SecureString(const QString &text)
     fromCString(text.toUtf8().data());
 }
 
+
 /**
  * @brief Creates a SecureString from another SecureString.
  */
@@ -131,6 +137,7 @@ SecureString::SecureString(const SecureString &text)
 {
     fromCString(text.utf8());
 }
+
 
 /**
  * @brief Assignment of a SecureString to a SecureString.
@@ -153,6 +160,7 @@ SecureString &SecureString::operator=(const SecureString& text)
     return *this;
 }
 
+
 /**
  * @brief Checks if \p text is less than this string.
  *
@@ -171,6 +179,7 @@ bool SecureString::operator<(const SecureString &text) const
 {
     return strcmp(utf8(), text.utf8()) < 0;
 }
+
 
 /**
  * @brief Checks if \p text is less or equal than this string.
@@ -191,6 +200,7 @@ bool SecureString::operator<=(const SecureString &text) const
     return strcmp(utf8(), text.utf8()) <= 0;
 }
 
+
 /**
  * @brief Checks if \p text is greater than this string.
  *
@@ -209,6 +219,7 @@ bool SecureString::operator>(const SecureString &text) const
 {
     return strcmp(utf8(), text.utf8()) > 0;
 }
+
 
 /**
  * @brief Checks if \p text is greater or equal than this string.
@@ -229,6 +240,7 @@ bool SecureString::operator>=(const SecureString &text) const
     return strcmp(utf8(), text.utf8()) >= 0;
 }
 
+
 /**
  * @brief Checks if \p text is equal than this string.
  *
@@ -242,6 +254,7 @@ bool SecureString::operator==(const SecureString &text) const
 {
     return strcmp(utf8(), text.utf8()) == 0;
 }
+
 
 /**
  * @brief Checks if \p text is not equal than this string.
@@ -257,6 +270,7 @@ bool SecureString::operator!=(const SecureString &text) const
     return strcmp(utf8(), text.utf8()) != 0;
 }
 
+
 /**
  * @brief Creates a new SecureString from a std::string representation.
  */
@@ -268,6 +282,7 @@ SecureString::~SecureString()
     delete[] m_text;
     m_text = NULL;
 }
+
 
 /**
  * @brief Checks if the SecureString is really locked into memory.
@@ -289,6 +304,7 @@ bool SecureString::isLocked() const
     return m_locked;
 }
 
+
 /**
  * @brief Returns an UTF-8 representation of the stored text.
  *
@@ -303,6 +319,7 @@ const char *SecureString::utf8() const
 {
     return m_text;
 }
+
 
 /**
  * @brief Returns a QString (without any memory protection!) of the stored text.
@@ -322,6 +339,7 @@ QString SecureString::qString() const
 {
     return QString::fromUtf8(utf8());
 }
+
 
 /**
  * @brief Returns the number of characters that it takes to display that SecureString on
@@ -350,6 +368,7 @@ size_t SecureString::length() const
     return total;
 }
 
+
 /**
  * @brief Returns the size (in bytes) of the SecureString in UTF-8 encoding.
  *
@@ -363,6 +382,7 @@ size_t SecureString::size() const
 {
     return strlen(m_text);
 }
+
 
 /**
  * @brief Shared implementation for all the constructors.
@@ -383,6 +403,7 @@ void SecureString::fromCString(const char *text)
     std::copy(text, text+len+1, m_text);
     lock();
 }
+
 
 /**
  * @brief Locks the string in m_text into memory.
@@ -411,6 +432,7 @@ void SecureString::lock()
 #endif
 }
 
+
 /**
  * @brief Unlocks the string in m_text from memory.
  *
@@ -430,6 +452,7 @@ void SecureString::unlock()
         qDebug() << "Cannot unlock memory " << strerror(errno);
 #endif
 }
+
 
 /**
  * @brief Overwrites the data with garbage.
