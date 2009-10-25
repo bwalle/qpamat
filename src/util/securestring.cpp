@@ -66,7 +66,7 @@ bool SecureString::platformSupportsLocking()
  */
 SecureString::SecureString()
     throw ()
-    : m_text(0)
+    : m_text(NULL)
     , m_locked(false)
 {}
 
@@ -78,7 +78,7 @@ SecureString::SecureString()
  */
 SecureString::SecureString(const char *text)
     throw (std::bad_alloc)
-    : m_text(0)
+    : m_text(NULL)
     , m_locked(false)
 {
     fromCString(text);
@@ -146,6 +146,7 @@ SecureString &SecureString::operator=(const SecureString& text)
         unlock();
         smash();
         delete[] m_text;
+        m_text = NULL;
     }
 
     fromCString(text.utf8());
@@ -265,6 +266,7 @@ SecureString::~SecureString()
     unlock();
     smash();
     delete[] m_text;
+    m_text = NULL;
 }
 
 /**
@@ -439,7 +441,9 @@ void SecureString::unlock()
 void SecureString::smash()
     throw ()
 {
-    std::fill(m_text, m_text+strlen(m_text), '\0');
+    if (m_text) {
+        std::fill(m_text, m_text+strlen(m_text), '\0');
+    }
 }
 
 // vim: set sw=4 ts=4 et:
