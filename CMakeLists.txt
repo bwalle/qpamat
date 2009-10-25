@@ -100,6 +100,9 @@ SET(qpamat_SRCS
     src/util/singleapplication.cpp
     src/util/timeoutapplication.cpp
     src/util/securestring.cpp
+    src/util/ansicolor.cpp
+    src/util/debug.cpp
+    src/util/msghandler.cpp
     src/datareadwriter.cpp
     src/timerstatusmessage.cpp
     src/randompassword.cpp
@@ -145,7 +148,11 @@ SET(qpamat_MOCS
 
 # build some files only on specific platforms
 IF (CMAKE_HOST_UNIX)
-    SET(qpamat_SRCS ${qpamat_SRCS} src/util/processinfo_unix.cpp)
+    SET(qpamat_SRCS
+        ${qpamat_SRCS}
+        src/util/processinfo_unix.cpp
+        src/util/platformhelpers_posix.cpp
+    )
     IF (NOT CMAKE_HOST_APPLE)
         SET(qpamat_SRCS ${qpamat_SRCS} src/qpamatadaptor.cpp)
         SET(qpamat_MOCS ${qpamat_MOCS} src/qpamatadaptor.h)
@@ -156,9 +163,9 @@ IF (CMAKE_HOST_WIN32)
     SET(qpamat_SRCS
         ${qpamat_SRCS}
         src/util/processinfo_win.cpp
+        src/util/platformhelpers_win32.cpp
         share/win32/qpamat_win32.rc
     )
-
     # copy icons
     CONFIGURE_FILE(
        ${CMAKE_SOURCE_DIR}/share/win32/qpamat_34.ico
@@ -214,6 +221,10 @@ TARGET_LINK_LIBRARIES(qpamat ${QT_LIBRARIES} ${OPENSSL_LIBRARIES})
 #
 
 IF (BUILD_TESTING)
+
+    #
+    # Securestring
+    #
     SET(testsecurestring_SRCS
         src/util/securestring.cpp
         src/tests/securestring.cpp
@@ -232,6 +243,24 @@ IF (BUILD_TESTING)
     TARGET_LINK_LIBRARIES(testsecurestring
         ${QT_LIBRARIES}
     )
+
+    #
+    # Logging
+    #
+
+    # FIXME: Build currently only works on POSIX.
+    # Create a static library and build both the test cases and the main
+    # program from that static library.
+    SET(logtest_SRCS
+        src/util/debug.cpp
+        src/util/ansicolor.cpp
+        src/util/msghandler.cpp
+        src/util/platformhelpers_posix.cpp
+        src/tests/logtest.cpp
+    )
+
+    ADD_EXECUTABLE(logtest ${logtest_SRCS})
+    TARGET_LINK_LIBRARIES(logtest ${QT_LIBRARIES})
 ENDIF (BUILD_TESTING)
 
 ADD_TEST(SecureString testsecurestring)
@@ -332,4 +361,4 @@ INSTALL(
 
 # }}}
 
-# :tabSize=4:noTabs=true:indentSize=4:mode=cmake:folding=explicit:
+# vim: set sw=4 ts=4 et fdm=marker:
