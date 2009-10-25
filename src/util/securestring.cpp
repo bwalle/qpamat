@@ -30,7 +30,7 @@
 /**
  * \class SecureString
  *
- * \brief String impelementation which takes care that the memory is not swapped out
+ * \brief String implementation which takes care that the memory is not swapped out
  *
  * This string class takes care that the data is not swapped out to disk but kept in memory.
  * How that is done depends on the operating system. Currently, only mlock() is supported
@@ -89,7 +89,7 @@ SecureString::SecureString(const char *text)
 
 
 /**
- * @brief Creates a new SecureString from a std::string represenation.
+ * @brief Creates a new SecureString from a std::string representation.
  *
  * This additional constructor is only provided for convenience. It's the same as calling
  *
@@ -98,7 +98,7 @@ SecureString::SecureString(const char *text)
  * SecureString str(bla.c_str());
  * @endcode
  *
- * @param[in] text the std::string represenation
+ * @param[in] text the std::string representation
  * @throw std::bad_alloc if the memory of the string cannot be allocated
  */
 SecureString::SecureString(const std::string &text)
@@ -346,7 +346,7 @@ QString SecureString::qString() const
  *        the screen.
  *
  * It's important that this is not the number of bytes in UTF-8 encoding. It's the number
- * of user-visible characters. Of course, when you use UCS-4 (or practially: UCS-2), the
+ * of user-visible characters. Of course, when you use UCS-4 (or practically: UCS-2), the
  * number is equal.
  *
  * @return the number of characters
@@ -390,7 +390,7 @@ size_t SecureString::size() const
  * C++ doesn't allow (contrary to Java) calling of another constructor in the constructor.
  * So we use that implementation to share code. <tt>:-)</tt>
  *
- * @param [in] text the text as C-String represenation
+ * @param [in] text the text as C-String representation
  * @throw std::bad_alloc if we couldn't allocate the necessary memory
  */
 void SecureString::fromCString(const char *text)
