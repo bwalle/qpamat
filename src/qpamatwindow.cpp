@@ -902,6 +902,26 @@ void QpamatWindow::connectSignalsAndSlots()
     connect(focusSearch, SIGNAL(activated()), m_searchCombo, SLOT(setFocus()));
 }
 
+
+/**
+ * @brief Creates a Icon in Qpamat
+ *
+ * Helper function to create a QIcon that contains both a small icon with 16x16
+ * pixels and a large icon with 24x24 pixels. The @p qpamatName will be appended
+ * with <tt>"_16.png"</tt> for the small icon and with <tt>"_24.png"</tt> for
+ * the large icon. In both cases, it uses the path <tt>":/images/"</tt> for icon
+ * lookup.
+ *
+ * When @p freedesktopName is set, the function QIcon::fromTheme() will be used
+ * with the icon build from @p qpamatName as fallback.  For the freedesktop
+ * icon names, see http://standards.freedesktop.org/icon-naming-spec/icon-naming-spec-latest.html.
+ *
+ * @param[in] qpamatName the qpamat name of the icon which will be used to build
+ *                       the fallback icon with the rules described above.
+ * @param[in] freedesktopName the name in the freedesktop spec
+ *
+ * @return the QIcon object
+ */
 QIcon QpamatWindow::createIcon(const QString &qpamatName, const QString &freedesktopName)
 {
     QString smallIcon = qpamatName + "_16.png";
