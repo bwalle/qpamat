@@ -1,3 +1,7 @@
+2009-10-25  Bernhard Walle <bernhard@bwalle.de>
+
+	* Implement logging framework.
+
 2009-10-18  Bernhard Walle <bernhard@bwalle.de>
 
 	* Import getopt class from
