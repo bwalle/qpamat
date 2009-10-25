@@ -17,58 +17,53 @@
 
 #include <util/debug.h>
 
-#include "logtest.h"
-
-void TestLog::logConsole() const
-{
-}
-
 int main(int argc, char *argv[])
 {
     qInstallMsgHandler(QpamatDebug::msgHandler);
+    QpamatDebug *qpDebug = QpamatDebug::instance();
 
     std::cerr << "With debug" << std::endl;
-    QpamatDebug::instance()->setMessageLevel(QtDebugMsg);
-    qDebug("Bla");
-    qDebug("Component\tBla");
-    qWarning("Warning");
-    qWarning("Component\tWarning");
-    qCritical("Fatal");
-    qCritical("Component\tFatal");
+    qpDebug->setMessageLevel(QtDebugMsg);
+    qpDebug(DEFAULT_COMPONENT) << "Bla";
+    qpDebug("Component") << "Bla";
+    qpWarning(DEFAULT_COMPONENT) << "Warning";
+    qpWarning("Component") << "Warning";
+    qpCritical(DEFAULT_COMPONENT) << "Fatal";
+    qpCritical("Component") << "Fatal";
 
     std::cerr << "Without debug" << std::endl;
-    QpamatDebug::instance()->setMessageLevel(QtWarningMsg);
-    qDebug("Bla");
-    qDebug("Component\tBla");
-    qWarning("Warning");
-    qWarning("Component\tWarning");
-    qCritical("Fatal");
-    qCritical("Component\tFatal");
+    qpDebug->setMessageLevel(QtWarningMsg);
+    qpDebug(DEFAULT_COMPONENT) << "Bla";
+    qpDebug("Component") << "Bla";
+    qpWarning(DEFAULT_COMPONENT) << "Warning";
+    qpWarning("Component") << "Warning";
+    qpCritical(DEFAULT_COMPONENT) << "Fatal";
+    qpCritical("Component") << "Fatal";
 
     std::cerr << "File 'bla.out'" << std::endl;
 
-    QpamatDebug::instance()->setMessageLevel(QtDebugMsg);
-    QpamatDebug::instance()->redirectFile("bla.out");
-    qDebug("Bla");
-    qDebug("Component\tBla");
-    qWarning("Warning");
-    qWarning("Component\tWarning");
-    qCritical("Fatal");
-    qCritical("Component\tFatal");
+    qpDebug->setMessageLevel(QtDebugMsg);
+    qpDebug->redirectFile("bla.out");
+    qpDebug(DEFAULT_COMPONENT) << "Bla";
+    qpDebug("Component") << "Bla";
+    qpWarning(DEFAULT_COMPONENT) << "Warning";
+    qpWarning("Component") << "Warning";
+    qpCritical(DEFAULT_COMPONENT) << "Fatal";
+    qpCritical("Component") << "Fatal";
 
     std::cerr << "Console, Filter 'Component'" << std::endl;
 
-    QpamatDebug::instance()->setMessageLevel(QtDebugMsg);
-    QpamatDebug::instance()->redirectConsole();
+    qpDebug->setMessageLevel(QtDebugMsg);
+    qpDebug->redirectConsole();
     QStringList l;
-    l << QpamatDebug::DEFAULT_COMPONENT;
-    QpamatDebug::instance()->setFilterComponents(l);
-    qDebug("Bla");
-    qDebug("Component\tBla");
-    qWarning("Warning");
-    qWarning("Component\tWarning");
-    qCritical("Fatal");
-    qCritical("Component\tFatal");
+    l << DEFAULT_COMPONENT;
+    qpDebug->setFilterComponents(l);
+    qpDebug(DEFAULT_COMPONENT) << "Bla";
+    qpDebug("Component") << "Bla";
+    qpWarning(DEFAULT_COMPONENT) << "Warning";
+    qpWarning("Component") << "Warning";
+    qpCritical(DEFAULT_COMPONENT) << "Fatal";
+    qpCritical("Component") << "Fatal";
 
     return EXIT_SUCCESS;
 }

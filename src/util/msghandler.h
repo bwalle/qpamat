@@ -28,6 +28,7 @@ class MsgHandler
     public:
         virtual bool open() = 0;
         virtual void output(QtMsgType       type,
+                            const QString   &context,
                             const QString   &date,
                             const QString   &component,
                             const QString   &msg) = 0;
@@ -45,6 +46,7 @@ class FileMsgHandler : public MsgHandler
     public:
         bool open();
         void output(QtMsgType       type,
+                    const QString   &context,
                     const QString   &date,
                     const QString   &component,
                     const QString   &msg);
@@ -65,6 +67,7 @@ class StderrMsgHandler : public MsgHandler
     public:
         bool open();
         void output(QtMsgType       type,
+                    const QString   &context,
                     const QString   &date,
                     const QString   &component,
                     const QString   &msg);

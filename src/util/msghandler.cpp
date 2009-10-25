@@ -48,7 +48,7 @@
  */
 
 /**
- * @fn MsgHandler::output(QtMsgType, const QString &, const QString &, const QString &)
+ * @fn MsgHandler::output(QtMsgType, const QString &, const QString &, const QString &, const QString &)
  *
  * @brief Output function for the message handler.
  *
@@ -56,6 +56,8 @@
  * already done.
  *
  * @param[in] type the severity of the message handler
+ * @param[in] context the function name and/or line number from where the
+ *            message has been printed
  * @param[in] date the date (already formatted)
  * @param[in] component the component of the message handler (can be
  *            QpamatDebug::DEFAULT_COMPONENT) but cannot be QString::null.
@@ -106,6 +108,7 @@ bool StderrMsgHandler::open()
 
 /// @copydoc MsgHandler::output()
 void StderrMsgHandler::output(QtMsgType       type,
+                              const QString   &context,
                               const QString   &date,
                               const QString   &component,
                               const QString   &msg)
@@ -149,8 +152,11 @@ void StderrMsgHandler::output(QtMsgType       type,
     stream.setFieldWidth(15);
     stream << component;
 
-    // component
+    // context and msg
     stream.setFieldWidth(0);
+    if (!context.isNull()) {
+        stream << context << " ||| ";
+    }
     stream << msg;
 
     std::cerr << colorcode
@@ -177,11 +183,11 @@ void StderrMsgHandler::output(QtMsgType       type,
  */
 
 
-/** 
+/**
  * @brief Constructor
  *
  * Creates a new instance of FileMsgHandler.
- * 
+ *
  * @param[in] outputfile the name of the outputfile
  */
 FileMsgHandler::FileMsgHandler(const char *outputfile)
@@ -208,6 +214,7 @@ bool FileMsgHandler::open()
 
 /// @copydoc MsgHandler::output()
 void FileMsgHandler::output(QtMsgType       type,
+                            const QString   &context,
                             const QString   &date,
                             const QString   &component,
                             const QString   &msg)
@@ -229,8 +236,11 @@ void FileMsgHandler::output(QtMsgType       type,
     stream.setFieldWidth(15);
     stream << component;
 
-    // msg
+    // context and msg
     stream.setFieldWidth(0);
+    if (!context.isNull()) {
+        stream << context << " ||| ";\
+    }
     stream << msg;
     stream << endl;
 }

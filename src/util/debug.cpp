@@ -46,7 +46,7 @@
  *
  * @code
  * QStringList l;
- * l << QpamatDebug::DEFAULT_COMPONENT;
+ * l << DEFAULT_COMPONENT;
  * QpamatDebug::instance()->setFilterComponents(l);
  * @endcode
  *
@@ -74,9 +74,6 @@
  */
 
 QpamatDebug *QpamatDebug::m_instance = NULL;
-
-/// Default component. Can be used for example for filtering.
-const QString QpamatDebug::DEFAULT_COMPONENT = "default";
 
 
 /**
@@ -176,13 +173,20 @@ void QpamatDebug::message(QtMsgType type, const char *msg)
     }
 
     // get component and message
-    QString messagePart, componentPart;
+    QString messagePart;
+    QString componentPart(DEFAULT_COMPONENT);
+    QString contextPart(QString::null);
     QString qmsg(msg);
-    if (qmsg.contains("\t")) {
-        componentPart = qmsg.section('\t', 0, 0);
-        messagePart = qmsg.section('\t', 1);
+
+    int count = qmsg.count("\t");
+    if (count > 1) {
+        contextPart = qmsg.section('\t', 0, 0).trimmed();
+        componentPart = qmsg.section('\t', 1, 1).trimmed();
+        messagePart = qmsg.section('\t', 2).trimmed();
+    } else if (count == 1) {
+        componentPart = qmsg.section('\t', 0, 0).trimmed();
+        messagePart = qmsg.section('\t', 1).trimmed();
     } else {
-        componentPart = DEFAULT_COMPONENT;
         messagePart = qmsg;
     }
 
@@ -197,7 +201,7 @@ void QpamatDebug::message(QtMsgType type, const char *msg)
     QDateTime current(QDateTime::currentDateTime());
     QString date = current.toString("yyyy-MM-dd hh:mm:ss");
 
-    m_msgHandler->output(type, date, componentPart, messagePart);
+    m_msgHandler->output(type, contextPart, date, componentPart, messagePart);
 }
 
 /**
@@ -218,7 +222,7 @@ void QpamatDebug::setMessageLevel(QtMsgType level)
  * @brief Sets the components to filter
  *
  * When no components are set (empty @p components list), then it's not filtered
- * for components. You have to explicitly include QpamatDebug::DEFAULT_COMPONENT
+ * for components. You have to explicitly include DEFAULT_COMPONENT
  * if the default component (no component specified when calling qDebug(),
  * qWarning(), qFatal() or qCritical()) should be included.
  *
@@ -242,7 +246,6 @@ void QpamatDebug::redirectConsole()
     delete m_msgHandler;
     m_msgHandler = new StderrMsgHandler;
 }
-
 
 
 /**
