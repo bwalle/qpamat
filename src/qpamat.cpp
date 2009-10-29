@@ -82,7 +82,7 @@ void Qpamat::installTranslations()
     qApp->installTranslator(&ttranslator);
 }
 
-/** 
+/**
  * @brief Registers the DBus handlers.
  */
 void Qpamat::registerDBus()
@@ -138,9 +138,9 @@ void Qpamat::printVersion()
     std::cerr << "QPaMaT version " << VERSION_STRING << std::endl;
 }
 
-/** 
+/**
  * @brief Returns the window
- * 
+ *
  * @return the window object
  */
 QpamatWindow *Qpamat::getWindow()
@@ -152,9 +152,9 @@ QpamatWindow *Qpamat::getWindow()
     return m_qpamatWindow.data();
 }
 
-/** 
+/**
  * @brief Returns the only instance of the singleton.
- * 
+ *
  * @return the pointer to the instance which is valid during the whole life time of the application.
  */
 Qpamat *Qpamat::instance()
