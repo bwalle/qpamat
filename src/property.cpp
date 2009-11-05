@@ -461,4 +461,4 @@ void Property::appendFromXML(TreeEntry* parent, QDomElement& element)
     parent->appendProperty(new Property(key, value, type, encrypted, hidden));
 }
 
-// vim: set sw=4 ts=4 et:
+// vim: set sw=4 ts=4 et: :tabSize=4:indentSize=4:maxLineLen=100:

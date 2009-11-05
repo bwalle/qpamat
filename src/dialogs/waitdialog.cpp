@@ -45,7 +45,7 @@
 /**
  * Creates a new instance of a wait dialog.
  *
- * @param icon    the icon that should be displayed (use a null pixmap if there should 
+ * @param icon    the icon that should be displayed (use a null pixmap if there should
  *                be no icon)
  * @param message the message text that should be displayed
  * @param title   the title
@@ -81,4 +81,4 @@ WaitDialog::WaitDialog(const QPixmap& icon, const QString& message, const QStrin
     box->setStretchFactor(textLabel, 5);
 }
 
-// vim: set sw=4 ts=4 et:
+// vim: set sw=4 ts=4 et: :tabSize=4:indentSize=4:maxLineLen=100:

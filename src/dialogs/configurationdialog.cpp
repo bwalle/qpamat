@@ -74,7 +74,7 @@
  *
  * @code
  * #include <QScopedPointer>
- * 
+ *
  * QScopedPointer<ConfigurationDialog> dlg(new ConfigurationDialog(this));
  * if (dlg->exec() == QDialog::Accepted) {
  *     // do something
@@ -968,4 +968,4 @@ void ConfDlgSmartcardTab::testSmartCard()
 
 #endif // DOXYGEN
 
-// vim: set sw=4 ts=4 et:
+// vim: set sw=4 ts=4 et: :tabSize=4:indentSize=4:maxLineLen=100:

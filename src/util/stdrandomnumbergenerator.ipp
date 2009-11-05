@@ -34,4 +34,4 @@ type StdRandomNumberGenerator<type>::operator() ()
     return type( double(std::rand()) / RAND_MAX * std::numeric_limits<type>::max() );
 }
 
-// vim: set sw=4 ts=4 et:
+// vim: set sw=4 ts=4 et: :tabSize=4:indentSize=4:maxLineLen=100:

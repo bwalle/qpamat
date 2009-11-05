@@ -177,4 +177,4 @@ void PasswordHash::attachHashWithoutSalt(ByteVector& output, const ByteVector& p
     std::copy(md_value, md_value + md_len, std::back_inserter(output));
 }
 
-// vim: set sw=4 ts=4 et:
+// vim: set sw=4 ts=4 et: :tabSize=4:indentSize=4:maxLineLen=100:

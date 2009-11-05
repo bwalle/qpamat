@@ -715,7 +715,7 @@ void MemoryCard::changeVerificationData(const QString& oldPin, const QString& ne
  * std::invalid_argument exception is thrown. If it is to short, 'F' is appended.
  *
  * @param pin the pin as string
- * @param std::invalid_argument if the string contains illegal characters or has not the 
+ * @param std::invalid_argument if the string contains illegal characters or has not the
  *                              right length
  */
 void MemoryCard::createPIN(QString pin, unsigned char* pinBytes) const throw (std::invalid_argument)
@@ -752,4 +752,4 @@ void MemoryCard::checkInitialzed(const QString& functionName) const
             "the class was not initalized.");
 }
 
-// vim: set sw=4 ts=4 et:
+// vim: set sw=4 ts=4 et: :tabSize=4:indentSize=4:maxLineLen=100:

@@ -167,4 +167,4 @@ Qpamat *Qpamat::instance()
 }
 
 
-// vim: set sw=4 ts=4 et:
+// vim: set sw=4 ts=4 et: :tabSize=4:indentSize=4:maxLineLen=100:

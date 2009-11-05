@@ -67,4 +67,4 @@ TreeEntry* TreeEntry::appendFromXML(T* parent, QDomElement& element)
     return returnvalue;
 }
 
-// vim: set sw=4 ts=4 et ft=cpp:
+// vim: set sw=4 ts=4 et ft=cpp: :tabSize=4:indentSize=4:maxLineLen=100:

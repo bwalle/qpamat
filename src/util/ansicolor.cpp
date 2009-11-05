@@ -96,4 +96,4 @@ const char *AnsiColor::BRIGHT_CYAN      = "\e[36;1m";
 /// White color (bold)
 const char *AnsiColor::BRIGHT_WHITE     = "\e[37;1m";
 
-// vim: set sw=4 ts=4 et:
+// vim: set sw=4 ts=4 et: :tabSize=4:indentSize=4:maxLineLen=100:

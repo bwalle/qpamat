@@ -52,4 +52,4 @@
  */
 
 
-// vim: set sw=4 ts=4 et ft=doxygen:
+// vim: set sw=4 ts=4 et ft=doxygen: :tabSize=4:indentSize=4:maxLineLen=100:

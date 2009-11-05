@@ -202,7 +202,7 @@ void TimeoutApplication::init()
 /**
  * @brief Returns the timeout value in minutes.
  *
- * Zero means the timeout feature is disabled.  
+ * Zero means the timeout feature is disabled.
  * @return the timeout
  */
 int TimeoutApplication::getTimeout() const
@@ -320,4 +320,4 @@ bool TimeoutApplication::notify(QObject* receiver, QEvent* e)
  * Signal that is emitted if the inactivity timeout occured.
  */
 
-// vim: set sw=4 ts=4 et:
+// vim: set sw=4 ts=4 et: :tabSize=4:indentSize=4:maxLineLen=100:

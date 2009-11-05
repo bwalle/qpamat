@@ -136,4 +136,4 @@ void InsertCardDialog::pinEditHandler(const QString& text)
     m_okButton->setEnabled(m_pinEdit->hasAcceptableInput());
 }
 
-// vim: set sw=4 ts=4 et:
+// vim: set sw=4 ts=4 et: :tabSize=4:indentSize=4:maxLineLen=100:

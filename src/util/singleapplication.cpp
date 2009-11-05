@@ -64,14 +64,14 @@ bool    SingleApplication::initialized;
  * method as singal handler.
  *
  * There's a function SingleApplication::registerStandardExitHandlers() which does this for you.
- * 
+ *
  * @ingroup misc
  * @author Bernhard Walle
  */
 
 /**
  * Creates a new instnace of SingleApplication.
- * 
+ *
  * It checks the existence of the directory but does not create any lockfile.
  * The name of the file will be <tt>\<dir\>/.\<applName\>.lock</tt>, so it's
  * hidden on Unix.
@@ -159,7 +159,7 @@ void SingleApplication::registerStandardExitHandlers()
 
 /**
  * This is the signal handler that should be registered with signal().
- * 
+ *
  * The function just exists the program normally with the error code 1. If the
  * signal is \c SIGABRT or \c SIGQUIT, a coredump is created, i.e. it sets the
  * default signal handler and calls abort().
@@ -201,4 +201,4 @@ void SingleApplication::shutdown()
     }
 }
 
-// vim: set sw=4 ts=4 et:
+// vim: set sw=4 ts=4 et: :tabSize=4:indentSize=4:maxLineLen=100:

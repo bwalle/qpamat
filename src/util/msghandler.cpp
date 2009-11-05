@@ -82,7 +82,7 @@
  */
 
 
-/** 
+/**
  * @brief Constructor
  *
  * Creates a new instance of StderrMsgHandler.
@@ -92,7 +92,7 @@ StderrMsgHandler::StderrMsgHandler()
 {}
 
 
-/** 
+/**
  * @brief Destructor
  */
 StderrMsgHandler::~StderrMsgHandler()
@@ -247,4 +247,4 @@ void FileMsgHandler::output(QtMsgType       type,
 
 /* }}} */
 
-// vim: set sw=4 ts=4 et:
+// vim: set sw=4 ts=4 et: :tabSize=4:indentSize=4:maxLineLen=100:

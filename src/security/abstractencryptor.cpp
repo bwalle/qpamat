@@ -82,4 +82,4 @@ QString AbstractEncryptor::decryptStrFromStr(const QString& string)
     return decryptStrFromBytes(EncodingHelper::fromBase64(string));
 }
 
-// vim: set sw=4 ts=4 et:
+// vim: set sw=4 ts=4 et: :tabSize=4:indentSize=4:maxLineLen=100:
