@@ -836,7 +836,7 @@ void ConfDlgSmartcardTab::createAndLayout()
     // the case discrimination if rom Qt's code, so it should be correct
 #if defined Q_WS_WIN
     m_libraryEdit->setFilter(tr("CT-API-Driver (*.dll)"));
-#elif Q_OS_MACX
+#elif defined(Q_OS_MACX)
     m_libraryEdit->setFilter(tr("CT-API-Driver (*.dylib)"));
 #elif defined(Q_OS_HPUX)
     m_libraryEdit->setFilter(tr("CT-API-Driver (*.sl)"));
