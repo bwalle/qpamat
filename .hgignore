@@ -6,3 +6,4 @@ build
 doc/api/html
 *.marks
 tags
+.DS_Store
