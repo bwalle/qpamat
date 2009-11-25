@@ -247,7 +247,7 @@ void QpamatWindow::initToolbar()
     // ----- Application ---------------------------------------------------------------------------
     QToolBar* applicationToolbar = new QToolBar(tr("Application"), this);
     applicationToolbar->setObjectName("Application");
-    addToolBar(Qt::TopToolBarArea, applicationToolbar);
+    addToolBar(applicationToolbar);
 
     applicationToolbar->addAction(m_actions.newAction);
     applicationToolbar->addAction(m_actions.saveAction);
@@ -258,7 +258,7 @@ void QpamatWindow::initToolbar()
     // ----- Search --------------------------------------------------------------------------------
     QToolBar* searchToolbar = new QToolBar(tr("Search"), this);
     searchToolbar->setObjectName("Search");
-    addToolBar(Qt::TopToolBarArea, searchToolbar);
+    addToolBar(searchToolbar);
     m_searchLabel = new QLabel(tr("Search:")+" ", searchToolbar);
 
     m_searchCombo = new QComboBox(true, searchToolbar);
@@ -273,11 +273,10 @@ void QpamatWindow::initToolbar()
     searchToolbar->addWidget(m_searchCombo);
     searchToolbar->addAction(m_actions.searchAction);
 
-
     // ---- Edit toolbar ---------------------------------------------------------------------------
     QToolBar* editToolbar = new QToolBar(tr("Edit"), this);
     editToolbar->setObjectName("Edit");
-    addToolBar(Qt::TopToolBarArea, editToolbar);
+    addToolBar(editToolbar);
 
     editToolbar->addAction(m_actions.addItemAction);
     editToolbar->addAction(m_actions.removeItemAction);
