@@ -205,6 +205,8 @@ QpamatWindow::QpamatWindow()
         else
             QTimer::singleShot( 0, this, SLOT(newFile()) );
     }
+    
+    setUnifiedTitleAndToolBarOnMac(true);
 }
 
 
