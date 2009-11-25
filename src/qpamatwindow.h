@@ -16,7 +16,6 @@
 #define QPAMATWINDOW_H
 
 #include <QMainWindow>
-#include <Q3MainWindow>
 #include <QComboBox>
 #include <QEvent>
 #include <QToolButton>
