@@ -102,6 +102,7 @@ ListBoxDialog::ListBoxDialog(QWidget* parent, const char* name)
     f.setBold(true);
     m_listBox->setFont(f);
     m_listBox->setCursor(Qt::PointingHandCursor);
+    m_listBox->setFocusPolicy(Qt::TabFocus);
     m_widgetStack = new Q3WidgetStack(mainHBox, "ConfDlg-Widget");
 
     // horizontal line
