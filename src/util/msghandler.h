@@ -23,7 +23,7 @@
 class MsgHandler
 {
     public:
-        ~MsgHandler() {}
+        virtual ~MsgHandler() {}
 
     public:
         virtual bool open() = 0;
