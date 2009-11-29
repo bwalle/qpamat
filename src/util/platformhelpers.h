@@ -15,6 +15,76 @@
 #ifndef PLATFORMHELPERS_H
 #define PLATFORMHELPERS_H
 
+/**
+ * @file platformhelpers.h
+ * @ingroup misc
+ * @brief Contains functions that help for development across multiple platforms
+ *
+ * That file contains classes that don't fit into other implementation files that contain
+ * some platform abstraction. It also contains macros that make case determinations easier.
+ *
+ * There are following macros:
+ *
+ *  - @c RUNNING_ON_X11 which is 1 if @c Q_WS_X11 is defined and 0 otherwise
+ *  - @c RUNNING_ON_MAC which is 1 if @c Q_WS_MAC is defined and 0 otherwise
+ *  - @c RUNNING_ON_POSIX which is 1 if either @c Q_WS_X11 or @c Q_WS_MAC is defined and 0 otherwise
+ *  - @c RUNNING_ON_WINDOWS which is 1 if @c Q_WS_WIN is defined and 0 otherwise
+ *  - @c RUNNING_ON_EMBEDDED_LINUX which is 1 if @c Q_WS_QWS is defined and 0 otherwise
+ *
+ * So, instead of writing
+ *
+ * @code
+ * #ifdef Q_WS_X11
+ *    do_something();
+ * #endif
+ * @endcode
+ *
+ * you should write
+ *
+ * @code
+ * if (RUNNING_ON_X11)
+ *    do_something();
+ * @endcode
+ *
+ * which makes the code much more readable.
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ */
+
+#ifndef DOXYGEN
+
+#ifdef Q_WS_X11
+#  define RUNNING_ON_X11 1
+#else
+#  define RUNNING_ON_X11 0
+#endif
+
+#ifdef Q_WS_MAC
+#  define RUNNING_ON_MAC 1
+#else
+#  define RUNNING_ON_MAC 0
+#endif
+
+#if defined(Q_WS_MAC) || defined(Q_WS_X11)
+#  define RUNNING_ON_POSIX 1
+#else
+#  define RUNNING_ON_POSIX 0
+#endif
+
+#ifdef Q_WS_WIN
+#  define RUNNING_ON_WINDOWS 1
+#else
+#  define RUNNING_ON_WINDOWS 0
+#endif
+
+#ifdef Q_WS_QWS
+#  define RUNNING_ON_EMBEDDED_LINUX 1
+#else
+#  define RUNNING_ON_EMBEDDED_LINUX 0
+#endif
+
+#endif // DOXYGEN
+
 class PlatformHelpers
 {
     public:
