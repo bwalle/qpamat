@@ -1,3 +1,11 @@
+2009-11-29  Bernhard Walle <bernhard@bwalle.de>
+
+	* Fix compile warnings on MacOS.
+	* Don't show/hide the window when clicked on the systray icon on MacOS
+	  since the context menu is displayed automatically there.
+	* Improve the toolbar layout on MacOS by calling
+	  setUnifiedTitleAndToolBarOnMac().
+
 2009-10-25  Bernhard Walle <bernhard@bwalle.de>
 
 	* Implement logging framework.
