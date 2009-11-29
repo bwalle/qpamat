@@ -79,10 +79,6 @@ const int KeyPress = XKeyPress;
 // This should resolve all bugs with KWin3 and old Qt, but maybe it'll be useful for
 // other window managers?
 
-#ifdef Q_WS_X11
-//#undef Q_WS_X11
-#endif
-
 
 #ifdef Q_WS_X11
 void setTrayOwnerWindow(Display *dsp)
