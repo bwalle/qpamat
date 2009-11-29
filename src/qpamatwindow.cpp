@@ -857,7 +857,7 @@ void QpamatWindow::connectSignalsAndSlots()
     connect(m_actions.newAction, SIGNAL(activated()), this, SLOT(newFile()));
     connect(m_actions.quitAction, SIGNAL(activated()), this, SLOT(exitHandler()));
     connect(m_actions.quitActionNoKeyboardShortcut, SIGNAL(activated()), this, SLOT(exitHandler()));
-    connect(m_actions.showHideAction, SIGNAL(activated()), this, SLOT(handleTrayiconClick()));
+    connect(m_actions.showHideAction, SIGNAL(activated()), this, SLOT(showHideWindow()));
     connect(m_actions.printAction, SIGNAL(activated()), this, SLOT(print()));
     connect(m_actions.saveAction, SIGNAL(activated()), this, SLOT(save()));
     connect(m_actions.exportAction, SIGNAL(activated()), this, SLOT(exportData()));
