@@ -50,6 +50,7 @@
 #include "dialogs/newpassworddialog.h"
 #include "dialogs/configurationdialog.h"
 #include "util/timeoutapplication.h"
+#include "util/platformhelpers.h"
 #include "rightpanel.h"
 #include "tree.h"
 
@@ -205,7 +206,7 @@ QpamatWindow::QpamatWindow()
         else
             QTimer::singleShot( 0, this, SLOT(newFile()) );
     }
-    
+
     setUnifiedTitleAndToolBarOnMac(true);
 }
 
@@ -402,7 +403,7 @@ void QpamatWindow::handleTrayiconClick()
  */
 void QpamatWindow::handleTrayiconClick(QSystemTrayIcon::ActivationReason reason)
 {
-    if (reason == QSystemTrayIcon::Trigger) {
+    if (reason == QSystemTrayIcon::Trigger && !RUNNING_ON_MAC) {
         if (isShown()) {
             m_lastGeometry = geometry();
             hide();
