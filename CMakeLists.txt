@@ -216,6 +216,14 @@ ADD_EXECUTABLE(qpamat WIN32
 
 TARGET_LINK_LIBRARIES(qpamat ${QT_LIBRARIES} ${OPENSSL_LIBRARIES})
 
+# apidoc
+ADD_CUSTOM_TARGET(
+    apidoc
+    doxygen ${CMAKE_SOURCE_DIR}/doxyfile
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Generating API documentation"
+)
+
 #
 # {{{ Tests
 #
