@@ -5,6 +5,7 @@
 	  since the context menu is displayed automatically there.
 	* Improve the toolbar layout on MacOS by calling
 	  setUnifiedTitleAndToolBarOnMac().
+	* Don't show menu icons on MacOS.
 
 2009-10-25  Bernhard Walle <bernhard@bwalle.de>
 

@@ -208,6 +208,12 @@ QpamatWindow::QpamatWindow()
     }
 
     setUnifiedTitleAndToolBarOnMac(true);
+
+    // don't show icons in the menu bar by default since that seems to be rather seldom
+    // on the Mac platform
+    if (RUNNING_ON_MAC) {
+        qApp->setAttribute(Qt::AA_DontShowIconsInMenus);
+    }
 }
 
 
