@@ -59,9 +59,19 @@ Qpamat::Qpamat()
 void Qpamat::installTranslations()
 {
     // translation
-    QTranslator translator(0), ttranslator(0);
+    static QTranslator translator(0), ttranslator(0);
     QString loc = QTextCodec::locale();
-    translator.load(loc, qApp->applicationDirPath() + "/../share/qpamat/translations/");
+
+    QString localDirs[] = {
+        qApp->applicationDirPath(), // not installed
+        qApp->applicationDirPath() + "/../share/qpamat/translations/" // installed
+    };
+
+    for (unsigned int i = 0; i < ARRAY_SIZE(localDirs); i++) {
+        if (translator.load(loc, localDirs[i])) {
+            break;
+        }
+    }
 
     QString dirs[] = {
             QString("/usr/share/qt4/translations"),

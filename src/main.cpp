@@ -42,6 +42,7 @@ int main(int argc, char** argv)
 
     Qpamat *qpamat = Qpamat::instance();
     qpamat->parseCommandLine(argc, argv);
+    qpamat->installTranslations();
 
     SingleApplication::init(QDir::homeDirPath(), "QPaMaT");
 
