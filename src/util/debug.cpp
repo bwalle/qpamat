@@ -115,6 +115,8 @@ QString QpamatDebug::typeToString(QtMsgType type)
             return "CRITICAL";
         case QtFatalMsg:
             return "FATAL";
+        default:
+            return "INVALID";
     }
 }
 
