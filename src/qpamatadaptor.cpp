@@ -40,7 +40,7 @@ QpamatAdaptor::QpamatAdaptor(QpamatWindow *qpamat)
  */
 void QpamatAdaptor::showHideApplication()
 {
-    m_qpamat->handleTrayiconClick();
+    m_qpamat->showHideWindow();
 }
 
 // vim: set sw=4 ts=4 et: :tabSize=4:indentSize=4:maxLineLen=100:

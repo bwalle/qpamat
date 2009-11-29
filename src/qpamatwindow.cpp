@@ -367,7 +367,7 @@ void QpamatWindow::exitHandler()
 void QpamatWindow::closeEvent(QCloseEvent* e)
 {
     if (m_trayIcon) {
-        handleTrayiconClick();
+        showHideWindow();
         e->ignore();
     } else {
         exitHandler();
@@ -389,33 +389,35 @@ void QpamatWindow::setModified(bool modified)
 }
 
 /**
- * @brief Needed to connect with a signal that has no ActivationReason parameter.
+ * @brief Toggles the show status of the main window
+ *
+ * If the main window is shown, hide it. If it's not shown, show it.
  */
-void QpamatWindow::handleTrayiconClick()
+void QpamatWindow::showHideWindow()
 {
-    handleTrayiconClick(QSystemTrayIcon::Trigger);
+    if (isShown()) {
+        m_lastGeometry = geometry();
+        hide();
+        m_actions.showHideAction->setMenuText(tr("&Show"));
+    } else {
+        if (!(m_lastGeometry.x() == 0 && m_lastGeometry.y() == 0
+                    && m_lastGeometry.width() == 0 && m_lastGeometry.height() == 0)) {
+            setGeometry(m_lastGeometry);
+        }
+        show();
+        m_actions.showHideAction->setMenuText(tr("&Hide"));
+    }
 }
 
 /**
  * @brief Handles single click on the tray icon.
  *
- * If the window is shown, it is hidden. Else, it is shown again.
+ * Calls showHideWindow() if necessary (left click, but not on MacOS)dfriedhofdd.
  */
 void QpamatWindow::handleTrayiconClick(QSystemTrayIcon::ActivationReason reason)
 {
     if (reason == QSystemTrayIcon::Trigger && !RUNNING_ON_MAC) {
-        if (isShown()) {
-            m_lastGeometry = geometry();
-            hide();
-            m_actions.showHideAction->setMenuText(tr("&Show"));
-        } else {
-            if (!(m_lastGeometry.x() == 0 && m_lastGeometry.y() == 0
-                        && m_lastGeometry.width() == 0 && m_lastGeometry.height() == 0)) {
-                setGeometry(m_lastGeometry);
-            }
-            show();
-            m_actions.showHideAction->setMenuText(tr("&Hide"));
-        }
+        showHideWindow();
     }
 }
 

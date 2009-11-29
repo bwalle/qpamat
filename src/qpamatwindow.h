@@ -64,7 +64,7 @@ class QpamatWindow : public QMainWindow
         void passwordStrengthHandler(bool enabled);
         void exportData();
         bool exportOrSave();
-        void handleTrayiconClick();
+        void showHideWindow();
         void handleTrayiconClick(QSystemTrayIcon::ActivationReason reason);
         void exitHandler();
 
