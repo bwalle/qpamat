@@ -17,6 +17,7 @@
 #include <QApplication>
 #include <QDebug>
 
+#include "qpamat.h"
 #include "security/symmetricencryptor.h"
 #include "security/passwordgeneratorfactory.h"
 #include "settings.h"
@@ -60,8 +61,8 @@ Settings::Settings()
     DEF_STRING("Security/AllowedCharacters",     "a-zA-Z0-9@$#");
     DEF_DOUBLE("Security/WeakPasswordLimit",     3.0);
     DEF_DOUBLE("Security/StrongPasswordLimit",   15.0);
-    DEF_STRING("Security/DictionaryFile",        QDir(qApp->applicationDirPath() + "/../share/"
-                                                 "qpamat/dicts").canonicalPath() + "/default.txt");
+    DEF_STRING("Security/DictionaryFile",        QDir(Qpamat::basePath() + "/share/qpamat/dicts")
+                                                    .canonicalPath() + "/default.txt");
     DEF_STRING("Security/PasswordGenerator",     PasswordGeneratorFactory::DEFAULT_GENERATOR_STRING);
     DEF_STRING("Security/PasswordGenAdditional", "");
     DEF_INTEGE("Security/AutoLogout",            0);

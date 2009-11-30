@@ -32,6 +32,9 @@ class Qpamat
 
         QpamatWindow *getWindow();
 
+    public:
+        static QString basePath();
+
     protected:
         void printVersion();
 

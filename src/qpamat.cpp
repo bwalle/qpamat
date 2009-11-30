@@ -21,6 +21,7 @@
 #include <QApplication>
 #include <QDir>
 
+#include "util/platformhelpers.h"
 #include "qpamat.h"
 #include "qpamatwindow.h"
 #include "qpamatadaptor.h"
@@ -64,7 +65,7 @@ void Qpamat::installTranslations()
 
     QString localDirs[] = {
         qApp->applicationDirPath(), // not installed
-        qApp->applicationDirPath() + "/../share/qpamat/translations/" // installed
+        basePath() + "/share/qpamat/translations/" // installed
     };
 
     for (unsigned int i = 0; i < ARRAY_SIZE(localDirs); i++) {
@@ -160,6 +161,22 @@ QpamatWindow *Qpamat::getWindow()
     }
 
     return m_qpamatWindow.data();
+}
+
+/**
+ * @brief Returns the base path
+ *
+ * Returns the base path for resources (e.g. the documenation).
+ *
+ * @return the base path in canonical form
+ */
+QString Qpamat::basePath()
+{
+    if (RUNNING_ON_MAC) {
+        return QDir(qApp->applicationDirPath() + "/../Resources/").canonicalPath();
+    } else {
+        return QDir(qApp->applicationDirPath() + "/../").canonicalPath();
+    }
 }
 
 /**

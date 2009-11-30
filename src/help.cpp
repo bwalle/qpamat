@@ -54,7 +54,7 @@ void Help::showAbout()
  */
 void Help::showHelp()
 {
-    QString base = QDir(qApp->applicationDirPath() + "/../share/qpamat/doc/").canonicalPath();
+    QString base = QDir(Qpamat::basePath() + "/share/qpamat/doc/").canonicalPath();
     QString loc = QString(QTextCodec::locale()).section("_", 0, 0);
 
     if (QFile::exists(base + "/" + loc + "/index.html"))
