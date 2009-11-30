@@ -369,4 +369,23 @@ INSTALL(
 
 # }}}
 
+#
+# {{{  Installation
+#
+
+CONFIGURE_FILE(
+    "${CMAKE_SOURCE_DIR}/share/macos/Info.plist.in"
+    "${CMAKE_BINARY_DIR}/share/macos/Info.plist"
+)
+
+SET(CPACK_PACKAGE_FILE_NAME "qpamat-${VERSION_STRING}")
+#SET(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/images/qpamat.icns")
+SET(CPACK_BUNDLE_NAME "QPaMaT")
+SET(CPACK_BUNDLE_PLIST "${CMAKE_BINARY_DIR}/share/macos/Info.plist")
+SET(CPACK_BUNDLE_ICON "${CMAKE_SOURCE_DIR}/images/qpamat.icns")
+SET(CPACK_BUNDLE_STARTUP_COMMAND qpamat)
+INCLUDE(CPack)
+
+# }}}
+
 # vim: set sw=4 ts=4 et fdm=marker:
