@@ -1,0 +1,8 @@
+*.o
+*moc*.cpp
+*moc*.cxx
+build
+doc/api/html
+*.marks
+tags
+.DS_Store
