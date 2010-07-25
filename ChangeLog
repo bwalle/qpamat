@@ -1,3 +1,7 @@
+2010-07-25  Bernhard Walle <bernhard@bwalle.de>
+
+	* Fix compile warning.
+
 2009-11-29  Bernhard Walle <bernhard@bwalle.de>
 
 	* Fix compile warnings on MacOS.

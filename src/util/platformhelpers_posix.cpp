@@ -78,6 +78,9 @@ bool PlatformHelpers::isTerminal(FileChannel channel)
         case FC_STDERR:
             fd = STDERR_FILENO;
             break;
+
+        default:
+            return false;
     }
 
     return isatty(fd);
