@@ -241,9 +241,8 @@ QDomDocument DataReadWriter::createSkeletonDocument() throw ()
     root.appendChild(appData);
 
     QDomElement version = doc.createElement("version");
-    version.setAttribute("major", MAJOR_VERSION);
-    version.setAttribute("minor", MINOR_VERSION);
-    version.setAttribute("patch", PATCH_VERSION);
+    QDomText versionValue = doc.createTextNode(VERSION_STRING);
+    version.appendChild(versionValue);
     appData.appendChild(version);
 
     QDomElement date = doc.createElement("date");
