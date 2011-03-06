@@ -1,5 +1,9 @@
 2011-03-06  Bernhard Walle <bernhard@bwalle.de>
 
+	* Use a black/white system tray icon on Mac OS.
+
+2011-03-06  Bernhard Walle <bernhard@bwalle.de>
+
 	* Update icons.
 	* Release 0.5.4.
 
