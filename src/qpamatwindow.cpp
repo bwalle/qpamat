@@ -959,8 +959,7 @@ void QpamatWindow::initActions()
     m_actions.loginLogoutAction->setShortcut(QKeySequence(Qt::CTRL|Qt::Key_L));
     m_actions.saveAction = new QAction(createIcon("stock_save", "document-save"), tr("&Save"), this);
     m_actions.saveAction->setShortcut(QKeySequence(Qt::CTRL|Qt::Key_S));
-    m_actions.exportAction = new QAction(createIcon("export", "document-save-as"),
-                                         tr("&Export..."), this);
+    m_actions.exportAction = new QAction(tr("&Export..."), this);
     m_actions.printAction = new QAction(createIcon("stock_print", "document-print"),
                                         tr("&Print..."), this);
     m_actions.printAction->setShortcut(QKeySequence(Qt::CTRL|Qt::Key_P));
@@ -979,16 +978,13 @@ void QpamatWindow::initActions()
     m_actions.passwordStrengthAction->setShortcut(QKeySequence(Qt::CTRL|Qt::Key_W));
     m_actions.passwordStrengthAction->setToggleAction(true);
 
-    QIcon clearClipboardActionIcon(QPixmap(":/images/clear_clipboard_16.png"));
-    clearClipboardActionIcon.addPixmap(QPixmap(":/images/clear_clipboard_24.png"));
-    m_actions.clearClipboardAction = new QAction(clearClipboardActionIcon,
-        tr("&Clear clipboard"), this);
+    m_actions.clearClipboardAction = new QAction(tr("&Clear clipboard"), this);
     m_actions.clearClipboardAction->setShortcut(QKeySequence(Qt::CTRL|Qt::Key_E));
 
     // ----- Help ----------------------------------------------------------------------------------
     m_actions.helpAction = new QAction(createIcon("stock_help", "system-help"), tr("&Help"), this);
     m_actions.helpAction->setShortcut(QKeySequence(Qt::Key_F1));
-    m_actions.aboutAction = new QAction(createIcon("info"), tr("&About..."), this);
+    m_actions.aboutAction = new QAction(createIcon("stock_about"), tr("&About..."), this);
     m_actions.aboutQtAction = new QAction(tr("About &Qt..."), this);
 
     // ------ Toolbar ------------------------------------------------------------------------------

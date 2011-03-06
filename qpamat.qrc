@@ -1,12 +1,13 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
-  <file>images/clear_clipboard_16.png</file>
   <file>images/export_16.png</file>
   <file>images/export_24.png</file>
   <file>images/eye_16.png</file>
   <file>images/general_34.png</file>
   <file>images/info_16.png</file>
   <file>images/info_24.png</file>
+  <file>images/stock_about_16.png</file>
+  <file>images/stock_about_24.png</file>
   <file>images/login_16.png</file>
   <file>images/login_24.png</file>
   <file>images/logout_16.png</file>

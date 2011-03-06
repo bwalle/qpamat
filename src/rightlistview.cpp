@@ -123,8 +123,7 @@ void RightListView::initContextMenu()
     m_contextMenu->insertSeparator();
     m_contextMenu->insertItem(QpamatWindow::createIcon("stock_copy", "edit-copy"),
         tr("&Copy") + "\t" + QString(QKeySequence(Qt::CTRL|Qt::Key_C)), M_COPY);
-    m_contextMenu->insertItem(QpamatWindow::createIcon("eye"),
-        tr("Show &password..."), M_SHOW_PW);
+    m_contextMenu->insertItem(tr("Show &password..."), M_SHOW_PW);
 }
 
 
