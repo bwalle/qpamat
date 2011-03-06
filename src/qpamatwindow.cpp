@@ -54,9 +54,9 @@
 #include "rightpanel.h"
 #include "tree.h"
 
-#ifdef Q_WS_WIN
+#if defined(Q_WS_WIN)
 #  define TRAY_ICON_FILE_NAME ":/images/qpamat_16.png"
-#elif Q_WS_MAC
+#elif defined(Q_WS_MAC)
 #  define TRAY_ICON_FILE_NAME ":/images/qpamat_16_bw.png"
 #else
 #  define TRAY_ICON_FILE_NAME ":/images/qpamat_34.png"
