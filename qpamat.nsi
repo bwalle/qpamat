@@ -53,13 +53,17 @@ Section "Dummy Section" SecDummy
   File /r doc\user\*
   
   SetOutPath "$INSTDIR\bin"
-  File bin\*
+  File build\Release\*.exe
+
+  SetOutPath "$INSTDIR\bin"
+  File build\Release\*.dll
+
   
   SetOutPath "$INSTDIR\share\qpamat\dicts"
   File share\dicts\*
   
   SetOutPath "$INSTDIR\share\qpamat\translations"
-  File ts\*.qm
+  File build\*.qm
   
   ;Store installation folder
   WriteRegStr HKCU "Software\QPaMaT" "" $INSTDIR
