@@ -50,7 +50,7 @@
 Section "Dummy Section" SecDummy
 
   SetOutPath "$INSTDIR\share\qpamat\doc"
-  File /r doc\user\*
+  File /r build\doc\user\*
   
   SetOutPath "$INSTDIR\bin"
   File build\Release\*.exe
