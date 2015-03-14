@@ -47,7 +47,7 @@ class TreeEntry : public QObject, public Q3ListViewItem
         void appendProperty(Property* property);
         PropertyIterator propertyIterator() const;
 
-        Property::PasswordStrength weakestChildrenPassword() const throw (PasswordCheckException);
+        Property::PasswordStrength weakestChildrenPassword() const;
 
         void appendXML(QDomDocument& document, QDomNode& parent) const;
 

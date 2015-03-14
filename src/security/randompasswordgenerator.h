@@ -23,8 +23,7 @@
 class RandomPasswordGenerator : public PasswordGenerator
 {
     public:
-        virtual QString getPassword(unsigned int length, const QString& allowedChars = QString::null)
-            throw (PasswordGenerateException);
+        virtual QString getPassword(unsigned int length, const QString& allowedChars = QString::null);
 
         virtual bool isSeeded();
 

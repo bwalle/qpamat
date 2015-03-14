@@ -75,13 +75,11 @@ class ReadWriteException : public std::runtime_error
 class DataReadWriter
 {
     public:
-        void writeXML(const QDomDocument& document, const QString& password)
-            throw (ReadWriteException);
+        void writeXML(const QDomDocument& document, const QString& password);
 
-        QDomDocument readXML(const QString& password)
-            throw (ReadWriteException);
+        QDomDocument readXML(const QString& password);
 
-        QDomDocument createSkeletonDocument() throw ();
+        QDomDocument createSkeletonDocument();
 
     private:
         void crypt(QDomElement& n, StringEncryptor& enc, bool encrypt);

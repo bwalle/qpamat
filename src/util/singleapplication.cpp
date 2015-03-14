@@ -81,7 +81,6 @@ bool    SingleApplication::initialized;
  * @exception std::invalid_argument if the specified direcory does not exit
  */
 void SingleApplication::init(const QString& lockfileDir, const QString& applName)
-    throw (std::invalid_argument)
 {
     if (!QDir(lockfileDir).isReadable()) {
         throw std::invalid_argument( QString("The directory %1 does not exist.").arg(lockfileDir)

@@ -56,7 +56,7 @@
  * @exception PasswordCheckException if recomputing is necessary and the PasswordChecker
  *            threw a PasswordCheckException
  */
-Property::PasswordStrength TreeEntry::weakestChildrenPassword() const throw (PasswordCheckException)
+Property::PasswordStrength TreeEntry::weakestChildrenPassword() const
 {
     Property::PasswordStrength lowest = Property::PUndefined;
 

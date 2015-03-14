@@ -54,7 +54,6 @@ bool SecureString::s_warned = false;
  * @return \c true if memory locking is supported, \c false otherwise
  */
 bool SecureString::platformSupportsLocking()
-    throw ()
 {
 #ifdef _POSIX_MEMLOCK_RANGE
     return true;
@@ -68,7 +67,6 @@ bool SecureString::platformSupportsLocking()
  * @brief Creates a new SecureString that is empty
  */
 SecureString::SecureString()
-    throw ()
     : m_text(NULL)
     , m_locked(false)
 {}
@@ -81,7 +79,6 @@ SecureString::SecureString()
  * @throw std::bad_alloc if the memory of the string cannot be allocated
  */
 SecureString::SecureString(const char *text)
-    throw (std::bad_alloc)
     : m_text(NULL)
     , m_locked(false)
 {
@@ -103,7 +100,6 @@ SecureString::SecureString(const char *text)
  * @throw std::bad_alloc if the memory of the string cannot be allocated
  */
 SecureString::SecureString(const std::string &text)
-    throw (std::bad_alloc)
     : m_text(0)
     , m_locked(false)
 {
@@ -120,7 +116,6 @@ SecureString::SecureString(const std::string &text)
  * @throw std::bad_alloc if the memory of the string cannot be allocated
  */
 SecureString::SecureString(const QString &text)
-    throw (std::bad_alloc)
     : m_text(0)
     , m_locked(false)
 {
@@ -132,7 +127,6 @@ SecureString::SecureString(const QString &text)
  * @brief Creates a SecureString from another SecureString.
  */
 SecureString::SecureString(const SecureString &text)
-    throw (std::bad_alloc)
     : m_text(0)
     , m_locked(false)
 {
@@ -148,7 +142,6 @@ SecureString::SecureString(const SecureString &text)
  * @throw std::bad_alloc if the memory of the string cannot be allocated
  */
 SecureString &SecureString::operator=(const SecureString& text)
-    throw (std::bad_alloc)
 {
     if (m_text) {
         unlock();
@@ -176,7 +169,6 @@ SecureString &SecureString::operator=(const SecureString& text)
  * @return \c true if \p text is less than this string, \c false otherwise
  */
 bool SecureString::operator<(const SecureString &text) const
-    throw ()
 {
     return strcmp(utf8(), text.utf8()) < 0;
 }
@@ -196,7 +188,6 @@ bool SecureString::operator<(const SecureString &text) const
  * @return \c true if \p text is less or equal than this string, \c false otherwise
  */
 bool SecureString::operator<=(const SecureString &text) const
-    throw ()
 {
     return strcmp(utf8(), text.utf8()) <= 0;
 }
@@ -216,7 +207,6 @@ bool SecureString::operator<=(const SecureString &text) const
  * @return \c true if \p text is greater than this string, \c false otherwise
  */
 bool SecureString::operator>(const SecureString &text) const
-    throw ()
 {
     return strcmp(utf8(), text.utf8()) > 0;
 }
@@ -236,7 +226,6 @@ bool SecureString::operator>(const SecureString &text) const
  * @return \c true if \p text is greater or equal than this string, \c false otherwise
  */
 bool SecureString::operator>=(const SecureString &text) const
-    throw ()
 {
     return strcmp(utf8(), text.utf8()) >= 0;
 }
@@ -251,7 +240,6 @@ bool SecureString::operator>=(const SecureString &text) const
  * @return \c true if \p text is equal than this string, \c false otherwise
  */
 bool SecureString::operator==(const SecureString &text) const
-    throw ()
 {
     return strcmp(utf8(), text.utf8()) == 0;
 }
@@ -266,7 +254,6 @@ bool SecureString::operator==(const SecureString &text) const
  * @return \c true if \p text is not equal than this string, \c false otherwise
  */
 bool SecureString::operator!=(const SecureString &text) const
-    throw ()
 {
     return strcmp(utf8(), text.utf8()) != 0;
 }
@@ -276,7 +263,6 @@ bool SecureString::operator!=(const SecureString &text) const
  * @brief Creates a new SecureString from a std::string representation.
  */
 SecureString::~SecureString()
-    throw ()
 {
     unlock();
     smash();
@@ -300,7 +286,6 @@ SecureString::~SecureString()
  * @return \c true if the string is locked into memory, \c false otherwise
  */
 bool SecureString::isLocked() const
-    throw ()
 {
     return m_locked;
 }
@@ -316,7 +301,6 @@ bool SecureString::isLocked() const
  * @return the UTF-8 representation as zero-terminated string
  */
 const char *SecureString::utf8() const
-    throw ()
 {
     return m_text;
 }
@@ -336,7 +320,6 @@ const char *SecureString::utf8() const
  * @return a QString
  */
 QString SecureString::qString() const
-    throw ()
 {
     return QString::fromUtf8(utf8());
 }
@@ -353,7 +336,6 @@ QString SecureString::qString() const
  * @return the number of characters
  */
 size_t SecureString::length() const
-    throw ()
 {
     // according to the Unicode FAQ [http://www.cl.cam.ac.uk/~mgk25/unicode.html]
     // we have to count characters not in the range [0x80; 0xBF].
@@ -379,7 +361,6 @@ size_t SecureString::length() const
  * @return the number of bytes
  */
 size_t SecureString::size() const
-    throw ()
 {
     return strlen(m_text);
 }
@@ -395,7 +376,6 @@ size_t SecureString::size() const
  * @throw std::bad_alloc if we couldn't allocate the necessary memory
  */
 void SecureString::fromCString(const char *text)
-    throw (std::bad_alloc)
 {
     // don't use strdup() to be able to allocate with new[] instead of malloc()
     size_t len = strlen(text);
@@ -417,7 +397,6 @@ void SecureString::fromCString(const char *text)
  * silently returns.
  */
 void SecureString::lock()
-    throw ()
 {
     // do nothing if the string is already locked
     if (m_locked)
@@ -445,7 +424,6 @@ void SecureString::lock()
  * silently returns.
  */
 void SecureString::unlock()
-    throw ()
 {
     // do nothing if the string is not locked
     if (!m_locked)
@@ -467,7 +445,6 @@ void SecureString::unlock()
  * not matter because it's not a hard disk but only memory contents.
  */
 void SecureString::smash()
-    throw ()
 {
     if (m_text) {
         std::fill(m_text, m_text+strlen(m_text), '\0');

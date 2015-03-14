@@ -26,8 +26,7 @@
 class SymmetricEncryptor : public AbstractEncryptor
 {
     public:
-        SymmetricEncryptor(const QString& algorithm, const QString& password)
-            throw (NoSuchAlgorithmException);
+        SymmetricEncryptor(const QString& algorithm, const QString& password);
 
         virtual QString getCurrentAlgorithm() const;
         static QStringList getAlgorithms();

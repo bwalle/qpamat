@@ -36,13 +36,13 @@ class PasswordGeneratorFactory
 
     public:
         static PasswordGenerator* getGenerator(PasswordGeneratorType type, const QString&
-            additionalArgument = QString::null) throw (std::invalid_argument);
+            additionalArgument = QString::null);
 
         static PasswordGenerator* getGenerator(const QString& type, const QString&
-            additionalArgument = QString::null) throw (std::invalid_argument);
+            additionalArgument = QString::null);
 
-        static PasswordGeneratorType fromString(QString type) throw (std::invalid_argument);
-        static QString toString(PasswordGeneratorType type) throw (std::invalid_argument);
+        static PasswordGeneratorType fromString(QString type);
+        static QString toString(PasswordGeneratorType type);
 };
 
 #endif // PASSWORDGENERATORFACTORY_H

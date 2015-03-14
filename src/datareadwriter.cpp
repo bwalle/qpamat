@@ -205,7 +205,7 @@
  *
  * @return the QDomDocument object
  */
-QDomDocument DataReadWriter::createSkeletonDocument() throw ()
+QDomDocument DataReadWriter::createSkeletonDocument()
 {
     const char url[] = "http://qpamat.berlios.de/qpamat.dtd";
     QDomDocument doc(QDomImplementation().createDocumentType( "qpamat", 0, url));
@@ -263,7 +263,6 @@ QDomDocument DataReadWriter::createSkeletonDocument() throw ()
  *               - error in communicating with the smart-card terminal
  */
 void DataReadWriter::writeXML(const QDomDocument& document, const QString& password)
-    throw (ReadWriteException)
 {
     QDomDocument document_cpy = document.cloneNode(true).toDocument();
     QpamatWindow *win = Qpamat::instance()->getWindow();
@@ -330,7 +329,6 @@ void DataReadWriter::writeXML(const QDomDocument& document, const QString& passw
  *               - error with communicating with the card terminal
  */
 QDomDocument DataReadWriter::readXML(const QString& password)
-    throw (ReadWriteException)
 {
     qDebug() << CURRENT_FUNCTION;
 

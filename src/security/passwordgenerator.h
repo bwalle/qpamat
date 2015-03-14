@@ -33,8 +33,7 @@ class PasswordGenerator
 
         virtual ~PasswordGenerator() { }
 
-        virtual QString getPassword(unsigned int length, const QString& allowedChars = QString::null)
-            throw (PasswordGenerateException) = 0;
+        virtual QString getPassword(unsigned int length, const QString& allowedChars = QString::null) = 0;
 
         virtual bool isSlow() const = 0;
 };

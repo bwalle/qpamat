@@ -65,7 +65,6 @@ StringMap SymmetricEncryptor::m_algorithms = initAlgorithmsMap();
  * @exception NoSuchAlgorithmException if the algorithm is not supported
  */
 SymmetricEncryptor::SymmetricEncryptor(const QString& algorithm, const QString& password)
-            throw (NoSuchAlgorithmException)
 {
     // set the right cipher algorithm
     if (m_algorithms.contains(algorithm.upper()))

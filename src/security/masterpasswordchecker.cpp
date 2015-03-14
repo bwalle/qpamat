@@ -43,7 +43,7 @@
  * @param password the password to check
  * @return 0.0 if the password is bad, numeric_limits<double>::max() if it is good.
  */
-double MasterPasswordChecker::passwordQuality(const QString& password) throw ()
+double MasterPasswordChecker::passwordQuality(const QString& password)
 {
     if (password.length() < 8) {
         return false;

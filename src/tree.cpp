@@ -183,7 +183,7 @@ void Tree::readFromXML(const QDomElement& rootElement)
  *            nothing is appended
  * @exception std::invalid_argument if the given document does not met the described requirements
 */
-void Tree::appendXML(QDomDocument& doc) const throw (std::invalid_argument)
+void Tree::appendXML(QDomDocument& doc) const
 {
     QDomElement docElem = doc.documentElement();
     QDomNode passwords = docElem.namedItem("passwords");

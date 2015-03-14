@@ -33,9 +33,9 @@ class PasswordChecker
         static const unsigned int CRACKS_PER_SECOND;
 
     public:
-        virtual ~PasswordChecker() { };
+        virtual ~PasswordChecker() { }
 
-        virtual double passwordQuality(const QString& password) throw (PasswordCheckException) = 0;
+        virtual double passwordQuality(const QString& password) = 0;
 };
 
 #endif // PASSWORDCHECKER_H

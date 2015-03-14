@@ -25,8 +25,7 @@ class SingleApplication : public QObject
     Q_OBJECT
 
     public:
-        static void init(const QString& lockfileDir, const QString& appName)
-            throw (std::invalid_argument);
+        static void init(const QString& lockfileDir, const QString& appName);
 
         static void registerStandardExitHandlers();
 

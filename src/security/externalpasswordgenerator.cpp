@@ -63,7 +63,6 @@ ExternalPasswordGenerator::ExternalPasswordGenerator(const QString& applicationN
  * @exception PasswordGenerateException if launching the external application failed
  */
 QString ExternalPasswordGenerator::getPassword(unsigned int length, const QString&)
-        throw (PasswordGenerateException)
 {
     if (m_applicationName.isNull())
         throw PasswordGenerateException("In ExternalPasswordGenerator::getPassword: No program set.");

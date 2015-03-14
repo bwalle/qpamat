@@ -48,7 +48,6 @@
  * @exception PasswordGenerateException if the object was not seeded
  */
 QString RandomPasswordGenerator::getPassword(unsigned int length, const QString& pAllowedChars)
-        throw (PasswordGenerateException)
 {
     QString ret;
     unsigned char buffer[1];

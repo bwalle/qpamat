@@ -30,10 +30,9 @@
 class HybridPasswordChecker : public PasswordChecker
 {
     public:
-        HybridPasswordChecker(const QString& dictFileName)
-            throw (PasswordCheckException);
+        HybridPasswordChecker(const QString& dictFileName);
 
-        double passwordQuality(const QString& password) throw ();
+        double passwordQuality(const QString& password);
 
     private:
         QString findLongestWord(const QString& password) const;

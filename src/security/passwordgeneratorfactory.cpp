@@ -89,7 +89,7 @@ const int     PasswordGeneratorFactory::DEFAULT_LENGTH = 8;
  * @exception std::invalid_argument if the additional argument is invalid
  */
 PasswordGenerator* PasswordGeneratorFactory::getGenerator(PasswordGeneratorType type,
-    const QString& additionalArgument) throw (std::invalid_argument)
+    const QString& additionalArgument)
 {
     switch (type) {
         case TRandomPasswordGenerator:
@@ -120,7 +120,6 @@ PasswordGenerator* PasswordGeneratorFactory::getGenerator(PasswordGeneratorType 
  */
 PasswordGenerator* PasswordGeneratorFactory::getGenerator(const QString    &type,
                                                           const QString    &additionalArgument)
-    throw (std::invalid_argument)
 {
     return getGenerator(fromString(type), additionalArgument);
 }
@@ -134,7 +133,6 @@ PasswordGenerator* PasswordGeneratorFactory::getGenerator(const QString    &type
  * @exception std::invalid_argument if the string reperesentation is invalid
  */
 PasswordGeneratorFactory::PasswordGeneratorType PasswordGeneratorFactory::fromString(QString type)
-             throw (std::invalid_argument)
 {
     type = type.upper();
     if (type == "RANDOM")
@@ -155,7 +153,6 @@ PasswordGeneratorFactory::PasswordGeneratorType PasswordGeneratorFactory::fromSt
  * @exception std::invalid_argument if the type is not a valid PasswordGeneratorType
  */
 QString PasswordGeneratorFactory::toString(PasswordGeneratorType type)
-            throw (std::invalid_argument)
 {
     switch (type) {
         case TRandomPasswordGenerator:

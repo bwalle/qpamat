@@ -239,7 +239,7 @@ void Property::setValue(const QString& value)
  * @exception PasswordCheckException if the strength is updated and a PasswordCheckException
  *            is thrown
  */
-Property::PasswordStrength Property::getPasswordStrength() throw (PasswordCheckException)
+Property::PasswordStrength Property::getPasswordStrength()
 {
     if (m_passwordStrength == PUndefined)
         updatePasswordStrength();
@@ -270,7 +270,7 @@ double Property::daysToCrack() const
  *
  * @exception if the password checker threw a PasswordCheckException
  */
-void Property::updatePasswordStrength() throw (PasswordCheckException)
+void Property::updatePasswordStrength()
 {
     if (m_type == PASSWORD) {
         QpamatWindow *win = Qpamat::instance()->getWindow();

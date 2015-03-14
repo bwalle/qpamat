@@ -22,7 +22,7 @@
 class MasterPasswordChecker : public PasswordChecker
 {
     public:
-        double passwordQuality(const QString& password) throw ();
+        double passwordQuality(const QString& password);
 };
 
 #endif // MASTERPASSWORDCHECKER_H

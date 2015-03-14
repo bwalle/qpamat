@@ -27,8 +27,7 @@ class ExternalPasswordGenerator : public PasswordGenerator
     public:
         ExternalPasswordGenerator(const QString& applicationName);
 
-        QString getPassword(unsigned int length, const QString& allowedChars = QString::null)
-            throw (PasswordGenerateException);
+        QString getPassword(unsigned int length, const QString& allowedChars = QString::null);
 
         bool isSlow() const;
 

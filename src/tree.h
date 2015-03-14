@@ -44,8 +44,7 @@ class Tree : public Q3ListView
         Tree(QWidget* parent);
 
         void readFromXML(const QDomElement& document);
-        void appendXML(QDomDocument& doc) const
-            throw (std::invalid_argument);
+        void appendXML(QDomDocument& doc) const;
 
         QString toRichTextForPrint();
         void appendTextForExport(QTextStream& stream);

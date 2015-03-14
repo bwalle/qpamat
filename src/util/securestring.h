@@ -23,77 +23,54 @@
 class SecureString
 {
     public:
-        SecureString()
-        throw ();
+        SecureString();
 
-        SecureString(const char *text)
-        throw (std::bad_alloc);
+        SecureString(const char *text);
 
-        SecureString(const std::string &text)
-        throw (std::bad_alloc);
+        SecureString(const std::string &text);
 
-        SecureString(const QString &text)
-        throw (std::bad_alloc);
+        SecureString(const QString &text);
 
-        SecureString(const SecureString &text)
-        throw (std::bad_alloc);
+        SecureString(const SecureString &text);
 
-        virtual ~SecureString()
-        throw ();
+        virtual ~SecureString();
 
-        SecureString &operator=(const SecureString &text)
-        throw (std::bad_alloc);
+        SecureString &operator=(const SecureString &text);
 
-        bool operator<(const SecureString &text) const
-        throw ();
+        bool operator<(const SecureString &text) const;
 
-        bool operator<=(const SecureString &text) const
-        throw ();
+        bool operator<=(const SecureString &text) const;
 
-        bool operator>(const SecureString &text) const
-        throw ();
+        bool operator>(const SecureString &text) const;
 
-        bool operator>=(const SecureString &text) const
-        throw ();
+        bool operator>=(const SecureString &text) const;
 
-        bool operator==(const SecureString &text) const
-        throw ();
+        bool operator==(const SecureString &text) const;
 
-        bool operator!=(const SecureString &text) const
-        throw ();
+        bool operator!=(const SecureString &text) const;
 
     public:
-        static bool platformSupportsLocking()
-        throw ();
+        static bool platformSupportsLocking();
 
     public:
-        bool isLocked() const
-        throw ();
+        bool isLocked() const;
 
-        const char *utf8() const
-        throw ();
+        const char *utf8() const;
 
-        QString qString() const
-        throw ();
+        QString qString() const;
 
-        size_t length() const
-        throw ();
+        size_t length() const;
 
-        size_t size() const
-        throw ();
+        size_t size() const;
 
     protected:
-        void fromCString(const char *text)
-        throw (std::bad_alloc);
+        void fromCString(const char *text);
 
-        void lock()
-        throw ();
+        void lock();
 
-        void unlock()
-        throw ();
+        void unlock();
 
-        void smash()
-        throw ();
+        void smash();
 
     private:
         char *m_text;

@@ -73,8 +73,8 @@ class Property : public QObject
         void setValue(const QString& value);
         QString getVisibleValue() const;
 
-        PasswordStrength getPasswordStrength() throw (PasswordCheckException);
-        void updatePasswordStrength() throw (PasswordCheckException);
+        PasswordStrength getPasswordStrength();
+        void updatePasswordStrength();
         double daysToCrack() const;
 
         Type getType() const;

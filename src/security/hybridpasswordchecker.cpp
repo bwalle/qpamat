@@ -69,7 +69,6 @@ QMap<int, int>  HybridPasswordChecker::m_lengthBeginMap;
  *                                   opened
  */
 HybridPasswordChecker::HybridPasswordChecker(const QString& dictFileName)
-            throw (PasswordCheckException)
 {
     if (!QFile::exists(dictFileName)) {
         throw PasswordCheckException( QString("The file %1 does not exist.").arg(
@@ -124,7 +123,7 @@ HybridPasswordChecker::HybridPasswordChecker(const QString& dictFileName)
  * @return the number of days that a cracker needs to crack according to the password
  *         checker
  */
-double HybridPasswordChecker::passwordQuality(const QString& password) throw ()
+double HybridPasswordChecker::passwordQuality(const QString& password)
 {
     const QString longest = findLongestWord(password);
     int pos = password.find(longest, 0, false);
