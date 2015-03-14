@@ -116,7 +116,7 @@ void TestSecureString::testLocking() const
  */
 void TestSecureString::testSize() const
 {
-    const char teststring[5] = { 0x54, 0xc3, 0xa4, 0x73, 0x74 }; // "Täst" in UTF-8
+    const char teststring[] = "\124\303\244\163\164"; // "Täst" in UTF-8
     SecureString s(teststring);
 
     QVERIFY(s.length() == 4);
