@@ -130,43 +130,6 @@ class ConfDlgSecurityTab : public ListBoxDialogPage
 
 // -------------------------------------------------------------------------------------------------
 
-class ConfDlgSmartcardTab : public ListBoxDialogPage
-{
-    Q_OBJECT
-
-    friend class ConfigurationDialog;
-
-    public:
-        enum SmartcardEnabled { NotEnabled = 0, Enabled = 1 };
-
-    public:
-        ConfDlgSmartcardTab(QWidget* parent, const char* name = 0);
-
-    protected slots:
-        void testSmartCard();
-
-    protected:
-        void fillSettings();
-        void applySettings();
-
-    private slots:
-        void setUseSmartcardEnabled(bool enabled);
-
-    private:
-        void createAndLayout();
-
-    private:
-        QCheckBox*      m_useCardCB;
-        QCheckBox*      m_usePinCB;
-        Q3GroupBox*      m_settingsGroup;
-        Q3GroupBox*      m_testGroup;
-        FileLineEdit*   m_libraryEdit;
-        QComboBox*      m_portCombo;
-        QPushButton*    m_testButton;
-};
-
-// -------------------------------------------------------------------------------------------------
-
 class ConfDlgPresentationTab : public ListBoxDialogPage
 {
     Q_OBJECT

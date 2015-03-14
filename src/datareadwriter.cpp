@@ -33,11 +33,8 @@
 #include "qpamatwindow.h"
 #include "qpamat.h"
 #include "datareadwriter.h"
-#include "smartcard/memorycard.h"
 #include "security/passwordhash.h"
 #include "security/symmetricencryptor.h"
-#include "security/collectencryptor.h"
-#include "dialogs/insertcarddialog.h"
 #include "dialogs/waitdialog.h"
 #include "global.h"
 
@@ -95,15 +92,6 @@
  * @var ReadWriteException::CIOError
  *
  * Indicates an error with input/output such as wrong file permission.
- */
-
-/**
- * @var ReadWriteException::CSmartcardError
- *
- * @brief Indicates an error while communicating with the smartcard terminal.
- *
- * Retrying makes heavily sense here because maybe the user just forgot to
- * insert the card and pressed Ok.
  */
 
 /**
@@ -180,20 +168,19 @@
 /**
  * @class DataReadWriter
  *
- * @brief Handles the reading and writing from and to the smartcard and/or file.
+ * @brief Handles the reading and writing from and to the file.
  *
- * This class handles reading and writing to the XML file and the smartcard. The input or
+ * This class handles reading and writing to the XML file. The input or
  * output is a XML structure with passwords as cleartext. This class does also the
  * encryption or decryption.
  *
  * It reads the current configuration from the global Settings object. The configuration
- * is the file, the smartcard settings, the encryption algorithm and so on.
+ * is the file, the encryption algorithm and so on.
  *
  * On error, a ReadWriteException is thrown and the error message is set to a sensible
  * value. It displays no error dialog itself, you have to to this on the calling part.
  *
- * No automatic delection takes place. This is no QObject. We only need the parent widget
- * to display a message box if the user should insert the smartcard.
+ * No automatic delection takes place. This is no QObject.
  *
  * @par Writing
  *
@@ -208,17 +195,6 @@
  *
  * @ingroup gui
  */
-
-/**
- * @brief Creates a new instance of a DataReadWriter.
- *
- * The parent is needed for the message box which asks the user to insert the password.
- *
- * @param parent the parent widget
- */
-DataReadWriter::DataReadWriter(QWidget* parent)
-    : m_parent(parent)
-{}
 
 
 /**
@@ -260,7 +236,7 @@ QDomDocument DataReadWriter::createSkeletonDocument() throw ()
     appData.appendChild(passwordhash);
 
     QDomElement smartcard = doc.createElement("smartcard");
-    smartcard.setAttribute("useCard", win->set().readBoolEntry("Smartcard/UseCard"));
+    smartcard.setAttribute("useCard", false);
     appData.appendChild(smartcard);
 
     // add the empty passwords child
@@ -269,205 +245,6 @@ QDomDocument DataReadWriter::createSkeletonDocument() throw ()
 
     return doc;
 }
-
-// -------------------------------------------------------------------------------------------------
-#ifndef DOXYGEN
-
-class ReadWriteThread : public QThread
-{
-    public:
-        ReadWriteThread(MemoryCard& card, ByteVector& bytes, bool write,
-                        unsigned char& randomNumber, const QString& password, const QString& pin)
-            : m_card(card), m_bytes(bytes), m_write(write), m_randomNumber(randomNumber),
-              m_password(password), m_exception(0), m_pin(pin) { }
-
-        virtual ~ReadWriteThread();
-
-        ReadWriteException* getException() const
-        throw ();
-
-    protected:
-        void run()
-        throw ();
-
-    private:
-        MemoryCard&         m_card;
-        ByteVector&         m_bytes;
-        const bool          m_write;
-        unsigned char&      m_randomNumber;
-        const QString&      m_password;
-        ReadWriteException* m_exception;
-        const QString&      m_pin;
-};
-
-// -------------------------------------------------------------------------------------------------
-
-/**
- * @class ReadWriteThread
- *
- * @brief Thread that is responsible for reading and writing to the smart card.
- *
- * Because the real operations are long and atomar, the GUI would be blocked if the
- * operations are not running in an own thread.
- *
- * No GUI operations take place in this thread. Instead of that, if an error occured the
- * error message is set and the operation is finished. The caller has to check the error
- * message and must display a message.
- *
- * The access to the variables which are passed to the constructor are not locked with a
- * QMutex or something like that. The caller must ensure that he doesn't access this
- * variables while this thread is running. This is usually no problem because the caller
- * displays just a dialog which says the user that he must wait until the operation is
- * finished.
- */
-
-/**
- * @fn ReadWriteThread::ReadWriteThread(MemoryCard&, ByteVector&, bool, unsigned char&, const QString&)
- *
- * @brief Creates a new instance of a ReadWriteThread.
- *
- * @param card the memory card, it must be initialized with the right port (the reason is that
- *        the user should get a message box, insert the card and confirm the box while the
- *        memory card class should wait for it. So another process cannot access the card
- *        terminal at this time, this is important for security reasons
- * @param bytes the read or write bytes
- * @param write @c true if a write operation should be made, @c false for a read operation
- * @param randomNumber the random number
- * @param password the password to check
- */
-
-/**
- * Runs the operation.
- */
-void ReadWriteThread::run()
-    throw ()
-{
-    try {
-        if (m_card.getType() != MemoryCard::TMemoryCard) {
-            m_exception = new ReadWriteException(QObject::tr("There's no memory card in your "
-                "reader.\nUse the test function in the configuration\ndialog to set up your "
-                "reader properly."), ReadWriteException::CSmartcardError);
-            return;
-        }
-
-        if (m_write && !m_pin.isNull()) {
-            // try to unlock
-            qDebug() << CURRENT_FUNCTION << "Trying to unlock the card ...";
-            m_card.verify(m_pin);
-        }
-
-        if (!m_card.selectFile()) {
-            m_exception = new ReadWriteException(QObject::tr("<qt>It was not possible to select the "
-                "file on the smartcard</qt>"), ReadWriteException::CSmartcardError);
-            return;
-        }
-
-        if (m_write) {
-            // write the random number
-            ByteVector byteVector(1);
-            byteVector[0] = m_randomNumber;
-            qDebug() << CURRENT_FUNCTION << "Writing random =" << byteVector[0];
-            m_card.write(0, byteVector);
-
-            // write the password hash and include a length information
-            ByteVector pwHash = PasswordHash::generateHash(m_password);
-            pwHash.insert(pwHash.begin(), pwHash.size());
-            m_card.write(1, pwHash);
-
-            qDebug() << CURRENT_FUNCTION << "Password hash length = " << (pwHash.size()-1);
-
-            // then write the number of bytes
-            int numberOfBytes = m_bytes.size();
-            byteVector.resize(3);
-            byteVector[0] = (numberOfBytes & 0xFF00) >> 8;
-            byteVector[1] = numberOfBytes & 0xFF;
-            byteVector[2] = 0; // fillbyte
-            m_card.write(PasswordHash::MAX_HASH_LENGTH+2, byteVector);
-
-            // and finally write the data
-            m_card.write(PasswordHash::MAX_HASH_LENGTH+5, m_bytes);
-
-        } else {
-            // read the random number
-            if (m_card.read(0, 1)[0] != m_randomNumber) {
-                m_exception = new ReadWriteException(QObject::tr("You inserted the wrong smartcard!"),
-                    ReadWriteException::CSmartcardError);
-                return;
-            }
-
-            qDebug() << CURRENT_FUNCTION << "Read randomNumber =" << m_randomNumber;
-
-            // read the password hash, check the password and throw a exception if necessary
-            unsigned char len = m_card.read(1, 1)[0];
-            ByteVector pwHash = m_card.read(2, len);
-
-            qDebug() << CURRENT_FUNCTION << "Password hash length =" << len;
-
-            if (!PasswordHash::isCorrect(m_password, pwHash)) {
-                m_exception = new ReadWriteException(QObject::tr("The given password was wrong."),
-                    ReadWriteException::CWrongPassword);
-                return;
-            }
-
-            // read the number
-            ByteVector vec = m_card.read(PasswordHash::MAX_HASH_LENGTH + 2, 2);
-            int numberOfBytes = (vec[0] << 8) + (vec[1]);
-
-            qDebug() << CURRENT_FUNCTION << "Read numberOfBytes =" << numberOfBytes;
-
-            Q_ASSERT(numberOfBytes >= 0);
-
-            // read the bytes
-            m_bytes = m_card.read(PasswordHash::MAX_HASH_LENGTH+5, numberOfBytes);
-        }
-    } catch (const CardException& e) {
-
-        if (e.getErrorCode() == CardException::WrongVerification)
-            m_exception = new ReadWriteException(QObject::tr("<qt><nobr>The PIN you entered was wrong. "
-                "You have</nobr> <b>%1</b> retries. After that, the card is destroyed!").arg(
-                QString::number(e.getRetryNumber())), ReadWriteException::CSmartcardError);
-        else
-            m_exception = new ReadWriteException(QObject::tr("<qt><nobr>There was a communication error "
-                "while</nobr> communicating with the smartcard terminal.<p>The error message was:"
-                "<br><nobr>%1</nobr>").arg(e.what()), ReadWriteException::CSmartcardError);
-
-        return;
-    }
-}
-
-/**
- * @brief Deletes the object.
- *
- * If an exception is set, that object is deleted.
- */
-ReadWriteThread::~ReadWriteThread()
-{
-    delete m_exception;
-}
-
-/**
- * @brief Returns the exception of the ReadWriteException.
- *
- * @return the exception. The caller doesn't have to free the exception object, that is done
- *         by the descructor of the ReadWriteThread.
- */
-ReadWriteException* ReadWriteThread::getException() const
-    throw ()
-{
-    return m_exception;
-}
-
-/**
- * @fn ReadWriteThread::getException() const
- *
- * @brief Returns the exception that occured or 0 if no exception occured.
- *
- * The pointer becomes invalid after the thread is deleted.
- *
- * @return the exception
- */
-
-#endif // DOXYGEN
 
 // -------------------------------------------------------------------------------------------------
 
@@ -490,7 +267,6 @@ void DataReadWriter::writeXML(const QDomDocument& document, const QString& passw
 {
     QDomDocument document_cpy = document.cloneNode(true).toDocument();
     QpamatWindow *win = Qpamat::instance()->getWindow();
-    bool smartcard = win->set().readBoolEntry("Smartcard/UseCard");
     const QString fileName = win->set().readEntry("General/Datafile");
     const QString algorithm = win->set().readEntry("Security/CipherAlgorithm");
 
@@ -506,15 +282,10 @@ void DataReadWriter::writeXML(const QDomDocument& document, const QString& passw
     QScopedPointer<StringEncryptor> enc;
     QScopedPointer<Encryptor> realEncryptor;
     try {
-        if (smartcard) {
-            realEncryptor.reset(new SymmetricEncryptor(algorithm, password));
-            enc.reset(new CollectEncryptor(*realEncryptor));
-        } else
-            enc.reset(new SymmetricEncryptor(algorithm, password));
+        enc.reset(new SymmetricEncryptor(algorithm, password));
     }
-    catch (const NoSuchAlgorithmException& e)
+    catch (const NoSuchAlgorithmException&)
     {
-        UNUSED(e);
         throw ReadWriteException(QObject::tr("The algorithm '%1' is not avaible on "
             "your system.\nChoose another crypto algorithm in the settings.\nThe data "
             "is not saved!").arg(algorithm), ReadWriteException::CNoAlgorithm);
@@ -526,18 +297,9 @@ void DataReadWriter::writeXML(const QDomDocument& document, const QString& passw
     crypt(pwData, *enc, true);
 
     // write the password hash
-    const QString hash = smartcard
-        ? "SMARTCARD"
-        : PasswordHash::generateHashString(password);
+    const QString hash = PasswordHash::generateHashString(password);
     QDomText text = document_cpy.createTextNode(hash);
     appData.namedItem("passwordhash").toElement().appendChild(text);
-
-    unsigned char id = 0;
-    if (smartcard) {
-        ByteVector vec = dynamic_cast<CollectEncryptor*>(enc.data())->getBytes();
-        writeOrReadSmartcard(vec, true, id, password);
-        appData.namedItem("smartcard").toElement().setAttribute("card-id", id);
-    }
 
     if (!file.open(QIODevice::WriteOnly))
         throw ReadWriteException(QObject::tr("The data could not be saved. There "
@@ -574,7 +336,6 @@ QDomDocument DataReadWriter::readXML(const QString& password)
 
     QpamatWindow *win = Qpamat::instance()->getWindow();
     const QString& fileName = win->set().readEntry("General/Datafile");
-    bool smartcard = win->set().readBoolEntry("Smartcard/UseCard");
 
     // load the XML structure
     QFile file(fileName);
@@ -592,31 +353,22 @@ QDomDocument DataReadWriter::readXML(const QString& password)
     file.close();
     QDomElement appData = doc.documentElement().namedItem("app-data").toElement();
 
-    if (appData.namedItem("smartcard").toElement().attribute("useCard").toInt() && !smartcard)
-        throw ReadWriteException(QObject::tr("<qt><nobr>The passwords of the current data file"
-            " are stored</nobr> on a smartcard but you did not configure QPaMaT for reading "
-            "smartcards.<p>Change the settings and try again!</qt>"),
+    if (appData.namedItem("smartcard").toElement().attribute("useCard").toInt())
+        throw ReadWriteException(QObject::tr("<qt><nobr>SmartCard support has been removed in QPaMaT 0.6.0. You need "
+            "to store the passwords in the file using an old version of QPaMaT.</qt>"),
             ReadWriteException::CConfigurationError);
 
-    smartcard = appData.namedItem("smartcard").toElement().attribute("useCard").toInt();
-
     // check the password
-    if (!smartcard) {
-        const QString hash = appData.namedItem("passwordhash").toElement().text();
-        if (hash == "SMARTCARD" || !PasswordHash::isCorrect(password, hash))
-            throw ReadWriteException(QObject::tr("The password is incorrect."),
-                ReadWriteException::CWrongPassword);
-    }
+    const QString hash = appData.namedItem("passwordhash").toElement().text();
+    if (hash == "SMARTCARD" || !PasswordHash::isCorrect(password, hash))
+        throw ReadWriteException(QObject::tr("The password is incorrect."),
+            ReadWriteException::CWrongPassword);
 
     QString algorithm = appData.namedItem("crypt-algorithm").toElement().text();
     QScopedPointer<StringEncryptor> enc;
     QScopedPointer<Encryptor> realEncryptor;
     try {
-        if (smartcard) {
-            realEncryptor.reset(new SymmetricEncryptor(algorithm, password));
-            enc.reset(new CollectEncryptor(*realEncryptor));
-        } else
-            enc.reset(new SymmetricEncryptor(algorithm, password));
+        enc.reset(new SymmetricEncryptor(algorithm, password));
     } catch (const NoSuchAlgorithmException& ex) {
         UNUSED(ex);
         throw ReadWriteException(QObject::tr("The algorithm '%1' is not avaible on "
@@ -624,113 +376,10 @@ QDomDocument DataReadWriter::readXML(const QString& password)
                 "update your OpenSSL library.").arg(algorithm), ReadWriteException::CNoAlgorithm);
     }
 
-    // read the data from the smartcard
-    if (smartcard) {
-        ByteVector vec;
-        unsigned char id = (unsigned char)(appData.namedItem("smartcard").toElement().attribute("card-id").toShort());
-
-        // also throws exception
-        writeOrReadSmartcard(vec, false, id, password);
-        dynamic_cast<CollectEncryptor*>(enc.data())->setBytes(vec);
-    }
-
     QDomElement pwData = doc.documentElement().namedItem("passwords").toElement();
     crypt(pwData, *enc, false);
 
     return doc;
-}
-
-
-/**
- * @brief Reads or writes from the smartcard.
- *
- * Displays an error message if needed. Refer to the ReadWriteThread for more information.
- *
- * @param bytes the bytes
- * @param write reading or writing
- * @param randomNumber the random number
- */
-void DataReadWriter::writeOrReadSmartcard(ByteVector        &bytes,
-                                          bool              write,
-                                          unsigned char     &randomNumber,
-                                          const QString     &password)
-    throw (ReadWriteException)
-{
-    QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
-
-    // at first we need a random number
-    if (write) {
-        std::srand(std::time(0));
-        randomNumber = (unsigned char)((double(std::rand())/RAND_MAX)*256);
-    }
-
-    QScopedPointer<MemoryCard> card;
-    QpamatWindow *win = Qpamat::instance()->getWindow();
-    try {
-        card.reset(new MemoryCard(win->set().readEntry("Smartcard/Library")) );
-    }
-    catch (const NoSuchLibraryException& e) {
-        QApplication::restoreOverrideCursor();
-        throw ReadWriteException(QObject::tr("The application was not set up correctly for "
-            "using the smartcard. Call the configuration dialog and use the Test button for "
-            "testing!<p>The error message was:<br><nobr>%1</nobr>").arg(e.what()),
-            ReadWriteException::CConfigurationError);
-    }
-
-    try {
-        card->init(win->set().readNumEntry("Smartcard/Port"));
-    } catch (const CardException& e) {
-        QApplication::restoreOverrideCursor();
-        throw ReadWriteException(QObject::tr("Error in initializing the smart card reader:\n"
-             "%1").arg(e.what()), ReadWriteException::CSmartcardError);
-    }
-
-    // ask the user to insert the smartcard
-    QApplication::restoreOverrideCursor();
-
-    QString pin;
-    bool havePin = win->set().readBoolEntry("Smartcard/HasWriteProtection") && write;
-    QScopedPointer<InsertCardDialog> dlg(new InsertCardDialog(havePin, m_parent, "InsertCardDlg"));
-    if (dlg->exec() != QDialog::Accepted)
-        throw ReadWriteException(0, ReadWriteException::CAbort);
-
-    if (havePin)
-        pin = dlg->getPIN();
-
-    QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
-
-    // start the thread
-    ReadWriteThread thread(*card, bytes, write, randomNumber, password, pin);
-    thread.start();
-
-    // show dialog
-    QString dlgText = write
-        ? QObject::tr("<b>Writing</b> to the smartcard...")
-        : QObject::tr("<b>Reading</b> from the smartcard...");
-    QScopedPointer<WaitDialog> msg(new WaitDialog(QPixmap(
-        QPixmap(":/images/smartcard_24.png")), dlgText,
-         "QPaMaT", m_parent, "Wait dialog"));
-    msg->show();
-
-    // loop while the thread has finished
-    QTimer timer;
-    timer.start(100, 0);
-    while (thread.running())
-        qApp->processEvents(QEventLoop::ExcludeUserInput | QEventLoop::WaitForMore);
-    timer.stop();
-
-    // hide the dialog
-    msg.reset();
-
-    QApplication::restoreOverrideCursor();
-    qApp->processEvents();
-
-    // error handling
-    ReadWriteException* ex = thread.getException();
-    if (ex) {
-        QApplication::restoreOverrideCursor();
-        throw *ex;
-    }
 }
 
 

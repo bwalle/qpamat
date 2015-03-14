@@ -72,13 +72,11 @@ Property::PasswordStrength TreeEntry::weakestChildrenPassword() const throw (Pas
             item = dynamic_cast<TreeEntry*>(item->nextSibling());
         }
     } else {
-        bool hadPasswords = false;
         PropertyIterator it = propertyIterator();
         Property* current;
         while ( (current = it.current()) != 0 ) {
             ++it;
             if (current->getType() == Property::PASSWORD) {
-                hadPasswords = true;
                 Property::PasswordStrength strength = current->getPasswordStrength();
                 if (strength < lowest) {
                     lowest = strength;

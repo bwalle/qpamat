@@ -447,7 +447,7 @@ void QpamatWindow::login()
         else
             return;
 
-        DataReadWriter reader(this);
+        DataReadWriter reader;
         while (!ok) {
             try {
                 doc = reader.readXML(m_password);
@@ -555,14 +555,13 @@ void QpamatWindow::save()
 /**
  * @brief Exports or saves the data.
  *
- * The file name is determined by the global property General/Datafile and the
- * property Smartcard/UseCard is considered for smartcard writing.
+ * The file name is determined by the global property General/Datafile is considered.
  *
  * @return \c true if the action was successful, \c false otherwise
  */
 bool QpamatWindow::exportOrSave()
 {
-    DataReadWriter writer(this);
+    DataReadWriter writer;
     QDomDocument doc = writer.createSkeletonDocument();
     m_tree->appendXML(doc);
     bool success = false;
@@ -602,7 +601,6 @@ void QpamatWindow::exportData()
     QFileDialog* fd = new QFileDialog(this, tr("QPaMaT"), QDir::homeDirPath(),
         tr("QPaMaT XML files (*.xml);;Text files with cleartext password (*.txt)"));
     fd->setMode(QFileDialog::AnyFile);
-    bool oldCard = set().readBoolEntry("Smartcard/UseCard");
 
     if (fd->exec() == QDialog::Accepted)
         fileName = fd->selectedFile();
@@ -619,11 +617,9 @@ void QpamatWindow::exportData()
     // XML or text?
     if (fd->selectedFilter().endsWith("(*.xml)")) {
         set().writeEntry("General/Datafile", fileName);
-        set().writeEntry("Smartcard/UseCard", false);
         if (m_loggedIn && exportOrSave())
             message(tr("Wrote data successfully."));
         set().writeEntry("General/Datafile", oldFilename);
-        set().writeEntry("Smartcard/UseCard", oldCard);
     } else {
         QFile file(fileName);
         if (file.open(QIODevice::WriteOnly)) {

@@ -1,3 +1,7 @@
+2015-03-14  Bernhard Walle <bernhard@bwalle.de>
+
+	* Remove SmartCard support completely.
+
 2011-03-06  Bernhard Walle <bernhard@bwalle.de>
 
 	* Use a black/white system tray icon on Mac OS.

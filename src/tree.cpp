@@ -43,9 +43,7 @@
 #include "security/passwordhash.h"
 #include "security/encryptor.h"
 #include "security/symmetricencryptor.h"
-#include "security/collectencryptor.h"
 #include "dialogs/waitdialog.h"
-#include "smartcard/memorycard.h"
 #include "settings.h"
 
 
@@ -55,9 +53,8 @@
  * @brief Represents the tree that holds the password entries.
  *
  * This class also handles reading and writing to XML files (by calling the
- * right methods of an TreeEntry) and -- very important -- writing to the
- * smartcard. Each XML file has a random number which is created on each
- * successful write. It is used to identify the card.
+ * right methods of an TreeEntry). Each XML file has a random number which is
+ * created on each successful write. It is used to identify the card.
  *
  * So the first byte (a value between 0 and 255) is the random number. Then
  * two bytes on the card indicate the number of bytes stored. Then a fill byte
@@ -226,7 +223,7 @@ Q3DragObject* Tree::dragObject()
 /**
  * @brief Helping function that shows a message box that indicates that a read error has occured
  *
- * @param message the real error message (from the smart card classes)
+ * @param message the real error message
  */
 void Tree::showReadErrorMessage(const QString& message)
 {

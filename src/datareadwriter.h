@@ -37,7 +37,6 @@ class ReadWriteException : public std::runtime_error
             CWrongPassword,
             CInvalidData,
             CIOError,
-            CSmartcardError,
             CNoAlgorithm,
             CConfigurationError,
             COtherError,
@@ -50,7 +49,7 @@ class ReadWriteException : public std::runtime_error
             m_message(error), m_severity(severity), m_category(category)
             {  }
 
-        ~ReadWriteException() throw () {};
+        ~ReadWriteException() throw () {}
 
         QString getMessage() const
             { return m_message; }
@@ -62,7 +61,7 @@ class ReadWriteException : public std::runtime_error
             { return m_category; }
 
         bool retryMakesSense() const
-            { return m_category == CWrongPassword || m_category == CSmartcardError; }
+            { return m_category == CWrongPassword; }
 
     private:
         const QString   m_message;
@@ -76,9 +75,6 @@ class ReadWriteException : public std::runtime_error
 class DataReadWriter
 {
     public:
-        DataReadWriter(QWidget* parent);
-
-    public:
         void writeXML(const QDomDocument& document, const QString& password)
             throw (ReadWriteException);
 
@@ -88,15 +84,7 @@ class DataReadWriter
         QDomDocument createSkeletonDocument() throw ();
 
     private:
-        void writeOrReadSmartcard(ByteVector    &bytes,
-                                  bool          write,
-                                  unsigned char &randomNumber,
-                                  const QString &password)
-        throw (ReadWriteException);
         void crypt(QDomElement& n, StringEncryptor& enc, bool encrypt);
-
-    private:
-        QWidget* m_parent;
 };
 
 #endif // DATAREADWRITER_H

@@ -75,7 +75,6 @@ class Tree : public Q3ListView
     private:
         void initTreeContextMenu();
         void showReadErrorMessage(const QString& message);
-        bool writeOrReadSmartcard(ByteVector& bytes, bool write, unsigned char& randomNumber);
 
     private:
         Q3PopupMenu*  m_contextMenu;

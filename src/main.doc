@@ -34,12 +34,6 @@
  */
 
 /**
- * @defgroup smartcard SmartCard
- *
- * Classes for accessing memory cards
- */
-
-/**
  * @defgroup gui GUI
  *
  * Classes for GUI

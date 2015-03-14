@@ -67,8 +67,6 @@ SET(qpamat_SRCS
     src/dialogs/configurationdialog.cpp
     src/dialogs/showpassworddialog.cpp
     src/dialogs/waitdialog.cpp
-    src/dialogs/insertcarddialog.cpp
-    src/dialogs/cardpinvalidator.cpp
     src/dialogs/aboutdialog.cpp
     src/widgets/filelineedit.cpp
     src/widgets/fontchoosebox.cpp
@@ -80,17 +78,12 @@ SET(qpamat_SRCS
     src/security/passwordhash.cpp
     src/security/abstractencryptor.cpp
     src/security/symmetricencryptor.cpp
-    src/security/collectencryptor.cpp
     src/security/randompasswordgenerator.cpp
     src/security/externalpasswordgenerator.cpp
     src/security/passwordgeneratorfactory.cpp
     src/security/passwordchecker.cpp
     src/security/hybridpasswordchecker.cpp
     src/security/masterpasswordchecker.cpp
-    src/smartcard/cardexception.cpp
-    src/smartcard/memorycard.cpp
-    src/smartcard/nosuchlibraryexception.cpp
-    src/smartcard/notinitializedexception.cpp
     src/util/stringdisplay.cpp
     src/util/singleapplication.cpp
     src/util/timeoutapplication.cpp
@@ -117,7 +110,6 @@ SET(qpamat_SRCS
 SET(qpamat_MOCS
     src/dialogs/passworddialog.h
     src/dialogs/configurationdialog.h
-    src/dialogs/insertcarddialog.h
     src/dialogs/newpassworddialog.h
     src/dialogs/aboutdialog.h
     src/dialogs/showpassworddialog.h

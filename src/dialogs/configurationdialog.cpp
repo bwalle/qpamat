@@ -54,7 +54,6 @@
 #include "security/passwordgeneratorfactory.h"
 #include "security/symmetricencryptor.h"
 #include "security/hybridpasswordchecker.h"
-#include "smartcard/memorycard.h"
 
 /**
  * @class ConfigurationDialog
@@ -67,7 +66,6 @@
  *  - @b General which describes general display options
  *  - @b Password which does the password settings
  *  - @b Security which does the security settings
- *  - @b SmartCard which controls all stuff about smartcards
  *  - @b Presentation which holds all about printing and some other things
  *
  * Just use following to use the dialog:
@@ -106,10 +104,6 @@ ConfigurationDialog::ConfigurationDialog(QWidget* parent)
     // Add the security tab
     ConfDlgSecurityTab* securityTab = new ConfDlgSecurityTab(this, "SecurityTab");
     addPage(securityTab, QPixmap(":/images/qpamat_34.png"), tr("Security"));
-
-    // Add the smartcard tab
-    ConfDlgSmartcardTab* smartCardTab = new ConfDlgSmartcardTab(this, "SmartCardTab");
-    addPage(smartCardTab, QPixmap(":/images/smartcard_34.png"), tr("Smart Card"));
 
     // Add the presentation tab
     ConfDlgPresentationTab* presentationTab = new ConfDlgPresentationTab(this, "PresTab");
@@ -756,215 +750,6 @@ void ConfDlgPresentationTab::applySettings()
     win->set().writeEntry("Presentation/StartHidden", m_hiddenCB->isChecked());
 }
 
-
-// -------------------------------------------------------------------------------------------------
-//                                     Smart Card
-// -------------------------------------------------------------------------------------------------
-
-
-/**
- * @class ConfDlgSmartcardTab
- *
- * @brief Represents smartcard settings in the configuration dialog
- *
- * This tab holds all smartcard settings
- *
- *   - library
- *   - port
- *   - testing faclity
- *
- * @ingroup gui
- * @author Bernhard Walle
- */
-
-/**
- * @enum ConfDlgSmartcardTab::SmartcardEnabled
- *
- * Enumeration type to represent enabled/not enabled as radio button group.
- */
-
-/**
- * Creates a new instance of an ConfDlgSmartcardTab object.
- *
- * @param parent the parent widget
- */
-ConfDlgSmartcardTab::ConfDlgSmartcardTab(QWidget* parent, const char* name)
-        : ListBoxDialogPage(parent, name)
-{
-    createAndLayout();
-
-    connect(m_useCardCB, SIGNAL(toggled(bool)), this, SLOT(setUseSmartcardEnabled(bool)));
-    connect(m_testButton, SIGNAL(clicked()), this, SLOT(testSmartCard()));
-}
-
-
-/**
- * @brief Does creating of subwidgets and layout of the GeneralTab.
- */
-void ConfDlgSmartcardTab::createAndLayout()
-{
-    // create layouts
-    QVBoxLayout* mainLayout = new QVBoxLayout(this, 0, 6);
-
-    Q3GroupBox* smartCardGroup = new Q3GroupBox(2, Qt::Vertical, tr("Smartcard"), this);
-    m_settingsGroup = new Q3GroupBox(4, Qt::Vertical, tr("Settings"), this);
-    m_testGroup = new Q3ButtonGroup(2, Qt::Vertical, tr("Testing"), this);
-
-    m_useCardCB = new QCheckBox(tr("&Use a smartcard"), smartCardGroup);
-    m_usePinCB = new QCheckBox(tr("Card has &write-protection"), smartCardGroup);;
-
-    QLabel* libraryLabel = new QLabel(tr("CT-&API Chipcard Driver:"), m_settingsGroup);
-    m_libraryEdit = new FileLineEdit(m_settingsGroup, false);
-
-    QLabel* portLabel = new QLabel(tr("Chipcard Terminal &Port:"), m_settingsGroup);
-    m_portCombo = new QComboBox(false, m_settingsGroup);
-
-    new QLabel(tr("Insert a card and click on this button to test your settings:"), m_testGroup);
-    Q3HBox* box = new Q3HBox(m_testGroup);
-    m_testButton = new QPushButton(tr("&Test"), box);
-    m_testButton->setAutoDefault(false);
-
-    QWidget* dummy = new QWidget(box);
-    box->setStretchFactor(dummy, 10);
-
-    mainLayout->addWidget(smartCardGroup);
-    mainLayout->addWidget(m_settingsGroup);
-    mainLayout->addWidget(m_testGroup);
-    mainLayout->addStretch(5);
-
-
-    // the case discrimination if rom Qt's code, so it should be correct
-#if defined Q_WS_WIN
-    m_libraryEdit->setFilter(tr("CT-API-Driver (*.dll)"));
-#elif defined(Q_OS_MACX)
-    m_libraryEdit->setFilter(tr("CT-API-Driver (*.dylib)"));
-#elif defined(Q_OS_HPUX)
-    m_libraryEdit->setFilter(tr("CT-API-Driver (*.sl)"));
-#else
-    m_libraryEdit->setFilter(tr("CT-API-Driver (*.so)"));
-#endif
-
-    // set buddys
-    libraryLabel->setBuddy(m_libraryEdit);
-    portLabel->setBuddy(m_portCombo);
-
-}
-
-
-/**
- * @brief Handles the smart card enabled button.
- *
- * If it is checked, the configuration widgets get displayed, otherwise they
- * get hidden.
- *
- * @param enabled \c true if smart card support is enabled
- */
-void ConfDlgSmartcardTab::setUseSmartcardEnabled(bool enabled)
-{
-    m_usePinCB->setEnabled(enabled);
-    m_settingsGroup->setEnabled(enabled);
-    m_testGroup->setEnabled(enabled);
-}
-
-
-/**
- * @brief Fills the settings.
- *
- * This method is called from the dialog's constructor.
- */
-void ConfDlgSmartcardTab::fillSettings()
-{
-    m_portCombo->clear();
-    const char *ports[] = {
-        QT_TR_NOOP("Special (Port 0)"),
-        QT_TR_NOOP("COM1/USB/Keyboard"),
-        QT_TR_NOOP("COM2"),
-        QT_TR_NOOP("COM3"),
-        QT_TR_NOOP("COM4")
-    };
-
-    for (int i = 0; i < 5; ++i) {
-        m_portCombo->insertItem(tr(ports[i]));
-    }
-
-    QpamatWindow *win = Qpamat::instance()->getWindow();
-    m_libraryEdit->setContent(win->set().readEntry("Smartcard/Library"));
-    m_portCombo->setCurrentItem(win->set().readNumEntry("Smartcard/Port"));
-    m_useCardCB->setChecked(win->set().readBoolEntry("Smartcard/UseCard"));
-    m_usePinCB->setChecked(win->set().readBoolEntry("Smartcard/HasWriteProtection"));
-
-    if (!m_useCardCB->isChecked())
-        setUseSmartcardEnabled(false);
-}
-
-
-/**
- * @brief Applys the settings.
- *
- * This method is called by if the user presses the Ok button.
- */
-void ConfDlgSmartcardTab::applySettings()
-{
-    QpamatWindow *win = Qpamat::instance()->getWindow();
-
-    win->set().writeEntry("Smartcard/Library", m_libraryEdit->getContent() );
-    win->set().writeEntry("Smartcard/Port", m_portCombo->currentItem() );
-    win->set().writeEntry("Smartcard/UseCard", m_useCardCB->isChecked() );
-    win->set().writeEntry("Smartcard/HasWriteProtection", m_usePinCB->isChecked() );
-}
-
-
-/**
- * @brief Tests the smartcard.
- *
- * This is to verify the settings.  It tries to read from the reader. It checks
- * the type of the smartcard and if it's a memory card, it displays the
- * avalable memory in a dialog.
- */
-void ConfDlgSmartcardTab::testSmartCard()
-{
-    QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
-    try {
-        MemoryCard card(m_libraryEdit->getContent());
-        card.init(m_portCombo->currentItem());
-        MemoryCard::CardType type = card.getType();
-
-        if (type == MemoryCard::TMemoryCard) {
-            int capacity = 0;
-            card.resetCard(&capacity);
-
-            QApplication::restoreOverrideCursor();
-            QMessageBox::information(this, "QPaMaT", QString("<qt>"+tr(
-                "<p>Detected a card with %1 kBytes memory.</p><p>If you think this is "
-                "enough memory you can use this card for storing your passwords!</p>")+"</qt>").arg(
-                QString::number(capacity / 1024.0)),
-                QMessageBox::Ok | QMessageBox::Default, Qt::NoButton);
-        } else {
-            QApplication::restoreOverrideCursor();
-            QMessageBox::warning(this, "QPaMaT", QString("<qt>"+tr(
-                "<p>The communication to your chipcard terminal seems to work.<p>"
-                "<p>However, there's no memory card in your reader. So you cannot use "
-                "it for saving your password. Buy a memory card and try again!</p>")),
-                QMessageBox::Ok | QMessageBox::Default, Qt::NoButton);
-        }
-
-        // if we don't access this point the destructor closes it. So no problem here!
-        card.close();
-    } catch (const NoSuchLibraryException& ex) {
-        QApplication::restoreOverrideCursor();
-        QApplication::restoreOverrideCursor();
-        QMessageBox::critical(this, "QPaMaT", QString("<qt>"+tr(
-                "<p>A problem occurred while loading the specified CT-API (chipcard) driver."
-                " The error message was:</p><p>%1</p>")+"</qt>").arg(ex.what()),
-               QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
-    } catch (const CardException& ex) {
-        QApplication::restoreOverrideCursor();
-        QMessageBox::critical(this, "QPaMaT", QString("<qt>"+tr(
-                "<p>An error occurred while communicating with the chipcard terminal."
-                " The error message was:</p><p>%1</p>")+"</qt>").arg(ex.what()),
-               QMessageBox::Ok | QMessageBox::Default, QMessageBox::NoButton);
-    }
-}
 
 #endif // DOXYGEN
 

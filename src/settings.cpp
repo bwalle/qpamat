@@ -66,11 +66,6 @@ Settings::Settings()
     DEF_STRING("Security/PasswordGenerator",     PasswordGeneratorFactory::DEFAULT_GENERATOR_STRING);
     DEF_STRING("Security/PasswordGenAdditional", "");
     DEF_INTEGE("Security/AutoLogout",            0);
-    DEF_BOOLEA("Smartcard/Library",              false);
-    DEF_INTEGE("Smartcard/Port",                 1);
-    DEF_STRING("Smartcard/Library",              "");
-    DEF_BOOLEA("Smartcard/HasWriteProtection",   false);
-    DEF_BOOLEA("Smartcard/UseCard",              false);
     DEF_BOOLEA("Password/NoGrabbing",            false);
 #ifdef Q_WS_WIN
     DEF_STRING("Presentation/NormalFont",        "Times New Roman,10");

@@ -14,12 +14,12 @@
     </affiliation>
   </author>
 
-  <pubdate>2011-03-06</pubdate>
+  <pubdate>2015-03-14</pubdate>
 
-  <releaseinfo>Version 0.5.4</releaseinfo>
+  <releaseinfo>Version 0.6.0</releaseinfo>
 
   <copyright>
-    <year>2003-2011</year>
+    <year>2003-2015</year>
     <holder role="mailto:bernhard@bwalle.de">Bernhard Walle</holder>
   </copyright>
 
@@ -117,9 +117,6 @@
         </listitem>
         <listitem>
           <para>Checking of password quality, customizable dictionary.</para>
-        </listitem>
-        <listitem>
-          <para>Stores the passwords encrypted on the disk or on a smartcard.</para>
         </listitem>
       </itemizedlist>
     </sect3>
@@ -407,67 +404,6 @@
         </listitem>
       </varlistentry>
     </variablelist>
-    </sect2>
-
-    <sect2>
-    <title>Smart Card</title>
-
-    <variablelist>
-      <varlistentry>
-        <term>Use a smartcard</term>
-        <listitem>
-          <para>Determines whether a smartcard is used to store passwords.
-            The passwords will be stored encrypted on the card and the
-            location where they are stored is referenced in the XML files.
-            QPaMaT uses normal memory cards.
-          </para>
-        </listitem>
-      </varlistentry>
-      <varlistentry>
-        <term>Card has write protection</term>
-        <listitem>
-          <para>Use this if the card has a hardware write-protection. You
-            have to enter the PIN before some data is stored. This feature
-            is experimental since it doesn't work here, but I'm quite
-            sure that this is a bug of the smartcard driver. However, I
-            recommend to buy normal memory cards without write protection
-            since it does not give more security (reading cannot be protected
-            this way).
-          </para>
-        </listitem>
-      </varlistentry>
-      <varlistentry>
-        <term>CT-API chipcard driver </term>
-        <listitem>
-          <para>Enter the path to the chipcard driver. This is a dynamically
-            loaded shared object file <filename>*.so</filename> on Linux,
-            <filename>*.dll</filename> on Windows. The CT-API interface
-            was created for the German health card, so it should be available
-            for most hardware. For the wide spread Towitoko reader, check
-            <ulink url="http://www.geocities.com/cprados/"></ulink> for
-            Linux drivers.
-          </para>
-        </listitem>
-      </varlistentry>
-      <varlistentry>
-        <term>Chipcard terminal port</term>
-        <listitem>
-          <para>Choose the port where your card reader is connected. Make
-            sure that you have the right permission to access this port.
-            Consult the manual of the driver for the correct port number.
-          </para>
-        </listitem>
-      </varlistentry>
-      <varlistentry>
-        <term>Test</term>
-        <listitem>
-          <para>Test your smartcard settings. Insert a card in the reader
-            and click on this button. A dialog informs you about the result
-            of the test.
-          </para>
-        </listitem>
-      </varlistentry>
-    </variablelist>
   </sect2>
 
   <sect2>
@@ -586,9 +522,7 @@
         </para>
 
         <para>Exporting as text is mainly the same as "Save",
-          but there are two differences: You can choose the file name directly
-          in a file chooser, and if you configured QPaMaT to use a smart card,
-          this function stores the password in the XML file nevertheless. This
+          but here you can choose the file name directly in a file chooser. This
           function is useful for backup. </para>
 
         <para>Exporting as text exports the data in a clear text files, with
