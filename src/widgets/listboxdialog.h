@@ -19,9 +19,8 @@
 
 #include <qdialog.h>
 #include <qwidget.h>
-#include <q3listbox.h>
+#include <QListWidget>
 #include <q3widgetstack.h>
-//Added by qt3to4:
 #include <QPixmap>
 #include <QEvent>
 
@@ -53,13 +52,14 @@ class ListBoxDialog : public QDialog
         void accept();
         virtual bool event(QEvent* e);
         void aboutToShowHandler(QWidget* widget);
+        void raiseWidget(const QModelIndex &idx);
 
     private:
         ListBoxDialog(const ListBoxDialog&);
         ListBoxDialog& operator=(const ListBoxDialog&);
 
     private:
-        Q3ListBox*                     m_listBox;
+        QListWidget *m_listBox;
         Q3WidgetStack*                 m_widgetStack;
         std::set<ListBoxDialogPage*>   m_filledTabs;
 };

@@ -20,7 +20,6 @@
 #include <QEvent>
 #include <QToolButton>
 #include <QAction>
-#include <Q3PopupMenu>
 #include <QCloseEvent>
 #include <QLabel>
 #include <QSystemTrayIcon>
@@ -116,7 +115,6 @@ class QpamatWindow : public QMainWindow
         Tree*                              m_tree;
         QString                            m_password;
         Help                               m_help;
-        Q3PopupMenu*                       m_treeContextMenu;
         QScopedPointer<TimerStatusmessage> m_message;
         RightPanel*                        m_rightPanel;
         QComboBox*                         m_searchCombo;

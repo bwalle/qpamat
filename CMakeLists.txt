@@ -72,7 +72,6 @@ SET(qpamat_SRCS
     src/widgets/fontchoosebox.cpp
     src/widgets/copylabel.cpp
     src/widgets/focuslineedit.cpp
-    src/widgets/listboxlabeledpict.cpp
     src/widgets/listboxdialog.cpp
     src/security/encodinghelper.cpp
     src/security/passwordhash.cpp

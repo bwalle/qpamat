@@ -22,10 +22,12 @@
 #include <QVBoxLayout>
 #include <Q3Frame>
 #include <QDialogButtonBox>
+#include <QListWidget>
+#include <QListWidgetItem>
+#include <QDebug>
 
 #include "global.h"
 #include "listboxdialog.h"
-#include "widgets/listboxlabeledpict.h"
 
 /**
  * @class ListBoxDialogPage
@@ -96,13 +98,23 @@ ListBoxDialog::ListBoxDialog(QWidget* parent, const char* name)
 		    QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
 		    Qt::Horizontal, this);
 
-    m_listBox = new Q3ListBox(mainHBox, "ConfDlg-Listbox");
-    m_listBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    m_listBox = new QListWidget(mainHBox);
+    m_listBox->setUniformItemSizes(true);
+    m_listBox->setFlow(QListView::TopToBottom);
+    m_listBox->setViewMode(QListView::IconMode);
+    m_listBox->setSelectionMode(QAbstractItemView::SingleSelection);
+    m_listBox->setMovement(QListView::Static);
+    m_listBox->setMaximumWidth(100);
+    m_listBox->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
     QFont f = m_listBox->font();
     f.setBold(true);
     m_listBox->setFont(f);
     m_listBox->setCursor(Qt::PointingHandCursor);
     m_listBox->setFocusPolicy(Qt::TabFocus);
+    m_listBox->setSpacing(0);
+    m_listBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+
     m_widgetStack = new Q3WidgetStack(mainHBox, "ConfDlg-Widget");
 
     // horizontal line
@@ -125,7 +137,7 @@ ListBoxDialog::ListBoxDialog(QWidget* parent, const char* name)
     // signals & slots
     connect(buttonHBox, SIGNAL(accepted()), SLOT(accept()));
     connect(buttonHBox, SIGNAL(rejected()), SLOT(reject()));
-    connect(m_listBox, SIGNAL(highlighted(int)), m_widgetStack, SLOT(raiseWidget(int)));
+    connect(m_listBox, SIGNAL(clicked(QModelIndex)), SLOT(raiseWidget(QModelIndex)));
     connect(m_widgetStack, SIGNAL(aboutToShow(QWidget*)), SLOT(aboutToShowHandler(QWidget*)));
 }
 
@@ -140,7 +152,8 @@ ListBoxDialog::ListBoxDialog(QWidget* parent, const char* name)
 void ListBoxDialog::addPage(ListBoxDialogPage* widget, const QPixmap& pixmap, const QString& text)
 {
     m_widgetStack->addWidget(widget, m_listBox->count());
-    new ListBoxLabeledPict(m_listBox, pixmap, text);
+    QListWidgetItem *newItem = new QListWidgetItem(QIcon(pixmap), text, m_listBox);
+    newItem->setTextAlignment(Qt::AlignHCenter);
 }
 
 
@@ -153,7 +166,7 @@ bool ListBoxDialog::event(QEvent* e)
         QWidget* w = m_widgetStack->widget(0);
         if (w) {
             aboutToShowHandler(w);
-            m_listBox->setSelected(0, true);
+            m_listBox->item(0)->setSelected(true);
         }
         return true;
     }
@@ -178,6 +191,11 @@ void ListBoxDialog::aboutToShowHandler(QWidget* widget)
             m_filledTabs.insert(t);
         }
     }
+}
+
+void ListBoxDialog::raiseWidget(const QModelIndex &idx)
+{
+    m_widgetStack->raiseWidget(idx.row());
 }
 
 

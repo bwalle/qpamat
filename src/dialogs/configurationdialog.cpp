@@ -50,7 +50,6 @@
 #include "qpamatwindow.h"
 #include "qpamat.h"
 #include "widgets/filelineedit.h"
-#include "widgets/listboxlabeledpict.h"
 #include "security/passwordgeneratorfactory.h"
 #include "security/symmetricencryptor.h"
 #include "security/hybridpasswordchecker.h"

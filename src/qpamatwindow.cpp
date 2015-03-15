@@ -113,7 +113,6 @@
 QpamatWindow::QpamatWindow()
     : QMainWindow(0, "qpamat main window")
     , m_tree(0)
-    , m_treeContextMenu(0)
     , m_message(0)
     , m_rightPanel(0)
     , m_searchCombo(0)
