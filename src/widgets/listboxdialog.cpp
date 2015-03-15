@@ -100,11 +100,9 @@ ListBoxDialog::ListBoxDialog(QWidget* parent, const char* name)
 
     m_listBox = new QListWidget(mainHBox);
     m_listBox->setUniformItemSizes(true);
-    m_listBox->setFlow(QListView::TopToBottom);
     m_listBox->setViewMode(QListView::IconMode);
     m_listBox->setSelectionMode(QAbstractItemView::SingleSelection);
     m_listBox->setMovement(QListView::Static);
-    m_listBox->setMaximumWidth(100);
     m_listBox->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     QFont f = m_listBox->font();
@@ -167,6 +165,7 @@ bool ListBoxDialog::event(QEvent* e)
         if (w) {
             aboutToShowHandler(w);
             m_listBox->item(0)->setSelected(true);
+            m_listBox->setMaximumWidth(m_listBox->sizeHintForColumn(0)+5);
         }
         return true;
     }
