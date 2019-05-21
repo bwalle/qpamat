@@ -21,6 +21,22 @@
 #include <openssl/evp.h>
 #include <openssl/ssl.h>
 
+#if OPENSSL_VERSION_NUMBER < 0x10100000
+
+inline EVP_CIPHER_CTX *EVP_CIPHER_CTX_new(void)
+{
+    return OPENSSL_zalloc(sizeof(EVP_CIPHER_CTX));
+}
+
+void EVP_CIPHER_CTX_free(EVP_CIPHER_CTX *ctx)
+{
+    EVP_CIPHER_CTX_init(ctx);
+    OPENSSL_free(ctx);
+}
+
+#endif
+
+
 #include "symmetricencryptor.h"
 #include "constants.h"
 #include "encodinghelper.h"
@@ -182,31 +198,31 @@ ByteVector SymmetricEncryptor::crypt(const ByteVector& vector, OperationType ope
     unsigned char buf[BUFLEN];
     unsigned char ebuf[BUFLEN + 8];
     ByteVector output;
-    EVP_CIPHER_CTX ectx;
+    EVP_CIPHER_CTX *ectx = EVP_CIPHER_CTX_new();
     int ebuflen;
     ByteVector::ConstIterator beginOfVector = vector.begin();
     unsigned int sizeOfVector = vector.size();
-    EVP_CipherInit(&ectx, m_cipher_algorithm, m_key, m_iv, operation);
+    EVP_CipherInit(ectx, m_cipher_algorithm, m_key, m_iv, operation);
 
     for (unsigned int i = 0; i < sizeOfVector; i += BUFLEN) {
         int readLen = (i + BUFLEN >= sizeOfVector)
             ? sizeOfVector - i
             : BUFLEN;
         qCopy(beginOfVector + i, beginOfVector + i + readLen, buf);
-        EVP_CipherUpdate(&ectx, ebuf, &ebuflen, buf, readLen);
+        EVP_CipherUpdate(ectx, ebuf, &ebuflen, buf, readLen);
 
         int oldSize = output.size();
         output.resize(oldSize + ebuflen);
         qCopy( ebuf, ebuf + ebuflen, output.begin() + oldSize);
     }
 
-    EVP_CipherFinal(&ectx, ebuf, &ebuflen);
+    EVP_CipherFinal(ectx, ebuf, &ebuflen);
 
     int oldSize = output.size();
     output.resize(oldSize + ebuflen);
     qCopy(ebuf, ebuf + ebuflen, output.begin() + oldSize);
 
-    EVP_CIPHER_CTX_cleanup(&ectx);
+    EVP_CIPHER_CTX_free(ectx);
 
     return output;
 }

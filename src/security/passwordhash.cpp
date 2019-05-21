@@ -23,6 +23,11 @@
 
 #include <openssl/evp.h>
 
+#if OPENSSL_VERSION_NUMBER < 0x10100000
+#define EVP_MD_CTX_new EVP_MD_CTX_create
+#define EVP_MD_CTX_free EVP_MD_CTX_destroy
+#endif
+
 #include "global.h"
 #include "constants.h"
 #include "passwordhash.h"
@@ -161,7 +166,7 @@ QString PasswordHash::generateHashString(const QString& password)
  */
 void PasswordHash::attachHashWithoutSalt(ByteVector& output, const ByteVector& passwordBytes)
 {
-    EVP_MD_CTX mdctx;
+    EVP_MD_CTX *mdctx = EVP_MD_CTX_new();
     unsigned char md_value[EVP_MAX_MD_SIZE];
     unsigned int md_len;
 
@@ -169,9 +174,10 @@ void PasswordHash::attachHashWithoutSalt(ByteVector& output, const ByteVector& p
     unsigned char* password = new unsigned char[len];
     std::copy(passwordBytes.begin(), passwordBytes.end(), password);
 
-    EVP_DigestInit(&mdctx, HASH_ALGORITHM);
-    EVP_DigestUpdate(&mdctx, password, len);
-    EVP_DigestFinal(&mdctx, md_value, &md_len);
+    EVP_DigestInit(mdctx, HASH_ALGORITHM);
+    EVP_DigestUpdate(mdctx, password, len);
+    EVP_DigestFinal(mdctx, md_value, &md_len);
+    EVP_MD_CTX_free(mdctx);
     delete[] password;
 
     std::copy(md_value, md_value + md_len, std::back_inserter(output));
